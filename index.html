@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Face Swap Templates</title>
+    <!-- ИСПРАВЛЕНО: Правильный скрипт для Telegram Web App -->
     <script src="https://telegram.org"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -16,8 +17,8 @@
 
     <!-- Сетка шаблонов -->
     <div class="templates-grid">
+        <!-- ИСПРАВЛЕНО: Везде возвращены точные прямые ссылки на картинки -->
         <div class="template-card" onclick="selectTemplate('girl_face', 'Лицо девушки')">
-            <!-- ЗДЕСЬ ИСПРАВЛЕНО: ссылка в src теперь ведет на саму картинку! -->
             <img src="https://postimg.cc" alt="Лицо_девушки">
             <div class="card-title">👩 Лицо девушки</div>
         </div>
@@ -124,7 +125,6 @@
             reader.onloadend = function() {
                 const base64Data = reader.result;
                 
-                // Теперь передаем в бота ТРИ вещи: стиль, промпт и фото
                 const dataToSend = {
                     template: currentTemplateId,
                     prompt: promptText,

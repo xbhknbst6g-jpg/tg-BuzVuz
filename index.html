@@ -148,16 +148,168 @@
             }
         }
 
+        <!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Face Swap Templates</title>
+    <!-- Подключаем официальный скрипт Telegram Web App (Исправлено!) -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Дополнительные стили для кнопок выбора формата */
+        .ratio-selector {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .ratio-btn {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: #fff;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        .ratio-btn.active {
+            border-color: #0088cc;
+            background: #e6f7ff;
+            color: #0088cc;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Выберите интересующий вас шаблон </h1>
+        <p>Кликните на стиль и загрузите свое фото</p>
+    </div>
+
+    <!-- Сетка шаблонов -->
+    <div class="templates-grid">
+        <div class="template-card" onclick="selectTemplate('girl_face', 'https://i.postimg.cc/Hk5VqFcd/111.jpg')">
+            <img src="https://i.postimg.cc/Hk5VqFcd/111.jpg" alt="Лицо_девушки">
+            <div class="card-title">👩 Лицо девушки</div>
+        </div>
+        
+        <div class="template-card" onclick="selectTemplate('Lying_down_phone', 'https://i.postimg.cc/y89kM2Jf/5244806263227488670.jpg')">
+            <img src="https://i.postimg.cc/y89kM2Jf/5244806263227488670.jpg" alt="Лежа_телефон">
+            <div class="card-title">📱 Лежа с телефоном</div>
+        </div>
+        
+        <div class="template-card" onclick="selectTemplate('catwoman', 'https://i.postimg.cc/Z53CGX9F/b-Lx-N-n-XBzkt-Aah-Ej-Tr-YFf.png')">
+            <img src="https://i.postimg.cc/Z53CGX9F/b-Lx-N-n-XBzkt-Aah-Ej-Tr-YFf.png" alt="Женщина_кошка">
+            <div class="card-title">🐈 Женщина кошка</div>
+        </div>
+        
+        <div class="template-card" onclick="selectTemplate('carousel_woman', 'https://i.postimg.cc/VkMdx2S4/Cp-Sd1Xzy-PAC5B2fc-Wv-Ma9.png')">
+            <img src="https://i.postimg.cc/VkMdx2S4/Cp-Sd1Xzy-PAC5B2fc-Wv-Ma9.png" alt="Женщина_карусель">
+            <div class="card-title">🎠 Женщина карусель</div>
+        </div>
+
+        <div class="template-card" onclick="selectTemplate('demon_woman', 'https://i.postimg.cc/4NjYFX3w/fe74d9cde0674701b4cd1ecd99bb0f65.png')">
+            <img src="https://i.postimg.cc/4NjYFX3w/fe74d9cde0674701b4cd1ecd99bb0f65.png" alt="Женщина_демон">
+            <div class="card-title">😈 Женщина демон</div>
+        </div>
+        
+        <div class="template-card" onclick="selectTemplate('woman_standing', 'https://i.postimg.cc/4xtmDjKW/o-Pg5nz-MH5-v-V9-vsn8VFP-60MA3MWp.png')">
+            <img src="https://i.postimg.cc/4xtmDjKW/o-Pg5nz-MH5-v-V9-vsn8VFP-60MA3MWp.png" alt="Женщина_стоит">
+            <div class="card-title">🧍 Женщина стоит</div>
+        </div>
+    </div> <!-- Закрывающий тег сетки (Исправлено!) -->
+
+    <!-- Модальное окно загрузки селфи -->
+    <div id="uploadModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2>Выбран стиль: <span id="selectedStyleName"></span></h2>
+            <!-- Выбор формата итоговой картинки -->
+            <p>Выберите формат готового изображения:</p>
+            <div class="ratio-selector">
+                <div class="ratio-btn active" id="ratio_9_16" onclick="setRatio('9:16')">📱 9:16</div>
+                <div class="ratio-btn" id="ratio_1_1" onclick="setRatio('1:1')">🔲 1:1</div>
+                <div class="ratio-btn" id="ratio_16_9" onclick="setRatio('16:9')">💻 16:9</div>
+            </div>
+            <p>Теперь загрузите ваше фото (селфи), где хорошо видно лицо</p>
+            
+            <label class="upload-btn">
+                Выбрать селфи
+                <input type="file" id="userPhoto" accept="image/*" onchange="handlePhotoUpload(event)" style="display:none;">
+            </label>
+            
+            <div id="previewContainer" style="display:none; margin-top:15px;">
+                <p>Предпросмотр вашего фото:</p>
+                <img id="photoPreview" src="" alt="Ваше фото" style="max-width:100%; max-height:200px; border-radius:10px;">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        let currentTemplateId = '';
+        let selectedRatio = '9:16'; // Формат по умолчанию
+
+
+        function selectTemplate(templateId, styleName) {
+            currentTemplateId = templateId;
+            document.getElementById('selectedStyleName').innerText = templateId.toUpperCase();
+            document.getElementById('uploadModal').style.display = 'block';
+        }
+
+        // Функция переключения активных кнопок формата
+        function setRatio(ratio) {
+            selectedRatio = ratio;
+            
+            // Сбрасываем класс active со всех кнопок форматов
+            document.getElementById('ratio_9_16').classList.remove('active');
+            document.getElementById('ratio_1_1').classList.remove('active');
+            document.getElementById('ratio_16_9').classList.remove('active');
+            
+            // Добавляем active только на ту, которую кликнули
+            const idMap = { '9:16': 'ratio_9_16', '1:1': 'ratio_1_1', '16:9': 'ratio_16_9' };
+            document.getElementById(idMap[ratio]).classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('uploadModal').style.display = 'none';
+            document.getElementById('previewContainer').style.display = 'none';
+            tg.MainButton.hide();
+        }
+
+        function handlePhotoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('photoPreview').src = e.target.result;
+                    document.getElementById('previewContainer').style.display = 'block';
+                    
+                    tg.MainButton.text = "Создать Face Swap ✨";
+                    tg.MainButton.show();
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
         tg.onEvent('mainButtonClicked', function() {
             const fileInput = document.getElementById('userPhoto');
-            const file = fileInput.files[0];
+            const file = fileInput.files;
 
             if (!file) {
-                alert('Пожалуйста, выберите фото!');
+                // Заменили всплывающее окно на красивую внутреннюю подсказку кнопки, чтобы не вешать браузер алертом
+                tg.MainButton.text = "⚠️ ВЫБЕРИТЕ СЕЛФИ!";
+                setTimeout(() => { tg.MainButton.text = "Создать Face Swap ✨"; }, 2000);
                 return;
             }
 
-            // Блокируем кнопку, чтобы юзер не кликал дважды
+            // Мгновенно меняем текст кнопки и гасим её от повторных тапов
             tg.MainButton.text = "⏳ Отправка на сервера ИИ...";
             tg.MainButton.disable();
 
@@ -167,9 +319,8 @@
                 const userId = tg.initDataUnsafe?.user?.id;
 
                 if (!userId) {
-                    alert("Ошибка: Не удалось определить ваш Telegram ID. Откройте сайт внутри бота.");
                     tg.MainButton.enable();
-                    tg.MainButton.text = "Создать Face Swap ✨";
+                    tg.MainButton.text = "❌ Ошибка ID пользователя";
                     return;
                 }
                 
@@ -179,32 +330,33 @@
                     aspect_ratio: selectedRatio
                 };
 
-                // ВСТАВЬ СЮДА ТОКЕН СВОЕГО БОТА (Например: "123456:ABCdef...")
+                // Твой токен бота из BotFather
                 const botToken = "8647669739:AAFC6EjWAu7HRsEOjh4jZexzcHGaJG6lPJ4"; 
                 
-                // Прямой и безопасный POST-запрос в Telegram API в обход ограничений шторки!
+                // Безопасный POST-запрос напрямую в Телеграм
                 fetch(`https://telegram.org{botToken}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         chat_id: userId,
-                        text: `WEBAPP_DATA:${JSON.stringify(dataToSend)}` // Помечаем префиксом для бота
+                        text: `WEBAPP_DATA:${JSON.stringify(dataToSend)}`
                     })
                 })
                 .then(response => {
                     if (response.ok) {
-                        tg.close(); // Закрываем сайт, данные улетели в чат бота
+                        // Жестко и быстро закрываем окно БЕЗ вызова браузерных подтверждений
+                        tg.close(); 
                     } else {
                         throw new Error("Ошибка API");
                     }
                 })
                 .catch(error => {
                     console.error(error);
-                    alert("Сбой сети Telegram при отправке фото. Попробуйте еще раз.");
                     tg.MainButton.enable();
-                    tg.MainButton.text = "Создать Face Swap ✨";
+                    tg.MainButton.text = "❌ Сбой сети. Повторить";
                 });
             }
             reader.readAsDataURL(file);
         });
+    </script>
     </script>

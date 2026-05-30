@@ -7,11 +7,36 @@
     <!-- Подключаем официальный скрипт Telegram Web App (Исправлено!) -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Дополнительные стили для кнопок выбора формата */
+        .ratio-selector {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .ratio-btn {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: #fff;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        .ratio-btn.active {
+            border-color: #0088cc;
+            background: #e6f7ff;
+            color: #0088cc;
+        }
+    </style>
 </head>
 <body>
 
     <div class="header">
-        <h1>Выберите шаблон для Face Swap</h1>
+        <h1>Выберите интересующий вас шаблон </h1>
         <p>Кликните на стиль и загрузите свое фото</p>
     </div>
 
@@ -53,6 +78,13 @@
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
             <h2>Выбран стиль: <span id="selectedStyleName"></span></h2>
+            <!-- Выбор формата итоговой картинки -->
+            <p>Выберите формат готового изображения:</p>
+            <div class="ratio-selector">
+                <div class="ratio-btn active" id="ratio_9_16" onclick="setRatio('9:16')">📱 9:16</div>
+                <div class="ratio-btn" id="ratio_1_1" onclick="setRatio('1:1')">🔲 1:1</div>
+                <div class="ratio-btn" id="ratio_16_9" onclick="setRatio('16:9')">💻 16:9</div>
+            </div>
             <p>Теперь загрузите ваше фото (селфи), где хорошо видно лицо</p>
             
             <label class="upload-btn">
@@ -72,11 +104,27 @@
         tg.expand();
 
         let currentTemplateId = '';
+        let selectedRatio = '9:16'; // Формат по умолчанию
+
 
         function selectTemplate(templateId, styleName) {
             currentTemplateId = templateId;
             document.getElementById('selectedStyleName').innerText = templateId.toUpperCase();
             document.getElementById('uploadModal').style.display = 'block';
+        }
+
+        // Функция переключения активных кнопок формата
+        function setRatio(ratio) {
+            selectedRatio = ratio;
+            
+            // Сбрасываем класс active со всех кнопок форматов
+            document.getElementById('ratio_9_16').classList.remove('active');
+            document.getElementById('ratio_1_1').classList.remove('active');
+            document.getElementById('ratio_16_9').classList.remove('active');
+            
+            // Добавляем active только на ту, которую кликнули
+            const idMap = { '9:16': 'ratio_9_16', '1:1': 'ratio_1_1', '16:9': 'ratio_16_9' };
+            document.getElementById(idMap[ratio]).classList.add('active');
         }
 
         function closeModal() {

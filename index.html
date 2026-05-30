@@ -98,9 +98,13 @@
 
 
         function selectTemplate(templateId, styleName) {
-            currentTemplateId = templateId;
+          currentTemplateId = templateId;
             document.getElementById('selectedStyleName').innerText = templateId.toUpperCase();
             document.getElementById('uploadModal').style.display = 'block';
+            
+            // Сразу показываем главную кнопку Telegram при выборе шаблона
+            tg.MainButton.text = "Применить этот стиль ✨";
+            tg.MainButton.show();
         }
 
         // Функция переключения активных кнопок формата
@@ -119,92 +123,29 @@
 
         function closeModal() {
             document.getElementById('uploadModal').style.display = 'none';
-            document.getElementById('previewContainer').style.display = 'none';
             tg.MainButton.hide();
         }
 
-        function handlePhotoUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('photoPreview').src = e.target.result;
-                    document.getElementById('previewContainer').style.display = 'block';
-                    
-                    tg.MainButton.text = "Создать Face Swap ✨";
-                    tg.MainButton.show();
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
+        // Ловим нажатие на главную кнопку Telegram
         tg.onEvent('mainButtonClicked', function() {
-            const fileInput = document.getElementById('userPhoto');
-            const file = fileInput.files[0];
-
-            if (!file) {
-                tg.MainButton.text = "⚠️ ВЫБЕРИТЕ СЕЛФИ!";
-                setTimeout(() => { tg.MainButton.text = "Создать Face Swap ✨"; }, 2000);
-                return;
-            }
-
-            tg.MainButton.text = "⏳ Отправка на сервера ИИ...";
+            // Мгновенно меняем текст и гасим от двойных тапов
+            tg.MainButton.text = "⏳ Сохраняю настройки...";
             tg.MainButton.disable();
 
-            const reader = new FileReader();
-            reader.onloadend = function() {
-                const base64Data = reader.result;
-                const userId = tg.initDataUnsafe?.user?.id;
+            // Собираем легкий пакет данных (всего несколько байт!)
+            const dataToSend = {
+                template: currentTemplateId,
+                aspect_ratio: selectedRatio
+            };
 
-                if (!userId) {
-                    tg.MainButton.enable();
-                    tg.MainButton.text = "❌ Ошибка ID пользователя";
-                    return;
-                }
-
-                // Переводим Base64 в реальный двоичный файл (Blob), чтобы обойти лимит 4096 символов!
-                const byteString = atob(base64Data.split(',')[1]);
-                const mimeString = base64Data.split(',')[0].split(':')[1].split(';')[0];
-                const ab = new ArrayBuffer(byteString.length);
-                const ia = new Uint8Array(ab);
-                for (let i = 0; i < byteString.length; i++) {
-                    ia[i] = byteString.charCodeAt(i);
-                }
-                const blob = new Blob([ab], {type: mimeString});
-
-                // Твой токен бота из BotFather
-                const botToken = "8647669739:AAFC6EjWAu7HRsEOjh4jZexzcHGaJG6lPJ4"; 
-                
-                // Создаем форму отправки файла
-                const formData = new FormData();
-                formData.append("chat_id", userId);
-                formData.append("document", blob, "face_swap_data.json.jpg"); // Маскируем под картинку
-                
-                // В подпись файла (caption) прячем ID шаблона и формат — они короткие и пройдут лимит!
-                const metaData = {
-                    template: currentTemplateId,
-                    aspect_ratio: selectedRatio
-                };
-                formData.append("caption", `WEBAPP_META:${JSON.stringify(metaData)}`);
-
-                // Отправляем как ФАЙЛ (sendDocument) — это обходит любые лимиты Telegram!
-                fetch(`https://telegram.org{botToken}/sendDocument`, {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => {
-                    if (response.ok) {
-                        tg.close(); // Теперь шторка закроется мгновенно!
-                    } else {
-                        throw new Error("Ошибка API Telegram");
-                    }
-                })
-                .catch(error => {
-                    console.error(error);
-                    tg.MainButton.enable();
-                    tg.MainButton.text = "❌ Сбой сети. Повторить";
-                });
+            // Отправляем стандартным, безопасным методом Telegram — он не заблокирует легкую строку!
+            try {
+                tg.sendData(JSON.stringify(dataToSend)); 
+                tg.close(); // Шторка мгновенно и плавно закроется
+            } catch (e) {
+                console.error("Критическая ошибка отправки: ", e);
+                tg.MainButton.enable();
+                tg.MainButton.text = "❌ Ошибка. Повторить";
             }
-            reader.readAsDataURL(file);
         });
     </script>

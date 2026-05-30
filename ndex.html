@@ -1,0 +1,127 @@
+html<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Face Swap Templates</title>
+    <!-- Подключаем официальный скрипт Telegram Web App (Исправлено!) -->
+    <script src="https://telegram.org"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="header">
+        <h1>Выберите шаблон для Face Swap</h1>
+        <p>Кликните на стиль и загрузите свое фото</p>
+    </div>
+
+    <!-- Сетка шаблонов -->
+    <div class="templates-grid">
+        <div class="template-card" onclick="selectTemplate('girl_face', 'https://i.postimg.cc/Hk5VqFcd/111.jpg')">
+            <img src="https://i.postimg.cc/Hk5VqFcd/111.jpg" alt="Лицо_девушки">
+            <div class="card-title">👩 Лицо девушки</div>
+        </div>
+        
+        <div class="template-card" onclick="selectTemplate('Lying_down_phone', 'https://i.postimg.cc/y89kM2Jf/5244806263227488670.jpg')">
+            <img src="https://i.postimg.cc/y89kM2Jf/5244806263227488670.jpg" alt="Лежа_телефон">
+            <div class="card-title">📱 Лежа с телефоном</div>
+        </div>
+        
+        <div class="template-card" onclick="selectTemplate('catwoman', 'https://i.postimg.cc/Z53CGX9F/b-Lx-N-n-XBzkt-Aah-Ej-Tr-YFf.png')">
+            <img src="https://i.postimg.cc/Z53CGX9F/b-Lx-N-n-XBzkt-Aah-Ej-Tr-YFf.png" alt="Женщина_кошка">
+            <div class="card-title">🐈 Женщина кошка</div>
+        </div>
+        
+        <div class="template-card" onclick="selectTemplate('carousel_woman', 'https://i.postimg.cc/VkMdx2S4/Cp-Sd1Xzy-PAC5B2fc-Wv-Ma9.png')">
+            <img src="https://i.postimg.cc/VkMdx2S4/Cp-Sd1Xzy-PAC5B2fc-Wv-Ma9.png" alt="Женщина_карусель">
+            <div class="card-title">🎠 Женщина карусель</div>
+        </div>
+
+        <div class="template-card" onclick="selectTemplate('demon_woman', 'https://i.postimg.cc/4NjYFX3w/fe74d9cde0674701b4cd1ecd99bb0f65.png')">
+            <img src="https://i.postimg.cc/4NjYFX3w/fe74d9cde0674701b4cd1ecd99bb0f65.png" alt="Женщина_демон">
+            <div class="card-title">😈 Женщина демон</div>
+        </div>
+        
+        <div class="template-card" onclick="selectTemplate('woman_standing', 'https://i.postimg.cc/4xtmDjKW/o-Pg5nz-MH5-v-V9-vsn8VFP-60MA3MWp.png')">
+            <img src="https://i.postimg.cc/4xtmDjKW/o-Pg5nz-MH5-v-V9-vsn8VFP-60MA3MWp.png" alt="Женщина_стоит">
+            <div class="card-title">🧍 Женщина стоит</div>
+        </div>
+    </div> <!-- Закрывающий тег сетки (Исправлено!) -->
+
+    <!-- Модальное окно загрузки селфи -->
+    <div id="uploadModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2>Выбран стиль: <span id="selectedStyleName"></span></h2>
+            <p>Теперь загрузите ваше фото (селфи), где хорошо видно лицо</p>
+            
+            <label class="upload-btn">
+                Выбрать селфи
+                <input type="file" id="userPhoto" accept="image/*" onchange="handlePhotoUpload(event)" style="display:none;">
+            </label>
+            
+            <div id="previewContainer" style="display:none; margin-top:15px;">
+                <p>Предпросмотр вашего фото:</p>
+                <img id="photoPreview" src="" alt="Ваше фото" style="max-width:100%; max-height:200px; border-radius:10px;">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        let currentTemplateId = '';
+
+        function selectTemplate(templateId, styleName) {
+            currentTemplateId = templateId;
+            document.getElementById('selectedStyleName').innerText = templateId.toUpperCase();
+            document.getElementById('uploadModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('uploadModal').style.display = 'none';
+            document.getElementById('previewContainer').style.display = 'none';
+            tg.MainButton.hide();
+        }
+
+        function handlePhotoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('photoPreview').src = e.target.result;
+                    document.getElementById('previewContainer').style.display = 'block';
+                    
+                    tg.MainButton.text = "Создать Face Swap ✨";
+                    tg.MainButton.show();
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        tg.onEvent('mainButtonClicked', function() {
+            const fileInput = document.getElementById('userPhoto');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert('Пожалуйста, выберите фото!');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                const base64Data = reader.result;
+                
+                const dataToSend = {
+                    template: currentTemplateId,
+                    photo: base64Data
+                };
+
+                tg.sendData(JSON.stringify(dataToSend)); 
+                tg.close();
+            }
+            reader.readAsDataURL(file);
+        });
+    </script>
+</body>

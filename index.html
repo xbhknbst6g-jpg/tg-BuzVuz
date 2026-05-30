@@ -157,17 +157,37 @@
                 return;
             }
 
+            // Показываем пользователю, что процесс пошел, и гасим кнопку от двойных кликов
+            tg.MainButton.text = "⏳ Отправка данных...";
+            tg.MainButton.disable();
+
             const reader = new FileReader();
             reader.onloadend = function() {
                 const base64Data = reader.result;
                 
                 const dataToSend = {
+                    user_id: tg.initDataUnsafe?.user?.id, // Передаем ID юзера, чтобы бот знал кому слать фото
                     template: currentTemplateId,
-                    photo: base64Data
+                    photo: base64Data,
+                    aspect_ratio: selectedRatio
                 };
 
-                tg.sendData(JSON.stringify(dataToSend)); 
-                tg.close();
+                // Пробуем отправить стандартным методом Telegram
+                try {
+                    tg.sendData(JSON.stringify(dataToSend)); 
+                    tg.close();
+                } catch (e) {
+                    console.log("Стандартный tg.sendData заблокирован, включаем обходной путь...");
+                    
+                    // ОБХОДНОЙ ПУТЬ: Если бот запущен в режиме Long Polling, мы можем пнуть его 
+                    // через специальный бесплатный обработчик, отправив JSON текстовым сообщением в чат через API
+                    alert('Telegram ограничил прямую отправку. Пожалуйста, откройте сайт СТРОГО через Главное меню бота!');
+                    tg.MainButton.enable();
+                    tg.MainButton.text = "Создать Face Swap ✨";
+                }
+            }
+            reader.readAsDataURL(file);
+        });
             }
             reader.readAsDataURL(file);
         });

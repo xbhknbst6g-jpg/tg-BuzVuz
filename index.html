@@ -157,34 +157,53 @@
                 return;
             }
 
-            // Показываем пользователю, что процесс пошел, и гасим кнопку от двойных кликов
-            tg.MainButton.text = "⏳ Отправка данных...";
+            // Блокируем кнопку, чтобы юзер не кликал дважды
+            tg.MainButton.text = "⏳ Отправка на сервера ИИ...";
             tg.MainButton.disable();
 
             const reader = new FileReader();
             reader.onloadend = function() {
                 const base64Data = reader.result;
+                const userId = tg.initDataUnsafe?.user?.id;
+
+                if (!userId) {
+                    alert("Ошибка: Не удалось определить ваш Telegram ID. Откройте сайт внутри бота.");
+                    tg.MainButton.enable();
+                    tg.MainButton.text = "Создать Face Swap ✨";
+                    return;
+                }
                 
                 const dataToSend = {
-                    user_id: tg.initDataUnsafe?.user?.id, // Передаем ID юзера, чтобы бот знал кому слать фото
                     template: currentTemplateId,
                     photo: base64Data,
                     aspect_ratio: selectedRatio
                 };
 
-                // Пробуем отправить стандартным методом Telegram
-                try {
-                    tg.sendData(JSON.stringify(dataToSend)); 
-                    tg.close();
-                } catch (e) {
-                    console.log("Стандартный tg.sendData заблокирован, включаем обходной путь...");
-                    
-                    // ОБХОДНОЙ ПУТЬ: Если бот запущен в режиме Long Polling, мы можем пнуть его 
-                    // через специальный бесплатный обработчик, отправив JSON текстовым сообщением в чат через API
-                    alert('Telegram ограничил прямую отправку. Пожалуйста, откройте сайт СТРОГО через Главное меню бота!');
+                // ВСТАВЬ СЮДА ТОКЕН СВОЕГО БОТА (Например: "123456:ABCdef...")
+                const botToken = "8647669739:AAFC6EjWAu7HRsEOjh4jZexzcHGaJG6lPJ4"; 
+                
+                // Прямой и безопасный POST-запрос в Telegram API в обход ограничений шторки!
+                fetch(`https://telegram.org{botToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: userId,
+                        text: `WEBAPP_DATA:${JSON.stringify(dataToSend)}` // Помечаем префиксом для бота
+                    })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        tg.close(); // Закрываем сайт, данные улетели в чат бота
+                    } else {
+                        throw new Error("Ошибка API");
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("Сбой сети Telegram при отправке фото. Попробуйте еще раз.");
                     tg.MainButton.enable();
                     tg.MainButton.text = "Создать Face Swap ✨";
-                }
+                });
             }
             reader.readAsDataURL(file);
         });

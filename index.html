@@ -4,73 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Face Swap Templates</title>
-    <!-- ИСПРАВЛЕНО: Скрипт теперь рабочий! -->
-    <script src="https://telegram.org"></script>
+    <!-- Подключаем официальный скрипт Telegram Web App (Исправлено!) -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
     <div class="header">
         <h1>Выберите шаблон для Face Swap</h1>
-        <p>Кликните на стиль, чтобы настроить генерацию</p>
+        <p>Кликните на стиль и загрузите свое фото</p>
     </div>
 
     <!-- Сетка шаблонов -->
     <div class="templates-grid">
-        <!-- ИСПРАВЛЕНО: Прямые ссылки на изображения возвращены на место! -->
-        <div class="template-card" onclick="selectTemplate('girl_face', 'Лицо девушки')">
-            <img src="https://postimg.cc" alt="Лицо_девушки">
+        <div class="template-card" onclick="selectTemplate('girl_face', 'https://i.postimg.cc/Hk5VqFcd/111.jpg')">
+            <img src="https://i.postimg.cc/Hk5VqFcd/111.jpg" alt="Лицо_девушки">
             <div class="card-title">👩 Лицо девушки</div>
         </div>
         
-        <div class="template-card" onclick="selectTemplate('Lying_down_phone', 'Лежа с телефоном')">
-            <img src="https://postimg.cc" alt="Лежа_телефон">
+        <div class="template-card" onclick="selectTemplate('Lying_down_phone', 'https://i.postimg.cc/y89kM2Jf/5244806263227488670.jpg')">
+            <img src="https://i.postimg.cc/y89kM2Jf/5244806263227488670.jpg" alt="Лежа_телефон">
             <div class="card-title">📱 Лежа с телефоном</div>
         </div>
         
-        <div class="template-card" onclick="selectTemplate('catwoman', 'Женщина кошка')">
-            <img src="https://postimg.cc" alt="Женщина_кошка">
+        <div class="template-card" onclick="selectTemplate('catwoman', 'https://i.postimg.cc/Z53CGX9F/b-Lx-N-n-XBzkt-Aah-Ej-Tr-YFf.png')">
+            <img src="https://i.postimg.cc/Z53CGX9F/b-Lx-N-n-XBzkt-Aah-Ej-Tr-YFf.png" alt="Женщина_кошка">
             <div class="card-title">🐈 Женщина кошка</div>
         </div>
         
-        <div class="template-card" onclick="selectTemplate('carousel_woman', 'Женщина карусель')">
-            <img src="https://postimg.cc" alt="Женщина_карусель">
+        <div class="template-card" onclick="selectTemplate('carousel_woman', 'https://i.postimg.cc/VkMdx2S4/Cp-Sd1Xzy-PAC5B2fc-Wv-Ma9.png')">
+            <img src="https://i.postimg.cc/VkMdx2S4/Cp-Sd1Xzy-PAC5B2fc-Wv-Ma9.png" alt="Женщина_карусель">
             <div class="card-title">🎠 Женщина карусель</div>
         </div>
-        
-        <div class="template-card" onclick="selectTemplate('demon_woman', 'Женщина демон')">
-            <img src="https://postimg.cc" alt="Женщина_демон">
+
+        <div class="template-card" onclick="selectTemplate('demon_woman', 'https://i.postimg.cc/4NjYFX3w/fe74d9cde0674701b4cd1ecd99bb0f65.png')">
+            <img src="https://i.postimg.cc/4NjYFX3w/fe74d9cde0674701b4cd1ecd99bb0f65.png" alt="Женщина_демон">
             <div class="card-title">😈 Женщина демон</div>
         </div>
         
-        <div class="template-card" onclick="selectTemplate('woman_standing', 'Женщина стоит')">
-            <img src="https://postimg.cc" alt="Женщина_стоит">
+        <div class="template-card" onclick="selectTemplate('woman_standing', 'https://i.postimg.cc/4xtmDjKW/o-Pg5nz-MH5-v-V9-vsn8VFP-60MA3MWp.png')">
+            <img src="https://i.postimg.cc/4xtmDjKW/o-Pg5nz-MH5-v-V9-vsn8VFP-60MA3MWp.png" alt="Женщина_стоит">
             <div class="card-title">🧍 Женщина стоит</div>
         </div>
-    </div>
+    </div> <!-- Закрывающий тег сетки (Исправлено!) -->
 
-    <!-- Модальное окно (открывается при клике на фото) -->
+    <!-- Модальное окно загрузки селфи -->
     <div id="uploadModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h2 id="selectedStyleName">Настройка стиля</h2>
+            <h2>Выбран стиль: <span id="selectedStyleName"></span></h2>
+            <p>Теперь загрузите ваше фото (селфи), где хорошо видно лицо</p>
             
-            <!-- Поле для промпта -->
-            <div class="input-group">
-                <label for="userPrompt">Ваш текстовый запрос (промпт):</label>
-                <textarea id="userPrompt" placeholder="Например: сделать волосы рыжими, добавить неоновое свечение..."></textarea>
-            </div>
-
-            <!-- Квадратная зона для загрузки фото -->
-            <p>Нажмите на квадрат ниже, чтобы загрузить свое селфи:</p>
-            <label class="drop-zone" id="dropZone">
+            <label class="upload-btn">
+                Выбрать селфи
                 <input type="file" id="userPhoto" accept="image/*" onchange="handlePhotoUpload(event)" style="display:none;">
-                <div id="dropZoneText">
-                    <span style="font-size: 40px;">📸</span><br>
-                    Выбрать фото лица
-                </div>
-                <img id="photoPreview" src="" alt="Ваше фото" style="display:none;">
             </label>
+            
+            <div id="previewContainer" style="display:none; margin-top:15px;">
+                <p>Предпросмотр вашего фото:</p>
+                <img id="photoPreview" src="" alt="Ваше фото" style="max-width:100%; max-height:200px; border-radius:10px;">
+            </div>
         </div>
     </div>
 
@@ -80,17 +73,15 @@
 
         let currentTemplateId = '';
 
-        function selectTemplate(templateId, displayName) {
+        function selectTemplate(templateId, styleName) {
             currentTemplateId = templateId;
-            document.getElementById('selectedStyleName').innerText = "Стиль: " + displayName;
+            document.getElementById('selectedStyleName').innerText = templateId.toUpperCase();
             document.getElementById('uploadModal').style.display = 'block';
         }
 
         function closeModal() {
             document.getElementById('uploadModal').style.display = 'none';
-            document.getElementById('photoPreview').style.display = 'none';
-            document.getElementById('dropZoneText').style.display = 'block';
-            document.getElementById('userPrompt').value = '';
+            document.getElementById('previewContainer').style.display = 'none';
             tg.MainButton.hide();
         }
 
@@ -99,10 +90,8 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    const preview = document.getElementById('photoPreview');
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                    document.getElementById('dropZoneText').style.display = 'none';
+                    document.getElementById('photoPreview').src = e.target.result;
+                    document.getElementById('previewContainer').style.display = 'block';
                     
                     tg.MainButton.text = "Создать Face Swap ✨";
                     tg.MainButton.show();
@@ -114,10 +103,9 @@
         tg.onEvent('mainButtonClicked', function() {
             const fileInput = document.getElementById('userPhoto');
             const file = fileInput.files[0];
-            const promptText = document.getElementById('userPrompt').value;
 
             if (!file) {
-                alert('Пожалуйста, загрузите ваше фото!');
+                alert('Пожалуйста, выберите фото!');
                 return;
             }
 
@@ -127,7 +115,6 @@
                 
                 const dataToSend = {
                     template: currentTemplateId,
-                    prompt: promptText,
                     photo: base64Data
                 };
 
@@ -138,4 +125,3 @@
         });
     </script>
 </body>
-</html>

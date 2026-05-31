@@ -43,6 +43,29 @@
         
         /* Кнопка назад в меню */
         .back-btn { display: inline-block; padding: 8px 14px; background: #e1e6eb; border-radius: 6px; font-size: 13px; font-weight: bold; cursor: pointer; margin-bottom: 15px; border: none; }
+        /* Стили для переключателя качества */
+        .quality-selector {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .quality-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e1e6eb;
+            border-radius: 8px;
+            background: #fff;
+            cursor: pointer;
+            font-weight: bold;
+            text-align: center;
+            font-size: 13px;
+            transition: all 0.15s ease;
+        }
+        .quality-btn.active {
+            border-color: #f39c12; /* Золотой/Оранжевый цвет для Pro */
+            background: #fff9e6;
+            color: #d35400;
+        }
     </style>
 </head>
 <body>
@@ -70,7 +93,7 @@
                 <div class="menu-icon">🎭</div>
                 <div class="menu-info">
                     <div class="menu-title">2. Face Swap</div>
-                    <div class="menu-desc">Замена лиц (выберете интересующий вас шаблон)</div>
+                    <div class="menu-desc">Замена лиц (выберите интересующий вас шаблон)</div>
                 </div>
             </div>
             <!-- Режим 3 -->
@@ -78,7 +101,7 @@
                 <div class="menu-icon">👕</div>
                 <div class="menu-info">
                     <div class="menu-title">3. Примерка одежды</div>
-                    <div class="menu-desc">Примерка любых вещей по вашей фигуре (Пришлите ваше фото (селфи, </div>
+                    <div class="menu-desc">Примерка любых вещей по вашей фигуре До / После</div>
                 </div>
             </div>
             <!-- Режим 4 -->
@@ -91,88 +114,349 @@
             </div>
         </div>
     </div>
-
+<!-- ========================================== -->
+    <!-- ЭКРАН 2:РЕЖИМ 1: ФОТО + ТЕКСТ (ЭКРАН С ПРИМЕРАМИ)  -->
     <!-- ========================================== -->
-    <!-- ЭКРАН 2: РЕЖИМ 2 (FACE SWAP ШАБЛОНЫ)       -->
+    <div id="screen_text_image" class="screen">
+        <button class="back-btn" onclick="openScreen('main_menu')">⬅️ В меню</button>
+        
+        <div class="instruction-box" style="background:#fff3cd; border:1px solid #ffeeba; border-radius:8px; padding:12px; font-size:13px; line-height:1.4; color:#856404; margin-bottom:15px;">
+            <b>📝 Как работает генерация Фото + Текст (Шаг 1/2):</b><br>
+            1. Выберите желаемый формат кадра кнопками ниже.<br>
+            2. Подтвердите настройки главной кнопкой Telegram.<br>
+            3. Бот попросит скинуть <b>ваше фото лица</b>, а затем <b>написать текст</b> сюжета!
+        </div>
+
+        <div class="header" style="margin-bottom: 10px; text-align: center;">
+            <h1>Настройка генерации Фото + Текст</h1>
+            <p style="font-size:14px; color:#666;">Выберите формат финального кадра:</p>
+        </div>
+
+        <!-- Кнопки выбора формата для Фото + Текст -->
+        <div class="ratio-selector" style="display:flex; flex-wrap:wrap; gap:8px; margin:15px 0; justify-content:space-between;">
+            <div class="ratio-btn active" id="text_ratio_9_16" onclick="setTextRatio('9:16')">📱 9:16</div>
+            <div class="ratio-btn" id="text_ratio_3_4" onclick="setTextRatio('3:4')">📸 3:4</div>
+            <div class="ratio-btn" id="text_ratio_1_1" onclick="setTextRatio('1:1')">🔲 1:1</div>
+            <div class="ratio-btn" id="text_ratio_4_3" onclick="setTextRatio('4:3')">🖼 4:3</div>
+            <div class="ratio-btn" id="text_ratio_16_9" onclick="setTextRatio('16:9')">💻 16:9</div>
+        </div>
+            <p style="margin-top: 15px; margin-bottom: 5px; font-weight: bold; text-align: center;">Выходное качество:</p>
+            <div class="quality-selector" style="display: flex; gap: 6px; margin: 15px 0;">
+                <!-- Меняй префиксы id для каждого экрана: swap_qual_, text_qual_, tryon_qual_ -->
+                <div class="quality-btn active" id="swap_qual_schnell" onclick="setQuality('schnell')" style="font-size: 11px; padding: 10px 4px;">⚡ Standard (1 Мп)</div>
+                <div class="quality-btn" id="swap_qual_dev" onclick="setQuality('dev')" style="font-size: 11px; padding: 10px 4px;">💎 Pro / 2K (2 Мп)</div>
+                <div class="quality-btn" id="swap_qual_ultra" onclick="setQuality('ultra_4k')" style="font-size: 11px; padding: 10px 4px;">🔥 Ultra 4K (4 Мп)</div>
+            </div>
+
+        <div class="header" style="margin-top: 20px; margin-bottom: 5px; text-align: center;">
+            <h2>🔥 Примеры работы Фото + Текст:</h2>
+            <p style="font-size:14px; color:#666;">Как нейросеть изменяет фото по вашему описанию До / После</p>
+        </div>
+
+        <!-- БЛОК 5 КАРТОЧЕК ПРИМЕРОВ (ВСТАВЬ СВОИ ССЫЛКИ ВМЕСТО ЗАГЛУШЕК) -->
+        <div class="tryon-grid" style="display:grid; grid-template-columns:1fr; gap:15px; margin-top:15px;">
+            
+            <!-- Пример 1 -->
+            <div class="tryon-card" style="background:#fff; border-radius:12px; border:1px solid #ddd; padding:12px;">
+                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center;">⚔️ Превращение в брутального Викинга</div>
+                <div class="tryon-images" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                    <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div></div>
+                    <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div></div>
+                </div>
+            </div>
+
+            <!-- Пример 2 -->
+            <div class="tryon-card" style="background:#fff; border-radius:12px; border:1px solid #ddd; padding:12px;">
+                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center;">🏙 Персонаж мира Киберпанк</div>
+                <div class="tryon-images" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                    <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div></div>
+                    <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div></div>
+                </div>
+            </div>
+
+            <!-- Пример 3 -->
+            <div class="tryon-card" style="background:#fff; border-radius:12px; border:1px solid #ddd; padding:12px;">
+                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center;">🎨 Портрет в стиле Масляной живописи</div>
+                <div class="tryon-images" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                    <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div></div>
+                    <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div></div>
+                </div>
+            </div>
+
+            <!-- Пример 4 -->
+            <div class="tryon-card" style="background:#fff; border-radius:12px; border:1px solid #ddd; padding:12px;">
+                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center;">🚀 Космический Астронавт</div>
+                <div class="tryon-images" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                    <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div></div>
+                    <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div></div>
+                </div>
+            </div>
+
+            <!-- Пример 5 -->
+            <div class="tryon-card" style="background:#fff; border-radius:12px; border:1px solid #ddd; padding:12px;">
+                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center;">💼 Успешный бизнес-портрет в студии</div>
+                <div class="tryon-images" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                    <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div></div>
+                    <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div></div>
+                </div>
+            </div>
+
+        </div> <!-- ЗАКРЫВАЕМ СЕТКУ TRYON-GRID -->
+    </div> <!-- ЗАКРЫВАЕМ ЭКРАН SCREEN_TEXT_IMAGE -->
+<!-- ========================================== -->
+    <!-- РЕЖИМ 2: ГИБРИДНЫЙ FACE SWAP (ЭКРАН)       -->
     <!-- ========================================== -->
     <div id="screen_face_swap" class="screen">
         <button class="back-btn" onclick="openScreen('main_menu')">⬅️ В меню</button>
-        <div class="header" style="margin-bottom: 10px;">
-            <h1>Выберите шаблон Face Swap</h1>
-            <p>Кликните по карточке для настройки формата</p>
-        </div>
         
-        <!-- Сетка шаблонов -->
-    <div class="templates-grid">
-        <div class="template-card" onclick="selectTemplate('girl_face', 'https://i.postimg.cc/Hk5VqFcd/111.jpg')">
-            <img src="https://i.postimg.cc/Hk5VqFcd/111.jpg" alt="Лицо_девушки">
-            <div class="card-title">👩 Лицо девушки</div>
-        </div>
-        
-        <div class="template-card" onclick="selectTemplate('Lying_down_phone', 'https://i.postimg.cc/y89kM2Jf/5244806263227488670.jpg')">
-            <img src="https://i.postimg.cc/y89kM2Jf/5244806263227488670.jpg" alt="Лежа_телефон">
-            <div class="card-title">📱 Лежа с телефоном</div>
-        </div>
-        
-        <div class="template-card" onclick="selectTemplate('catwoman', 'https://i.postimg.cc/Z53CGX9F/b-Lx-N-n-XBzkt-Aah-Ej-Tr-YFf.png')">
-            <img src="https://i.postimg.cc/Z53CGX9F/b-Lx-N-n-XBzkt-Aah-Ej-Tr-YFf.png" alt="Женщина_кошка">
-            <div class="card-title">🐈 Женщина кошка</div>
-        </div>
-        
-        <div class="template-card" onclick="selectTemplate('carousel_woman', 'https://i.postimg.cc/VkMdx2S4/Cp-Sd1Xzy-PAC5B2fc-Wv-Ma9.png')">
-            <img src="https://i.postimg.cc/VkMdx2S4/Cp-Sd1Xzy-PAC5B2fc-Wv-Ma9.png" alt="Женщина_карусель">
-            <div class="card-title">🎠 Женщина карусель</div>
+        <div class="instruction-box" style="background:#fff3cd; border:1px solid #ffeeba; border-radius:8px; padding:12px; font-size:13px; line-height:1.4; color:#856404; margin-bottom:15px;">
+            <b>🎭 Как запустить Face Swap (Два варианта):</b><br>
+            • <b>Способ 1:</b> Выберите формат кадра кнопками ниже и нажмите синюю кнопку Telegram, чтобы <b>загрузить свой личный шаблон</b> в чате бота.<br>
+            • <b>Способ 2:</b> Просто <b>кликните на любой готовый стиль</b> ниже, шторка закроется, и бот применит этот шаблон к вашему лицу!
         </div>
 
-        <div class="template-card" onclick="selectTemplate('demon_woman', 'https://i.postimg.cc/4NjYFX3w/fe74d9cde0674701b4cd1ecd99bb0f65.png')">
-            <img src="https://i.postimg.cc/4NjYFX3w/fe74d9cde0674701b4cd1ecd99bb0f65.png" alt="Женщина_демон">
-            <div class="card-title">😈 Женщина демон</div>
+        <div class="header" style="margin-bottom: 10px; text-align: center;">
+            <h1>Настройка Face Swap</h1>
+            <p style="font-size:14px; color:#666;">Выберите формат для загрузки своего шаблона:</p>
+        </div>
+
+        <!-- Кнопки выбора формата для Кастомного Face Swap (твои точные размеры) -->
+        <div class="ratio-selector" style="display:flex; flex-wrap:wrap; gap:8px; margin:15px 0; justify-content:space-between;">
+            <div class="ratio-btn active" id="swap_ratio_9_16" onclick="setSwapRatio('9:16')">📱 9:16</div>
+            <div class="ratio-btn" id="swap_ratio_3_4" onclick="setSwapRatio('3:4')">📸 3:4</div>
+            <div class="ratio-btn" id="swap_ratio_1_1" onclick="setSwapRatio('1:1')">🔲 1:1</div>
+            <div class="ratio-btn" id="swap_ratio_4_3" onclick="setSwapRatio('4:3')">🖼 4:3</div>
+            <div class="ratio-btn" id="swap_ratio_16_9" onclick="setSwapRatio('16:9')">💻 16:9</div>
+        </div>
+        <p style="margin-top: 15px; margin-bottom: 5px; font-weight: bold; text-align: center;">Выходное качество:</p>
+        <div class="quality-selector" style="display: flex; gap: 6px; margin: 15px 0;">
+            <div class="quality-btn active" id="swap_qual_schnell" onclick="setQuality('schnell')">⚡ Standard (1 Мп)</div>
+            <div class="quality-btn" id="swap_qual_dev" onclick="setQuality('dev')">💎 Pro / 2K (2 Мп)</div>
+            <div class="quality-btn" id="swap_qual_ultra" onclick="setQuality('ultra_4k')">🔥 Ultra 4K (4 Мп)</div>
+        </div>
+
+        <div class="header" style="margin-top: 25px; margin-bottom: 10px; text-align: center;">
+            <h2>🔥 Или выберите готовый стиль:</h2>
+            <p style="font-size:14px; color:#666;">Кликните по карточке, чтобы примерить это лицо на себя</p>
         </div>
         
-        <div class="template-card" onclick="selectTemplate('woman_standing', 'https://i.postimg.cc/4xtmDjKW/o-Pg5nz-MH5-v-V9-vsn8VFP-60MA3MWp.png')">
-            <img src="https://i.postimg.cc/4xtmDjKW/o-Pg5nz-MH5-v-V9-vsn8VFP-60MA3MWp.png" alt="Женщина_стоит">
-            <div class="card-title">🧍 Женщина стоит</div>
-        </div>
-    </div>
-
-    <!-- ВСПЛЫВАЮЩЕЕ ОКНО ФОРМАТОВ ДЛЯ FACE SWAP -->
-    <div id="uploadModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h2>Настройка формата</h2>
-            <p>Выберите пропорции кадра для генерации:</p>
-            
-            <div class="ratio-selector">
-                <div class="ratio-btn active" id="ratio_9_16" onclick="setRatio('9:16')">📱 9:16</div>
-                <div class="ratio-btn" id="ratio_3_4" onclick="setRatio('3:4')">📸 3:4</div>
-                <div class="ratio-btn" id="ratio_1:1" onclick="setRatio('1:1')">🔲 1:1</div>
-                <div class="ratio-btn" id="ratio_4_3" onclick="setRatio('4:3')">🖼 4:3</div>
-                <div class="ratio-btn" id="ratio_16_9" onclick="setRatio('16:9')">💻 16:9</div>
+        <!-- СЕТКА ИЗ ГОТОВЫХ СТИЛЕЙ С ОДИНОЧНЫМИ КАРТИНКАМИ (ВАРИАНТ А) -->
+        <div class="templates-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px;">
+            <div class="template-card" onclick="selectReadyTemplate('girl_face', '3:4')" style="background: #fff; border-radius: 10px; border: 1px solid #ddd; overflow: hidden; text-align: center; cursor: pointer;">
+                <img src="https://postimg.cc" style="width: 100%; height: 180px; object-fit: cover; display: block;">
+                <div class="card-title" style="padding: 10px; font-size: 13px; font-weight: bold; color: #0088cc;">👩 Лицо девушки (3:4)</div>
             </div>
-            <p style="color: #666; font-size: 13px; line-height: 1.4;">✨ После нажатия главной кнопки Telegram шторка закроется, и бот попросит скинуть ваше фото лица в чат.</p>
+            <div class="template-card" onclick="selectReadyTemplate('Lying_down_phone', '16:9')" style="background: #fff; border-radius: 10px; border: 1px solid #ddd; overflow: hidden; text-align: center; cursor: pointer;">
+                <img src="https://postimg.cc" style="width: 100%; height: 180px; object-fit: cover; display: block;">
+                <div class="card-title" style="padding: 10px; font-size: 13px; font-weight: bold; color: #0088cc;">📱 Лежа с телефоном (16:9)</div>
+            </div>
+            <div class="template-card" onclick="selectReadyTemplate('catwoman', '9:16')" style="background: #fff; border-radius: 10px; border: 1px solid #ddd; overflow: hidden; text-align: center; cursor: pointer;">
+                <img src="https://postimg.cc" style="width: 100%; height: 180px; object-fit: cover; display: block;">
+                <div class="card-title" style="padding: 10px; font-size: 13px; font-weight: bold; color: #0088cc;">🐈 Женщина кошка (9:16)</div>
+            </div>
+            <div class="template-card" onclick="selectReadyTemplate('carousel_woman', '9:16')" style="background: #fff; border-radius: 10px; border: 1px solid #ddd; overflow: hidden; text-align: center; cursor: pointer;">
+                <img src="https://postimg.cc" style="width: 100%; height: 180px; object-fit: cover; display: block;">
+                <div class="card-title" style="padding: 10px; font-size: 13px; font-weight: bold; color: #0088cc;">🎠 Женщина карусель (9:16)</div>
+            </div>
+            <div class="template-card" onclick="selectReadyTemplate('demon_woman', '1:1')" style="background: #fff; border-radius: 10px; border: 1px solid #ddd; overflow: hidden; text-align: center; cursor: pointer;">
+                <img src="https://postimg.cc" style="width: 100%; height: 180px; object-fit: cover; display: block;">
+                <div class="card-title" style="padding: 10px; font-size: 13px; font-weight: bold; color: #0088cc;">😈 Женщина демон (1:1)</div>
+            </div>
+            <div class="template-card" onclick="selectReadyTemplate('woman_standing', '9:16')" style="background: #fff; border-radius: 10px; border: 1px solid #ddd; overflow: hidden; text-align: center; cursor: pointer;">
+                <img src="https://postimg.cc" style="width: 100%; height: 180px; object-fit: cover; display: block;">
+                <div class="card-title" style="padding: 10px; font-size: 13px; font-weight: bold; color: #0088cc;">🧍 Женщина стоит (9:16)</div>
+            </div>
         </div>
-    </div>
+    </div> <!-- ЗАКРЫВАЕМ ЭКРАН SCREEN_FACE_SWAP -->
 
     <!-- ========================================== -->
-    <!-- СВЯЗУЮЩИЙ JAVASCRIPT                       -->
+    <!-- ЭКРАН 4:РЕЖИМ 3 (Примерка одежды ШАБЛОНЫ)       -->
+    <!-- ========================================== -->
+    <div id="screen_tryon" class="screen">
+        <button class="back-btn" onclick="openScreen('main_menu')">⬅️ В меню</button>
+        
+        <div class="instruction-box" style="background:#fff3cd; border:1px solid #ffeeba; border-radius:8px; padding:12px; font-size:13px; line-height:1.4; color:#856404; margin-bottom:15px;">
+            <b>📝 Как работает примерка (Шаг 1/2):</b><br>
+            1. Выберите желаемый формат кадра кнопками ниже.<br>
+            2. Подтвердите настройки главной кнопкой Telegram.<br>
+            3. Бот попросит скинуть <b>ваше фото</b>, а затем <b>фото вещи</b> для примерки!
+        </div>
+
+        <div class="header" style="margin-bottom: 10px; text-align: center;">
+            <h1>Настройка примерки одежды</h1>
+            <p style="font-size:14px; color:#666;">Выберите формат финального кадра:</p>
+        </div>
+
+        <!-- Кнопки выбора формата для примерки одежды -->
+        <div class="ratio-selector" style="display:flex; flex-wrap:wrap; gap:8px; margin:15px 0; justify-content:space-between;">
+            <div class="ratio-btn active" id="tryon_ratio_9_16" onclick="setTryOnRatio('9:16')">📱 9:16</div>
+            <div class="ratio-btn" id="tryon_ratio_3_4" onclick="setTryOnRatio('3:4')">📸 3:4</div>
+            <div class="ratio-btn" id="tryon_ratio_1_1" onclick="setTryOnRatio('1:1')">🔲 1:1</div>
+            <div class="ratio-btn" id="tryon_ratio_4_3" onclick="setTryOnRatio('4:3')">🖼 4:3</div>
+            <div class="ratio-btn" id="tryon_ratio_16_9" onclick="setTryOnRatio('16:9')">💻 16:9</div>
+        </div>
+        <p style="margin-top: 15px; margin-bottom: 5px; font-weight: bold; text-align: center;">Выходное качество:</p>
+        <div class="quality-selector" style="display: flex; gap: 6px; margin: 15px 0;">
+            <div class="quality-btn active" id="tryon_qual_schnell" onclick="setQuality('schnell')" style="font-size: 11px; padding: 10px 4px;">⚡ Standard (1 Мп)</div>
+            <div class="quality-btn" id="tryon_qual_dev" onclick="setQuality('dev')" style="font-size: 11px; padding: 10px 4px;">💎 Pro / 2K (2 Мп)</div>
+            <div class="quality-btn" id="tryon_qual_ultra" onclick="setQuality('ultra_4k')" style="font-size: 11px; padding: 10px 4px;">🔥 Ultra 4K (4 Мп)</div>
+        </div>
+
+        <div class="header" style="margin-top: 20px; margin-bottom: 5px; text-align: center;">
+            <h2>🔥 Примеры работы Try-On:</h2>
+            <p style="font-size:14px; color:#666;">Результаты примерки нашей нейросети До / После</p>
+        </div>
+
+        <!-- ОТКРЫВАЕМ СЕТКУ ОДИН РАЗ ДЛЯ ВСЕХ КАРТОЧЕК -->
+        <div class="tryon-grid" style="display:grid; grid-template-columns:1fr; gap:15px; margin-top:15px;">
+            
+            <!-- Карточка 1 -->
+            <div class="tryon-card" style="background:#fff; border-radius:12px; border:1px solid #ddd; padding:12px;">
+                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center;">✨ Кожаный бомбер</div>
+                <div class="tryon-images" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                    <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div></div>
+                    <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div></div>
+                </div>
+            </div>
+
+            <!-- Карточка 2 -->
+            <div class="tryon-card" style="background:#fff; border-radius:12px; border:1px solid #ddd; padding:12px;">
+                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center;">✨ Зимнее худи</div>
+                <div class="tryon-images" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                    <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div></div>
+                    <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div></div>
+                </div>
+            </div>
+
+            <!-- Карточка 3 -->
+            <div class="tryon-card" style="background:#fff; border-radius:12px; border:1px solid #ddd; padding:12px;">
+                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center;">✨ Классический пиджак</div>
+                <div class="tryon-images" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                    <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div></div>
+                    <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div></div>
+                </div>
+            </div>
+
+            <!-- Карточка 4 -->
+            <div class="tryon-card" style="background:#fff; border-radius:12px; border:1px solid #ddd; padding:12px;">
+                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center;">✨ Летнее платье</div>
+                <div class="tryon-images" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                    <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div></div>
+                    <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div></div>
+                </div>
+            </div>
+
+            <!-- Карточка 5 -->
+            <div class="tryon-card" style="background:#fff; border-radius:12px; border:1px solid #ddd; padding:12px;">
+                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center;">✨ Джинсовая куртка</div>
+                <div class="tryon-images" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                    <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div></div>
+                    <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div></div>
+                </div>
+            </div>
+
+        </div> <!-- ЗАКРЫВАЕМ СЕТКУ TRYON-GRID ДЛЯ ВСЕХ КАРТОЧЕК -->
+    </div> <!-- ЗАКРЫВАЕМ САН ЭКРАН SCREEN_TRYON -->
+    <!-- ========================================== -->
+    <!-- ЭКРАН 5: РЕЖИМ 4 (СМЕНА ФОНА BG_CHANGE)    -->
+    <!-- ========================================== -->
+    <div id="screen_bg_change" class="screen">
+        <button class="back-btn" onclick="openScreen('main_menu')">⬅️ В меню</button>
+        
+        <div class="instruction-box" style="background:#fff3cd; border:1px solid #ffeeba; border-radius:8px; padding:12px; font-size:13px; line-height:1.4; color:#856404; margin-bottom:15px;">
+            <b>🖼 Как работает Смена фона (Шаг 1/2):</b><br>
+            1. Выберите желаемый формат кадра кнопками ниже.<br>
+            2. Подтвердите настройки главной кнопкой Telegram.<br>
+            3. Бот попросит скинуть <b>ваше фото</b>, а затем <b>написать текстом новый фон</b>!
+        </div>
+
+        <div class="header" style="margin-bottom: 10px; text-align: center;">
+            <h1>Настройка смены фона</h1>
+            <p style="font-size:14px; color:#666;">Выберите формат финального кадра:</p>
+        </div>
+
+        <!-- Кнопки выбора формата для смены фона -->
+        <div class="ratio-selector" style="display:flex; flex-wrap:wrap; gap:8px; margin:15px 0; justify-content:space-between;">
+            <div class="ratio-btn active" id="bg_ratio_9_16" onclick="setBgRatio('9:16')">📱 9:16</div>
+            <div class="ratio-btn" id="bg_ratio_3_4" onclick="setBgRatio('3:4')">📸 3:4</div>
+            <div class="ratio-btn" id="bg_ratio_1_1" onclick="setBgRatio('1:1')">🔲 1:1</div>
+            <div class="ratio-btn" id="bg_ratio_4_3" onclick="setBgRatio('4:3')">🖼 4:3</div>
+            <div class="ratio-btn" id="bg_ratio_16_9" onclick="setBgRatio('16:9')">💻 16:9</div>
+        </div>
+        <p style="margin-top: 15px; margin-bottom: 5px; font-weight: bold; text-align: center;">Выходное качество:</p>
+        <div class="quality-selector" style="display: flex; gap: 6px; margin: 15px 0;">
+            <div class="quality-btn active" id="bg_qual_schnell" onclick="setQuality('schnell')">⚡ Standard (1 Мп)</div>
+            <div class="quality-btn" id="bg_qual_dev" onclick="setQuality('dev')">💎 Pro / 2K (2 Мп)</div>
+            <div class="quality-btn" id="bg_qual_ultra" onclick="setQuality('ultra_4k')">🔥 Ultra 4K (4 Мп)</div>
+        </div>
+
+        <div class="header" style="margin-top: 20px; margin-bottom: 5px; text-align: center;">
+            <h2>🔥 Примеры работы Смены фона:</h2>
+            <p style="font-size:14px; color:#666;">Результаты переноса объектов на новый задний план</p>
+        </div>
+
+        <!-- БЛОК ПРИМЕРОВ СМЕНЫ ФОНА ДО / ПОСЛЕ -->
+        <div class="tryon-grid" style="display:grid; grid-template-columns:1fr; gap:15px; margin-top:15px;">
+            
+            <!-- Карточка 1 -->
+            <div class="tryon-card" style="background:#fff; border-radius:12px; border:1px solid #ddd; padding:12px;">
+                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center;">✨ Из домашней комнаты в горы Килиманджаро</div>
+                <div class="tryon-images" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                    <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div></div>
+                    <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div></div>
+                </div>
+            </div>
+
+            <!-- Карточка 2 -->
+            <div class="tryon-card" style="background:#fff; border-radius:12px; border:1px solid #ddd; padding:12px;">
+                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center;">✨ Перенос автомобиля на гоночный трек</div>
+                <div class="tryon-images" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                    <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div></div>
+                    <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div></div>
+                </div>
+            </div>
+
+            <!-- Карточка 3 -->
+            <div class="tryon-card" style="background:#fff; border-radius:12px; border:1px solid #ddd; padding:12px;">
+                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center;">✨ Студийный портрет на фоне ночного Токио</div>
+                <div class="tryon-images" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                    <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div></div>
+                    <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div></div>
+                </div>
+            </div>
+
+        </div>
+    </div> <!-- ЗАКРЫВАЕМ ЭКРАН SCREEN_BG_CHANGE -->
+   
+    
+ <!-- ========================================== -->
+    <!-- СКРИПТ УПРАВЛЕНИЯ САЙТОМ                   -->
     <!-- ========================================== -->
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
 
+        // 1. ИНИЦИАЛИЗАЦИЯ ВСЕХ ТЕКУЩИХ РЕЖИМОВ И ПЕРЕМЕННЫХ
         let currentActiveMode = 'main_menu';
         let currentTemplateId = '';
-        let selectedRatio = '9:16';
+        let selectedTryOnRatio = '9:16';  // Формат для Примерки одежды
+        let selectedTextRatio = '9:16';   // Формат для Фото + Текст
+        let selectedSwapRatio = '9:16';   // Формат для Кастомного Face Swap
+        let selectedQuality = 'schnell'; // Качество по умолчанию (schnell = стандарт, dev = 2к)
+        let selectedBgRatio = '9:16'; // Переменная формата для Смены фона
 
-        // Функция переключения экранов сайта
+
+        // 2. УМНАЯ ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ САЙТА
         function openScreen(screenName) {
             currentActiveMode = screenName;
             
-            // Скрываем все экраны
+            // Надежно скрываем абсолютно все экраны, которые есть в разметке
             document.getElementById('screen_main_menu').classList.remove('active');
             document.getElementById('screen_face_swap').classList.remove('active');
+            if(document.getElementById('screen_tryon')) document.getElementById('screen_tryon').classList.remove('active');
+            if(document.getElementById('screen_text_image')) document.getElementById('screen_text_image').classList.remove('active');
             
-            // Прячем главную кнопку Телеграма при переключении экранов
+            // Прячем главную кнопку Телеграма при переключении страниц
             tg.MainButton.hide();
 
             // Включаем нужный экран или шлём команду напрямую боту
@@ -180,56 +464,164 @@
                 document.getElementById('screen_main_menu').classList.add('active');
             } else if (screenName === 'face_swap') {
                 document.getElementById('screen_face_swap').classList.add('active');
+                // Кнопка указывает на Вариант Б (Свой шаблон в чате бота)
+                tg.MainButton.text = "Загрузить свой шаблон в боте ✨"; 
+                tg.MainButton.show();
+            } else if (screenName === 'tryon') {
+                document.getElementById('screen_tryon').classList.add('active');
+                tg.MainButton.text = "Запустить примерку одежды ✨";
+                tg.MainButton.show();
+            } else if (screenName === 'text_image') {
+                document.getElementById('screen_text_image').classList.add('active');
+                tg.MainButton.text = "Запустить генерацию Фото+Текст ✨";
+                tg.MainButton.show();
+            } else if (screenName === 'bg_change') {
+                document.getElementById('screen_bg_change').classList.add('active');
+                tg.MainButton.text = "Запустить смену фона ✨"; 
+                tg.MainButton.show();
             } else {
-                // Если кликнули на Режим 1, 3 или 4 — сразу закрываем шторку и шлём боту триггер запуска!
+                // Кнопка 4: Смена фона (мгновенный легкий триггер без окон)
                 const directData = { mode_trigger: screenName };
                 tg.sendData(JSON.stringify(directData));
                 tg.close();
-            }
+            
+        }
+// функцию клика для форматов фона:
+        function setBgRatio(ratio) {
+            selectedBgRatio = ratio;
+            document.getElementById('bg_ratio_9_16').classList.remove('active');
+            document.getElementById('bg_ratio_3_4').classList.remove('active');
+            document.getElementById('bg_ratio_1_1').classList.remove('active');
+            document.getElementById('bg_ratio_4_3').classList.remove('active');
+            document.getElementById('bg_ratio_16_9').classList.remove('active');
+            
+            const idMap = { '9:16': 'bg_ratio_9_16', '3:4': 'bg_ratio_3_4', '1:1': 'bg_ratio_1_1', '4:3': 'bg_ratio_4_3', '16:9': 'bg_ratio_16_9' };
+            document.getElementById(idMap[ratio]).classList.add('active');
+        }
+        // функцию для переключения кнопок качества:
+        function setQuality(quality) {
+            selectedQuality = quality;
+            
+            // Сбрасываем класс active со всех возможных кнопок на всех экранах
+            const prefixes = ['swap_qual_', 'tryon_qual_', 'text_qual_', 'bg_qual_'];
+            prefixes.forEach(p => {
+                if(document.getElementById(p + 'schnell')) document.getElementById(p + 'schnell').classList.remove('active');
+                if(document.getElementById(p + 'dev')) document.getElementById(p + 'dev').classList.remove('active');
+                if(document.getElementById(p + 'ultra')) document.getElementById(p + 'ultra').classList.remove('active');
+            });
+            
+            // Находим префикс текущего экрана
+            let currentPrefix = 'swap_qual_';
+            if (currentActiveMode === 'tryon') currentPrefix = 'tryon_qual_';
+            if (currentActiveMode === 'text_image') currentPrefix = 'text_qual_';
+            if (currentActiveMode === 'bg_change') currentPrefix = 'bg_qual_';
+            
+            let shortQual = quality === 'ultra_4k' ? 'ultra' : quality;
+            document.getElementById(currentPrefix + shortQual).classList.add('active');
         }
 
-        // Логика Face Swap шаблонов
-        function selectTemplate(templateId) {
-            currentTemplateId = templateId;
-            document.getElementById('uploadModal').style.display = 'block';
-
-            tg.MainButton.text = "Подтвердить стиль и формат ✨";
-            tg.MainButton.show();
+        // 3. ФУНКЦИЯ А: КЛИК ПО ГОТОВОЙ КАРТОЧКЕ СТИЛЯ FACE SWAP (Вариант А)
+        function selectReadyTemplate(templateId, forcedRatio) {
+            const dataToSend = {
+                mode_trigger: 'face_swap',
+                is_custom_template: false, // Флаг боту: это готовый шаблон с сайта
+                template: templateId,
+                aspect_ratio: forcedRatio
+            };
+            tg.sendData(JSON.stringify(dataToSend));
+            tg.close();
         }
 
-        function setRatio(ratio) {
-            selectedRatio = ratio;
-            document.getElementById('ratio_9_16').classList.remove('active');
-            document.getElementById('ratio_3_4').classList.remove('active');
-            document.getElementById('ratio_1:1').classList.remove('active');
-            document.getElementById('ratio_4_3').classList.remove('active');
-            document.getElementById('ratio_16_9').classList.remove('active');
-
-            const idMap = { '9:16': 'ratio_9_16', '3:4': 'ratio_3_4', '1:1': 'ratio_1:1', '4:3': 'ratio_4_3', '16:9': 'ratio_16_9' };
+        // 4. НАТИВНЫЕ ПЕРЕКЛЮЧАТЕЛИ КНОПОК ФОРМАТОВ ДЛЯ ВСЕХ НАШИХ ЭКРАНОВ
+        function setSwapRatio(ratio) {
+            selectedSwapRatio = ratio;
+            document.getElementById('swap_ratio_9_16').classList.remove('active');
+            document.getElementById('swap_ratio_3_4').classList.remove('active');
+            document.getElementById('swap_ratio_1_1').classList.remove('active');
+            document.getElementById('swap_ratio_4_3').classList.remove('active');
+            document.getElementById('swap_ratio_16_9').classList.remove('active');
+            const idMap = { '9:16': 'swap_ratio_9_16', '3:4': 'swap_ratio_3_4', '1:1': 'swap_ratio_1_1', '4:3': 'swap_ratio_4_3', '16:9': 'swap_ratio_16_9' };
             document.getElementById(idMap[ratio]).classList.add('active');
         }
 
-        function closeModal() {
-            document.getElementById('uploadModal').style.display = 'none';
-            tg.MainButton.hide();
+        function setTryOnRatio(ratio) {
+            selectedTryOnRatio = ratio;
+            document.getElementById('tryon_ratio_9_16').classList.remove('active');
+            document.getElementById('tryon_ratio_3_4').classList.remove('active');
+            document.getElementById('tryon_ratio_1_1').classList.remove('active');
+            document.getElementById('tryon_ratio_4_3').classList.remove('active');
+            document.getElementById('tryon_ratio_16_9').classList.remove('active');
+            const idMap = { '9:16': 'tryon_ratio_9_16', '3:4': 'tryon_ratio_3_4', '1:1': 'tryon_ratio_1_1', '4:3': 'tryon_ratio_4_3', '16:9': 'tryon_ratio_16_9' };
+            document.getElementById(idMap[ratio]).classList.add('active');
         }
-        // Обработчик клика по главной кнопке Telegram
+
+        function setTextRatio(ratio) {
+            selectedTextRatio = ratio;
+            document.getElementById('text_ratio_9_16').classList.remove('active');
+            document.getElementById('text_ratio_3_4').classList.remove('active');
+            document.getElementById('text_ratio_1_1').classList.remove('active');
+            document.getElementById('text_ratio_4_3').classList.remove('active');
+            document.getElementById('text_ratio_16_9').classList.remove('active');
+            const idMap = { '9:16': 'text_ratio_9_16', '3:4': 'text_ratio_3_4', '1:1': 'text_ratio_1_1', '4:3': 'text_ratio_4_3', '16:9': 'text_ratio_16_9' };
+            document.getElementById(idMap[ratio]).classList.add('active');
+        }
+
+        // 5. ГЛУБОКАЯ СБОРКА ДАННЫХ ПРИ НАЖАТИИ ГЛАВНОЙ СИНЕЙ КНОПКИ TELEGRAM
         tg.onEvent('mainButtonClicked', function() {
             tg.MainButton.text = "⏳ Сохраняю настройки...";
             tg.MainButton.disable();
 
-            // Собираем данные Face Swap
-            const dataToSend = {
-                mode_trigger: 'face_swap',
-                template: currentTemplateId,
-                aspect_ratio: selectedRatio
-            };
+            let dataToSend = {};
 
+            if (currentActiveMode === 'tryon') {
+                dataToSend = {
+                    mode_trigger: 'tryon',
+                    aspect_ratio: selectedTryOnRatio,
+                    quality: selectedQuality
+                };
+            } else if (currentActiveMode === 'text_image') {
+                dataToSend = {
+                    mode_trigger: 'text_image',
+                    aspect_ratio: selectedTextRatio,
+                    quality: selectedQuality
+                };
+            } else if (currentActiveMode === 'face_swap') {
+                dataToSend = {
+                    mode_trigger: 'face_swap',
+                    is_custom_template: true,
+                    aspect_ratio: selectedSwapRatio,
+                    quality: selectedQuality
+                };
+            } else if (currentActiveMode === 'bg_change') {
+                // ДОБАВИЛИ: Сбор формата для 4 режима Смены фона
+                dataToSend = {
+                    mode_trigger: 'bg_change',
+                    aspect_ratio: selectedBgRatio,
+                    quality: selectedQuality
+                };
+            }
+
+            // Отправляем собранную JSON строку в чат
             try {
                 tg.sendData(JSON.stringify(dataToSend));
                 tg.close();
             } catch (e) {
                 console.error("Ошибка отправки: ", e);
-                tg.MainButton.enable();tg.MainButton.text = "❌ Ошибка. Повторить";
+                tg.MainButton.enable();
+                tg.MainButton.text = "❌ Ошибка. Повторить";
             }
         });
+
+        // 6. ФУНКЦИЯ А: КЛИК ПО ГОТОВОЙ КАРТОЧКЕ СТИЛЯ FACE SWAP (Вариант А)
+        function selectReadyTemplate(templateId, forcedRatio) {
+            const dataToSend = {
+                mode_trigger: 'face_swap',
+                is_custom_template: false,
+                template: templateId,
+                aspect_ratio: forcedRatio,
+                quality: selectedQuality
+            };
+            tg.sendData(JSON.stringify(dataToSend));
+            tg.close();
+        }
+    </script>

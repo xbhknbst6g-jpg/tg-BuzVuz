@@ -429,79 +429,192 @@
     </div> <!-- ЗАКРЫВАЕМ ЭКРАН SCREEN_BG_CHANGE -->
    
     
- <!-- ========================================== -->
-    <!-- СКРИПТ УПРАВЛЕНИЯ САЙТОМ                   -->
-    <!-- ========================================== -->
-    <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
+<!-- ========================================== -->
+<!-- СКРИПТ УПРАВЛЕНИЯ САЙТОМ                   -->
+<!-- ========================================== -->
+<script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
 
-        // 1. ИНИЦИАЛИЗАЦИЯ ВСЕХ ТЕКУЩИХ РЕЖИМОВ И ПЕРЕМЕННЫХ
-        let currentActiveMode = 'main_menu';
-        let currentTemplateId = '';
-        let selectedTryOnRatio = '9:16';  // Формат для Примерки одежды
-        let selectedTextRatio = '9:16';   // Формат для Фото + Текст
-        let selectedSwapRatio = '9:16';   // Формат для Кастомного Face Swap
-        let selectedQuality = 'schnell'; // Качество по умолчанию (schnell = стандарт, dev = 2к)
-        let selectedBgRatio = '9:16'; // Переменная формата для Смены фона
+    // 1. ИНИЦИАЛИЗАЦИЯ ВСЕХ ТЕКУЩИХ РЕЖИМОВ И ПЕРЕМЕННЫХ
+    let currentActiveMode = 'main_menu';
+    let currentTemplateId = '';
+    let selectedTryOnRatio = '9:16';  // Формат для Примерки одежды
+    let selectedTextRatio = '9:16';   // Формат для Фото + Текст
+    let selectedSwapRatio = '9:16';   // Формат для Кастомного Face Swap
+    let selectedQuality = 'schnell';  // Качество по умолчанию (schnell = стандарт, dev = 2к)
+    let selectedBgRatio = '9:16';     // Переменная формата для Смены фона
 
 
-        // 2. УМНАЯ ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ САЙТА
-        function openScreen(screenName) {
-            currentActiveMode = screenName;
-            
-            // Надежно скрываем абсолютно все экраны, которые есть в разметке
-            document.getElementById('screen_main_menu').classList.remove('active');
-            document.getElementById('screen_face_swap').classList.remove('active');
-            if(document.getElementById('screen_tryon')) document.getElementById('screen_tryon').classList.remove('active');
-            if(document.getElementById('screen_text_image')) document.getElementById('screen_text_image').classList.remove('active');
-            
-            // Прячем главную кнопку Телеграма при переключении страниц
-            tg.MainButton.hide();
+    // 2. УМНАЯ ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ САЙТА
+    function openScreen(screenName) {
+        currentActiveMode = screenName;
+        
+        // Надежно скрываем абсолютно все экраны, которые есть в разметке
+        document.getElementById('screen_main_menu').classList.remove('active');
+        document.getElementById('screen_face_swap').classList.remove('active');
+        if(document.getElementById('screen_tryon')) document.getElementById('screen_tryon').classList.remove('active');
+        if(document.getElementById('screen_text_image')) document.getElementById('screen_text_image').classList.remove('active');
+        
+        // Прячем главную кнопку Телеграма при переключении страниц
+        tg.MainButton.hide();
 
-            // Включаем нужный экран или шлём команду напрямую боту
-            if (screenName === 'main_menu') {
-                document.getElementById('screen_main_menu').classList.add('active');
-            } else if (screenName === 'face_swap') {
-                document.getElementById('screen_face_swap').classList.add('active');
-                // Кнопка указывает на Вариант Б (Свой шаблон в чате бота)
-                tg.MainButton.text = "Загрузить свой шаблон в боте ✨"; 
-                tg.MainButton.show();
-            } else if (screenName === 'tryon') {
-                document.getElementById('screen_tryon').classList.add('active');
-                tg.MainButton.text = "Запустить примерку одежды ✨";
-                tg.MainButton.show();
-            } else if (screenName === 'text_image') {
-                document.getElementById('screen_text_image').classList.add('active');
-                tg.MainButton.text = "Запустить генерацию Фото+Текст ✨";
-                tg.MainButton.show();
-            } else if (screenName === 'bg_change') {
-                document.getElementById('screen_bg_change').classList.add('active');
-                tg.MainButton.text = "Запустить смену фона ✨"; 
-                tg.MainButton.show();
-            } else {
-                // Кнопка 4: Смена фона (мгновенный легкий триггер без окон)
-                const directData = { mode_trigger: screenName };
-                tg.sendData(JSON.stringify(directData));
-                tg.close();
-            
+        // Включаем нужный экран или шлём команду напрямую боту
+        if (screenName === 'main_menu') {
+            document.getElementById('screen_main_menu').classList.add('active');
+        } else if (screenName === 'face_swap') {
+            document.getElementById('screen_face_swap').classList.add('active');
+            tg.MainButton.text = "Загрузить свой шаблон в боте ✨"; 
+            tg.MainButton.show();
+        } else if (screenName === 'tryon') {
+            document.getElementById('screen_tryon').classList.add('active');
+            tg.MainButton.text = "Запустить примерку одежды ✨";
+            tg.MainButton.show();
+        } else if (screenName === 'text_image') {
+            document.getElementById('screen_text_image').classList.add('active');
+            tg.MainButton.text = "Запустить генерацию Фото+Текст ✨";
+            tg.MainButton.show();
+        } else if (screenName === 'bg_change') {
+            document.getElementById('screen_bg_change').classList.add('active');
+            tg.MainButton.text = "Запустить смену фона ✨"; 
+            tg.MainButton.show();
+        } else {
+            // Кнопка 4: Смена фона (мгновенный легкий триггер без окон)
+            const directData = { mode_trigger: screenName };
+            tg.sendData(JSON.stringify(directData));
+            tg.close();
         }
-// функцию клика для форматов фона:
-        function setBgRatio(ratio) {
-            selectedBgRatio = ratio;
-            document.getElementById('bg_ratio_9_16').classList.remove('active');
-            document.getElementById('bg_ratio_3_4').classList.remove('active');
-            document.getElementById('bg_ratio_1_1').classList.remove('active');
-            document.getElementById('bg_ratio_4_3').classList.remove('active');
-            document.getElementById('bg_ratio_16_9').classList.remove('active');
-            
-            const idMap = { '9:16': 'bg_ratio_9_16', '3:4': 'bg_ratio_3_4', '1:1': 'bg_ratio_1_1', '4:3': 'bg_ratio_4_3', '16:9': 'bg_ratio_16_9' };
-            document.getElementById(idMap[ratio]).classList.add('active');
+    }
+
+    // 3. ФУНКЦИИ КЛИКА ДЛЯ ФОРМАТОВ ФОНА И ПЕРЕКЛЮЧЕНИЯ КАЧЕСТВА
+    function setBgRatio(ratio) {
+        selectedBgRatio = ratio;
+        document.getElementById('bg_ratio_9_16').classList.remove('active');
+        document.getElementById('bg_ratio_3_4').classList.remove('active');
+        document.getElementById('bg_ratio_1_1').classList.remove('active');
+        document.getElementById('bg_ratio_4_3').classList.remove('active');
+        document.getElementById('bg_ratio_16_9').classList.remove('active');
+        
+        const idMap = { '9:16': 'bg_ratio_9_16', '3:4': 'bg_ratio_3_4', '1:1': 'bg_ratio_1_1', '4:3': 'bg_ratio_4_3', '16:9': 'bg_ratio_16_9' };
+        document.getElementById(idMap[ratio]).classList.add('active');
+    }
+
+    function setQuality(quality) {
+        selectedQuality = quality;
+        
+        // Сбрасываем класс active со всех возможных кнопок на всех экранах
+        const prefixes = ['swap_qual_', 'tryon_qual_', 'text_qual_', 'bg_qual_'];
+        prefixes.forEach(p => {
+            if(document.getElementById(p + 'schnell')) document.getElementById(p + 'schnell').classList.remove('active');
+            if(document.getElementById(p + 'dev')) document.getElementById(p + 'dev').classList.remove('active');
+            if(document.getElementById(p + 'ultra')) document.getElementById(p + 'ultra').classList.remove('active');
+        });
+        
+        // Находим префикс текущего экрана
+        let currentPrefix = 'swap_qual_';
+        if (currentActiveMode === 'tryon') currentPrefix = 'tryon_qual_';
+        if (currentActiveMode === 'text_image') currentPrefix = 'text_qual_';
+        if (currentActiveMode === 'bg_change') currentPrefix = 'bg_qual_';
+        
+        let shortQual = quality === 'ultra_4k' ? 'ultra' : quality;
+        const targetBtn = document.getElementById(currentPrefix + shortQual);
+        if (targetBtn) {
+            targetBtn.classList.add('active');
         }
-        // функцию для переключения кнопок качества:
-        function setQuality(quality) {
-            selectedQuality = quality;
-            
+    }
+
+    // 4. НАТИВНЫЕ ПЕРЕКЛЮЧАТЕЛИ КНОПОК ФОРМАТОВ ДЛЯ ВСЕХ НАШИХ ЭКРАНОВ
+    function setSwapRatio(ratio) {
+        selectedSwapRatio = ratio;
+        document.getElementById('swap_ratio_9_16').classList.remove('active');
+        document.getElementById('swap_ratio_3_4').classList.remove('active');
+        document.getElementById('swap_ratio_1_1').classList.remove('active');
+        document.getElementById('swap_ratio_4_3').classList.remove('active');
+        document.getElementById('swap_ratio_16_9').classList.remove('active');
+        const idMap = { '9:16': 'swap_ratio_9_16', '3:4': 'swap_ratio_3_4', '1:1': 'swap_ratio_1_1', '4:3': 'swap_ratio_4_3', '16:9': 'swap_ratio_16_9' };
+        document.getElementById(idMap[ratio]).classList.add('active');
+    }
+
+    function setTryOnRatio(ratio) {
+        selectedTryOnRatio = ratio;
+        document.getElementById('tryon_ratio_9_16').classList.remove('active');
+        document.getElementById('tryon_ratio_3_4').classList.remove('active');
+        document.getElementById('tryon_ratio_1_1').classList.remove('active');
+        document.getElementById('tryon_ratio_4_3').classList.remove('active');
+        document.getElementById('tryon_ratio_16_9').classList.remove('active');
+        const idMap = { '9:16': 'tryon_ratio_9_16', '3:4': 'tryon_ratio_3_4', '1:1': 'tryon_ratio_1_1', '4:3': 'tryon_ratio_4_3', '16:9': 'tryon_ratio_16_9' };
+        document.getElementById(idMap[ratio]).classList.add('active');
+    }
+
+    function setTextRatio(ratio) {
+        selectedTextRatio = ratio;
+        document.getElementById('text_ratio_9_16').classList.remove('active');
+        document.getElementById('text_ratio_3_4').classList.remove('active');
+        document.getElementById('text_ratio_1_1').classList.remove('active');
+        document.getElementById('text_ratio_4_3').classList.remove('active');
+        document.getElementById('text_ratio_16_9').classList.remove('active');
+        const idMap = { '9:16': 'text_ratio_9_16', '3:4': 'text_ratio_3_4', '1:1': 'text_ratio_1_1', '4:3': 'text_ratio_4_3', '16:9': 'text_ratio_16_9' };
+        document.getElementById(idMap[ratio]).classList.add('active');
+    }
+
+    // 5. ГЛУБОКАЯ СБОРКА ДАННЫХ ПРИ НАЖАТИИ ГЛАВНОЙ СИНЕЙ КНОПКИ TELEGRAM
+    tg.onEvent('mainButtonClicked', function() {
+        tg.MainButton.text = "⏳ Сохраняю настройки...";
+        tg.MainButton.disable();
+
+        let dataToSend = {};
+
+        if (currentActiveMode === 'tryon') {
+            dataToSend = {
+                mode_trigger: 'tryon',
+                aspect_ratio: selectedTryOnRatio,
+                quality: selectedQuality
+            };
+        } else if (currentActiveMode === 'text_image') {
+            dataToSend = {
+                mode_trigger: 'text_image',
+                aspect_ratio: selectedTextRatio,
+                quality: selectedQuality
+            };
+        } else if (currentActiveMode === 'face_swap') {
+            dataToSend = {
+                mode_trigger: 'face_swap',
+                is_custom_template: true,
+                aspect_ratio: selectedSwapRatio,
+                quality: selectedQuality
+            };
+        } else if (currentActiveMode === 'bg_change') {
+            dataToSend = {
+                mode_trigger: 'bg_change',
+                aspect_ratio: selectedBgRatio,
+                quality: selectedQuality
+            };
+        }
+
+        // Отправляем собранную JSON строку в чат
+        try {
+            tg.sendData(JSON.stringify(dataToSend));
+            tg.close();
+        } catch (e) {
+            console.error("Ошибка отправки: ", e);
+            tg.MainButton.enable();
+            tg.MainButton.text = "❌ Ошибка. Повторить";
+        }
+    });
+
+    // 6. ФУНКЦИЯ Б: КЛИК ПО ГОТОВОЙ КАРТОЧКЕ СТИЛЯ FACE SWAP
+    function selectReadyTemplate(templateId, forcedRatio) {
+        const dataToSend = {
+            mode_trigger: 'face_swap',
+            is_custom_template: false,
+            template: templateId,
+            aspect_ratio: forcedRatio,
+            quality: selectedQuality
+        };
+        tg.sendData(JSON.stringify(dataToSend));
+        tg.close();
+    }
+</script>            
             // Сбрасываем класс active со всех возможных кнопок на всех экранах
             const prefixes = ['swap_qual_', 'tryon_qual_', 'text_qual_', 'bg_qual_'];
             prefixes.forEach(p => {
@@ -624,4 +737,4 @@
             tg.sendData(JSON.stringify(dataToSend));
             tg.close();
         }
-    </script>
+</script>

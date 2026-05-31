@@ -115,12 +115,15 @@
             
             // Сбрасываем класс active со всех кнопок форматов
             document.getElementById('ratio_9_16').classList.remove('active');
+            document.getElementById('ratio_3_4').classList.remove('active');
             document.getElementById('ratio_1_1').classList.remove('active');
+            document.getElementById('ratio_4_3').classList.remove('active');
             document.getElementById('ratio_16_9').classList.remove('active');
             
-            // Добавляем active только на ту, которую кликнули
-            const idMap = { '9:16': 'ratio_9_16', '1:1': 'ratio_1_1', '16:9': 'ratio_16_9' };
-            document.getElementById(idMap[ratio]).classList.add('active');
+            const idMap = { '9:16': 'ratio_9_16', '3:4': 'ratio_3_4', '1:1': 'ratio_1_1', '4:3': 'ratio_4_3', '16:9': 'ratio_16_9' };
+            if (idMap[ratio]) {
+                document.getElementById(idMap[ratio]).classList.add('active');
+            }
         }
 
         function closeModal() {

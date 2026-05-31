@@ -80,10 +80,12 @@
             <h2>Выбран стиль: <span id="selectedStyleName"></span></h2>
             <!-- Выбор формата итоговой картинки -->
             <p>Выберите формат готового изображения:</p>
-            <div class="ratio-selector">
-                <div class="ratio-btn active" id="ratio_9_16" onclick="setRatio('9:16')">📱 9:16</div>
-                <div class="ratio-btn" id="ratio_1_1" onclick="setRatio('1:1')">🔲 1:1</div>
-                <div class="ratio-btn" id="ratio_16_9" onclick="setRatio('16:9')">💻 16:9</div>
+            <div class="ratio-selector" style="flex-wrap: wrap; gap: 8px;">
+                <div class="ratio-btn active" id="ratio_9_16" onclick="setRatio('9:16')" style="flex: 1 1 25%;">📱 9:16</div>
+                <div class="ratio-btn" id="ratio_3_4" onclick="setRatio('3:4')" style="flex: 1 1 25%;">📸 3:4</div>
+                <div class="ratio-btn" id="ratio_1_1" onclick="setRatio('1:1')" style="flex: 1 1 25%;">🔲 1:1</div>
+                <div class="ratio-btn" id="ratio_4_3" onclick="setRatio('4:3')" style="flex: 1 1 25%;">🖼 4:3</div>
+                <div class="ratio-btn" id="ratio_16_9" onclick="setRatio('16:9')" style="flex: 1 1 25%;">💻 16:9</div>
             </div>
              <p style="color: #666; font-size: 14px;">✨ После подтверждения шторка закроется, и бот попросит отправить ваше фото лица.</p>
         </div>

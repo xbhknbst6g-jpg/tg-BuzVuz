@@ -161,6 +161,7 @@
         </div>
         
         <div class="main-menu-grid">
+            <!-- Режим 1 -->
             <div class="menu-card" onclick="openScreen('text_image')">
                 <div class="menu-icon">📝</div>
                 <div class="menu-info">
@@ -168,6 +169,8 @@
                     <div class="menu-desc">Создание по вашему фото и описанию</div>
                 </div>
             </div>
+            
+            <!-- Режим 2 -->
             <div class="menu-card" onclick="openScreen('face_swap')">
                 <div class="menu-icon">🎭</div>
                 <div class="menu-info">
@@ -175,6 +178,8 @@
                     <div class="menu-desc">Замена лиц (выберите интересующий вас шаблон)</div>
                 </div>
             </div>
+            
+            <!-- Режим 3 -->
             <div class="menu-card" onclick="openScreen('tryon')">
                 <div class="menu-icon">👕</div>
                 <div class="menu-info">
@@ -182,6 +187,8 @@
                     <div class="menu-desc">Примерка любых вещей по вашей фигуре До / После</div>
                 </div>
             </div>
+            
+            <!-- Режим 4 -->
             <div class="menu-card" onclick="openScreen('bg_change')">
                 <div class="menu-icon">🖼</div>
                 <div class="menu-info">
@@ -189,17 +196,8 @@
                     <div class="menu-desc">Умный перенос объекта на новый задний план</div>
                 </div>
             </div>
-            <!-- Кнопка перехода в РАЗДЕЛ ВИДЕО -->
-            <div class="menu-card" onclick="openScreen('video_menu')" style="border-color: var(--tg-theme-button-color, #0088cc);">
-                <div class="menu-icon">🎬</div>
-                <div class="menu-info">
-                    <div class="menu-title" style="color: var(--tg-theme-button-color, #0088cc);">5. AI Видео Студия</div>
-                    <div class="menu-desc">Оживление картинок, генерация Kling Pro</div>
-                </div>
-            </div>
         </div>
-    </div>
-    
+    </div>    
     
     
 <!-- ========================================== -->
@@ -682,7 +680,7 @@
             <video id="previewVideoPlayer" playsinline loop controls autoplay muted></video>
         </div>
     </div>
-    
+
 
 <!-- ========================================== -->
 <!-- ИСПРАВЛЕННЫЙ И БЕЗОПАСНЫЙ СКРИПТ           -->

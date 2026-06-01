@@ -568,7 +568,7 @@
             <p>Модель: fal-ai/kling-video/v2.1/standard/image-to-video</p>
         </div>
 
-        <!-- Сетка примеров (5 штук) -->
+        <!-- Сетка примеров -->
         <div style="font-weight: bold; font-size: 14px; margin-bottom: 5px; color: #222;">Примеры генераций (нажмите для просмотра):</div>
         <div class="phone-templates-grid">
             <div class="phone-template-card" onclick="openPreviewVideo('https://w3schools.com')">
@@ -593,18 +593,6 @@
             </div>
         </div>
 
-        <!-- ШАГ 1: Загрузка фото -->
-        <div class="form-group" style="background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e1e6eb; margin-bottom: 15px;">
-            <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px;">Шаг 1. Пришлите фото</label>
-            <input type="file" id="animate_ns_image" accept="image/*" style="width: 100%;">
-        </div>
-
-        <!-- ШАГ 2: Ввод промта -->
-        <div class="form-group" style="background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e1e6eb; margin-bottom: 15px;">
-            <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px;">Шаг 2. Пришлите промт (описание движения)</label>
-            <input type="text" id="animate_ns_prompt" placeholder="Например: камера плавно отлетает назад, парень улыбается" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 14px;">
-        </div>
-
         <!-- Настройки Kling v2.1 -->
         <div class="form-group" style="background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e1e6eb; margin-bottom: 15px;">
             <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px;">Длительность видео</label>
@@ -622,14 +610,14 @@
             </div>
         </div>
 
+        <!-- Кнопка просто отправляет триггер в ТГ -->
         <button class="submit-btn" onclick="sendAnimateNoSoundData()" style="width: 100%; padding: 15px; background: #0088cc; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 30px;">Оживить фото</button>
     </div>
-
 
 <!-- ========================================== -->
     <!-- ЭКРАН: ОЖИВЛЕНИЕ ФОТО (СО ЗВУКОМ)          -->
     <!-- ========================================== -->
-    <div id="<div id="screen_animate_sound" class="screen">
+    <div id="screen_animate_sound" class="screen">
         <button class="back-btn" onclick="openScreen('video_menu')">← Назад к видео</button>
         
         <div class="header" style="margin-bottom: 15px;">
@@ -637,8 +625,8 @@
             <p>Модель: fal-ai/kling-video/v2.6/pro/image-to-video</p>
         </div>
 
-        <!-- Сетка примеров (5 штук) -->
-        <div style="font-weight: bold; font-size: 14px; margin-bottom: 5px; color: #222;">Примеры генераций (нажмите для просмотра):</div>
+        <!-- Сетка примеров -->
+        <div style="font-weight: bold; font-size: 14px; margin-bottom: 5px; color: #222;">Примеры говорящих аватаров (нажмите для просмотра):</div>
         <div class="phone-templates-grid">
             <div class="phone-template-card" onclick="openPreviewVideo('ссылка_на_видео_1.mp4')">
                 <img src="https://picsum.photos" alt="Пример 1">
@@ -662,35 +650,17 @@
             </div>
         </div>
 
-        <!-- ШАГ 1: Загрузка портрета -->
-        <div class="form-group" style="background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e1e6eb; margin-bottom: 15px;">
-            <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px;">Шаг 1. Пришлите фото (Портрет)</label>
-            <input type="file" id="animate_s_image" accept="image/*" style="width: 100%;">
-        </div>
-
-        <!-- ШАГ 2: Ввод промта -->
-        <div class="form-group" style="background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e1e6eb; margin-bottom: 15px;">
-            <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px;">Шаг 2. Пришлите промт (подсказку мимики)</label>
-            <input type="text" id="animate_s_prompt" placeholder="Например: диктор уверенно рассказывает текст, улыбается" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 14px;">
-        </div>
-
-        <!-- ВЫБОР РЕЖИМА: С аудио или без -->
-        <div class="form-group" style="background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e1e6eb; margin-bottom: 15px;">
+        <!-- Выбор режима: С аудио или без -->
+        <div class="form-group" style="background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e1e6eb; margin-bottom: 20px;">
             <label style="display: flex; align-items: center; font-weight: bold; font-size: 14px; cursor: pointer; user-select: none;">
-                <input type="checkbox" id="use_audio_toggle" checked onchange="toggleAudioField(this)" style="width: 18px; height: 18px; margin-right: 10px; cursor: pointer;">
+                <input type="checkbox" id="use_audio_toggle" checked style="width: 18px; height: 18px; margin-right: 10px; cursor: pointer;">
                 Добавить аудиофайл (Липсинк / Озвучка)
             </label>
+            <div style="font-size: 12px; color: #777; margin-top: 5px;">Если галочка снята, бот попросит только фото и промпт.</div>
         </div>
 
-        <!-- ШАГ 3: Загрузка аудиофайла (Динамически скрываемый блок) -->
-        <div class="form-group" id="audio_upload_block" style="background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e1e6eb; margin-bottom: 20px;">
-            <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px;">Шаг 3. Загрузите аудио с речью</label>
-            <input type="file" id="animate_s_audio" accept="audio/*" style="width: 100%;">
-        </div>
-
-        <button class="submit-btn" onclick="sendAnimateSoundData()" style="width: 100%; padding: 15px; background: #0088cc; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 30px;">Оживить фото в Kling 2.6 Pro</button>
+        <button class="submit-btn" onclick="sendAnimateSoundData()" style="width: 100%; padding: 15px; background: #0088cc; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 30px;">Оживить фото</button>
     </div>
-
 
 <!-- ========================================== -->
     <!-- ЭКРАН НАСТРОЙКИ: VIDEO FACE SWAP          -->
@@ -994,6 +964,7 @@
         let currentAnimateRatio = "16:9";
         let currentKlingDuration = 5;
 
+        // Переключение соотношения сторон (16:9 / 9:16)
         function setAnimateRatio(ratio, element) {
             document.querySelectorAll('#screen_animate_nosound .ratio-btn[id^="ratio_ns_"]').forEach(btn => {
                 btn.style.borderColor = '#e1e6eb'; btn.style.background = '#fff'; btn.style.color = '#333';
@@ -1002,6 +973,7 @@
             currentAnimateRatio = ratio;
         }
 
+        // Переключение длительности (5 секунд / 10 секунд)
         function setKlingDuration(duration, element) {
             document.querySelectorAll('#screen_animate_nosound .ratio-btn[id^="duration_ns_"]').forEach(btn => {
                 btn.style.borderColor = '#e1e6eb'; btn.style.background = '#fff'; btn.style.color = '#333';
@@ -1010,83 +982,48 @@
             currentKlingDuration = duration;
         }
 
-        // Отправка: БЕЗ звука (Kling v2.1)
+        // ОТПРАВКА: Без звука (Kling v2.1) -> Запускает FSM в боте
         function sendAnimateNoSoundData() {
-            const imgInput = document.getElementById('animate_ns_image');
-            const promptInput = document.getElementById('animate_ns_prompt');
-
-            if (imgInput.files.length === 0) {
-                alert("Пожалуйста, выполните Шаг 1: выберите фото!");
-                return;
-            }
-
             const payload = {
                 mode: "kling_v21_standard_image_to_video",
                 model_path: "fal-ai/kling-video/v2.1/standard/image-to-video",
                 aspect_ratio: currentAnimateRatio,
                 duration: currentKlingDuration,
-                prompt: promptInput.value || "realistic animation",
-                image_name: imgInput.files[0].name
+                start_step: "request_photo" // Даем команду боту начать Шаг 1 в чате
             };
-
             sendToTelegram(payload);
         }
 
-        // Функция скрытия/показа блока загрузки аудио в зависимости от галочки
-        function toggleAudioField(checkbox) {
-            const audioBlock = document.getElementById('audio_upload_block');
-            if (checkbox.checked) {
-                audioBlock.style.display = 'block';
-            } else {
-                audioBlock.style.display = 'none';
-                // Сбрасываем выбранный файл, если сняли галочку
-                document.getElementById('animate_s_audio').value = ""; 
-            }
-        }
-
-        // ОТПРАВКА: Kling v2.6 Pro (С аудио или без него)
+        // ==========================================
+        // НАСТРОЙКИ И ОТПРАВКА ДЛЯ КНОПКИ СО ЗВУКОМ
+        // Модель: Kling v2.6 Pro
+        // ==========================================
         function sendAnimateSoundData() {
-            const imgInput = document.getElementById('animate_s_image');
-            const audioInput = document.getElementById('animate_s_audio');
-            const promptInput = document.getElementById('animate_s_prompt');
-            const useAudio = document.getElementById('use_audio_toggle').checked;
+            const useAudioToggle = document.getElementById('use_audio_toggle');
+            // Если чекбокс найден на экране, берем его состояние, иначе по умолчанию true
+            const useAudio = useAudioToggle ? useAudioToggle.checked : true;
 
-            // Базовая проверка фото
-            if (imgInput.files.length === 0) {
-                alert("Пожалуйста, выполните Шаг 1: выберите фотографию!");
-                return;
-            }
-
-            // Проверка аудио, ТОЛЬКО если включена галочка
-            if (useAudio && audioInput.files.length === 0) {
-                alert("Вы включили добавление аудио. Пожалуйста, выполните Шаг 3: загрузите аудиофайл!");
-                return;
-            }
-
-            // Формируем payload для бота
             const payload = {
                 mode: useAudio ? "kling_v26_pro_with_audio" : "kling_v26_pro_no_audio",
                 model_path: "fal-ai/kling-video/v2.6/pro/image-to-video",
-                prompt: promptInput.value || "talking portrait, professional animation",
-                image_name: imgInput.files[0].name,
-                has_audio: useAudio, // Передаем флаг бэкенду
-                audio_name: useAudio ? audioInput.files[0].name : null
+                has_audio: useAudio,
+                start_step: "request_photo" // Даем команду боту начать Шаг 1 в чате
             };
-
             sendToTelegram(payload);
         }
 
+        // ==========================================
+        // ЕДИНАЯ ФУНКЦИЯ ОТПРАВКИ ДАННЫХ В ТЕЛЕГРАМ
+        // ==========================================
         function sendToTelegram(payload) {
             if (window.Telegram?.WebApp) {
                 window.Telegram.WebApp.sendData(JSON.stringify(payload));
                 window.Telegram.WebApp.close();
             } else {
-                console.log("Данные для отправки боту:", payload);
-                alert("Успешно собрано! Проверьте консоль.");
+                console.log("Данные отправлены боту (Браузерный тест):", payload);
+                alert("Успешно собрано! Проверьте консоль браузера (F12).");
             }
-        }
-
-                // Функция открытия полноэкранного превью
+        }                // Функция открытия полноэкранного превью
         function openPreviewVideo(videoUrl) {
             if (!videoUrl || videoUrl.includes('ссылка_на_')) {
                 alert("Видео-пример еще загружается на сервер или ссылка не указана!");

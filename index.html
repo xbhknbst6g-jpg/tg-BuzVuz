@@ -824,12 +824,24 @@
         let selectedSwapRatio = '9:16';   
         let selectedBgRatio = '9:16';     
         let selectedQuality = 'schnell';  
-        
-        // 2. ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ
+
+        // 2. ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ (ОБНОВЛЕНА ПОД ВИДЕО)
         function openScreen(screenName) {
             currentActiveMode = screenName;
             
-            const screens = ['screen_main_menu', 'screen_face_swap', 'screen_tryon', 'screen_text_image', 'screen_bg_change'];
+            // ИСПРАВЛЕНО: Добавлены ВСЕ новые видео-экраны в общий список очистки активных классов
+            const screens = [
+                'screen_main_menu', 
+                'screen_face_swap', 
+                'screen_tryon', 
+                'screen_text_image', 
+                'screen_bg_change',
+                'screen_video_menu',       // Главное меню видео
+                'screen_video_swap',       // Экран Video Face Swap
+                'screen_animate_nosound',  // Экран Kling 2.1 без звука
+                'screen_animate_sound'     // Экран Kling 2.6 со звуком
+            ];
+            
             screens.forEach(s => {
                 const el = document.getElementById(s);
                 if (el) el.classList.remove('active');
@@ -837,6 +849,7 @@
             
             tg.MainButton.hide();
 
+            // --- ПЕРЕКЛЮЧЕНИЕ ФОТО-ЭКРАНОВ ---
             if (screenName === 'main_menu') {
                 document.getElementById('screen_main_menu').classList.add('active');
             } else if (screenName === 'face_swap') {
@@ -855,14 +868,30 @@
                 document.getElementById('screen_bg_change').classList.add('active');
                 tg.MainButton.text = "Запустить смену фона ✨"; 
                 tg.MainButton.show();
+
+            // --- ИСПРАВЛЕНО: ПЕРЕКЛЮЧЕНИЕ НОВЫХ ВИДЕО-ЭКРАНОВ ---
+            } else if (screenName === 'video_menu') {
+                const el = document.getElementById('screen_video_menu');
+                if (el) el.classList.add('active');
+            } else if (screenName === 'video_swap') {
+                const el = document.getElementById('screen_video_swap');
+                if (el) el.classList.add('active');
+                // Для видео фейссвапа мы используем свои кнопки генерации внизу экрана, 
+                // поэтому нижнюю системную кнопку Telegram MainButton здесь не показываем
+            } else if (screenName === 'animate_nosound') {
+                const el = document.getElementById('screen_animate_nosound');
+                if (el) el.classList.add('active');
+            } else if (screenName === 'animate_sound') {
+                const el = document.getElementById('screen_animate_sound');
+                if (el) el.classList.add('active');
+                
+            // --- ДЕФОЛТНЫЙ СКРИПТ ОТПРАВКИ (ЕСЛИ ЭКРАН НЕ НАЙДЕН) ---
             } else {
                 const directData = { mode_trigger: screenName };
                 tg.sendData(JSON.stringify(directData));
                 tg.close();
             }
-        }
-
-        // 3. БЕЗОПАСНОЕ ПЕРЕКЛЮЧЕНИЕ КАЧЕСТВА
+        }        // 3. БЕЗОПАСНОЕ ПЕРЕКЛЮЧЕНИЕ КАЧЕСТВА
         function setQuality(quality) {
             selectedQuality = quality;
             

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Web Studio</title>
     <!-- Официальный скрипт Telegram Web App -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://telegram.org"></script>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 15px; color: #333; }
         .header { text-align: center; margin-bottom: 25px; padding-top: 10px; }
@@ -36,36 +36,18 @@
         .modal-content { background: #fff; margin: 25% auto; padding: 20px; width: 80%; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .close-btn { float: right; cursor: pointer; font-size: 24px; color: #aaa; }
         
-        /* Сетка выбора расширений (твои точные размеры) */
+        /* Сетка выбора расширений */
         .ratio-selector { display: flex; flex-wrap: wrap; gap: 8px; margin: 15px 0; justify-content: space-between; }
         .ratio-btn { flex: 1 1 28%; padding: 10px 5px; border: 2px solid #e1e6eb; border-radius: 8px; background: #fff; cursor: pointer; font-weight: bold; text-align: center; font-size: 12px; transition: all 0.15s ease; }
         .ratio-btn.active { border-color: #0088cc; background: #e6f7ff; color: #0088cc; }
         
         /* Кнопка назад в меню */
         .back-btn { display: inline-block; padding: 8px 14px; background: #e1e6eb; border-radius: 6px; font-size: 13px; font-weight: bold; cursor: pointer; margin-bottom: 15px; border: none; }
+        
         /* Стили для переключателя качества */
-        .quality-selector {
-            display: flex;
-            gap: 10px;
-            margin: 15px 0;
-        }
-        .quality-btn {
-            flex: 1;
-            padding: 12px;
-            border: 2px solid #e1e6eb;
-            border-radius: 8px;
-            background: #fff;
-            cursor: pointer;
-            font-weight: bold;
-            text-align: center;
-            font-size: 13px;
-            transition: all 0.15s ease;
-        }
-        .quality-btn.active {
-            border-color: #f39c12; /* Золотой/Оранжевый цвет для Pro */
-            background: #fff9e6;
-            color: #d35400;
-        }
+        .quality-selector { display: flex; gap: 10px; margin: 15px 0; }
+        .quality-btn { flex: 1; padding: 12px; border: 2px solid #e1e6eb; border-radius: 8px; background: #fff; cursor: pointer; font-weight: bold; text-align: center; font-size: 13px; transition: all 0.15s ease; }
+        .quality-btn.active { border-color: #f39c12; background: #fff9e6; color: #d35400; }
     </style>
 </head>
 <body>
@@ -115,7 +97,7 @@
         </div>
     </div>
 <!-- ========================================== -->
-    <!-- ЭКРАН 2:РЕЖИМ 1: ФОТО + ТЕКСТ (ЭКРАН С ПРИМЕРАМИ)  -->
+    <!-- ЭКРАН 2: РЕЖИМ 1: ФОТО + ТЕКСТ             -->
     <!-- ========================================== -->
     <div id="screen_text_image" class="screen">
         <button class="back-btn" onclick="openScreen('main_menu')">⬅️ В меню</button>
@@ -140,22 +122,22 @@
             <div class="ratio-btn" id="text_ratio_4_3" onclick="setTextRatio('4:3')">🖼 4:3</div>
             <div class="ratio-btn" id="text_ratio_16_9" onclick="setTextRatio('16:9')">💻 16:9</div>
         </div>
-            <p style="margin-top: 15px; margin-bottom: 5px; font-weight: bold; text-align: center;">Выходное качество:</p>
-            <div class="quality-selector" style="display: flex; gap: 6px; margin: 15px 0;">
-                <!-- Меняй префиксы id для каждого экрана: swap_qual_, text_qual_, tryon_qual_ -->
-                <div class="quality-btn active" id="swap_qual_schnell" onclick="setQuality('schnell')" style="font-size: 11px; padding: 10px 4px;">⚡ Standard (1 Мп)</div>
-                <div class="quality-btn" id="swap_qual_dev" onclick="setQuality('dev')" style="font-size: 11px; padding: 10px 4px;">💎 Pro / 2K (2 Мп)</div>
-                <div class="quality-btn" id="swap_qual_ultra" onclick="setQuality('ultra_4k')" style="font-size: 11px; padding: 10px 4px;">🔥 Ultra 4K (4 Мп)</div>
-            </div>
+
+        <p style="margin-top: 15px; margin-bottom: 5px; font-weight: bold; text-align: center;">Выходное качество:</p>
+        <div class="quality-selector" style="display: flex; gap: 6px; margin: 15px 0;">
+            <!-- ИСПРАВЛЕНО: Префиксы изменены со swap_qual_ на text_qual_ под логику JS -->
+            <div class="quality-btn active" id="text_qual_schnell" onclick="setQuality('schnell')" style="font-size: 11px; padding: 10px 4px;">⚡ Standard (1 Мп)</div>
+            <div class="quality-btn" id="text_qual_dev" onclick="setQuality('dev')" style="font-size: 11px; padding: 10px 4px;">💎 Pro / 2K (2 Мп)</div>
+            <div class="quality-btn" id="text_qual_ultra" onclick="setQuality('ultra_4k')" style="font-size: 11px; padding: 10px 4px;">🔥 Ultra 4K (4 Мп)</div>
+        </div>
 
         <div class="header" style="margin-top: 20px; margin-bottom: 5px; text-align: center;">
             <h2>🔥 Примеры работы Фото + Текст:</h2>
             <p style="font-size:14px; color:#666;">Как нейросеть изменяет фото по вашему описанию До / После</p>
         </div>
 
-        <!-- БЛОК 5 КАРТОЧЕК ПРИМЕРОВ (ВСТАВЬ СВОИ ССЫЛКИ ВМЕСТО ЗАГЛУШЕК) -->
+        <!-- БЛОК КАРТОЧЕК ПРИМЕРОВ -->
         <div class="tryon-grid" style="display:grid; grid-template-columns:1fr; gap:15px; margin-top:15px;">
-            
             <!-- Пример 1 -->
             <div class="tryon-card" style="background:#fff; border-radius:12px; border:1px solid #ddd; padding:12px;">
                 <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center;">⚔️ Превращение в брутального Викинга</div>
@@ -164,10 +146,9 @@
                     <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div></div>
                 </div>
             </div>
-
             <!-- Пример 2 -->
             <div class="tryon-card" style="background:#fff; border-radius:12px; border:1px solid #ddd; padding:12px;">
-                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center;">🏙 Персонаж мира Киберпанк</div>
+                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center;">⚔️ Превращение в брутального Викинга</div>
                 <div class="tryon-images" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
                     <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div></div>
                     <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div></div>
@@ -176,7 +157,7 @@
 
             <!-- Пример 3 -->
             <div class="tryon-card" style="background:#fff; border-radius:12px; border:1px solid #ddd; padding:12px;">
-                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center;">🎨 Портрет в стиле Масляной живописи</div>
+                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center;">⚔️ Превращение в брутального Викинга</div>
                 <div class="tryon-images" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
                     <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div></div>
                     <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div></div>
@@ -185,7 +166,7 @@
 
             <!-- Пример 4 -->
             <div class="tryon-card" style="background:#fff; border-radius:12px; border:1px solid #ddd; padding:12px;">
-                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center;">🚀 Космический Астронавт</div>
+                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center;">⚔️ Превращение в брутального Викинга</div>
                 <div class="tryon-images" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
                     <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div></div>
                     <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div></div>
@@ -194,7 +175,7 @@
 
             <!-- Пример 5 -->
             <div class="tryon-card" style="background:#fff; border-radius:12px; border:1px solid #ddd; padding:12px;">
-                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center;">💼 Успешный бизнес-портрет в студии</div>
+                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center;">⚔️ Превращение в брутального Викинга</div>
                 <div class="tryon-images" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
                     <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div></div>
                     <div style="position:relative;"><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div></div>
@@ -203,6 +184,8 @@
 
         </div> <!-- ЗАКРЫВАЕМ СЕТКУ TRYON-GRID -->
     </div> <!-- ЗАКРЫВАЕМ ЭКРАН SCREEN_TEXT_IMAGE -->
+
+
 <!-- ========================================== -->
     <!-- РЕЖИМ 2: ГИБРИДНЫЙ FACE SWAP (ЭКРАН)       -->
     <!-- ========================================== -->
@@ -220,7 +203,7 @@
             <p style="font-size:14px; color:#666;">Выберите формат для загрузки своего шаблона:</p>
         </div>
 
-        <!-- Кнопки выбора формата для Кастомного Face Swap (твои точные размеры) -->
+        <!-- Кнопки выбора формата для Кастомного Face Swap -->
         <div class="ratio-selector" style="display:flex; flex-wrap:wrap; gap:8px; margin:15px 0; justify-content:space-between;">
             <div class="ratio-btn active" id="swap_ratio_9_16" onclick="setSwapRatio('9:16')">📱 9:16</div>
             <div class="ratio-btn" id="swap_ratio_3_4" onclick="setSwapRatio('3:4')">📸 3:4</div>
@@ -230,6 +213,7 @@
         </div>
         <p style="margin-top: 15px; margin-bottom: 5px; font-weight: bold; text-align: center;">Выходное качество:</p>
         <div class="quality-selector" style="display: flex; gap: 6px; margin: 15px 0;">
+            <!-- ИСПРАВЛЕНО: Для кнопок качества добавлен корректный суффикс 'schnell', 'dev', 'ultra' -->
             <div class="quality-btn active" id="swap_qual_schnell" onclick="setQuality('schnell')">⚡ Standard (1 Мп)</div>
             <div class="quality-btn" id="swap_qual_dev" onclick="setQuality('dev')">💎 Pro / 2K (2 Мп)</div>
             <div class="quality-btn" id="swap_qual_ultra" onclick="setQuality('ultra_4k')">🔥 Ultra 4K (4 Мп)</div>
@@ -240,7 +224,7 @@
             <p style="font-size:14px; color:#666;">Кликните по карточке, чтобы примерить это лицо на себя</p>
         </div>
         
-        <!-- СЕТКА ИЗ ГОТОВЫХ СТИЛЕЙ С ОДИНОЧНЫМИ КАРТИНКАМИ (ВАРИАНТ А) -->
+        <!-- СЕТКА ИЗ ГОТОВЫХ СТИЛЕЙ С ОДИНОЧНЫМИ КАРТИНКАМИ -->
         <div class="templates-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px;">
             <div class="template-card" onclick="selectReadyTemplate('girl_face', '3:4')" style="background: #fff; border-radius: 10px; border: 1px solid #ddd; overflow: hidden; text-align: center; cursor: pointer;">
                 <img src="https://postimg.cc" style="width: 100%; height: 180px; object-fit: cover; display: block;">
@@ -269,8 +253,9 @@
         </div>
     </div> <!-- ЗАКРЫВАЕМ ЭКРАН SCREEN_FACE_SWAP -->
 
-    <!-- ========================================== -->
-    <!-- ЭКРАН 4:РЕЖИМ 3 (Примерка одежды ШАБЛОНЫ)       -->
+
+<!-- ========================================== -->
+    <!-- ЭКРАН 4: РЕЖИМ 3 (Примерка одежды ШАБЛОНЫ)   -->
     <!-- ========================================== -->
     <div id="screen_tryon" class="screen">
         <button class="back-btn" onclick="openScreen('main_menu')">⬅️ В меню</button>
@@ -307,7 +292,7 @@
             <p style="font-size:14px; color:#666;">Результаты примерки нашей нейросети До / После</p>
         </div>
 
-        <!-- ОТКРЫВАЕМ СЕТКУ ОДИН РАЗ ДЛЯ ВСЕХ КАРТОЧЕК -->
+        <!-- СЕТКА КАРТОЧЕК ПРИМЕРОВ -->
         <div class="tryon-grid" style="display:grid; grid-template-columns:1fr; gap:15px; margin-top:15px;">
             
             <!-- Карточка 1 -->
@@ -355,8 +340,10 @@
                 </div>
             </div>
 
-        </div> <!-- ЗАКРЫВАЕМ СЕТКУ TRYON-GRID ДЛЯ ВСЕХ КАРТОЧЕК -->
-    </div> <!-- ЗАКРЫВАЕМ САН ЭКРАН SCREEN_TRYON -->
+        </div> <!-- ЗАКРЫВАЕМ СЕТКУ TRYON-GRID -->
+    </div> <!-- ЗАКРЫВАЕМ ЭКРАН SCREEN_TRYON -->
+    
+    
     <!-- ========================================== -->
     <!-- ЭКРАН 5: РЕЖИМ 4 (СМЕНА ФОНА BG_CHANGE)    -->
     <!-- ========================================== -->
@@ -428,8 +415,7 @@
         </div>
     </div> <!-- ЗАКРЫВАЕМ ЭКРАН SCREEN_BG_CHANGE -->
    
-    
-<!-- ========================================== -->
+    <!-- ========================================== -->
 <!-- СКРИПТ УПРАВЛЕНИЯ САЙТОМ                   -->
 <!-- ========================================== -->
 <script>
@@ -442,9 +428,8 @@
     let selectedTryOnRatio = '9:16';  // Формат для Примерки одежды
     let selectedTextRatio = '9:16';   // Формат для Фото + Текст
     let selectedSwapRatio = '9:16';   // Формат для Кастомного Face Swap
-    let selectedQuality = 'schnell';  // Качество по умолчанию (schnell = стандарт, dev = 2к)
+    let selectedQuality = 'schnell';  // Качество по умолчанию
     let selectedBgRatio = '9:16';     // Переменная формата для Смены фона
-
 
     // 2. УМНАЯ ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ САЙТА
     function openScreen(screenName) {
@@ -455,6 +440,7 @@
         document.getElementById('screen_face_swap').classList.remove('active');
         if(document.getElementById('screen_tryon')) document.getElementById('screen_tryon').classList.remove('active');
         if(document.getElementById('screen_text_image')) document.getElementById('screen_text_image').classList.remove('active');
+        if(document.getElementById('screen_bg_change')) document.getElementById('screen_bg_change').classList.remove('active');
         
         // Прячем главную кнопку Телеграма при переключении страниц
         tg.MainButton.hide();
@@ -479,26 +465,13 @@
             tg.MainButton.text = "Запустить смену фона ✨"; 
             tg.MainButton.show();
         } else {
-            // Кнопка 4: Смена фона (мгновенный легкий триггер без окон)
+            // Кнопка 4: Смена фона или другие режимы (мгновенный легкий триггер без окон)
             const directData = { mode_trigger: screenName };
             tg.sendData(JSON.stringify(directData));
             tg.close();
         }
     }
-
-    // 3. ФУНКЦИИ КЛИКА ДЛЯ ФОРМАТОВ ФОНА И ПЕРЕКЛЮЧЕНИЯ КАЧЕСТВА
-    function setBgRatio(ratio) {
-        selectedBgRatio = ratio;
-        document.getElementById('bg_ratio_9_16').classList.remove('active');
-        document.getElementById('bg_ratio_3_4').classList.remove('active');
-        document.getElementById('bg_ratio_1_1').classList.remove('active');
-        document.getElementById('bg_ratio_4_3').classList.remove('active');
-        document.getElementById('bg_ratio_16_9').classList.remove('active');
-        
-        const idMap = { '9:16': 'bg_ratio_9_16', '3:4': 'bg_ratio_3_4', '1:1': 'bg_ratio_1_1', '4:3': 'bg_ratio_4_3', '16:9': 'bg_ratio_16_9' };
-        document.getElementById(idMap[ratio]).classList.add('active');
-    }
-
+     // 3. УПРАВЛЕНИЕ ВЫБОРОМ КАЧЕСТВА С УЧЕТОМ АКТИВНОГО ЭКРАНА
     function setQuality(quality) {
         selectedQuality = quality;
         
@@ -524,6 +497,17 @@
     }
 
     // 4. НАТИВНЫЕ ПЕРЕКЛЮЧАТЕЛИ КНОПОК ФОРМАТОВ ДЛЯ ВСЕХ НАШИХ ЭКРАНОВ
+    function setBgRatio(ratio) {
+        selectedBgRatio = ratio;
+        document.getElementById('bg_ratio_9_16').classList.remove('active');
+        document.getElementById('bg_ratio_3_4').classList.remove('active');
+        document.getElementById('bg_ratio_1_1').classList.remove('active');
+        document.getElementById('bg_ratio_4_3').classList.remove('active');
+        document.getElementById('bg_ratio_16_9').classList.remove('active');
+        const idMap = { '9:16': 'bg_ratio_9_16', '3:4': 'bg_ratio_3_4', '1:1': 'bg_ratio_1_1', '4:3': 'bg_ratio_4_3', '16:9': 'bg_ratio_16_9' };
+        document.getElementById(idMap[ratio]).classList.add('active');
+    }
+
     function setSwapRatio(ratio) {
         selectedSwapRatio = ratio;
         document.getElementById('swap_ratio_9_16').classList.remove('active');
@@ -602,7 +586,7 @@
         }
     });
 
-    // 6. ФУНКЦИЯ Б: КЛИК ПО ГОТОВОЙ КАРТОЧКЕ СТИЛЯ FACE SWAP
+    // 6. КЛИК ПО ГОТОВОЙ КАРТОЧКЕ СТИЛЯ FACE SWAP
     function selectReadyTemplate(templateId, forcedRatio) {
         const dataToSend = {
             mode_trigger: 'face_swap',
@@ -614,127 +598,7 @@
         tg.sendData(JSON.stringify(dataToSend));
         tg.close();
     }
-</script>            
-            // Сбрасываем класс active со всех возможных кнопок на всех экранах
-            const prefixes = ['swap_qual_', 'tryon_qual_', 'text_qual_', 'bg_qual_'];
-            prefixes.forEach(p => {
-                if(document.getElementById(p + 'schnell')) document.getElementById(p + 'schnell').classList.remove('active');
-                if(document.getElementById(p + 'dev')) document.getElementById(p + 'dev').classList.remove('active');
-                if(document.getElementById(p + 'ultra')) document.getElementById(p + 'ultra').classList.remove('active');
-            });
-            
-            // Находим префикс текущего экрана
-            let currentPrefix = 'swap_qual_';
-            if (currentActiveMode === 'tryon') currentPrefix = 'tryon_qual_';
-            if (currentActiveMode === 'text_image') currentPrefix = 'text_qual_';
-            if (currentActiveMode === 'bg_change') currentPrefix = 'bg_qual_';
-            
-            let shortQual = quality === 'ultra_4k' ? 'ultra' : quality;
-            document.getElementById(currentPrefix + shortQual).classList.add('active');
-        }
-
-        // 3. ФУНКЦИЯ А: КЛИК ПО ГОТОВОЙ КАРТОЧКЕ СТИЛЯ FACE SWAP (Вариант А)
-        function selectReadyTemplate(templateId, forcedRatio) {
-            const dataToSend = {
-                mode_trigger: 'face_swap',
-                is_custom_template: false, // Флаг боту: это готовый шаблон с сайта
-                template: templateId,
-                aspect_ratio: forcedRatio
-            };
-            tg.sendData(JSON.stringify(dataToSend));
-            tg.close();
-        }
-
-        // 4. НАТИВНЫЕ ПЕРЕКЛЮЧАТЕЛИ КНОПОК ФОРМАТОВ ДЛЯ ВСЕХ НАШИХ ЭКРАНОВ
-        function setSwapRatio(ratio) {
-            selectedSwapRatio = ratio;
-            document.getElementById('swap_ratio_9_16').classList.remove('active');
-            document.getElementById('swap_ratio_3_4').classList.remove('active');
-            document.getElementById('swap_ratio_1_1').classList.remove('active');
-            document.getElementById('swap_ratio_4_3').classList.remove('active');
-            document.getElementById('swap_ratio_16_9').classList.remove('active');
-            const idMap = { '9:16': 'swap_ratio_9_16', '3:4': 'swap_ratio_3_4', '1:1': 'swap_ratio_1_1', '4:3': 'swap_ratio_4_3', '16:9': 'swap_ratio_16_9' };
-            document.getElementById(idMap[ratio]).classList.add('active');
-        }
-
-        function setTryOnRatio(ratio) {
-            selectedTryOnRatio = ratio;
-            document.getElementById('tryon_ratio_9_16').classList.remove('active');
-            document.getElementById('tryon_ratio_3_4').classList.remove('active');
-            document.getElementById('tryon_ratio_1_1').classList.remove('active');
-            document.getElementById('tryon_ratio_4_3').classList.remove('active');
-            document.getElementById('tryon_ratio_16_9').classList.remove('active');
-            const idMap = { '9:16': 'tryon_ratio_9_16', '3:4': 'tryon_ratio_3_4', '1:1': 'tryon_ratio_1_1', '4:3': 'tryon_ratio_4_3', '16:9': 'tryon_ratio_16_9' };
-            document.getElementById(idMap[ratio]).classList.add('active');
-        }
-
-        function setTextRatio(ratio) {
-            selectedTextRatio = ratio;
-            document.getElementById('text_ratio_9_16').classList.remove('active');
-            document.getElementById('text_ratio_3_4').classList.remove('active');
-            document.getElementById('text_ratio_1_1').classList.remove('active');
-            document.getElementById('text_ratio_4_3').classList.remove('active');
-            document.getElementById('text_ratio_16_9').classList.remove('active');
-            const idMap = { '9:16': 'text_ratio_9_16', '3:4': 'text_ratio_3_4', '1:1': 'text_ratio_1_1', '4:3': 'text_ratio_4_3', '16:9': 'text_ratio_16_9' };
-            document.getElementById(idMap[ratio]).classList.add('active');
-        }
-
-        // 5. ГЛУБОКАЯ СБОРКА ДАННЫХ ПРИ НАЖАТИИ ГЛАВНОЙ СИНЕЙ КНОПКИ TELEGRAM
-        tg.onEvent('mainButtonClicked', function() {
-            tg.MainButton.text = "⏳ Сохраняю настройки...";
-            tg.MainButton.disable();
-
-            let dataToSend = {};
-
-            if (currentActiveMode === 'tryon') {
-                dataToSend = {
-                    mode_trigger: 'tryon',
-                    aspect_ratio: selectedTryOnRatio,
-                    quality: selectedQuality
-                };
-            } else if (currentActiveMode === 'text_image') {
-                dataToSend = {
-                    mode_trigger: 'text_image',
-                    aspect_ratio: selectedTextRatio,
-                    quality: selectedQuality
-                };
-            } else if (currentActiveMode === 'face_swap') {
-                dataToSend = {
-                    mode_trigger: 'face_swap',
-                    is_custom_template: true,
-                    aspect_ratio: selectedSwapRatio,
-                    quality: selectedQuality
-                };
-            } else if (currentActiveMode === 'bg_change') {
-                // ДОБАВИЛИ: Сбор формата для 4 режима Смены фона
-                dataToSend = {
-                    mode_trigger: 'bg_change',
-                    aspect_ratio: selectedBgRatio,
-                    quality: selectedQuality
-                };
-            }
-
-            // Отправляем собранную JSON строку в чат
-            try {
-                tg.sendData(JSON.stringify(dataToSend));
-                tg.close();
-            } catch (e) {
-                console.error("Ошибка отправки: ", e);
-                tg.MainButton.enable();
-                tg.MainButton.text = "❌ Ошибка. Повторить";
-            }
-        });
-
-        // 6. ФУНКЦИЯ А: КЛИК ПО ГОТОВОЙ КАРТОЧКЕ СТИЛЯ FACE SWAP (Вариант А)
-        function selectReadyTemplate(templateId, forcedRatio) {
-            const dataToSend = {
-                mode_trigger: 'face_swap',
-                is_custom_template: false,
-                template: templateId,
-                aspect_ratio: forcedRatio,
-                quality: selectedQuality
-            };
-            tg.sendData(JSON.stringify(dataToSend));
-            tg.close();
-        }
 </script>
+</body>
+</html>
+

@@ -837,21 +837,22 @@
                 tg.MainButton.text = "Запустить смену фона ✨"; 
                 tg.MainButton.show();
 
-            // --- ИСПРАВЛЕНО: ПЕРЕКЛЮЧЕНИЕ НОВЫХ ВИДЕО-ЭКРАНОВ ---
+            // --- ПЕРЕКЛЮЧЕНИЕ НОВЫХ ВИДЕО-ЭКРАНОВ ---
             } else if (screenName === 'video_menu') {
                 const el = document.getElementById('screen_video_menu');
                 if (el) el.classList.add('active');
             } else if (screenName === 'video_swap') {
                 const el = document.getElementById('screen_video_swap');
                 if (el) el.classList.add('active');
-                // Для видео фейссвапа мы используем свои кнопки генерации внизу экрана, 
-                // поэтому нижнюю системную кнопку Telegram MainButton здесь не показываем
+                tg.MainButton.hide(); // Гарантированно скрываем кнопку ТГ, юзер кликает только по шаблонам
             } else if (screenName === 'animate_nosound') {
                 const el = document.getElementById('screen_animate_nosound');
                 if (el) el.classList.add('active');
+                tg.MainButton.hide(); // Скрываем, так как кнопка "Оживить фото" у нас своя на самой странице
             } else if (screenName === 'animate_sound') {
                 const el = document.getElementById('screen_animate_sound');
                 if (el) el.classList.add('active');
+                tg.MainButton.hide(); // Скрываем, так как кнопка "Оживить фото" у нас своя на самой странице
                 
             // --- ДЕФОЛТНЫЙ СКРИПТ ОТПРАВКИ (ЕСЛИ ЭКРАН НЕ НАЙДЕН) ---
             } else {

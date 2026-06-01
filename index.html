@@ -611,14 +611,15 @@
         </div>
     <!-- ИСПРАВЛЕНО: Добавлен id="animate_nosound" родительскому контейнеру -->
     <div id="animate_nosound">
-        <!-- Настройки Kling v2.1 -->
-        <div class="form-group" style="background: var(--tg-theme-bg-color, #fff); padding: 15px; border-radius: 12px; border: 1px solid var(--tg-theme-border-color, #e1e6eb); margin-bottom: 15px;">
-            <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Длительность видео</label>
-            <div style="display: flex; gap: 10px;">
-                <button class="duration-btn active" id="duration_ns_5" onclick="setKlingDuration(5, this)" style="flex: 1; padding: 12px; border: 2px solid var(--tg-theme-border-color, #e1e6eb); border-radius: 8px; background: var(--tg-theme-bg-color, #fff); color: var(--tg-theme-text-color, #333); font-weight: bold; cursor: pointer;">5 секунд</button>
-                <button class="duration-btn" id="duration_ns_10" onclick="setKlingDuration(10, this)" style="flex: 1; padding: 12px; border: 2px solid var(--tg-theme-border-color, #e1e6eb); border-radius: 8px; background: var(--tg-theme-bg-color, #fff); color: var(--tg-theme-text-color, #333); font-weight: bold; cursor: pointer;">10 секунд</button>
-            </div>
-        </div>
+    <!-- Настройки Kling (Выбор времени) -->
+<div class="form-group" style="background: var(--tg-theme-bg-color, #fff); padding: 15px; border-radius: 12px; margin-bottom: 15px;">
+    <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Длительность видео</label>
+    <div style="display: flex; gap: 10px;" id="video_duration_block">
+        <!-- Две чистые кнопки, которые вызывают стандартную JS-функцию переключения -->
+        <button class="duration-btn active" onclick="setKlingDuration(5, this)" style="flex: 1; padding: 12px; border: 2px solid var(--tg-theme-border-color, #e1e6eb); border-radius: 8px; background: var(--tg-theme-bg-color, #fff); color: var(--tg-theme-text-color, #333); font-weight: bold; cursor: pointer;">5 секунд</button>
+        <button class="duration-btn" onclick="setKlingDuration(10, this)" style="flex: 1; padding: 12px; border: 2px solid var(--tg-theme-border-color, #e1e6eb); border-radius: 8px; background: var(--tg-theme-bg-color, #fff); color: var(--tg-theme-text-color, #333); font-weight: bold; cursor: pointer;">10 секунд</button>
+    </div>
+</div>
 
         <div class="form-group" style="background: var(--tg-theme-bg-color, #fff); padding: 15px; border-radius: 12px; border: 1px solid var(--tg-theme-border-color, #e1e6eb); margin-bottom: 20px;">
             <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Формат видео</label>
@@ -894,7 +895,6 @@
         // НАСТРОЙКИ И ОТПРАВКА ДЛЯ КНОПКИ БЕЗ ЗВУКА
         // Модель: Kling v2.1 Standard
         // ==========================================
-        let currentAnimateRatio = "16:9";
         let currentKlingDuration = 5;
 
         // Переключение соотношения сторон (16:9 / 9:16)
@@ -912,13 +912,15 @@
         // Переключение длительности (5 секунд / 10 секунд)
         // ИСПРАВЛЕНО: Селектор изменен на .duration-btn, управление через .active для поддержки темной темы
         function setKlingDuration(duration, element) {
-            document.querySelectorAll('#animate_nosound .duration-btn').forEach(btn => {
+            // Находим соседние кнопки в этой строке и убираем у них класс active
+            element.parentElement.querySelectorAll('.duration-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            if (element) {
-                element.classList.add('active');
-            }
+            // Подсвечиваем синим цветом текущую кнопку
+            element.classList.add('active');
+            // Записываем точные секунды в переменную
             currentKlingDuration = duration;
+            console.log(`[Video] Выбран хронометраж: ${currentKlingDuration} секунд.`);
         }
 
         // ОТПРАВКА: Без звука (Kling v2.1) -> Запускает FSM в боте
@@ -928,7 +930,7 @@
                 mode_trigger: "video_menu",
                 sub_mode: "animate_nosound",
                 model_path: "fal-ai/kling-video/v2.1/standard/image-to-video",
-                aspect_ratio: currentAnimateRatio,
+                aspect_ratio: "auto",
                 duration: currentKlingDuration,
                 start_step: "request_photo" // Даем команду боту начать Шаг 1 в чате
             };
@@ -942,24 +944,33 @@
         }
         
 // ==========================================
-        // НАСТРОЙКИ И ОТПРАВКА ДЛЯ КНОПКИ СО ЗВУКОМ
-        // Модель: Kling v2.6 Pro
-        // ==========================================
+        // ОТПРАВКА ДАННЫХ ДЛЯ КНОПКИ СО ЗВУКОМ (Kling v2.6 Pro)
         function sendAnimateSoundData() {
-            const useAudioToggle = document.getElementById('use_audio_toggle');
-            // Если чекбокс найден на экране, берем его состояние, иначе по умолчанию true
-            const useAudio = useAudioToggle ? useAudioToggle.checked : true;
-
+            const audioToggle = document.getElementById("use_audio_toggle");
+            
+            // Считываем: тру (если галочка стоит) или фолс (если снята)
+            const needAudioFile = audioToggle ? audioToggle.checked : false;
+            
             const payload = {
                 mode_trigger: "video_menu",
-                sub_mode: useAudio ? "animate_sound" : "animate_nosound",
-                model_path: "fal-ai/kling-video/v2.6/pro/image-to-video",
-                has_audio: useAudio,
-                start_step: "request_photo" // Даем команду боту начать Шаг 1 в чате
+                sub_mode: "animate_sound", // Для бота это знак, что включаем Kling 2.6 Pro
+                aspect_ratio: "auto",
+                duration: currentKlingDuration, // Сюда улетят 5 или 10 секунд с твоих кнопок времени
+                
+                // НАШ НОВЫЙ ГЛАВНЫЙ ФЛАГ-ПЕРЕКЛЮЧАТЕЛЬ ДЛЯ БОТА:
+                with_audio: needAudioFile, 
+                
+                start_step: "request_photo"
             };
             
-            // Вызываем функцию отправки
-            sendToTelegram(payload);
+            console.log("Улетает премиум-пакет видео со звуком:", payload);
+            
+            try {
+                tg.sendData(JSON.stringify(payload));
+                tg.close();
+            } catch (e) {
+                console.error("Ошибка отправки премиум-видео: ", e);
+            }
         }
 
         // ==========================================

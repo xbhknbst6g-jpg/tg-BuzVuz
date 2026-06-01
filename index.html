@@ -7,6 +7,15 @@
     <!-- Официальный скрипт Telegram Web App -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        /* ИСПРАВЛЕНО: Добавляем код принудительной подсветки кнопок Kling */
+        /* Этот стиль принудительно заставит кнопки менять цвет рамок на сайте */
+        #animate_nosound .duration-btn.active,
+        #animate_nosound .ratio-btn.active {
+            border-color: var(--tg-theme-button-color, #2481cc) !important;
+            background: var(--tg-theme-secondary-bg-color, #f0f2f5) !important;
+            color: var(--tg-theme-button-color, #2481cc) !important;
+            font-weight: bold !important; /* Делает текст активной кнопки жирным */
+        }
         /* ИНТЕГРАЦИЯ С ТЕМАМИ TELEGRAM И БЕЗОПАСНЫМИ ЗОНАМИ СМАРТФОНОВ */
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 

@@ -7,6 +7,54 @@
     <!-- Официальный скрипт Telegram Web App -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        /* Мобильная сетка для примеров */
+    .phone-templates-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Ровно 2 колонки на телефоне */
+        gap: 10px;
+        margin: 15px 0;
+    }
+
+    /* Компактная вертикальная карточка 3:4 */
+    .phone-template-card {
+        position: relative;
+        background: #000;
+        border-radius: 10px;
+        overflow: hidden;
+        aspect-ratio: 3 / 4; /* Идеальный мобильный формат */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        border: 1px solid #e1e6eb;
+    }
+
+    /* Растягиваем картинку без искажений */
+    .phone-template-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    /* Полупрозрачная плашка с текстом поверх картинки */
+    .phone-template-card .card-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.8)); /* Градиент для читаемости текста */
+        padding: 10px 8px 6px 8px;
+        color: #fff;
+        font-size: 11px;
+        font-weight: 500;
+        text-align: center;
+        line-height: 1.2;
+    }
+
+    /* Пятая карточка на всю ширину для баланса сетки */
+    .phone-template-card.full-width {
+        grid-column: span 2;
+        aspect-ratio: 16 / 7; /* Горизонтальная плашка в самом низу сетки */
+    }
+
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 15px; color: #333; }
         .header { text-align: center; margin-bottom: 25px; padding-top: 10px; }
         .header h1 { font-size: 22px; margin: 0 0 5px 0; color: #111; }
@@ -48,12 +96,63 @@
         .quality-selector { display: flex; gap: 10px; margin: 15px 0; }
         .quality-btn { flex: 1; padding: 12px; border: 2px solid #e1e6eb; border-radius: 8px; background: #fff; cursor: pointer; font-weight: bold; text-align: center; font-size: 13px; transition: all 0.15s ease; }
         .quality-btn.active { border-color: #f39c12; background: #fff9e6; color: #d35400; }
+
+        /* Полноэкранный плеер для мобильных */
+        .video-modal {
+            display: none; /* По умолчанию скрыт */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Контейнер для видео */
+        .video-modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 400px;
+            aspect-ratio: 9 / 16; /* Формат вертикального видео */
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .video-modal-content video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Кнопка закрытия */
+        .video-modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2100;
+            backdrop-filter: blur(5px);
+        }
     </style>
 </head>
 <body>
 
     <!-- ========================================== -->
-    <!-- ЭКРАН 1: ГЛАВНОЕ МЕНЮ САЙТА                -->
+    <!-- ЭКРАН 1: ГЛАВНОЕ МЕНЮ САЙТА  ФОТО              -->
     <!-- ========================================== -->
     <div id="screen_main_menu" class="screen active">
         <div class="header">
@@ -415,6 +514,280 @@
         </div>
     </div> <!-- ЗАКРЫВАЕМ ЭКРАН SCREEN_BG_CHANGE -->
    
+
+<!-- ========================================== -->
+    <!-- ЭКРАН: ГЛАВНОЕ МЕНЮ РАЗДЕЛА ВИДЕО          -->
+    <!-- ========================================== -->
+    <div id="screen_video_menu" class="screen">
+        <button class="back-btn" onclick="openScreen('main_menu')">← Назад</button>
+
+        <div class="header">
+            <h1>Интеллектуальная AI Видеостудия</h1>
+            <p>Выберите нужный инструмент для генерации видео</p>
+        </div>
+        
+        <div class="main-menu-grid">
+            <!-- Режим 1 -->
+            <div class="menu-card" onclick="openScreen('animate_nosound')">
+                <div class="menu-icon">🔇</div>
+                <div class="menu-info">
+                    <div class="menu-title">1. Оживление фото</div>
+                    <div class="menu-desc">Анимация статичного кадра (без звука)</div>
+                </div>
+            </div>
+
+            <!-- Режим 2 -->
+            <div class="menu-card" onclick="openScreen('animate_sound')">
+                <div class="menu-icon">🔊</div>
+                <div class="menu-info">
+                    <div class="menu-title">2. Оживление со звуком</div>
+                    <div class="menu-desc">Говорящая фотография под аудиодорожку</div>
+                </div>
+            </div>
+
+            <!-- Режим 3 (Наш PixVerse Swap) -->
+            <div class="menu-card" onclick="openScreen('video_swap')">
+                <div class="menu-icon">🎭</div>
+                <div class="menu-info">
+                    <div class="menu-title">3. Video Face Swap</div>
+                    <div class="menu-desc">Замена лиц на готовом видеоролике</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!-- ========================================== -->
+    <!-- ЭКРАН: ОЖИВЛЕНИЕ ФОТО (БЕЗ ЗВУКА)          -->
+    <!-- ========================================== -->
+    <div id="screen_animate_nosound" class="screen">
+        <button class="back-btn" onclick="openScreen('video_menu')">← Назад к видео</button>
+        
+        <div class="header" style="margin-bottom: 15px;">
+            <h1>Оживление фото (Kling v2.1)</h1>
+            <p>Модель: fal-ai/kling-video/v2.1/standard/image-to-video</p>
+        </div>
+
+        <!-- Сетка примеров (5 штук) -->
+        <div style="font-weight: bold; font-size: 14px; margin-bottom: 5px; color: #222;">Примеры генераций (нажмите для просмотра):</div>
+        <div class="phone-templates-grid">
+            <div class="phone-template-card" onclick="openPreviewVideo('https://w3schools.com')">
+                <img src="https://picsum.photos" alt="Пример 1">
+                <div class="card-overlay">🎬 Природный пейзаж</div>
+            </div>
+            <div class="phone-template-card" onclick="openPreviewVideo('https://w3schools.com')">
+                <img src="https://picsum.photos" alt="Пример 2">
+                <div class="card-overlay">🎬 Оживление города</div>
+            </div>
+            <div class="phone-template-card" onclick="openPreviewVideo('ссылка_на_видео_3.mp4')">
+                <img src="https://picsum.photos" alt="Пример 3">
+                <div class="card-overlay">🎬 Движение авто</div>
+            </div>
+            <div class="phone-template-card" onclick="openPreviewVideo('ссылка_на_видео_4.mp4')">
+                <img src="https://picsum.photos" alt="Пример 4">
+                <div class="card-overlay">🎬 Кинематографично</div>
+            </div>
+            <div class="phone-template-card full-width" onclick="openPreviewVideo('ссылка_на_видео_5.mp4')">
+                <img src="https://picsum.photos" alt="Пример 5">
+                <div class="card-overlay">🎬 Панорамный полет камеры</div>
+            </div>
+        </div>
+
+        <!-- ШАГ 1: Загрузка фото -->
+        <div class="form-group" style="background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e1e6eb; margin-bottom: 15px;">
+            <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px;">Шаг 1. Пришлите фото</label>
+            <input type="file" id="animate_ns_image" accept="image/*" style="width: 100%;">
+        </div>
+
+        <!-- ШАГ 2: Ввод промта -->
+        <div class="form-group" style="background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e1e6eb; margin-bottom: 15px;">
+            <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px;">Шаг 2. Пришлите промт (описание движения)</label>
+            <input type="text" id="animate_ns_prompt" placeholder="Например: камера плавно отлетает назад, парень улыбается" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 14px;">
+        </div>
+
+        <!-- Настройки Kling v2.1 -->
+        <div class="form-group" style="background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e1e6eb; margin-bottom: 15px;">
+            <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px;">Длительность видео</label>
+            <div style="display: flex; gap: 10px;">
+                <button class="ratio-btn active" id="duration_ns_5" onclick="setKlingDuration(5, this)" style="flex: 1; padding: 10px; border: 2px solid #e1e6eb; border-radius: 8px; background: #fff; font-weight: bold; cursor: pointer;">5 секунд</button>
+                <button class="ratio-btn" id="duration_ns_10" onclick="setKlingDuration(10, this)" style="flex: 1; padding: 10px; border: 2px solid #e1e6eb; border-radius: 8px; background: #fff; font-weight: bold; cursor: pointer;">10 секунд</button>
+            </div>
+        </div>
+
+        <div class="form-group" style="background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e1e6eb; margin-bottom: 20px;">
+            <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px;">Формат видео</label>
+            <div class="ratio-selector" style="display: flex; gap: 10px;">
+                <button class="ratio-btn active" id="ratio_ns_169" onclick="setAnimateRatio('16:9', this)" style="flex: 1; padding: 10px; border: 2px solid #e1e6eb; border-radius: 8px; background: #fff; font-weight: bold; cursor: pointer;">16:9</button>
+                <button class="ratio-btn" id="ratio_ns_916" onclick="setAnimateRatio('9:16', this)" style="flex: 1; padding: 10px; border: 2px solid #e1e6eb; border-radius: 8px; background: #fff; font-weight: bold; cursor: pointer;">9:16</button>
+            </div>
+        </div>
+
+        <button class="submit-btn" onclick="sendAnimateNoSoundData()" style="width: 100%; padding: 15px; background: #0088cc; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 30px;">Оживить фото</button>
+    </div>
+
+
+<!-- ========================================== -->
+    <!-- ЭКРАН: ОЖИВЛЕНИЕ ФОТО (СО ЗВУКОМ)          -->
+    <!-- ========================================== -->
+    <div id="<div id="screen_animate_sound" class="screen">
+        <button class="back-btn" onclick="openScreen('video_menu')">← Назад к видео</button>
+        
+        <div class="header" style="margin-bottom: 15px;">
+            <h1>Kling 2.6 Pro</h1>
+            <p>Модель: fal-ai/kling-video/v2.6/pro/image-to-video</p>
+        </div>
+
+        <!-- Сетка примеров (5 штук) -->
+        <div style="font-weight: bold; font-size: 14px; margin-bottom: 5px; color: #222;">Примеры генераций (нажмите для просмотра):</div>
+        <div class="phone-templates-grid">
+            <div class="phone-template-card" onclick="openPreviewVideo('ссылка_на_видео_1.mp4')">
+                <img src="https://picsum.photos" alt="Пример 1">
+                <div class="card-overlay">🔊 Диктор новостей</div>
+            </div>
+            <div class="phone-template-card" onclick="openPreviewVideo('ссылка_на_видео_2.mp4')">
+                <img src="https://picsum.photos" alt="Пример 2">
+                <div class="card-overlay">🔊 Бизнес-портрет</div>
+            </div>
+            <div class="phone-template-card" onclick="openPreviewVideo('ссылка_на_видео_3.mp4')">
+                <img src="https://picsum.photos" alt="Пример 3">
+                <div class="card-overlay">🔊 Эмоциональная речь</div>
+            </div>
+            <div class="phone-template-card" onclick="openPreviewVideo('ссылка_на_видео_4.mp4')">
+                <img src="https://picsum.photos" alt="Пример 4">
+                <div class="card-overlay">🔊 Презентация продукта</div>
+            </div>
+            <div class="phone-template-card full-width" onclick="openPreviewVideo('ссылка_на_видео_5.mp4')">
+                <img src="https://picsum.photos" alt="Пример 5">
+                <div class="card-overlay">🔊 Исторический персонаж</div>
+            </div>
+        </div>
+
+        <!-- ШАГ 1: Загрузка портрета -->
+        <div class="form-group" style="background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e1e6eb; margin-bottom: 15px;">
+            <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px;">Шаг 1. Пришлите фото (Портрет)</label>
+            <input type="file" id="animate_s_image" accept="image/*" style="width: 100%;">
+        </div>
+
+        <!-- ШАГ 2: Ввод промта -->
+        <div class="form-group" style="background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e1e6eb; margin-bottom: 15px;">
+            <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px;">Шаг 2. Пришлите промт (подсказку мимики)</label>
+            <input type="text" id="animate_s_prompt" placeholder="Например: диктор уверенно рассказывает текст, улыбается" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 14px;">
+        </div>
+
+        <!-- ВЫБОР РЕЖИМА: С аудио или без -->
+        <div class="form-group" style="background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e1e6eb; margin-bottom: 15px;">
+            <label style="display: flex; align-items: center; font-weight: bold; font-size: 14px; cursor: pointer; user-select: none;">
+                <input type="checkbox" id="use_audio_toggle" checked onchange="toggleAudioField(this)" style="width: 18px; height: 18px; margin-right: 10px; cursor: pointer;">
+                Добавить аудиофайл (Липсинк / Озвучка)
+            </label>
+        </div>
+
+        <!-- ШАГ 3: Загрузка аудиофайла (Динамически скрываемый блок) -->
+        <div class="form-group" id="audio_upload_block" style="background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e1e6eb; margin-bottom: 20px;">
+            <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px;">Шаг 3. Загрузите аудио с речью</label>
+            <input type="file" id="animate_s_audio" accept="audio/*" style="width: 100%;">
+        </div>
+
+        <button class="submit-btn" onclick="sendAnimateSoundData()" style="width: 100%; padding: 15px; background: #0088cc; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 30px;">Оживить фото в Kling 2.6 Pro</button>
+    </div>
+
+
+<!-- ========================================== -->
+    <!-- ЭКРАН НАСТРОЙКИ: VIDEO FACE SWAP          -->
+    <!-- ========================================== -->
+    <div id="screen_video_swap" class="screen">
+        <button class="back-btn" onclick="openScreen('video_menu')">← Назад к видео</button>
+        
+        <div class="header" style="margin-bottom: 15px;">
+            <h1>Video Face Swap</h1>
+            <p>Перенос лица на видео через модель PixVerse</p>
+        </div>
+
+        <!-- ====================================================== -->
+        <!-- РЕЖИМ 1: ВЫБОР ИЗ ГОТОВЫХ ВИДЕО-ШАБЛОНОВ (5 примеров)   -->
+        <!-- ====================================================== -->
+        <div style="font-weight: bold; font-size: 14px; margin-bottom: 5px; color: #222;">Вариант 1. Выберите готовый видео-шаблон:</div>
+        <div style="font-size: 12px; color: #777; margin-bottom: 10px;">Нажмите на шаблон, чтобы использовать его. Бот попросит только ваше фото.</div>
+        
+        <div class="phone-templates-grid">
+            <!-- Шаблон 1 -->
+            <div class="phone-template-card" onclick="selectVideoTemplate('template_video_1.mp4', 'Супергерой')">
+                <img src="https://picsum.photos" alt="Шаблон 1">
+                <div class="card-overlay">🎭 Супергерой</div>
+            </div>
+            <!-- Шаблон 2 -->
+            <div class="phone-template-card" onclick="selectVideoTemplate('template_video_2.mp4', 'Танцор')">
+                <img src="https://picsum.photos" alt="Шаблон 2">
+                <div class="card-overlay">🎭 Танцор</div>
+            </div>
+            <!-- Шаблон 3 -->
+            <div class="phone-template-card" onclick="selectVideoTemplate('template_video_3.mp4', 'Киноактер')">
+                <img src="https://picsum.photos" alt="Шаблон 3">
+                <div class="card-overlay">🎭 Киноактер</div>
+            </div>
+            <!-- Шаблон 4 -->
+            <div class="phone-template-card" onclick="selectVideoTemplate('template_video_4.mp4', 'Бизнесмен')">
+                <img src="https://picsum.photos" alt="Шаблон 4">
+                <div class="card-overlay">🎭 Бизнесмен</div>
+            </div>
+            <!-- Шаблон 5 (На всю ширину) -->
+            <div class="phone-template-card full-width" onclick="selectVideoTemplate('template_video_5.mp4', 'Подиум')">
+                <img src="https://picsum.photos" alt="Шаблон 5">
+                <div class="card-overlay">🎭 Модель на подиуме</div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin: 20px 0; font-weight: bold; color: #aaa;">— ИЛИ —</div>
+
+        <!-- ====================================================== -->
+        <!-- РЕЖИМ 2: ЗАГРУЗКА СОБСТВЕННОГО ФОТО И ВИДЕО            -->
+        <!-- ====================================================== -->
+        <div style="font-weight: bold; font-size: 14px; margin-bottom: 15px; color: #222;">Вариант 2. Загрузить собственное видео и фото:</div>
+
+        <!-- Шаг 1: Загрузка своего фото лица -->
+        <div class="form-group" style="background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e1e6eb; margin-bottom: 15px;">
+            <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px;">Шаг 1. Загрузите фото вашего лица</label>
+            <input type="file" id="video_swap_face" accept="image/*" style="width: 100%;">
+        </div>
+
+        <!-- Шаг 2: Загрузка своего видео -->
+        <div class="form-group" style="background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e1e6eb; margin-bottom: 15px;">
+            <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px;">Шаг 2. Загрузите видео, куда вставить лицо</label>
+            <input type="file" id="video_swap_file" accept="video/*" style="width: 100%;">
+        </div>
+
+        <!-- Поле настройки Keyframe ID -->
+        <div class="form-group" style="background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e1e6eb; margin-bottom: 15px;">
+            <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px;">3. Ключевой кадр (Keyframe ID)</label>
+            <input type="number" id="video_swap_keyframe" value="1" min="1" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 14px;">
+            <div style="font-size: 12px; color: #777; margin-top: 5px; line-height: 1.4;">Кадр, где лицо видно лучше всего (1 — начало).</div>
+        </div>
+
+        <!-- Выбор качества и тарифа -->
+        <div class="form-group" style="background: #fff; padding: 15px; border-radius: 12px; border: 1px solid #e1e6eb; margin-bottom: 20px;">
+            <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px;">4. Разрешение видео</label>
+            <div class="quality-selector">
+                <div class="quality-btn" onclick="setVideoQuality('360p', this)">360p</div>
+                <div class="quality-btn" onclick="setVideoQuality('540p', this)">540p</div>
+                <div class="quality-btn active" onclick="setVideoQuality('720p', this)">720p</div>
+                <div class="quality-btn" onclick="setVideoQuality('1080p', this)">1080p</div>
+            </div>
+        </div>
+
+        <!-- Кнопка генерации для Варианта 2 -->
+        <button class="submit-btn" onclick="sendCustomVideoSwapData()" style="width: 100%; padding: 15px; background: #0088cc; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 30px;">Оживить фото (Своё видео)</button>
+    </div>
+        <!-- Кнопка генерации -->
+        <button class="submit-btn" onclick="sendVideoSwapData()" style="width: 100%; padding: 15px; background: #0088cc; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer;">Запустить генерацию</button>
+    </div>
+<!-- Полноэкранный плеер (один на все экраны) -->
+        <div id="videoPlayerModal" class="video-modal" onclick="closePreviewVideo()">
+            <div class="video-modal-content" onclick="event.stopPropagation()">
+                <div class="video-modal-close" onclick="closePreviewVideo()">×</div>
+                <video id="previewVideoPlayer" playsinline loop controls></video>
+            </div>
+        </div>
+
     <!-- ========================================== -->
     <!-- ИСПРАВЛЕННЫЙ И БЕЗОПАСНЫЙ СКРИПТ           -->
     <!-- ========================================== -->
@@ -562,6 +935,173 @@
             };
             tg.sendData(JSON.stringify(dataToSend));
             tg.close();
+        }
+
+// ==========================================
+        // НАСТРОЙКИ И ОТПРАВКА ДЛЯ КНОПКИ БЕЗ ЗВУКА
+        // Модель: Kling v2.1 Standard
+        // ==========================================
+        let currentAnimateRatio = "16:9";
+        let currentKlingDuration = 5;
+
+        function setAnimateRatio(ratio, element) {
+            document.querySelectorAll('#screen_animate_nosound .ratio-btn[id^="ratio_ns_"]').forEach(btn => {
+                btn.style.borderColor = '#e1e6eb'; btn.style.background = '#fff'; btn.style.color = '#333';
+            });
+            element.style.borderColor = '#0088cc'; element.style.background = '#e6f7ff'; element.style.color = '#0088cc';
+            currentAnimateRatio = ratio;
+        }
+
+        function setKlingDuration(duration, element) {
+            document.querySelectorAll('#screen_animate_nosound .ratio-btn[id^="duration_ns_"]').forEach(btn => {
+                btn.style.borderColor = '#e1e6eb'; btn.style.background = '#fff'; btn.style.color = '#333';
+            });
+            element.style.borderColor = '#f39c12'; element.style.background = '#fff9e6'; element.style.color = '#d35400';
+            currentKlingDuration = duration;
+        }
+
+        // Отправка: БЕЗ звука (Kling v2.1)
+        function sendAnimateNoSoundData() {
+            const imgInput = document.getElementById('animate_ns_image');
+            const promptInput = document.getElementById('animate_ns_prompt');
+
+            if (imgInput.files.length === 0) {
+                alert("Пожалуйста, выполните Шаг 1: выберите фото!");
+                return;
+            }
+
+            const payload = {
+                mode: "kling_v21_standard_image_to_video",
+                model_path: "fal-ai/kling-video/v2.1/standard/image-to-video",
+                aspect_ratio: currentAnimateRatio,
+                duration: currentKlingDuration,
+                prompt: promptInput.value || "realistic animation",
+                image_name: imgInput.files[0].name
+            };
+
+            sendToTelegram(payload);
+        }
+
+        // Функция скрытия/показа блока загрузки аудио в зависимости от галочки
+        function toggleAudioField(checkbox) {
+            const audioBlock = document.getElementById('audio_upload_block');
+            if (checkbox.checked) {
+                audioBlock.style.display = 'block';
+            } else {
+                audioBlock.style.display = 'none';
+                // Сбрасываем выбранный файл, если сняли галочку
+                document.getElementById('animate_s_audio').value = ""; 
+            }
+        }
+
+        // ОТПРАВКА: Kling v2.6 Pro (С аудио или без него)
+        function sendAnimateSoundData() {
+            const imgInput = document.getElementById('animate_s_image');
+            const audioInput = document.getElementById('animate_s_audio');
+            const promptInput = document.getElementById('animate_s_prompt');
+            const useAudio = document.getElementById('use_audio_toggle').checked;
+
+            // Базовая проверка фото
+            if (imgInput.files.length === 0) {
+                alert("Пожалуйста, выполните Шаг 1: выберите фотографию!");
+                return;
+            }
+
+            // Проверка аудио, ТОЛЬКО если включена галочка
+            if (useAudio && audioInput.files.length === 0) {
+                alert("Вы включили добавление аудио. Пожалуйста, выполните Шаг 3: загрузите аудиофайл!");
+                return;
+            }
+
+            // Формируем payload для бота
+            const payload = {
+                mode: useAudio ? "kling_v26_pro_with_audio" : "kling_v26_pro_no_audio",
+                model_path: "fal-ai/kling-video/v2.6/pro/image-to-video",
+                prompt: promptInput.value || "talking portrait, professional animation",
+                image_name: imgInput.files[0].name,
+                has_audio: useAudio, // Передаем флаг бэкенду
+                audio_name: useAudio ? audioInput.files[0].name : null
+            };
+
+            sendToTelegram(payload);
+        }
+
+        function sendToTelegram(payload) {
+            if (window.Telegram?.WebApp) {
+                window.Telegram.WebApp.sendData(JSON.stringify(payload));
+                window.Telegram.WebApp.close();
+            } else {
+                console.log("Данные для отправки боту:", payload);
+                alert("Успешно собрано! Проверьте консоль.");
+            }
+        }
+
+                // Функция открытия полноэкранного превью
+        function openPreviewVideo(videoUrl) {
+            if (!videoUrl || videoUrl.includes('ссылка_на_')) {
+                alert("Видео-пример еще загружается на сервер или ссылка не указана!");
+                return;
+            }
+            const modal = document.getElementById('videoPlayerModal');
+            const player = document.getElementById('previewVideoPlayer');
+            
+            player.src = videoUrl;
+            modal.style.display = 'flex';
+            player.play().catch(error => {
+                console.log("Автовоспроизведение заблокировано браузером, нужен клик по плееру:", error);
+            });
+        }
+
+        // Функция закрытия плеера
+        function closePreviewVideo() {
+            const modal = document.getElementById('videoPlayerModal');
+            const player = document.getElementById('previewVideoPlayer');
+            
+            modal.style.display = 'none';
+            player.pause();
+            player.src = ""; // Сбрасываем видео, чтобы оно не качало трафик в фоне
+        }   
+        let currentVideoQuality = "720p";
+
+        function setVideoQuality(quality, element) {
+            document.querySelectorAll('#screen_video_swap .quality-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            currentVideoQuality = quality;
+        }
+
+        // ВАРИАНТ 1: Юзер кликнул по готовому видео-шаблону
+        function selectVideoTemplate(templateUrl, templateName) {
+            const payload = {
+                mode: "video_face_swap_template",
+                template_video_url: templateUrl,
+                template_name: templateName,
+                instruction: "Шаблон выбран успешно! Теперь бот попросит прислать ваше фото лица."
+            };
+            
+            sendToTelegram(payload);
+        }
+
+        // ВАРИАНТ 2: Юзер заполнил форму со своим видео и фото
+        function sendCustomVideoSwapData() {
+            const faceInput = document.getElementById('video_swap_face');
+            const videoInput = document.getElementById('video_swap_file');
+            const keyframeInput = document.getElementById('video_swap_keyframe');
+
+            if (faceInput.files.length === 0 || videoInput.files.length === 0) {
+                alert("Для Варианта 2 необходимо загрузить и фото лица (Шаг 1), и видео файл (Шаг 2)!");
+                return;
+            }
+
+            const payload = {
+                mode: "video_face_swap_custom",
+                quality: currentVideoQuality,
+                keyframe_id: parseInt(keyframeInput.value, 10) || 1,
+                face_file_name: faceInput.files[0].name,
+                video_file_name: videoInput.files[0].name,
+                instruction: "Собственные файлы добавлены! Шаг 1: бот примет фото, Шаг 2: бот примет видео."
+            };
+
+            sendToTelegram(payload);
         }
     </script>
 </body>

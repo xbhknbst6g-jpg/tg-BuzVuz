@@ -725,7 +725,8 @@
         let selectedTryOnRatio = '9:16';  
         let selectedTextRatio = '9:16';   
         let selectedSwapRatio = '9:16';   
-        let selectedBgRatio = '9:16';     
+        let selectedBgRatio = '9:16';   
+        let currentKlingDuration = 5;  
         
         // ИСПРАВЛЕНО: Каждому режиму своя изолированная переменная качества, чтобы настройки не сбивались хаотично
         let selectedTextQuality = 'schnell';
@@ -895,7 +896,6 @@
         // НАСТРОЙКИ И ОТПРАВКА ДЛЯ КНОПКИ БЕЗ ЗВУКА
         // Модель: Kling v2.1 Standard
         // ==========================================
-        let currentKlingDuration = 5;
 
         // Переключение соотношения сторон (16:9 / 9:16)
         // ИСПРАВЛЕНО: Убран неверный префикс screen_, переключение через нативный класс .active без хардкода цвета
@@ -945,34 +945,43 @@
         
 // ==========================================
         // ОТПРАВКА ДАННЫХ ДЛЯ КНОПКИ СО ЗВУКОМ (Kling v2.6 Pro)
-        function sendAnimateSoundData() {
-            const audioToggle = document.getElementById("use_audio_toggle");
-            
-            // Считываем: тру (если галочка стоит) или фолс (если снята)
-            const needAudioFile = audioToggle ? audioToggle.checked : false;
-            
-            const payload = {
-                mode_trigger: "video_menu",
-                sub_mode: "animate_sound", // Для бота это знак, что включаем Kling 2.6 Pro
-                aspect_ratio: "auto",
-                duration: currentKlingDuration, // Сюда улетят 5 или 10 секунд с твоих кнопок времени
-                
-                // НАШ НОВЫЙ ГЛАВНЫЙ ФЛАГ-ПЕРЕКЛЮЧАТЕЛЬ ДЛЯ БОТА:
-                with_audio: needAudioFile, 
-                
-                start_step: "request_photo"
-            };
-            
-            console.log("Улетает премиум-пакет видео со звуком:", payload);
-            
-            try {
-                tg.sendData(JSON.stringify(payload));
-                tg.close();
-            } catch (e) {
-                console.error("Ошибка отправки премиум-видео: ", e);
-            }
+function sendAnimateSoundData() {
+    const audioToggle = document.getElementById("use_audio_toggle");
+    
+    // Считываем положение чекбокса
+    const needAudioFile = audioToggle ? audioToggle.checked : false;
+    
+    // Убедимся, что переменная времени существует, если нет - ставим страховку 5 сек.
+    const finalDuration = (typeof currentKlingDuration !== 'undefined') ? currentKlingDuration : 5;
+    
+    const payload = {
+        mode_trigger: "video_menu",
+        sub_mode: "animate_sound", 
+        aspect_ratio: "auto",
+        duration: finalDuration, 
+        with_audio: needAudioFile, 
+        start_step: "request_photo"
+    };
+    
+    console.log("Улетает премиум-пакет видео со звуком:", payload);
+    
+    try {
+        // Проверяем, инициализирован ли объект Telegram WebApp
+        if (typeof tg !== 'undefined' && tg.sendData) {
+            tg.sendData(JSON.stringify(payload));
+            tg.close();
+        } else if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
+            Telegram.WebApp.sendData(JSON.stringify(payload));
+            Telegram.WebApp.close();
+        } else {
+            alert("Ошибка: Telegram WebApp API не найдено на этой странице!");
         }
-
+    } catch (e) {
+        // Если код упадет, вместо черного экрана выскочит это окно с описанием ошибки:
+        alert("Критическая ошибка отправки данных: " + e.message);
+        console.error("Ошибка отправки премиум-видео: ", e);
+    }
+}
         // ==========================================
         // ЕДИНАЯ ФУНКЦИЯ ОТПРАВКИ ДАННЫХ В ТЕЛЕГРАМ
         // ==========================================

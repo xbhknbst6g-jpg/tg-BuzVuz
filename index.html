@@ -791,7 +791,28 @@
     <!-- ========================================== -->
     <!-- ИСПРАВЛЕННЫЙ И БЕЗОПАСНЫЙ СКРИПТ           -->
     <!-- ========================================== -->
-    <script>
+<script>
+        // === АВТООПРЕДЕЛЕНИЕ РЕЖИМА ПРИ ЗАПУСКЕ ИЗ БОТА ===
+        window.addEventListener('DOMContentLoaded', () => {
+            const tgInstance = window.Telegram?.WebApp;
+            if (tgInstance) {
+                tgInstance.ready();  // Сообщаем Телеграму, что приложение загрузилось
+                tgInstance.expand(); // Разворачиваем шторку Web App на весь экран телефона
+            }
+
+            // Считываем параметры из ссылки (наш хвостик ?mode=video)
+            const urlParams = new URLSearchParams(window.location.search);
+            const mode = urlParams.get('mode');
+
+            // Переключаем на нужный экран в зависимости от кнопки в боте
+            if (mode === 'video') {
+                openScreen('video_menu'); 
+            } else {
+                openScreen('main_menu'); 
+            }
+        });
+
+        // Оставляем это объявление для всех остальных ваших функций ниже
         const tg = window.Telegram.WebApp;
         tg.expand();
 
@@ -803,7 +824,7 @@
         let selectedSwapRatio = '9:16';   
         let selectedBgRatio = '9:16';     
         let selectedQuality = 'schnell';  
-
+        
         // 2. ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ
         function openScreen(screenName) {
             currentActiveMode = screenName;

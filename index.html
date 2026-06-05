@@ -744,31 +744,38 @@
 <!-- ИСПРАВЛЕННЫЙ И БЕЗОПАСНЫЙ СКРИПТ           -->
 <!-- ========================================== -->
 <script>
-        // Инициализация Telegram WebApp API
-        const tg = window.Telegram.WebApp;
+        // === АВТООПРЕДЕЛЕНИЕ РЕЖИМА ПРИ ЗАПУСКЕ ИЗ БОТА ===
+        function checkAndRouteScreen() {
+            // Считываем параметры из актуальной ссылки
+            const urlParams = new URLSearchParams(window.location.search);
+            const mode = urlParams.get('mode');
 
-                        // === АВТООПРЕДЕЛЕНИЕ РЕЖИМА ПРИ ЗАПУСКЕ ИЗ БОТА ===
+            console.log("[Router] Обнаружен режим шторки: ", mode);
+
+            // Принудительно очищаем класс активного экрана перед роутингом
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+
+            if (mode === 'video') {
+                openScreen('video_menu'); 
+            } else if (mode === 'photo') {
+                openScreen('main_menu'); // Твое меню фото-инструментов из 4 пунктов
+            } else if (mode === 'image') {
+                openScreen('face_swap');  
+            } else if (mode === 'direct' || mode === 'img_gen') {
+                openScreen('image_generation_direct'); // Твой нужный экран генерации по тексту с нуля!
+                if (typeof updateDirectMainButton === 'function') updateDirectMainButton();
+            } else {
+                openScreen('main_menu');  
+            }
+        }
+
+        // Запуск роутера при загрузке страницы
         window.addEventListener('DOMContentLoaded', () => {
             if (tg) {
                 tg.ready();  
                 tg.expand(); 
             }
-
-            // Считываем параметры из ссылки бота (?mode=...)
-            const urlParams = new URLSearchParams(window.location.search);
-            const mode = urlParams.get('mode');
-
-            // ИСПРАВЛЕНО: Теперь сайт четко понимает разделы картинок и открывает нужную шторку!
-            if (mode === 'video') {
-                openScreen('video_menu'); // Откроет шторку видео
-            } else if (mode === 'photo') {
-                openScreen('main_menu'); // Откроет подраздел настроек Фото + Текст
-            } else if (mode === 'direct') {
-                openScreen('image_generation_direct'); // Откроет экран чистой генерации картинок по тексту с нуля
-                if (typeof updateDirectMainButton === 'function') updateDirectMainButton();
-            } else {
-                openScreen('main_menu');  // Если режима нет (зашли просто так), включаем главное меню
-            }
+            checkAndRouteScreen();
         });
 
 

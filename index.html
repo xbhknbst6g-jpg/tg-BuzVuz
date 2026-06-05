@@ -741,38 +741,36 @@
 
 
 <!-- ========================================== -->
-<!-- ИСПРАВЛЕННЫЙ И БЕЗОПАСНЫЙ СКРИПТ           -->
+<!-- ИСПРАВЛЕННЫЙ И БЕЗОПАСНЫЙ СКРИПТ: ЧАСТЬ 1  -->
 <!-- ========================================== -->
 <script>
         // Инициализация Telegram WebApp API
         const tg = window.Telegram.WebApp;
 
-                        // === АВТООПРЕДЕЛЕНИЕ РЕЖИМА ПРИ ЗАПУСКЕ ИЗ БОТА ===
+        // === АВТООПРЕДЕЛЕНИЕ РЕЖИМА ПРИ ЗАПУСКЕ ИЗ БОТА ===
+        // ИСПРАВЛЕНО: Объединили старт_парам и mode в один чистый роутер без наложений экранов
         window.addEventListener('DOMContentLoaded', () => {
             if (tg) {
                 tg.ready();  
                 tg.expand(); 
             }
 
-            // Считываем параметры из ссылки бота (?mode=...)
             const urlParams = new URLSearchParams(window.location.search);
             const mode = urlParams.get('mode');
+            const startParam = tg?.initDataUnsafe?.start_param;
 
-            // ИСПРАВЛЕНО: Теперь сайт четко понимает разделы картинок и открывает нужную шторку!
             if (mode === 'video') {
-                openScreen('video_menu'); // Откроет шторку видео
+                openScreen('video_menu'); 
             } else if (mode === 'photo') {
-                openScreen('main_menu'); // Откроет подраздел настроек Фото + Текст
-            } else if (mode === 'direct' || mode === 'img_gen') {
-                openScreen('image_generation_direct'); // Твой нужный экран генерации по тексту с нуля!
-                if (typeof updateDirectMainButton === 'function') updateDirectMainButton();
+                openScreen('main_menu'); 
+            } else if (mode === 'image') {
+                openScreen('face_swap');  
+            } else if (mode === 'direct' || mode === 'img_gen' || startParam === 'img_gen') {
+                openScreen('image_generation_direct'); 
             } else {
-                openScreen('main_menu');  // Если режима нет (зашли просто так), включаем главное меню
+                openScreen('main_menu');  
             }
         });
-
-
-
 
         // 1. ИНИЦИАЛИЗАЦИЯ ВСЕХ ПЕРЕМЕННЫХ НАСТРОЕК
         let currentActiveMode = 'main_menu';
@@ -784,17 +782,15 @@
         let currentAnimateRatio = '16:9';  
         let currentKlingDuration = 5;  
         
-        // Каждому режиму своя изолированная переменная качества, чтобы настройки не сбивались хаотично
         let selectedTextQuality = 'schnell';
         let selectedSwapQuality = 'schnell';
         let selectedTryOnQuality = 'schnell';
         let selectedBgQuality = 'schnell';
 
-                // 2. ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ (ИСПРАВЛЕНО ДЛЯ 3-Й КНОПКИ)
+        // 2. ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ (ИСПРАВЛЕНО: СКОБКИ ЗАКРЫТЫ, ФУНКЦИИ ВЫНЕСЕНЫ НАРУЖУ)
         function openScreen(screenName) {
             currentActiveMode = screenName;
             
-            // ИСПРАВЛЕНО: Добавили 'image_generation_direct' в список, чтобы шторка не закрывалась!
             const screens = [
                 'main_menu', 
                 'face_swap', 
@@ -804,66 +800,21 @@
                 'video_menu',       
                 'animate_nosound',  
                 'animate_sound',
-                'image_generation_direct' // <-- ОБЯЗАТЕЛЬНО ДОЛЖЕН БЫТЬ ТУТ!
+                'image_generation_direct' 
             ];
             
-            // Скрываем абсолютно все экраны перед показом нужного
             screens.forEach(s => {
                 const el = document.getElementById(s);
                 if (el) el.classList.remove('active');
             });
             
-            // По умолчанию скрываем главную кнопку Telegram
             tg.MainButton.hide();
 
-            // Компактный и безошибочный поиск и показ целевого экрана
             const activeScreenEl = document.getElementById(screenName);
             if (activeScreenEl) {
                 activeScreenEl.classList.add('active');
             }
-        
-                // ====================================================================================
-        // ЕДИНИЧНЫЕ ФУНКЦИИ ОТПРАВКИ JSON ДЛЯ ЭКРАНОВ ФОТО-СТУДИИ (ДОБАВЛЕНО ИСПРАВЛЕНИЕ)
-        // ====================================================================================
-        
-        // 1. Отправка для экрана Фото + Текст
-        function sendPhotoTextData() { 
-            sendToTelegram({ 
-                mode_trigger: 'text_image', 
-                aspect_ratio: selectedTextRatio, 
-                quality: selectedTextQuality 
-            }); 
-        }
-        
-        // 2. Отправка для кастомного Face Swap (Загрузить свой шаблон)
-        function sendCustomFaceSwapData() { 
-            sendToTelegram({ 
-                mode_trigger: 'face_swap', 
-                is_custom_template: true, 
-                aspect_ratio: selectedSwapRatio, 
-                quality: selectedSwapQuality 
-            }); 
-        }
-        
-        // 3. Отправка для Примерки одежды
-        function sendTryOnData() { 
-            sendToTelegram({ 
-                mode_trigger: 'tryon', 
-                aspect_ratio: selectedTryOnRatio, 
-                quality: selectedTryOnQuality 
-            }); 
-        }
-        
-        // 4. Отправка для Смены фона
-        function sendBgChangeData() { 
-            sendToTelegram({ 
-                mode_trigger: 'bg_change', 
-                aspect_ratio: selectedBgRatio, 
-                quality: selectedBgQuality 
-            }); 
-        }
 
-            // Настройка поведения Telegram MainButton в зависимости от экрана
             if (screenName === 'face_swap') {
                 setupMainButton("Загрузить свой шаблон в боте ✨", sendCustomFaceSwapData);
             } else if (screenName === 'tryon') {
@@ -873,13 +824,11 @@
             } else if (screenName === 'bg_change') {
                 setupMainButton("Запустить смену фона ✨", sendBgChangeData);
             } else if (screenName === 'image_generation_direct') {
-                // Если включился 3-й экран, запускаем обновление его личной кнопки!
                 if (typeof updateDirectMainButton === 'function') updateDirectMainButton();
             } else if (screenName === 'video_swap' || screenName === 'animate_nosound' || screenName === 'animate_sound') {
                 tg.MainButton.hide(); 
             }
             
-            // Триггер закроет шторку только если экрана РЕАЛЬНО нет в списке
             if (!screens.includes(screenName)) {
                 const directData = { mode_trigger: screenName };
                 tg.sendData(JSON.stringify(directData));
@@ -887,39 +836,35 @@
             }
         }
 
-        // Вспомогательный конфигуратор главной кнопки Telegram
         function setupMainButton(text, callback) {
             tg.MainButton.setText(text);
             tg.MainButton.show();
-            tg.MainButton.offClick();
+            tg.MainButton.offClick(); 
             tg.MainButton.onClick(callback);
         }
 
-                // Переменные для хранения настроек этого конкретного экрана
-        let directGenRatio = '9:16';
-        let directGenQuality = 'schnell';
-
-        // Функция выбора формата (ИСПРАВЛЕНО: ищет активную кнопку динамически по тексту без ID)
+        // ====================================================================================
+        // ЕДИНИЧНЫЕ ФУНКЦИИ ОТПРАВКИ JSON ДЛЯ ЭКРАНОВ ФОТО-СТУДИИ
+        // ====================================================================================
+        function sendPhotoTextData() { sendToTelegram({ mode_trigger: 'text_image', aspect_ratio: selectedTextRatio, quality: selectedTextQuality }); }
+        function sendCustomFaceSwapData() { sendToTelegram({ mode_trigger: 'face_swap', is_custom_template: true, aspect_ratio: selectedSwapRatio, quality: selectedSwapQuality }); }
+        function sendTryOnData() { sendToTelegram({ mode_trigger: 'tryon', aspect_ratio: selectedTryOnRatio, quality: selectedTryOnQuality }); }
+        function sendBgChangeData() { sendToTelegram({ mode_trigger: 'bg_change', aspect_ratio: selectedBgRatio, quality: selectedBgQuality }); }
+        // ====================================================================================
+        // НАСТРОЙКИ И УПРАВЛЕНИЕ ЭКРАНОМ ПРЯМОЙ ГЕНЕРАЦИИ (FLUX ПО ТЕКСТУ)
+        // ====================================================================================
         function setDirectGenRatio(ratio) {
-            // Гасим все кнопки форматов на 3-м экране
             document.querySelectorAll('#image_generation_direct .ratio-selector .ratio-btn').forEach(btn => {
                 btn.classList.remove('active');
-                // Если текст кнопки содержит нужные пропорции, подсвечиваем её
-                if (btn.innerText.includes(ratio)) {
-                    btn.classList.add('active');
-                }
+                if (btn.innerText.includes(ratio)) btn.classList.add('active');
             });
             directGenRatio = ratio;
             updateDirectMainButton();
         }
 
-        // Функция выбора качества (ИСПРАВЛЕНО: ищет активную кнопку динамически по тексту без ID)
         function setDirectGenQuality(quality) {
-            // Гасим все кнопки качества на 3-м экране
             document.querySelectorAll('#image_generation_direct .quality-selector .quality-btn').forEach(btn => {
                 btn.classList.remove('active');
-                
-                // Проверяем триггеры качества по тексту кнопок
                 if (quality === 'schnell' && btn.innerText.includes('Standard')) btn.classList.add('active');
                 if (quality === 'dev' && btn.innerText.includes('Pro')) btn.classList.add('active');
                 if (quality === 'ultra_4k' && btn.innerText.includes('Ultra')) btn.classList.add('active');
@@ -928,58 +873,31 @@
             updateDirectMainButton();
         }
 
-        // Управление Главной кнопкой Telegram (MainButton) для прямого режима
-        // ИСПРАВЛЕНО: Пакет данных переименован в mode_trigger для точной синхронизации с handler_web_app_data в боте!
         function updateDirectMainButton() {
             if (!tg) return;
-            
             const readableQual = directGenQuality === 'schnell' ? 'Standard' : directGenQuality === 'dev' ? 'Pro' : 'Ultra 4K';
             tg.MainButton.setText(`Выбрать формат ${directGenRatio} (${readableQual}) ✨`);
             tg.MainButton.show();
             
             tg.MainButton.offClick();
             tg.MainButton.onClick(function() {
-                // Переименовали ключи, чтобы бот (handle_web_app_data) прочитал их без ошибок!
                 const dataToSend = {
-                    mode_trigger: "pure_text_image", // Твой триггер Кнопки 6 из бота
+                    mode_trigger: "pure_text_image", 
                     aspect_ratio: directGenRatio,
                     quality: directGenQuality
                 };
-                
-                try {
-                    tg.sendData(JSON.stringify(dataToSend));
-                    tg.close();
-                } catch(e) {
-                    console.error("Ошибка отправки ТГ: ", e);
-                }
+                sendToTelegram(dataToSend);
             });
         }
 
+        function closeWebApp() { if (tg) tg.close(); }
 
-        // Функция закрытия приложения вручную
-        function closeWebApp() {
-            if (tg) {
-                tg.close();
-            }
-        }
-
-        // АВТО-ОПРЕДЕЛЕНИЕ: Если пользователь зашел по кнопке «Генерация картинок» из бота
-        window.addEventListener('DOMContentLoaded', () => {
-            if (tg) {
-                const startParam = tg.initDataUnsafe?.start_param;
-                if (startParam === 'img_gen') {
-                    openScreen('image_generation_direct');
-                    updateDirectMainButton();
-                }
-            }
-        });
         // 3. БЕЗОПАСНОЕ ПЕРЕКЛЮЧЕНИЕ КАЧЕСТВА ДЛЯ КАЖДОГО РЕЖИМА
         function clearAndSetActiveQuality(prefix, quality) {
             ['schnell', 'dev', 'ultra'].forEach(q => {
                 const btn = document.getElementById(`${prefix}_qual_${q}`);
                 if (btn) btn.classList.remove('active');
             });
-            
             const shortQual = quality === 'ultra_4k' ? 'ultra' : quality;
             const targetBtn = document.getElementById(`${prefix}_qual_${shortQual}`);
             if (targetBtn) targetBtn.classList.add('active');
@@ -1014,7 +932,6 @@
         function setTextRatio(ratio) { selectedTextRatio = ratio; clearAndSetActiveRatio('text', ratio); }
         function setBgRatio(ratio) { selectedBgRatio = ratio; clearAndSetActiveRatio('bg', ratio); }
 
-        // Функции кликов на инлайн-селекторы видео
         function setAnimateRatio(ratio, element) {
             document.querySelectorAll('#animate_nosound .ratio-btn').forEach(btn => btn.classList.remove('active'));
             if (element) element.classList.add('active');
@@ -1022,50 +939,35 @@
         }
 
         function setKlingDuration(duration, element) {
-            // Находим соседние кнопки в этой строке и убираем у них класс active
-            element.parentElement.querySelectorAll('.duration-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            // Подсвечиваем активным цветом текущую кнопку
+            element.parentElement.querySelectorAll('.duration-btn').forEach(btn => btn.classList.remove('active'));
             element.classList.add('active');
-            // Записываем точные секунды в переменную
             currentKlingDuration = duration;
-            console.log(`[Video] Выбран хронометраж: ${currentKlingDuration} секунд.`);
         }
 
-        // ОТПРАВКА: Без звука (Kling v2.1) -> Запускает FSM в боте
         function sendAnimateNoSoundData() {
-            const payload = {
+            sendToTelegram({
                 mode_trigger: "video_menu",
                 sub_mode: "animate_nosound",
                 model_path: "fal-ai/kling-video/v2.1/standard/image-to-video",
                 aspect_ratio: currentAnimateRatio,
                 duration: currentKlingDuration,
                 start_step: "request_photo" 
-            };
-            
-            sendToTelegram(payload);
+            });
         }
 
-        // ==========================================
-        // ОТПРАВКА ДАННЫХ ДЛЯ КНОПКИ СО ЗВУКОМ (Kling v2.6 Pro)
-        // ==========================================
         function sendAnimateSoundData() {
             const audioToggle = document.getElementById("use_audio_toggle");
             const needAudioFile = audioToggle ? audioToggle.checked : false;
             const finalDuration = (typeof currentKlingDuration !== 'undefined') ? currentKlingDuration : 5;
             
-            const payload = {
+            sendToTelegram({
                 mode_trigger: "video_menu",
                 sub_mode: "animate_sound", 
                 aspect_ratio: "auto",
                 duration: finalDuration, 
                 with_audio: needAudioFile, 
                 start_step: "request_photo"
-            };
-            
-            console.log("Улетает премиум-пакет видео со звуком:", payload);
-            sendToTelegram(payload);
+            });
         }
 
         // ====================================================================================
@@ -1081,17 +983,14 @@
                 "woman_standing": "Full body shot of a stylish woman standing on a modern city street, elegant fashion outfit, sharp focus, natural daylight"
             };
 
-            const payload = {
+            sendToTelegram({
                 mode_trigger: 'face_swap',
                 is_custom_template: false,
                 template_id: templateId, 
                 template_prompt: prompts[templateId] || "Beautiful portrait photograph look", 
                 aspect_ratio: forcedRatio || "1:1",
                 quality: selectedSwapQuality
-            };
-
-            console.log("Юзер выбрал готовый стиль. Отправляем в бот:", payload);
-            sendToTelegram(payload);
+            });
         }
 
         // ==========================================
@@ -1107,11 +1006,9 @@
                     tg.close();
                 } else {
                     console.log("Данные отправлены боту (Браузерный тест):", payload);
-                    alert("Успешно собрано! Проверьте консоль браузера (F12).");
                 }
             } catch (e) {
                 alert("Критическая ошибка отправки: " + e.message);
-                console.error("Ошибка при вызове Telegram sendData: ", e);
             }
         }
 
@@ -1129,16 +1026,13 @@
             if (modal && player) {
                 player.src = videoUrl;
                 modal.style.display = 'flex';
-                player.play().catch(error => {
-                    console.log("Автовоспроизведение заблокировано:", error);
-                });
+                player.play().catch(error => console.log(error));
             }
         }
 
         function closePreviewVideo() {
             const modal = document.getElementById('videoPlayerModal');
             const player = document.getElementById('previewVideoPlayer');
-            
             if (modal && player) {
                 modal.style.display = 'none';
                 player.pause();

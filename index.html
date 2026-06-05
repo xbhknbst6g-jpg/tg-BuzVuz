@@ -876,6 +876,8 @@
 
         // Управление Главной кнопкой Telegram (MainButton) для прямого режима Flux
         // ИСПРАВЛЕНО: Кнопка строго одна, нативная и без дублирования в HTML!
+                // Управление Главной кнопкой Telegram (MainButton) для прямого режима Flux
+        // ИСПРАВЛЕНО: Кнопка строго одна, нативная и без дублирования в HTML!
         function updateDirectMainButton() {
             if (!tg || !tg.MainButton) return;
             
@@ -903,21 +905,8 @@
                     console.error("Ошибка отправки ТГ: ", e);
                 }
             });
-        }
+        } // <-- ЭТА СКОБКА ТЕПЕРЬ ПРАВИЛЬНО ЗАКРЫВАЕТ ВСЮ ФУНКЦИЮ!
 
-            // СПОСОБ Б: Ищем обычную кнопку прямо внутри HTML-страницы (для Telegram Web на ПК)
-            const submitBtn = document.querySelector('#image_generation_direct .submit-btn');
-            if (submitBtn) {
-                submitBtn.innerText = `🚀 ${btnText}`;
-                submitBtn.onclick = function() {
-                    sendToTelegram({
-                        mode_trigger: "pure_text_image", 
-                        aspect_ratio: directGenRatio,
-                        quality: directGenQuality
-                    });
-                };
-            }
-        }
 
         function closeWebApp() { if (tg) tg.close(); }
 

@@ -747,31 +747,33 @@
         // Инициализация Telegram WebApp API
         const tg = window.Telegram.WebApp;
 
-        // === АВТООПРЕДЕЛЕНИЕ РЕЖИМА ПРИ ЗАПУСКЕ ИЗ БОТА ===
+                // === АВТООПРЕДЕЛЕНИЕ РЕЖИМА ПРИ ЗАПУСКЕ ИЗ БОТА ===
         window.addEventListener('DOMContentLoaded', () => {
             if (tg) {
-                tg.ready();  
-                tg.expand(); 
+                tg.ready();  // Сообщаем Телеграму, что приложение загрузилось
+                tg.expand(); // Разворачиваем шторку Web App на весь экран телефона
             }
 
             // Считываем параметры из ссылки бота (?mode=...)
             const urlParams = new URLSearchParams(window.location.search);
             const mode = urlParams.get('mode');
 
-            // ИСПРАВЛЕНО: Теперь сайт четко понимает разделы картинок и открывает нужную шторку!
+            // ИСПРАВЛЕНО: Теперь твой единственный файл четко понимает все кнопки из бота!
             if (mode === 'video') {
-                openScreen('video_menu'); 
+                openScreen('video_menu'); // Откроет шторку видео
             } else if (mode === 'photo') {
-                openScreen('text_image'); // Откроет экран Фото + Текст
+                openScreen('text_image'); // Откроет подраздел Фото + Текст
             } else if (mode === 'image') {
-                openScreen('face_swap');  // Откроет экран Face Swap и Пресеты
+                openScreen('face_swap');  // Откроет подраздел Face Swap и Пресеты
             } else if (mode === 'direct' || mode === 'img_gen') {
-                openScreen('image_generation_direct'); // Откроет скрытый экран генерации картинок по тексту с нуля
+                openScreen('image_generation_direct'); // Откроет экран генерации картинок по тексту с нуля
                 if (typeof updateDirectMainButton === 'function') updateDirectMainButton();
             } else {
-                openScreen('main_menu');  // Если режима нет, плавно включаем главное меню
+                openScreen('main_menu');  // Если юзер зашел просто так (без параметров), включаем главное меню
             }
         });
+
+
 
         // 1. ИНИЦИАЛИЗАЦИЯ ВСЕХ ПЕРЕМЕННЫХ НАСТРОЕК
         let currentActiveMode = 'main_menu';

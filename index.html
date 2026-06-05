@@ -162,7 +162,7 @@
     
     
 <!-- ========================================== -->
-    <!-- ЭКРАН 1: ГЛАВНОЕ МЕНЮ САЙТА                -->
+    <!-- ЭКРАН 1: ГЛАВНОЕ МЕНЮ фото               -->
     <!-- ========================================== -->
     <div id="main_menu" class="screen active">
         <div class="header">
@@ -747,31 +747,32 @@
         // Инициализация Telegram WebApp API
         const tg = window.Telegram.WebApp;
 
-                // === АВТООПРЕДЕЛЕНИЕ РЕЖИМА ПРИ ЗАПУСКЕ ИЗ БОТА ===
+                        // === АВТООПРЕДЕЛЕНИЕ РЕЖИМА ПРИ ЗАПУСКЕ ИЗ БОТА ===
         window.addEventListener('DOMContentLoaded', () => {
             if (tg) {
-                tg.ready();  // Сообщаем Телеграму, что приложение загрузилось
-                tg.expand(); // Разворачиваем шторку Web App на весь экран телефона
+                tg.ready();  
+                tg.expand(); 
             }
 
             // Считываем параметры из ссылки бота (?mode=...)
             const urlParams = new URLSearchParams(window.location.search);
             const mode = urlParams.get('mode');
 
-            // ИСПРАВЛЕНО: Теперь твой единственный файл четко понимает все кнопки из бота!
+            // ИСПРАВЛЕНО: Теперь сайт четко понимает разделы картинок и открывает нужную шторку!
             if (mode === 'video') {
                 openScreen('video_menu'); // Откроет шторку видео
             } else if (mode === 'photo') {
-                openScreen('text_image'); // Откроет подраздел Фото + Текст
+                openScreen('main_menu'); // Откроет подраздел настроек Фото + Текст
             } else if (mode === 'image') {
                 openScreen('face_swap');  // Откроет подраздел Face Swap и Пресеты
-            } else if (mode === 'direct' || mode === 'img_gen') {
-                openScreen('image_generation_direct'); // Откроет экран генерации картинок по тексту с нуля
+            } else if (mode === 'direct') {
+                openScreen('image_generation_direct'); // Откроет экран чистой генерации картинок по тексту с нуля
                 if (typeof updateDirectMainButton === 'function') updateDirectMainButton();
             } else {
-                openScreen('main_menu');  // Если юзер зашел просто так (без параметров), включаем главное меню
+                openScreen('main_menu');  // Если режима нет (зашли просто так), включаем главное меню
             }
         });
+
 
 
 
@@ -851,47 +852,66 @@
             tg.MainButton.onClick(callback);
         }
 
-        // Переменные для хранения настроек этого конкретного экрана
+                // Переменные для хранения настроек этого конкретного экрана
         let directGenRatio = '9:16';
         let directGenQuality = 'schnell';
 
-        // Функция выбора формата
+        // Функция выбора формата (ИСПРАВЛЕНО: ищет активную кнопку динамически по тексту без ID)
         function setDirectGenRatio(ratio) {
-            document.querySelectorAll('#image_generation_direct .ratio-btn').forEach(btn => btn.classList.remove('active'));
-            const activeId = 'direct_gen_ratio_' + ratio.replace(':', '_');
-            const targetBtn = document.getElementById(activeId);
-            if (targetBtn) targetBtn.classList.add('active');
+            // Гасим все кнопки форматов на 3-м экране
+            document.querySelectorAll('#image_generation_direct .ratio-selector .ratio-btn').forEach(btn => {
+                btn.classList.remove('active');
+                // Если текст кнопки содержит нужные пропорции, подсвечиваем её
+                if (btn.innerText.includes(ratio)) {
+                    btn.classList.add('active');
+                }
+            });
             directGenRatio = ratio;
             updateDirectMainButton();
         }
 
-        // Функция выбора качества
+        // Функция выбора качества (ИСПРАВЛЕНО: ищет активную кнопку динамически по тексту без ID)
         function setDirectGenQuality(quality) {
-            document.querySelectorAll('#image_generation_direct .quality-btn').forEach(btn => btn.classList.remove('active'));
-            const activeId = 'direct_gen_qual_' + (quality === 'ultra_4k' ? 'ultra' : quality);
-            const targetBtn = document.getElementById(activeId);
-            if (targetBtn) targetBtn.classList.add('active');
+            // Гасим все кнопки качества на 3-м экране
+            document.querySelectorAll('#image_generation_direct .quality-selector .quality-btn').forEach(btn => {
+                btn.classList.remove('active');
+                
+                // Проверяем триггеры качества по тексту кнопок
+                if (quality === 'schnell' && btn.innerText.includes('Standard')) btn.classList.add('active');
+                if (quality === 'dev' && btn.innerText.includes('Pro')) btn.classList.add('active');
+                if (quality === 'ultra_4k' && btn.innerText.includes('Ultra')) btn.classList.add('active');
+            });
             directGenQuality = quality;
             updateDirectMainButton();
         }
 
         // Управление Главной кнопкой Telegram (MainButton) для прямого режима
+        // ИСПРАВЛЕНО: Пакет данных переименован в mode_trigger для точной синхронизации с handler_web_app_data в боте!
         function updateDirectMainButton() {
             if (!tg) return;
             
-            tg.MainButton.setText(`Выбрать формат ${directGenRatio} (${directGenQuality === 'schnell' ? 'Standard' : directGenQuality === 'dev' ? 'Pro' : 'Ultra 4K'})`);
+            const readableQual = directGenQuality === 'schnell' ? 'Standard' : directGenQuality === 'dev' ? 'Pro' : 'Ultra 4K';
+            tg.MainButton.setText(`Выбрать формат ${directGenRatio} (${readableQual}) ✨`);
             tg.MainButton.show();
             
             tg.MainButton.offClick();
             tg.MainButton.onClick(function() {
+                // Переименовали ключи, чтобы бот (handle_web_app_data) прочитал их без ошибок!
                 const dataToSend = {
-                    action: "image_generation",
-                    ratio: directGenRatio,
+                    mode_trigger: "pure_text_image", // Твой триггер Кнопки 6 из бота
+                    aspect_ratio: directGenRatio,
                     quality: directGenQuality
                 };
-                tg.sendData(JSON.stringify(dataToSend));
+                
+                try {
+                    tg.sendData(JSON.stringify(dataToSend));
+                    tg.close();
+                } catch(e) {
+                    console.error("Ошибка отправки ТГ: ", e);
+                }
             });
         }
+
 
         // Функция закрытия приложения вручную
         function closeWebApp() {

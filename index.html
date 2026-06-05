@@ -595,8 +595,6 @@
     <!-- ЭКРАН: ГЛАВНОЕ МЕНЮ РАЗДЕЛА ВИДЕО          -->
     <!-- ========================================== -->
     <div id="video_menu" class="screen">
-        <button class="back-btn" onclick="openScreen('main_menu')">← Назад</button>
-
         <div class="header">
             <h1>Интеллектуальная AI Видеостудия</h1>
             <p style="color: var(--tg-theme-hint-color, #666);">Выберите нужный инструмент для генерации видео</p>
@@ -752,19 +750,26 @@
         // === АВТООПРЕДЕЛЕНИЕ РЕЖИМА ПРИ ЗАПУСКЕ ИЗ БОТА ===
         window.addEventListener('DOMContentLoaded', () => {
             if (tg) {
-                tg.ready();  // Сообщаем Телеграму, что приложение загрузилось
-                tg.expand(); // Разворачиваем шторку Web App на весь экран телефона
+                tg.ready();  
+                tg.expand(); 
             }
 
-            // Считываем параметры из ссылки (наш хвостик ?mode=video)
+            // Считываем параметры из ссылки бота (?mode=...)
             const urlParams = new URLSearchParams(window.location.search);
             const mode = urlParams.get('mode');
 
-            // Переключаем на нужный экран в зависимости от кнопки в боте
+            // ИСПРАВЛЕНО: Теперь сайт четко понимает разделы картинок и открывает нужную шторку!
             if (mode === 'video') {
                 openScreen('video_menu'); 
+            } else if (mode === 'photo') {
+                openScreen('text_image'); // Откроет экран Фото + Текст
+            } else if (mode === 'image') {
+                openScreen('face_swap');  // Откроет экран Face Swap и Пресеты
+            } else if (mode === 'direct' || mode === 'img_gen') {
+                openScreen('image_generation_direct'); // Откроет скрытый экран генерации картинок по тексту с нуля
+                if (typeof updateDirectMainButton === 'function') updateDirectMainButton();
             } else {
-                openScreen('main_menu'); 
+                openScreen('main_menu');  // Если режима нет, плавно включаем главное меню
             }
         });
 

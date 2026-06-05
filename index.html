@@ -873,21 +873,30 @@
             updateDirectMainButton();
         }
 
+        function         // Управление кнопкой генерации для прямого режима Flux
+        // ИСПРАВЛЕНО: Кнопка Telegram больше не прячется роутером, данные улетают напрямую!
         function updateDirectMainButton() {
-            if (!tg) return;
-            const readableQual = directGenQuality === 'schnell' ? 'Standard' : directGenQuality === 'dev' ? 'Pro' : 'Ultra 4K';
-            tg.MainButton.setText(`Выбрать формат ${directGenRatio} (${readableQual}) ✨`);
-            tg.MainButton.show();
+            // Находим главную кнопку отправки прямо внутри HTML-страницы генерации картинок
+            const submitBtn = document.querySelector('#image_generation_direct .submit-btn');
             
-            tg.MainButton.offClick();
-            tg.MainButton.onClick(function() {
-                const dataToSend = {
-                    mode_trigger: "pure_text_image", 
-                    aspect_ratio: directGenRatio,
-                    quality: directGenQuality
+            if (submitBtn) {
+                const readableQual = directGenQuality === 'schnell' ? 'Standard' : directGenQuality === 'dev' ? 'Pro' : 'Ultra 4K';
+                
+                // Динамически обновляем текст на кнопке внутри сайта, показывая выбранный формат и качество!
+                submitBtn.innerText = `🚀 Создать картинку ${directGenRatio} (${readableQual})`;
+                
+                // Вешаем чистую, изолированную функцию отправки JSON-пакета в бота
+                submitBtn.onclick = function() {
+                    const dataToSend = {
+                        mode_trigger: "pure_text_image", // Твой триггер Кнопки 6 из бота
+                        aspect_ratio: directGenRatio,
+                        quality: directGenQuality
+                    };
+                    
+                    console.log("[Flux Screen] Улетает чистый пакет генерации: ", dataToSend);
+                    sendToTelegram(dataToSend);
                 };
-                sendToTelegram(dataToSend);
-            });
+            }
         }
 
         function closeWebApp() { if (tg) tg.close(); }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Web Studio</title>ы
+    <title>AI Web Studio</title>
     <!-- Официальный скрипт Telegram Web App -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
@@ -16,6 +16,7 @@
             color: var(--tg-theme-button-color, #2481cc) !important;
             font-weight: bold !important; /* Делает текст активной кнопки жирным */
         }
+        
         /* ИНТЕГРАЦИЯ С ТЕМАМИ TELEGRAM И БЕЗОПАСНЫМИ ЗОНАМИ СМАРТФОНОВ */
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
@@ -112,7 +113,7 @@
             font-size: 13px; font-weight: bold; cursor: pointer; margin-bottom: 15px; border: none; 
         }
         
-        /* ПЕРЕКЛЮЧАТЕЛИ КАЧЕСТВА */
+        /* П ПЕРЕКЛЮЧАТЕЛИ КАЧЕСТВА */
         .quality-selector { display: flex; gap: 10px; margin: 15px 0; }
         .quality-btn { 
             flex: 1; padding: 12px; 
@@ -624,64 +625,62 @@
 
 
 <!-- ========================================== -->
-    <!-- ЭКРАН: ОЖИВЛЕНИЕ ФОТО (БЕЗ ЗВУКА)          -->
-    <!-- ========================================== -->
-    <div id="animate_nosound" class="screen">
-        <button class="back-btn" onclick="openScreen('video_menu')">← Назад к видео</button>
-        
-        <div class="header" style="margin-bottom: 15px;">
-            <h1>Оживление фото (Kling v2.1)</h1>
-            <p style="color: var(--tg-theme-hint-color, #666); font-size: 12px;">Модель: fal-ai/kling-video/v2.1/standard/image-to-video</p>
-        </div>
+<!-- ЭКРАН: ОЖИВЛЕНИЕ ФОТО (БЕЗ ЗВУКА)          -->
+<!-- ========================================== -->
+<div id="animate_nosound" class="screen">
+    <button class="back-btn" onclick="openScreen('video_menu')">← Назад к видео</button>
+    
+    <div class="header" style="margin-bottom: 15px;">
+        <h1>Оживление photo (Kling v2.1)</h1>
+        <p style="color: var(--tg-theme-hint-color, #666); font-size: 12px;">Модель: fal-ai/kling-video/v2.1/standard/image-to-video</p>
+    </div>
 
-        <!-- Сетка примеров -->
-        <div style="font-weight: bold; font-size: 14px; margin-bottom: 5px; color: var(--tg-theme-text-color, #222);">Примеры генераций (нажмите для просмотра):</div>
-        <div class="phone-templates-grid">
-            <!-- ИСПРАВЛЕНО: Заданы точные размеры картинок и рабочие mp4-видеопотоки -->
-            <div class="phone-template-card" onclick="openPreviewVideo('https://googleapis.com')">
-                <img src="https://i.imgur.com/h6370oz.mp4" alt="Пример 1">
-                <div class="card-overlay">🎬 Природный пейзаж</div>
-            </div>
-            <div class="phone-template-card" onclick="openPreviewVideo('https://googleapis.com')">
-                <img src="https://i.imgur.com/7bLn7AV.mp4" alt="Пример 2">
-                <div class="card-overlay">🎬 Оживление города</div>
-            </div>
-            <div class="phone-template-card" onclick="openPreviewVideo('https://googleapis.com')">
-                <img src="https://i.imgur.com/2mcdE9J.mp4" alt="Пример 3">
-                <div class="card-overlay">🎬 Движение авто</div>
-            </div>
-            <div class="phone-template-card" onclick="openPreviewVideo('https://googleapis.com')">
-                <img src="https://i.imgur.com/Q6GrKyK.mp4" alt="Пример 4">
-                <div class="card-overlay">🎬 Кинематографично</div>
-            </div>
-            <div class="phone-template-card full-width" onclick="openPreviewVideo('https://i.imgur.com/TdbQPr2.mp4')">
-                <img src="https://i.postimg.cc/KvmNLjN5/1Jvjh-Wg-IOGd13NRyt-Al9Ch-E25g9JQ254cdm-KX3Wl-Efs-Valc6d-WLry-Aar-Bpbaxh-F7Am-TJzz-PRNdufq-Qt8z-NE1T.jpg" alt="Пример 5">
-                <div class="card-overlay">🎬 Панорамный полет камеры</div>
-            </div>
+    <!-- Сетка примеров -->
+    <div style="font-weight: bold; font-size: 14px; margin-bottom: 5px; color: var(--tg-theme-text-color, #222);">Примеры генераций (нажмите для просмотра):</div>
+    <div class="phone-templates-grid">
+        <div class="phone-template-card" onclick="openPreviewVideo('https://googleapis.com')">
+            <img src="https://i.imgur.com/h6370oz.mp4" alt="Пример 1" onerror="this.src='https://placehold.co'">
+            <div class="card-overlay">🎬 Природный пейзаж</div>
         </div>
-    <!-- ИСПРАВЛЕНО: Добавлен id="animate_nosound" родительскому контейнеру -->
-    <div id="animate_nosound">
+        <div class="phone-template-card" onclick="openPreviewVideo('https://googleapis.com')">
+            <img src="https://i.imgur.com/7bLn7AV.mp4" alt="Пример 2" onerror="this.src='https://placehold.co'">
+            <div class="card-overlay">🎬 Оживление города</div>
+        </div>
+        <div class="phone-template-card" onclick="openPreviewVideo('https://googleapis.com')">
+            <img src="https://i.imgur.com/2mcdE9J.mp4" alt="Пример 3" onerror="this.src='https://placehold.co'">
+            <div class="card-overlay">🎬 Движение авто</div>
+        </div>
+        <div class="phone-template-card" onclick="openPreviewVideo('https://googleapis.com')">
+            <img src="https://i.imgur.com/Q6GrKyK.mp4" alt="Пример 4" onerror="this.src='https://placehold.co'">
+            <div class="card-overlay">🎬 Кинематографично</div>
+        </div>
+        <div class="phone-template-card full-width" onclick="openPreviewVideo('https://i.imgur.com/TdbQPr2.mp4')">
+            <img src="https://i.postimg.cc/KvmNLjN5/1Jvjh-Wg-IOGd13NRyt-Al9Ch-E25g9JQ254cdm-KX3Wl-Efs-Valc6d-WLry-Aar-Bpbaxh-F7Am-TJzz-PRNdufq-Qt8z-NE1T.jpg" alt="Пример 5">
+            <div class="card-overlay">🎬 Панорамный полет камеры</div>
+        </div>
+    </div>
+
     <!-- Настройки Kling (Выбор времени) -->
-<div class="form-group" style="background: var(--tg-theme-bg-color, #fff); padding: 15px; border-radius: 12px; margin-bottom: 15px;">
-    <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Длительность видео</label>
-    <div style="display: flex; gap: 10px;" id="video_duration_block">
-        <!-- Две чистые кнопки, которые вызывают стандартную JS-функцию переключения -->
-        <button class="duration-btn active" onclick="setKlingDuration(5, this)" style="flex: 1; padding: 12px; border: 2px solid var(--tg-theme-border-color, #e1e6eb); border-radius: 8px; background: var(--tg-theme-bg-color, #fff); color: var(--tg-theme-text-color, #333); font-weight: bold; cursor: pointer;">5 секунд</button>
-        <button class="duration-btn" onclick="setKlingDuration(10, this)" style="flex: 1; padding: 12px; border: 2px solid var(--tg-theme-border-color, #e1e6eb); border-radius: 8px; background: var(--tg-theme-bg-color, #fff); color: var(--tg-theme-text-color, #333); font-weight: bold; cursor: pointer;">10 секунд</button>
-    </div>
-</div>
-
-        <div class="form-group" style="background: var(--tg-theme-bg-color, #fff); padding: 15px; border-radius: 12px; border: 1px solid var(--tg-theme-border-color, #e1e6eb); margin-bottom: 20px;">
-            <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Формат видео</label>
-            <div class="ratio-selector" style="display: flex; gap: 10px; margin: 0;">
-                <button class="ratio-btn active" id="ratio_ns_169" onclick="setAnimateRatio('16:9', this)">16:9</button>
-                <button class="ratio-btn" id="ratio_ns_916" onclick="setAnimateRatio('9:16', this)">9:16</button>
-            </div>
+    <div class="form-group" style="background: var(--tg-theme-bg-color, #fff); padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid var(--tg-theme-border-color, #e1e6eb);">
+        <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Длительность видео</label>
+        <div style="display: flex; gap: 10px;" id="video_duration_block">
+            <button class="duration-btn active" onclick="setKlingDuration(5, this)" style="flex: 1; padding: 12px; border: 2px solid var(--tg-theme-border-color, #e1e6eb); border-radius: 8px; background: var(--tg-theme-bg-color, #fff); color: var(--tg-theme-text-color, #333); font-weight: bold; cursor: pointer;">5 секунд</button>
+            <button class="duration-btn" onclick="setKlingDuration(10, this)" style="flex: 1; padding: 12px; border: 2px solid var(--tg-theme-border-color, #e1e6eb); border-radius: 8px; background: var(--tg-theme-bg-color, #fff); color: var(--tg-theme-text-color, #333); font-weight: bold; cursor: pointer;">10 секунд</button>
         </div>
-
-        <!-- Кнопка отправки с использованием системного цвета Telegram -->
-        <button class="submit-btn" onclick="sendAnimateNoSoundData()" style="width: 100%; padding: 15px; background: var(--tg-theme-button-color, #0088cc); color: var(--tg-theme-button-text-color, white); border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 30px;">Оживить фото</button>
     </div>
+
+    <!-- Настройки Kling (Выбор формата) -->
+    <div class="form-group" style="background: var(--tg-theme-bg-color, #fff); padding: 15px; border-radius: 12px; border: 1px solid var(--tg-theme-border-color, #e1e6eb); margin-bottom: 20px;">
+        <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Формат видео</label>
+        <div class="ratio-selector" style="display: flex; gap: 10px; margin: 0;">
+            <button class="ratio-btn active" id="ratio_ns_169" onclick="setAnimateRatio('16:9', this)" style="flex: 1; padding: 12px; border: 2px solid var(--tg-theme-border-color, #e1e6eb); border-radius: 8px; background: var(--tg-theme-bg-color, #fff); color: var(--tg-theme-text-color, #333); font-weight: bold; cursor: pointer;">16:9</button>
+            <button class="ratio-btn" id="ratio_ns_916" onclick="setAnimateRatio('9:16', this)" style="flex: 1; padding: 12px; border: 2px solid var(--tg-theme-border-color, #e1e6eb); border-radius: 8px; background: var(--tg-theme-bg-color, #fff); color: var(--tg-theme-text-color, #333); font-weight: bold; cursor: pointer;">9:16</button>
+        </div>
+    </div>
+
+    <!-- Кнопка отправки с использованием системного цвета Telegram -->
+    <button class="submit-btn" onclick="sendAnimateNoSoundData()" style="width: 100%; padding: 15px; background: var(--tg-theme-button-color, #0088cc); color: var(--tg-theme-button-text-color, white); border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 30px;">Оживить фото</button>
+</div>
 
 
 <!-- ========================================== -->
@@ -776,9 +775,10 @@
         let selectedTextRatio = '9:16';   
         let selectedSwapRatio = '9:16';   
         let selectedBgRatio = '9:16';   
+        let currentAnimateRatio = '16:9';  
         let currentKlingDuration = 5;  
         
-        // ИСПРАВЛЕНО: Каждому режиму своя изолированная переменная качества, чтобы настройки не сбивались хаотично
+        // Каждому режиму своя изолированная переменная качества, чтобы настройки не сбивались хаотично
         let selectedTextQuality = 'schnell';
         let selectedSwapQuality = 'schnell';
         let selectedTryOnQuality = 'schnell';
@@ -818,17 +818,13 @@
 
             // Настройка поведения Telegram MainButton в зависимости от экрана
             if (screenName === 'face_swap') {
-                tg.MainButton.text = "Загрузить свой шаблон в боте ✨"; 
-                tg.MainButton.show();
+                setupMainButton("Загрузить свой шаблон в боте ✨", sendCustomFaceSwapData);
             } else if (screenName === 'tryon') {
-                tg.MainButton.text = "Запустить примерку одежды ✨";
-                tg.MainButton.show();
+                setupMainButton("Запустить примерку одежды ✨", sendTryOnData);
             } else if (screenName === 'text_image') {
-                tg.MainButton.text = "Запустить генерацию Фото+Текст ✨";
-                tg.MainButton.show();
+                setupMainButton("Запустить генерацию Фото+Текст ✨", sendPhotoTextData);
             } else if (screenName === 'bg_change') {
-                tg.MainButton.text = "Запустить смену фона ✨"; 
-                tg.MainButton.show();
+                setupMainButton("Запустить смену фона ✨", sendBgChangeData);
             } else if (screenName === 'video_swap' || screenName === 'animate_nosound' || screenName === 'animate_sound') {
                 tg.MainButton.hide(); // Юзер нажимает кнопки внутри интерфейса страницы
             }
@@ -840,7 +836,13 @@
                 tg.close();
             }
         }
-        
+        // Вспомогательный конфигуратор главной кнопки Telegram
+        function setupMainButton(text, callback) {
+            tg.MainButton.setText(text);
+            tg.MainButton.show();
+            tg.MainButton.offClick();
+            tg.MainButton.onClick(callback);
+        }
 
         // Переменные для хранения настроек этого конкретного экрана
         let directGenRatio = '9:16';
@@ -850,7 +852,8 @@
         function setDirectGenRatio(ratio) {
             document.querySelectorAll('#image_generation_direct .ratio-btn').forEach(btn => btn.classList.remove('active'));
             const activeId = 'direct_gen_ratio_' + ratio.replace(':', '_');
-            document.getElementById(activeId).classList.add('active');
+            const targetBtn = document.getElementById(activeId);
+            if (targetBtn) targetBtn.classList.add('active');
             directGenRatio = ratio;
             updateDirectMainButton();
         }
@@ -859,26 +862,27 @@
         function setDirectGenQuality(quality) {
             document.querySelectorAll('#image_generation_direct .quality-btn').forEach(btn => btn.classList.remove('active'));
             const activeId = 'direct_gen_qual_' + (quality === 'ultra_4k' ? 'ultra' : quality);
-            document.getElementById(activeId).classList.add('active');
+            const targetBtn = document.getElementById(activeId);
+            if (targetBtn) targetBtn.classList.add('active');
             directGenQuality = quality;
             updateDirectMainButton();
         }
 
-        // Управление Главной кнопкой Telegram (MainButton)
+        // Управление Главной кнопкой Telegram (MainButton) для прямого режима
         function updateDirectMainButton() {
             if (!tg) return;
             
-            tg.MainButton.text = `Выбрать формат ${directGenRatio} (${directGenQuality === 'schnell' ? 'Standard' : directGenQuality === 'dev' ? 'Pro' : 'Ultra 4K'})`;
+            tg.MainButton.setText(`Выбрать формат ${directGenRatio} (${directGenQuality === 'schnell' ? 'Standard' : directGenQuality === 'dev' ? 'Pro' : 'Ultra 4K'})`);
             tg.MainButton.show();
             
-            // Назначаем отправку данных в бота по клику на кнопку Telegram
+            tg.MainButton.offClick();
             tg.MainButton.onClick(function() {
                 const dataToSend = {
                     action: "image_generation",
                     ratio: directGenRatio,
                     quality: directGenQuality
                 };
-                tg.sendData(JSON.stringify(dataToSend)); // Отправляет JSON-строку боту и закрывает Web App
+                tg.sendData(JSON.stringify(dataToSend));
             });
         }
 
@@ -889,56 +893,33 @@
             }
         }
 
-            // АВТО-ОПРЕДЕЛЕНИЕ: Если пользователь зашел по кнопке «Генерация картинок» из бота
-            window.addEventListener('DOMContentLoaded', () => {
-                if (tg) {
-                    // Проверяем параметр, переданный из бота (например, https://t.me)
-                    const startParam = tg.initDataUnsafe?.start_param;
-                    
-                    if (startParam === 'img_gen') {
-                        openScreen('image_generation_direct');
-                        updateDirectMainButton();
-                    }
+        // АВТО-ОПРЕДЕЛЕНИЕ: Если пользователь зашел по кнопке «Генерация картинок» из бота
+        window.addEventListener('DOMContentLoaded', () => {
+            if (tg) {
+                const startParam = tg.initDataUnsafe?.start_param;
+                if (startParam === 'img_gen') {
+                    openScreen('image_generation_direct');
+                    updateDirectMainButton();
                 }
-});
-
-        
-
+            }
+        });
         // 3. БЕЗОПАСНОЕ ПЕРЕКЛЮЧЕНИЕ КАЧЕСТВА ДЛЯ КАЖДОГО РЕЖИМА
-        // ИСПРАВЛЕНО: Функции разделены, а суффиксы синхронизированы с вашим HTML (_ultra)
         function clearAndSetActiveQuality(prefix, quality) {
             ['schnell', 'dev', 'ultra'].forEach(q => {
                 const btn = document.getElementById(`${prefix}_qual_${q}`);
                 if (btn) btn.classList.remove('active');
             });
             
-            // Если прилетело значение 'ultra_4k', активируем кнопку с ID ..._qual_ultra
             const shortQual = quality === 'ultra_4k' ? 'ultra' : quality;
             const targetBtn = document.getElementById(`${prefix}_qual_${shortQual}`);
             if (targetBtn) targetBtn.classList.add('active');
         }
 
-        function setTextQuality(quality) {
-            selectedTextQuality = quality;
-            clearAndSetActiveQuality('text', quality);
-        }
+        function setTextQuality(quality) { selectedTextQuality = quality; clearAndSetActiveQuality('text', quality); }
+        function setSwapQuality(quality) { selectedSwapQuality = quality; clearAndSetActiveQuality('swap', quality); }
+        function setTryOnQuality(quality) { selectedTryOnQuality = quality; clearAndSetActiveQuality('tryon', quality); }
+        function setBgQuality(quality) { selectedBgQuality = quality; clearAndSetActiveQuality('bg', quality); }
 
-        function setSwapQuality(quality) {
-            selectedSwapQuality = quality;
-            clearAndSetActiveQuality('swap', quality);
-        }
-
-        function setTryOnQuality(quality) {
-            selectedTryOnQuality = quality;
-            clearAndSetActiveQuality('tryon', quality);
-        }
-
-        function setBgQuality(quality) {
-            selectedBgQuality = quality;
-            clearAndSetActiveQuality('bg', quality);
-        }
-
-        // Временная заглушка-переходник на случай, если старый HTML вызовет старое имя функции
         function setQuality(quality) {
             if (currentActiveMode === 'text_image') setTextQuality(quality);
             if (currentActiveMode === 'face_swap') setSwapQuality(quality);
@@ -963,72 +944,19 @@
         function setTextRatio(ratio) { selectedTextRatio = ratio; clearAndSetActiveRatio('text', ratio); }
         function setBgRatio(ratio) { selectedBgRatio = ratio; clearAndSetActiveRatio('bg', ratio); }
 
-        // 5. НАЖАТИЕ НА ГЛАВНУЮ КНОПКУ TELEGRAM (ОТПРАВКА ДАННЫХ)
-        // ИСПРАВЛЕНО: В JSON-пакет улетают именно те переменные качества, которые привязаны к текущему экрану
-        tg.onEvent('mainButtonClicked', function() {
-            tg.MainButton.text = "⏳ Сохраняю настройки...";
-            tg.MainButton.disable();
-
-            let dataToSend = {};
-
-            if (currentActiveMode === 'tryon') {
-                dataToSend = { mode_trigger: 'tryon', aspect_ratio: selectedTryOnRatio, quality: selectedTryOnQuality };
-            } else if (currentActiveMode === 'text_image') {
-                dataToSend = { mode_trigger: 'text_image', aspect_ratio: selectedTextRatio, quality: selectedTextQuality };
-            } else if (currentActiveMode === 'face_swap') {
-                dataToSend = { mode_trigger: 'face_swap', is_custom_template: true, aspect_ratio: selectedSwapRatio, quality: selectedSwapQuality };
-            } else if (currentActiveMode === 'bg_change') {
-                dataToSend = { mode_trigger: 'bg_change', aspect_ratio: selectedBgRatio, quality: selectedBgQuality };
-            }
-
-            try {
-                tg.sendData(JSON.stringify(dataToSend));
-                tg.close();
-            } catch (e) {
-                console.error("Ошибка отправки в Telegram: ", e);
-                tg.MainButton.enable();
-                tg.MainButton.text = "❌ Ошибка. Повторить";
-            }
-        });        
-        
-        // 6. КЛИК ПО ГОТОВОЙ КАРТОЧКЕ СТИЛЯ (FACE SWAP)
-        function selectReadyTemplate(templateId, forcedRatio) {
-            const dataToSend = {
-                mode_trigger: 'face_swap',
-                is_custom_template: false,
-                template: templateId,
-                aspect_ratio: forcedRatio,
-                quality: selectedSwapQuality // ИСПРАВЛЕНО: используем изолированную переменную качества экрана
-            };
-            tg.sendData(JSON.stringify(dataToSend));
-            tg.close();
-        }
-
-        // ==========================================
-        // НАСТРОЙКИ И ОТПРАВКА ДЛЯ КНОПКИ БЕЗ ЗВУКА
-        // Модель: Kling v2.1 Standard
-        // ==========================================
-
-        // Переключение соотношения сторон (16:9 / 9:16)
-        // ИСПРАВЛЕНО: Убран неверный префикс screen_, переключение через нативный класс .active без хардкода цвета
+        // Функции кликов на инлайн-селекторы видео
         function setAnimateRatio(ratio, element) {
-            document.querySelectorAll('#animate_nosound .ratio-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            if (element) {
-                element.classList.add('active');
-            }
+            document.querySelectorAll('#animate_nosound .ratio-btn').forEach(btn => btn.classList.remove('active'));
+            if (element) element.classList.add('active');
             currentAnimateRatio = ratio;
         }
 
-        // Переключение длительности (5 секунд / 10 секунд)
-        // ИСПРАВЛЕНО: Селектор изменен на .duration-btn, управление через .active для поддержки темной темы
         function setKlingDuration(duration, element) {
             // Находим соседние кнопки в этой строке и убираем у них класс active
             element.parentElement.querySelectorAll('.duration-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            // Подсвечиваем синим цветом текущую кнопку
+            // Подсвечиваем активным цветом текущую кнопку
             element.classList.add('active');
             // Записываем точные секунды в переменную
             currentKlingDuration = duration;
@@ -1036,84 +964,93 @@
         }
 
         // ОТПРАВКА: Без звука (Kling v2.1) -> Запускает FSM в боте
-        // ИСПРАВЛЕНО: Заменен вызов несуществующей функции на системный tg.sendData
         function sendAnimateNoSoundData() {
             const payload = {
                 mode_trigger: "video_menu",
                 sub_mode: "animate_nosound",
                 model_path: "fal-ai/kling-video/v2.1/standard/image-to-video",
-                aspect_ratio: "auto",
+                aspect_ratio: currentAnimateRatio,
                 duration: currentKlingDuration,
-                start_step: "request_photo" // Даем команду боту начать Шаг 1 в чате
+                start_step: "request_photo" 
             };
             
-            try {
-                tg.sendData(JSON.stringify(payload));
-                tg.close();
-            } catch (e) {
-                console.error("Ошибка отправки данных анимации: ", e);
-            }
+            sendToTelegram(payload);
         }
-        
-// ==========================================
-        // ОТПРАВКА ДАННЫХ ДЛЯ КНОПКИ СО ЗВУКОМ (Kling v2.6 Pro)
-function sendAnimateSoundData() {
-    const audioToggle = document.getElementById("use_audio_toggle");
-    
-    // Считываем положение чекбокса
-    const needAudioFile = audioToggle ? audioToggle.checked : false;
-    
-    // Убедимся, что переменная времени существует, если нет - ставим страховку 5 сек.
-    const finalDuration = (typeof currentKlingDuration !== 'undefined') ? currentKlingDuration : 5;
-    
-    const payload = {
-        mode_trigger: "video_menu",
-        sub_mode: "animate_sound", 
-        aspect_ratio: "auto",
-        duration: finalDuration, 
-        with_audio: needAudioFile, 
-        start_step: "request_photo"
-    };
-    
-    console.log("Улетает премиум-пакет видео со звуком:", payload);
-    
-    try {
-        // Проверяем, инициализирован ли объект Telegram WebApp
-        if (typeof tg !== 'undefined' && tg.sendData) {
-            tg.sendData(JSON.stringify(payload));
-            tg.close();
-        } else if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
-            Telegram.WebApp.sendData(JSON.stringify(payload));
-            Telegram.WebApp.close();
-        } else {
-            alert("Ошибка: Telegram WebApp API не найдено на этой странице!");
-        }
-    } catch (e) {
-        // Если код упадет, вместо черного экрана выскочит это окно с описанием ошибки:
-        alert("Критическая ошибка отправки данных: " + e.message);
-        console.error("Ошибка отправки премиум-видео: ", e);
-    }
-}
+
         // ==========================================
-        // ЕДИНАЯ ФУНКЦИЯ ОТПРАВКИ ДАННЫХ В ТЕЛЕГРАМ
+        // ОТПРАВКА ДАННЫХ ДЛЯ КНОПКИ СО ЗВУКОМ (Kling v2.6 Pro)
+        // ==========================================
+        function sendAnimateSoundData() {
+            const audioToggle = document.getElementById("use_audio_toggle");
+            const needAudioFile = audioToggle ? audioToggle.checked : false;
+            const finalDuration = (typeof currentKlingDuration !== 'undefined') ? currentKlingDuration : 5;
+            
+            const payload = {
+                mode_trigger: "video_menu",
+                sub_mode: "animate_sound", 
+                aspect_ratio: "auto",
+                duration: finalDuration, 
+                with_audio: needAudioFile, 
+                start_step: "request_photo"
+            };
+            
+            console.log("Улетает премиум-пакет видео со звуком:", payload);
+            sendToTelegram(payload);
+        }
+
+        // ====================================================================================
+        // КЛИК ПО ГОТОВОЙ КАРТОЧКЕ СТИЛЯ (FACE SWAP - СПОСОБ 2)
+        // ====================================================================================
+        function selectReadyTemplate(templateId, forcedRatio) {
+            const prompts = {
+                "girl_face": "Close-up portrait of a beautiful girl, professional studio lighting",
+                "Lying_down_phone": "A person lying down comfortably on a cozy bed, holding a modern smartphone in hands, relaxed atmosphere, soft room lighting",
+                "catwoman": "A fierce catwoman in a sleek black tactical suit with cat ears, neon cyberpunk background, cinematic atmosphere",
+                "carousel_woman": "A happy woman riding a retro vintage wooden carousel horse at night, bright bokeh lights amusement park background",
+                "demon_woman": "A dark mystical demon woman with elegant small horns, glowing eyes, dark fantasy style, smoke and red fire embers background",
+                "woman_standing": "Full body shot of a stylish woman standing on a modern city street, elegant fashion outfit, sharp focus, natural daylight"
+            };
+
+            const payload = {
+                mode_trigger: 'face_swap',
+                is_custom_template: false,
+                template_id: templateId, 
+                template_prompt: prompts[templateId] || "Beautiful portrait photograph look", 
+                aspect_ratio: forcedRatio || "1:1",
+                quality: selectedSwapQuality
+            };
+
+            console.log("Юзер выбрал готовый стиль. Отправляем в бот:", payload);
+            sendToTelegram(payload);
+        }
+
+        // ==========================================
+        // ЕДИНАЯ СИСТЕМНАЯ ФУНКЦИЯ ОТПРАВКИ ДАННЫХ В ТЕЛЕГРАМ
         // ==========================================
         function sendToTelegram(payload) {
-            if (window.Telegram?.WebApp && window.Telegram.WebApp.sendData) {
-                window.Telegram.WebApp.sendData(JSON.stringify(payload));
-                window.Telegram.WebApp.close();
-            } else {
-                console.log("Данные отправлены боту (Браузерный тест):", payload);
-                alert("Успешно собрано! Проверьте консоль браузера (F12).");
+            try {
+                if (window.Telegram?.WebApp && window.Telegram.WebApp.sendData) {
+                    window.Telegram.WebApp.sendData(JSON.stringify(payload));
+                    window.Telegram.WebApp.close();
+                } else if (typeof tg !== 'undefined' && tg.sendData) {
+                    tg.sendData(JSON.stringify(payload));
+                    tg.close();
+                } else {
+                    console.log("Данные отправлены боту (Браузерный тест):", payload);
+                    alert("Успешно собрано! Проверьте консоль браузера (F12).");
+                }
+            } catch (e) {
+                alert("Критическая ошибка отправки: " + e.message);
+                console.error("Ошибка при вызове Telegram sendData: ", e);
             }
         }
 
         // ==========================================
         // УПРАВЛЕНИЕ ПОЛНОЭКРАННЫМ ПЛЕЕРОМ ВИДЕО
         // ==========================================
-        // Функция открытия полноэкранного превью
         function openPreviewVideo(videoUrl) {
             if (!videoUrl || videoUrl.includes('ссылка_на_')) {
-                alert("Видео-пример еще загружается на server или ссылка не указана!");
+                alert("Видео-пример еще загружается на сервер или ссылка не указана!");
                 return;
             }
             const modal = document.getElementById('videoPlayerModal');
@@ -1123,12 +1060,11 @@ function sendAnimateSoundData() {
                 player.src = videoUrl;
                 modal.style.display = 'flex';
                 player.play().catch(error => {
-                    console.log("Автовоспроизведение заблокировано, нужен клик по плееру:", error);
+                    console.log("Автовоспроизведение заблокировано:", error);
                 });
             }
         }
 
-        // Функция закрытия плеера
         function closePreviewVideo() {
             const modal = document.getElementById('videoPlayerModal');
             const player = document.getElementById('previewVideoPlayer');
@@ -1136,7 +1072,7 @@ function sendAnimateSoundData() {
             if (modal && player) {
                 modal.style.display = 'none';
                 player.pause();
-                player.src = ""; // Сбрасываем видео, чтобы оно не качало трафик в фоне
+                player.src = ""; 
             }
         }   
     </script>

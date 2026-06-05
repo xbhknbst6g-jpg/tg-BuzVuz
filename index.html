@@ -260,14 +260,12 @@
             </div>
         </div>
 
-    <!-- ========================================== -->
+<!-- ========================================== -->
     <!-- ЭКРАН 2: РЕЖИМ 1: ФОТО + ТЕКСТ             -->
     <!-- ========================================== -->
-    <!-- ИСПРАВЛЕНО: ID изменен на 'text_image' для точной стыковки с меню -->
     <div id="text_image" class="screen">
         <button class="back-btn" onclick="openScreen('main_menu')">⬅️ В меню</button>
         
-        <!-- Инструкция теперь адаптивна и приятна для глаз в любой теме -->
         <div class="instruction-box" style="background: var(--tg-theme-secondary-bg-color, #fff3cd); border: 1px solid var(--tg-theme-border-color, #ffeeba); border-radius: 8px; padding: 12px; font-size: 13px; line-height: 1.4; color: var(--tg-theme-text-color, #856404); margin-bottom: 15px;">
             <b>📝 Как работает генерация Фото + Текст (Шаг 1/2):</b><br>
             1. Выберите желаемый формат кадра кнопками ниже.<br>
@@ -280,7 +278,7 @@
             <p style="font-size: 14px; color: var(--tg-theme-hint-color, #666);">Выберите формат финального кадра:</p>
         </div>
 
-        <!-- Кнопки выбора формата для Фото + Текст -->
+        <!-- Кнопки формата -->
         <div class="ratio-selector" style="display: flex; flex-wrap: wrap; gap: 8px; margin: 15px 0; justify-content: space-between;">
             <div class="ratio-btn active" id="text_ratio_9_16" onclick="setTextRatio('9:16')">📱 9:16</div>
             <div class="ratio-btn" id="text_ratio_3_4" onclick="setTextRatio('3:4')">📸 3:4</div>
@@ -300,7 +298,6 @@
             <h2>🔥 Примеры работы Фото + Текст:</h2>
             <p style="font-size: 14px; color: var(--tg-theme-hint-color, #666);">Как нейросеть изменяет фото по вашему описанию До / После</p>
         </div>
-
         <!-- БЛОК КАРТОЧЕК ПРИМЕРОВ -->
         <div class="tryon-grid" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 15px;">
             
@@ -353,7 +350,7 @@
         </div> <!-- ЗАКРЫВАЕМ СЕТКУ TRYON-GRID -->
     </div> <!-- ЗАКРЫВАЕМ ЭКРАН SCREEN_TEXT_IMAGE -->
 
-<!-- ========================================== -->
+ <!-- ========================================== -->
     <!-- РЕЖИМ 2: ГИБРИДНЫЙ FACE SWAP (ЭКРАН)       -->
     <!-- ========================================== -->
     <div id="face_swap" class="screen">
@@ -390,10 +387,7 @@
             <h2>🔥 Или выберите готовый стиль:</h2>
             <p style="font-size:14px; color: var(--tg-theme-hint-color, #666);">Кликните по карточке, чтобы примерить это лицо на себя</p>
         </div>
-        
-        <!-- ИСПРАВЛЕНО: Сетка заменена на phone-templates-grid для идеального мобильного отображения -->
-        <div class="phone-templates-grid">
-            <!-- ИСПРАВЛЕНО: Для picsum.photos добавлены точные размеры картинок -->
+                    <!-- ИСПРАВЛЕНО: Для picsum.photos добавлены точные размеры картинок -->
             <div class="phone-template-card" onclick="selectReadyTemplate('girl_face', '3:4')">
                 <img src="https://i.postimg.cc/KvmNLjN5/1Jvjh-Wg-IOGd13NRyt-Al9Ch-E25g9JQ254cdm-KX3Wl-Efs-Valc6d-WLry-Aar-Bpbaxh-F7Am-TJzz-PRNdufq-Qt8z-NE1T.jpg" alt="Лицо девушки">
                 <div class="card-overlay">👩 Лицо девушки (3:4)</div>
@@ -461,7 +455,6 @@
             <h2>🔥 Примеры работы Try-On:</h2>
             <p style="font-size:14px; color: var(--tg-theme-hint-color, #666);">Результаты примерки нашей нейросети До / После</p>
         </div>
-
         <!-- СЕТКА КАРТОЧЕК ПРИМЕРОВ -->
         <div class="tryon-grid" style="display:grid; grid-template-columns:1fr; gap:15px; margin-top:15px;">
             
@@ -543,6 +536,7 @@
             <div class="ratio-btn" id="bg_ratio_4_3" onclick="setBgRatio('4:3')">🖼 4:3</div>
             <div class="ratio-btn" id="bg_ratio_16_9" onclick="setBgRatio('16:9')">💻 16:9</div>
         </div>
+
         <p style="margin-top: 15px; margin-bottom: 5px; font-weight: bold; text-align: center; color: var(--tg-theme-text-color, #000);">Выходное качество:</p>
         <div class="quality-selector">
             <div class="quality-btn active" id="bg_qual_schnell" onclick="setBgQuality('schnell')" style="font-size: 11px; padding: 10px 4px;">⚡ Standard (1 Мп)</div>
@@ -554,7 +548,6 @@
             <h2>🔥 Примеры работы Смены фона:</h2>
             <p style="font-size:14px; color: var(--tg-theme-hint-color, #666);">Результаты переноса объектов на новый задний план</p>
         </div>
-
         <!-- БЛОК ПРИМЕРОВ СМЕНЫ ФОНА ДО / ПОСЛЕ -->
         <div class="tryon-grid" style="display:grid; grid-template-columns:1fr; gap:15px; margin-top:15px;">
             
@@ -622,66 +615,51 @@
     </div>
 
 
-<!-- ========================================== -->
-<!-- ЭКРАН: ОЖИВЛЕНИЕ ФОТО (БЕЗ ЗВУКА)          -->
-<!-- ========================================== -->
-<div id="animate_nosound" class="screen">
-    <button class="back-btn" onclick="openScreen('video_menu')">← Назад к видео</button>
-    
-    <div class="header" style="margin-bottom: 15px;">
-        <h1>Оживление photo (Kling v2.1)</h1>
-        <p style="color: var(--tg-theme-hint-color, #666); font-size: 12px;">Модель: fal-ai/kling-video/v2.1/standard/image-to-video</p>
+    <!-- ========================================== -->
+    <!-- ЭКРАН: ОЖИВЛЕНИЕ ФОТО (БЕЗ ЗВУКА)          -->
+    <!-- ========================================== -->
+    <div id="animate_nosound" class="screen">
+        <button class="back-btn" onclick="openScreen('video_menu')">← Назад к видео</button>
+        
+        <div class="header" style="margin-bottom: 15px;">
+            <h1>Оживление фото (Kling v2.1)</h1>
+            <p style="color: var(--tg-theme-hint-color, #666); font-size: 12px;">Модель: fal-ai/kling-video/v2.1/standard/image-to-video</p>
+        </div>
+
+        <div style="font-weight: bold; font-size: 14px; margin-bottom: 5px; color: var(--tg-theme-text-color, #222);">Примеры генераций (нажмите для просмотра):</div>
+        <div class="phone-templates-grid">
+            <div class="phone-template-card" onclick="openPreviewVideo('https://googleapis.com')">
+                <img src="https://postimg.cc" alt="Пример 1">
+                <div class="card-overlay">🎬 Природный пейзаж</div>
+            </div>
+            <div class="phone-template-card" onclick="openPreviewVideo('https://googleapis.com')">
+                <img src="https://postimg.cc" alt="Пример 2">
+                <div class="card-overlay">🎬 Оживление города</div>
+            </div>
+        </div>
+
+        <!-- Настройки Kling (Выбор времени) -->
+        <div class="form-group" style="background: var(--tg-theme-bg-color, #fff); padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid var(--tg-theme-border-color, #e1e6eb);">
+            <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Длительность видео</label>
+            <div style="display: flex; gap: 10px;" id="video_duration_block">
+                <button class="duration-btn active" onclick="setKlingDuration(5, this)" style="flex: 1; padding: 12px; border: 2px solid var(--tg-theme-border-color, #e1e6eb); border-radius: 8px; background: var(--tg-theme-bg-color, #fff); color: var(--tg-theme-text-color, #333); font-weight: bold; cursor: pointer;">5 секунд</button>
+                <button class="duration-btn" onclick="setKlingDuration(10, this)" style="flex: 1; padding: 12px; border: 2px solid var(--tg-theme-border-color, #e1e6eb); border-radius: 8px; background: var(--tg-theme-bg-color, #fff); color: var(--tg-theme-text-color, #333); font-weight: bold; cursor: pointer;">10 секунд</button>
+            </div>
+        </div>
+
+        <!-- Настройки Kling (Выбор формата) -->
+        <div class="form-group" style="background: var(--tg-theme-bg-color, #fff); padding: 15px; border-radius: 12px; border: 1px solid var(--tg-theme-border-color, #e1e6eb); margin-bottom: 20px;">
+            <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Формат видео</label>
+            <div class="ratio-selector" style="display: flex; gap: 10px; margin: 0;">
+                <button class="ratio-btn active" id="ratio_ns_169" onclick="setAnimateRatio('16:9', this)" style="flex: 1; padding: 12px; border: 2px solid var(--tg-theme-border-color, #e1e6eb); border-radius: 8px; background: var(--tg-theme-bg-color, #fff); color: var(--tg-theme-text-color, #333); font-weight: bold; cursor: pointer;">16:9</button>
+                <button class="ratio-btn" id="ratio_ns_916" onclick="setAnimateRatio('9:16', this)" style="flex: 1; padding: 12px; border: 2px solid var(--tg-theme-border-color, #e1e6eb); border-radius: 8px; background: var(--tg-theme-bg-color, #fff); color: var(--tg-theme-text-color, #333); font-weight: bold; cursor: pointer;">9:16</button>
+            </div>
+        </div>
+
+        <button class="submit-btn" onclick="sendAnimateNoSoundData()" style="width: 100%; padding: 15px; background: var(--tg-theme-button-color, #0088cc); color: var(--tg-theme-button-text-color, white); border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 30px;">Оживить фото</button>
     </div>
 
-    <!-- Сетка примеров -->
-    <div style="font-weight: bold; font-size: 14px; margin-bottom: 5px; color: var(--tg-theme-text-color, #222);">Примеры генераций (нажмите для просмотра):</div>
-    <div class="phone-templates-grid">
-        <div class="phone-template-card" onclick="openPreviewVideo('https://googleapis.com')">
-            <img src="https://i.imgur.com/h6370oz.mp4" alt="Пример 1" onerror="this.src='https://placehold.co'">
-            <div class="card-overlay">🎬 Природный пейзаж</div>
-        </div>
-        <div class="phone-template-card" onclick="openPreviewVideo('https://googleapis.com')">
-            <img src="https://i.imgur.com/7bLn7AV.mp4" alt="Пример 2" onerror="this.src='https://placehold.co'">
-            <div class="card-overlay">🎬 Оживление города</div>
-        </div>
-        <div class="phone-template-card" onclick="openPreviewVideo('https://googleapis.com')">
-            <img src="https://i.imgur.com/2mcdE9J.mp4" alt="Пример 3" onerror="this.src='https://placehold.co'">
-            <div class="card-overlay">🎬 Движение авто</div>
-        </div>
-        <div class="phone-template-card" onclick="openPreviewVideo('https://googleapis.com')">
-            <img src="https://i.imgur.com/Q6GrKyK.mp4" alt="Пример 4" onerror="this.src='https://placehold.co'">
-            <div class="card-overlay">🎬 Кинематографично</div>
-        </div>
-        <div class="phone-template-card full-width" onclick="openPreviewVideo('https://i.imgur.com/TdbQPr2.mp4')">
-            <img src="https://i.postimg.cc/KvmNLjN5/1Jvjh-Wg-IOGd13NRyt-Al9Ch-E25g9JQ254cdm-KX3Wl-Efs-Valc6d-WLry-Aar-Bpbaxh-F7Am-TJzz-PRNdufq-Qt8z-NE1T.jpg" alt="Пример 5">
-            <div class="card-overlay">🎬 Панорамный полет камеры</div>
-        </div>
-    </div>
-
-    <!-- Настройки Kling (Выбор времени) -->
-    <div class="form-group" style="background: var(--tg-theme-bg-color, #fff); padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid var(--tg-theme-border-color, #e1e6eb);">
-        <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Длительность видео</label>
-        <div style="display: flex; gap: 10px;" id="video_duration_block">
-            <button class="duration-btn active" onclick="setKlingDuration(5, this)" style="flex: 1; padding: 12px; border: 2px solid var(--tg-theme-border-color, #e1e6eb); border-radius: 8px; background: var(--tg-theme-bg-color, #fff); color: var(--tg-theme-text-color, #333); font-weight: bold; cursor: pointer;">5 секунд</button>
-            <button class="duration-btn" onclick="setKlingDuration(10, this)" style="flex: 1; padding: 12px; border: 2px solid var(--tg-theme-border-color, #e1e6eb); border-radius: 8px; background: var(--tg-theme-bg-color, #fff); color: var(--tg-theme-text-color, #333); font-weight: bold; cursor: pointer;">10 секунд</button>
-        </div>
-    </div>
-
-    <!-- Настройки Kling (Выбор формата) -->
-    <div class="form-group" style="background: var(--tg-theme-bg-color, #fff); padding: 15px; border-radius: 12px; border: 1px solid var(--tg-theme-border-color, #e1e6eb); margin-bottom: 20px;">
-        <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Формат видео</label>
-        <div class="ratio-selector" style="display: flex; gap: 10px; margin: 0;">
-            <button class="ratio-btn active" id="ratio_ns_169" onclick="setAnimateRatio('16:9', this)" style="flex: 1; padding: 12px; border: 2px solid var(--tg-theme-border-color, #e1e6eb); border-radius: 8px; background: var(--tg-theme-bg-color, #fff); color: var(--tg-theme-text-color, #333); font-weight: bold; cursor: pointer;">16:9</button>
-            <button class="ratio-btn" id="ratio_ns_916" onclick="setAnimateRatio('9:16', this)" style="flex: 1; padding: 12px; border: 2px solid var(--tg-theme-border-color, #e1e6eb); border-radius: 8px; background: var(--tg-theme-bg-color, #fff); color: var(--tg-theme-text-color, #333); font-weight: bold; cursor: pointer;">9:16</button>
-        </div>
-    </div>
-
-    <!-- Кнопка отправки с использованием системного цвета Telegram -->
-    <button class="submit-btn" onclick="sendAnimateNoSoundData()" style="width: 100%; padding: 15px; background: var(--tg-theme-button-color, #0088cc); color: var(--tg-theme-button-text-color, white); border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 30px;">Оживить фото</button>
-</div>
-
-
-<!-- ========================================== -->
+    <!-- ========================================== -->
     <!-- ЭКРАН: ОЖИВЛЕНИЕ ФОТО (СО ЗВУКОМ)          -->
     <!-- ========================================== -->
     <div id="animate_sound" class="screen">
@@ -692,29 +670,11 @@
             <p style="color: var(--tg-theme-hint-color, #666); font-size: 12px;">Модель: fal-ai/kling-video/v2.6/pro/image-to-video</p>
         </div>
 
-        <!-- Сетка примеров -->
-        <div style="font-weight: bold; font-size: 14px; margin-bottom: 5px; color: var(--tg-theme-text-color, #222);">Примеры говорящих аватаров (нажмите для просмотра):</div>
+        <div style="font-weight: bold; font-size: 14px; margin-bottom: 5px; color: var(--tg-theme-text-color, #222);">Примеры говорящих аватаров:</div>
         <div class="phone-templates-grid">
-            <!-- ИСПРАВЛЕНО: Прописаны рабочие .mp4 файлы и заданы размеры для картинок picsum -->
             <div class="phone-template-card" onclick="openPreviewVideo('https://googleapis.com')">
-                <img src="https://picsum.photos" alt="Пример 1">
+                <img src="https://postimg.cc" alt="Пример 1">
                 <div class="card-overlay">🔊 Диктор новостей</div>
-            </div>
-            <div class="phone-template-card" onclick="openPreviewVideo('https://googleapis.com')">
-                <img src="https://picsum.photos" alt="Пример 2">
-                <div class="card-overlay">🔊 Бизнес-портрет</div>
-            </div>
-            <div class="phone-template-card" onclick="openPreviewVideo('https://googleapis.com')">
-                <img src="https://picsum.photos" alt="Пример 3">
-                <div class="card-overlay">🔊 Эмоциональная речь</div>
-            </div>
-            <div class="phone-template-card" onclick="openPreviewVideo('https://googleapis.com')">
-                <img src="https://picsum.photos" alt="Пример 4">
-                <div class="card-overlay">🔊 Презентация продукта</div>
-            </div>
-            <div class="phone-template-card full-width" onclick="openPreviewVideo('https://googleapis.com')">
-                <img src="https://picsum.photos" alt="Пример 5">
-                <div class="card-overlay">🔊 Исторический персонаж</div>
             </div>
         </div>
 
@@ -733,12 +693,10 @@
     <!-- Полноэкранный плеер (один на все экраны) -->
     <div id="videoPlayerModal" class="video-modal" onclick="closePreviewVideo()">
         <div class="video-modal-content" onclick="event.stopPropagation()">
-            <!-- Кнопка закрытия -->
             <button class="video-modal-close" onclick="closePreviewVideo()">×</button>
             <video id="previewVideoPlayer" playsinline loop controls autoplay muted></video>
         </div>
     </div>
-
 
 <!-- ========================================== -->
 <!-- ИСПРАВЛЕННЫЙ И БЕЗОПАСНЫЙ СКРИПТ: ЧАСТЬ 1  -->

@@ -821,6 +821,47 @@
             if (activeScreenEl) {
                 activeScreenEl.classList.add('active');
             }
+        
+                // ====================================================================================
+        // ЕДИНИЧНЫЕ ФУНКЦИИ ОТПРАВКИ JSON ДЛЯ ЭКРАНОВ ФОТО-СТУДИИ (ДОБАВЛЕНО ИСПРАВЛЕНИЕ)
+        // ====================================================================================
+        
+        // 1. Отправка для экрана Фото + Текст
+        function sendPhotoTextData() { 
+            sendToTelegram({ 
+                mode_trigger: 'text_image', 
+                aspect_ratio: selectedTextRatio, 
+                quality: selectedTextQuality 
+            }); 
+        }
+        
+        // 2. Отправка для кастомного Face Swap (Загрузить свой шаблон)
+        function sendCustomFaceSwapData() { 
+            sendToTelegram({ 
+                mode_trigger: 'face_swap', 
+                is_custom_template: true, 
+                aspect_ratio: selectedSwapRatio, 
+                quality: selectedSwapQuality 
+            }); 
+        }
+        
+        // 3. Отправка для Примерки одежды
+        function sendTryOnData() { 
+            sendToTelegram({ 
+                mode_trigger: 'tryon', 
+                aspect_ratio: selectedTryOnRatio, 
+                quality: selectedTryOnQuality 
+            }); 
+        }
+        
+        // 4. Отправка для Смены фона
+        function sendBgChangeData() { 
+            sendToTelegram({ 
+                mode_trigger: 'bg_change', 
+                aspect_ratio: selectedBgRatio, 
+                quality: selectedBgQuality 
+            }); 
+        }
 
             // Настройка поведения Telegram MainButton в зависимости от экрана
             if (screenName === 'face_swap') {

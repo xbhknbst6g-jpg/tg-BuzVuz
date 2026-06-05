@@ -208,7 +208,57 @@
         </div>
     </div>    
     
-    
+    <!-- ========================================== -->
+    <!-- ЭКРАН: ПРЯМАЯ ГЕНЕРАЦИЯ КАРТИНОК ИЗ БОТА  -->
+    <!-- ========================================== -->
+    <div id="image_generation_direct" class="screen">
+        <!-- Кнопка закрытия Web App, так как главного меню для этого режима нет -->
+        <button class="back-btn" onclick="closeWebApp()">❌ Закрыть</button>
+        
+        <div class="instruction-box" style="background: var(--tg-theme-secondary-bg-color, #fff3cd); border:1px solid var(--tg-theme-border-color, #ffeeba); border-radius:8px; padding:12px; font-size:13px; line-height:1.4; color: var(--tg-theme-text-color, #856404); margin-bottom:15px;">
+            <b>🎨 Генерация картинок по тексту (Шаг 1/2):</b><br>
+            1. Выберите желаемый формат будущей картинки кнопками ниже.<br>
+            2. Выберите необходимое качество генерации.<br>
+            3. Нажмите появившуюся внизу главную кнопку Telegram.<br>
+            4. После этого бот попросит вас <b>написать текст (промпт)</b> для создания изображения!
+        </div>
+
+        <div class="header" style="margin-bottom: 10px; text-align: center;">
+            <h1>Генерация картинок по тексту</h1>
+            <p style="font-size:14px; color: var(--tg-theme-hint-color, #666);">Выберите формат изображения:</p>
+        </div>
+
+        <!-- Кнопки выбора формата для прямой генерации картинок -->
+        <div class="ratio-selector">
+            <div class="ratio-btn active" id="direct_gen_ratio_9_16" onclick="setDirectGenRatio('9:16')">📱 9:16</div>
+            <div class="ratio-btn" id="direct_gen_ratio_3_4" onclick="setDirectGenRatio('3:4')">📸 3:4</div>
+            <div class="ratio-btn" id="direct_gen_ratio_1_1" onclick="setDirectGenRatio('1:1')">🔲 1:1</div>
+            <div class="ratio-btn" id="direct_gen_ratio_4_3" onclick="setDirectGenRatio('4:3')">🖼 4:3</div>
+            <div class="ratio-btn" id="direct_gen_ratio_16_9" onclick="setDirectGenRatio('16:9')">💻 16:9</div>
+        </div>
+
+        <p style="margin-top: 15px; margin-bottom: 5px; font-weight: bold; text-align: center; color: var(--tg-theme-text-color, #000);">Выходное качество:</p>
+        <div class="quality-selector">
+            <div class="quality-btn active" id="direct_gen_qual_schnell" onclick="setDirectGenQuality('schnell')" style="font-size: 11px; padding: 10px 4px;">⚡ Standard (1 Мп)</div>
+            <div class="quality-btn" id="direct_gen_qual_dev" onclick="setDirectGenQuality('dev')" style="font-size: 11px; padding: 10px 4px;">💎 Pro / 2K (2 Мп)</div>
+            <div class="quality-btn" id="direct_gen_qual_ultra" onclick="setDirectGenQuality('ultra_4k')" style="font-size: 11px; padding: 10px 4px;">🔥 Ultra 4K (4 Мп)</div>
+        </div>
+
+        <div class="header" style="margin-top: 20px; margin-bottom: 5px; text-align: center;">
+            <h2>🔥 Примеры генерации:</h2>
+            <p style="font-size:14px; color: var(--tg-theme-hint-color, #666);">Что можно получить по простому текстовому запросу</p>
+        </div>
+
+        <!-- БЛОК ПРИМЕРОВ ГЕНЕРАЦИИ -->
+        <div class="tryon-grid" style="display:grid; grid-template-columns:1fr; gap:15px; margin-top:15px;">
+            <div class="tryon-card" style="background: var(--tg-theme-bg-color, #fff); border-radius:12px; border:1px solid var(--tg-theme-border-color, #ddd); padding:12px;">
+                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center; color: var(--tg-theme-text-color, #000);">Запрос: «Киберпанк кот в неоновом городе»</div>
+                <div style="position:relative;">
+                    <img src="https://unsplash.com" style="width:100%; height:150px; object-fit:cover; border-radius:8px;">
+                </div>
+            </div>
+        </div>
+    </div>
 <!-- ========================================== -->
     <!-- ЭКРАН 2: РЕЖИМ 1: ФОТО + ТЕКСТ             -->
     <!-- ========================================== -->
@@ -790,6 +840,68 @@
                 tg.close();
             }
         }
+        
+
+        // Переменные для хранения настроек этого конкретного экрана
+        let directGenRatio = '9:16';
+        let directGenQuality = 'schnell';
+
+        // Функция выбора формата
+        function setDirectGenRatio(ratio) {
+            document.querySelectorAll('#image_generation_direct .ratio-btn').forEach(btn => btn.classList.remove('active'));
+            const activeId = 'direct_gen_ratio_' + ratio.replace(':', '_');
+            document.getElementById(activeId).classList.add('active');
+            directGenRatio = ratio;
+            updateDirectMainButton();
+        }
+
+        // Функция выбора качества
+        function setDirectGenQuality(quality) {
+            document.querySelectorAll('#image_generation_direct .quality-btn').forEach(btn => btn.classList.remove('active'));
+            const activeId = 'direct_gen_qual_' + (quality === 'ultra_4k' ? 'ultra' : quality);
+            document.getElementById(activeId).classList.add('active');
+            directGenQuality = quality;
+            updateDirectMainButton();
+        }
+
+        // Управление Главной кнопкой Telegram (MainButton)
+        function updateDirectMainButton() {
+            if (!tg) return;
+            
+            tg.MainButton.text = `Выбрать формат ${directGenRatio} (${directGenQuality === 'schnell' ? 'Standard' : directGenQuality === 'dev' ? 'Pro' : 'Ultra 4K'})`;
+            tg.MainButton.show();
+            
+            // Назначаем отправку данных в бота по клику на кнопку Telegram
+            tg.MainButton.onClick(function() {
+                const dataToSend = {
+                    action: "image_generation",
+                    ratio: directGenRatio,
+                    quality: directGenQuality
+                };
+                tg.sendData(JSON.stringify(dataToSend)); // Отправляет JSON-строку боту и закрывает Web App
+            });
+        }
+
+        // Функция закрытия приложения вручную
+        function closeWebApp() {
+            if (tg) {
+                tg.close();
+            }
+        }
+
+            // АВТО-ОПРЕДЕЛЕНИЕ: Если пользователь зашел по кнопке «Генерация картинок» из бота
+            window.addEventListener('DOMContentLoaded', () => {
+                if (tg) {
+                    // Проверяем параметр, переданный из бота (например, https://t.me)
+                    const startParam = tg.initDataUnsafe?.start_param;
+                    
+                    if (startParam === 'img_gen') {
+                        openScreen('image_generation_direct');
+                        updateDirectMainButton();
+                    }
+                }
+});
+
         
 
         // 3. БЕЗОПАСНОЕ ПЕРЕКЛЮЧЕНИЕ КАЧЕСТВА ДЛЯ КАЖДОГО РЕЖИМА

@@ -747,30 +747,32 @@
         // Инициализация Telegram WebApp API
         const tg = window.Telegram.WebApp;
 
-        // === АВТООПРЕДЕЛЕНИЕ РЕЖИМА ПРИ ЗАПУСКЕ ИЗ БОТА ===
-        // ИСПРАВЛЕНО: Объединили старт_парам и mode в один чистый роутер без наложений экранов
+                // === АВТООПРЕДЕЛЕНИЕ РЕЖИМА ПРИ ЗАПУСКЕ ИЗ БОТА ===
+        // ИСПРАВЛЕНО ДЛЯ TELEGRAM WEB НА ПК: Читаем строго параметр direct из прямой ссылки!
         window.addEventListener('DOMContentLoaded', () => {
             if (tg) {
                 tg.ready();  
                 tg.expand(); 
             }
 
+            // Вытаскиваем хвостик ?mode= из ссылки
             const urlParams = new URLSearchParams(window.location.search);
             const mode = urlParams.get('mode');
-            const startParam = tg?.initDataUnsafe?.start_param;
 
             if (mode === 'video') {
-                openScreen('video_menu'); 
+                openScreen('video_menu'); // Откроет видео-меню Kling
             } else if (mode === 'photo') {
-                openScreen('main_menu'); 
+                openScreen('main_menu');  // Откроет твое меню из 4 фото-пунктов
             } else if (mode === 'image') {
                 openScreen('face_swap');  
-            } else if (mode === 'direct' || mode === 'img_gen' || startParam === 'img_gen') {
+            } else if (mode === 'direct') {
+                // ЖЕЛЕЗНЫЙ ТРИГГЕР: Теперь на ПК откроется строго этот экран картинок!
                 openScreen('image_generation_direct'); 
             } else {
                 openScreen('main_menu');  
             }
         });
+
 
         // 1. ИНИЦИАЛИЗАЦИЯ ВСЕХ ПЕРЕМЕННЫХ НАСТРОЕК
         let currentActiveMode = 'main_menu';

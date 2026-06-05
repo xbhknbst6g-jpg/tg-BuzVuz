@@ -790,21 +790,21 @@
         let selectedTryOnQuality = 'schnell';
         let selectedBgQuality = 'schnell';
 
-        // 2. ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ (ОБНОВЛЕНА И СИНХРОНИЗИРОВАНА)
+                // 2. ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ (ИСПРАВЛЕНО ДЛЯ 3-Й КНОПКИ)
         function openScreen(screenName) {
             currentActiveMode = screenName;
             
-            // ID приведены в точное соответствие с HTML-разметкой (убран префикс screen_)
+            // ИСПРАВЛЕНО: Добавили 'image_generation_direct' в список, чтобы шторка не закрывалась!
             const screens = [
                 'main_menu', 
                 'face_swap', 
                 'tryon', 
                 'text_image', 
                 'bg_change',
-                'video_menu',       // Главное меню видео
-                'video_swap',       // Экран Video Face Swap
-                'animate_nosound',  // Экран Kling 2.1 без звука
-                'animate_sound'     // Экран Kling 2.6 со звуком
+                'video_menu',       
+                'animate_nosound',  
+                'animate_sound',
+                'image_generation_direct' // <-- ОБЯЗАТЕЛЬНО ДОЛЖЕН БЫТЬ ТУТ!
             ];
             
             // Скрываем абсолютно все экраны перед показом нужного
@@ -831,17 +831,21 @@
                 setupMainButton("Запустить генерацию Фото+Текст ✨", sendPhotoTextData);
             } else if (screenName === 'bg_change') {
                 setupMainButton("Запустить смену фона ✨", sendBgChangeData);
+            } else if (screenName === 'image_generation_direct') {
+                // Если включился 3-й экран, запускаем обновление его личной кнопки!
+                if (typeof updateDirectMainButton === 'function') updateDirectMainButton();
             } else if (screenName === 'video_swap' || screenName === 'animate_nosound' || screenName === 'animate_sound') {
-                tg.MainButton.hide(); // Юзер нажимает кнопки внутри интерфейса страницы
+                tg.MainButton.hide(); 
             }
             
-            // Дефолтный триггер на случай, если передан неизвестный экран
+            // Триггер закроет шторку только если экрана РЕАЛЬНО нет в списке
             if (!screens.includes(screenName)) {
                 const directData = { mode_trigger: screenName };
                 tg.sendData(JSON.stringify(directData));
                 tg.close();
             }
         }
+
         // Вспомогательный конфигуратор главной кнопки Telegram
         function setupMainButton(text, callback) {
             tg.MainButton.setText(text);

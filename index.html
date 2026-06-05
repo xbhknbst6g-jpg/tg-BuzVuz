@@ -260,10 +260,6 @@
             </div>
         </div>
 
-        <!-- ДОБАВЛЕНО: Физическая кнопка отправки прямо внутри HTML-страницы (как в режиме Видео) -->
-        <button class="submit-btn" style="width: 100%; padding: 15px; background: var(--tg-theme-button-color, #0088cc); color: var(--tg-theme-button-text-color, white); border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 25px; margin-bottom: 30px;">🚀 Выбрать формат</button>
-    </div>
-
     <!-- ========================================== -->
     <!-- ЭКРАН 2: РЕЖИМ 1: ФОТО + ТЕКСТ             -->
     <!-- ========================================== -->
@@ -878,25 +874,36 @@
             updateDirectMainButton();
         }
 
-        // Управление кнопкой генерации для прямого режима Flux
-        // ИСПРАВЛЕНО: Кнопка дублируется и на панель Telegram, и внутрь самого сайта для работы без вылетов!
+        // Управление Главной кнопкой Telegram (MainButton) для прямого режима Flux
+        // ИСПРАВЛЕНО: Кнопка строго одна, нативная и без дублирования в HTML!
         function updateDirectMainButton() {
+            if (!tg || !tg.MainButton) return;
+            
             const readableQual = directGenQuality === 'schnell' ? 'Standard' : directGenQuality === 'dev' ? 'Pro' : 'Ultra 4K';
-            const btnText = `Выбрать формат ${directGenRatio} (${readableQual}) ✨`;
-
-            // СПОСОБ А: Настраиваем нижнюю синюю панель Telegram (для смартфонов)
-            if (typeof tg !== 'undefined' && tg.MainButton) {
-                tg.MainButton.setText(btnText);
-                tg.MainButton.show();
-                tg.MainButton.offClick();
-                tg.MainButton.onClick(function() {
-                    sendToTelegram({
-                        mode_trigger: "pure_text_image", 
-                        aspect_ratio: directGenRatio,
-                        quality: directGenQuality
-                    });
-                });
-            }
+            
+            // Настраиваем текст нативной нижней панели Телеграма
+            tg.MainButton.setText(`Выбрать формат ${directGenRatio} (${readableQual}) ✨`);
+            tg.MainButton.show();
+            
+            // Жестко сбрасываем старые клики от греха подальше
+            tg.MainButton.offClick();
+            
+            // Вешаем чистую отправку данных Flux по тексту в бот
+            tg.MainButton.onClick(function() {
+                const dataToSend = {
+                    mode_trigger: "pure_text_image", 
+                    aspect_ratio: directGenRatio,
+                    quality: directGenQuality
+                };
+                
+                try {
+                    tg.sendData(JSON.stringify(dataToSend));
+                    tg.close();
+                } catch(e) {
+                    console.error("Ошибка отправки ТГ: ", e);
+                }
+            });
+        }
 
             // СПОСОБ Б: Ищем обычную кнопку прямо внутри HTML-страницы (для Telegram Web на ПК)
             const submitBtn = document.querySelector('#image_generation_direct .submit-btn');

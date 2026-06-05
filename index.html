@@ -747,32 +747,29 @@
         // Инициализация Telegram WebApp API
         const tg = window.Telegram.WebApp;
 
-                // === АВТООПРЕДЕЛЕНИЕ РЕЖИМА ПРИ ЗАПУСКЕ ИЗ БОТА ===
-        // ИСПРАВЛЕНО ДЛЯ TELEGRAM WEB НА ПК: Читаем строго параметр direct из прямой ссылки!
+        // === АВТООПРЕДЕЛЕНИЕ РЕЖИМА ПРИ ЗАПУСКЕ ИЗ БОТА ===
         window.addEventListener('DOMContentLoaded', () => {
             if (tg) {
                 tg.ready();  
                 tg.expand(); 
             }
 
-            // Вытаскиваем хвостик ?mode= из ссылки
+            // Считываем хвостик ?mode= из ссылки бота
             const urlParams = new URLSearchParams(window.location.search);
             const mode = urlParams.get('mode');
 
             if (mode === 'video') {
-                openScreen('video_menu'); // Откроет видео-меню Kling
+                openScreen('video_menu'); 
             } else if (mode === 'photo') {
-                openScreen('main_menu');  // Откроет твое меню из 4 фото-пунктов
+                openScreen('main_menu'); // Твоя главная панель фото-инструментов из 4 пунктов
             } else if (mode === 'image') {
                 openScreen('face_swap');  
-            } else if (mode === 'direct') {
-                // ЖЕЛЕЗНЫЙ ТРИГГЕР: Теперь на ПК откроется строго этот экран картинок!
+            } else if (mode === 'direct' || mode === 'img_gen') {
                 openScreen('image_generation_direct'); 
             } else {
                 openScreen('main_menu');  
             }
         });
-
 
         // 1. ИНИЦИАЛИЗАЦИЯ ВСЕХ ПЕРЕМЕННЫХ НАСТРОЕК
         let currentActiveMode = 'main_menu';
@@ -789,10 +786,11 @@
         let selectedTryOnQuality = 'schnell';
         let selectedBgQuality = 'schnell';
 
-        // 2. ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ (ИСПРАВЛЕНО: СКОБКИ ЗАКРЫТЫ, ФУНКЦИИ ВЫНЕСЕНЫ НАРУЖУ)
+        // 2. ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ (ИСПРАВЛЕНО: ВСЕ ID СИНХРОНИЗИРОВАНЫ)
         function openScreen(screenName) {
             currentActiveMode = screenName;
             
+            // Точный список ID тегов из твоей HTML-разметки страниц
             const screens = [
                 'main_menu', 
                 'face_swap', 
@@ -805,18 +803,25 @@
                 'image_generation_direct' 
             ];
             
+            // Скрываем абсолютно все экраны перед показом нужного
             screens.forEach(s => {
                 const el = document.getElementById(s);
                 if (el) el.classList.remove('active');
             });
             
+            // По умолчанию скрываем главную кнопку Telegram
             tg.MainButton.hide();
 
+            // Поиск и показ целевого экрана
             const activeScreenEl = document.getElementById(screenName);
             if (activeScreenEl) {
                 activeScreenEl.classList.add('active');
+                console.log("[Screen] Успешно переключено на экран: ", screenName);
+            } else {
+                console.error("[Screen] Ошибка: Тег с ID '" + screenName + "' не найден в HTML!");
             }
 
+            // Настройка поведения и привязка функций клика Telegram MainButton
             if (screenName === 'face_swap') {
                 setupMainButton("Загрузить свой шаблон в боте ✨", sendCustomFaceSwapData);
             } else if (screenName === 'tryon') {
@@ -831,6 +836,7 @@
                 tg.MainButton.hide(); 
             }
             
+            // Жесткий триггер-предохранитель от непредвиденных ошибок
             if (!screens.includes(screenName)) {
                 const directData = { mode_trigger: screenName };
                 tg.sendData(JSON.stringify(directData));
@@ -838,6 +844,7 @@
             }
         }
 
+        // Системный конфигуратор главной кнопки ТГ (очищает память кликов)
         function setupMainButton(text, callback) {
             tg.MainButton.setText(text);
             tg.MainButton.show();

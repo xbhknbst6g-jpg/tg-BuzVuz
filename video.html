@@ -132,6 +132,7 @@
         const tg = window.Telegram.WebApp;
 
         // Переменные настроек видео
+        let currentActiveMode = 'video_menu';
         let currentAnimateRatio = '16:9';  
         let currentKlingDuration = 5;  
 
@@ -141,10 +142,49 @@
                 tg.ready();  
                 tg.expand(); 
             }
+            updateVideoMainButton(); // Сразу настраиваем видимость кнопки
         });
 
-        // Функция переключения экранов внутри видеостудии
+        // ====================================================================================
+        // ЛАКОНИЧНЫЙ ОБНОВЛЯТОР ТЕКСТА ГЛАВНОЙ КНОПКИ ТЕЛЕГРАМ ДЛЯ ВИДЕО
+        // ====================================================================================
+        function updateVideoMainButton() {
+            if (!tg || !tg.MainButton) return;
+            
+            // Если мы на главном меню видео — скрываем нативную кнопку
+            if (currentActiveMode === 'video_menu') {
+                tg.MainButton.hide();
+                return;
+            }
+
+            let buttonText = "";
+            let currentCallback = null;
+
+            // Собираем текст для режима БЕЗ звука (показываем формат и выбранные секунды)
+            if (currentActiveMode === 'animate_nosound') {
+                buttonText = `${currentAnimateRatio} (${currentKlingDuration}s) Start ✨`;
+                currentCallback = sendAnimateNoSoundData;
+            } 
+            // Собираем текст для режима СО звуком (формат там авто, пишем про звук)
+            else if (currentActiveMode === 'animate_sound') {
+                const audioToggle = document.getElementById("use_audio_toggle");
+                const withAudio = audioToggle && audioToggle.checked ? "LipSync" : "No Audio";
+                buttonText = `Auto (${withAudio}) Start ✨`;
+                currentCallback = sendAnimateSoundData;
+            }
+
+            // Выводим лаконичную кнопку на экран шторки Telegram
+            if (buttonText && currentCallback) {
+                tg.MainButton.setText(buttonText);
+                tg.MainButton.show();
+                tg.MainButton.offClick(); // Очищаем старую память кликов
+                tg.MainButton.onClick(currentCallback); // Вешаем чистую отправку
+            }
+        }
+
+        // ИСПРАВЛЕНО: Заменили Python-слово 'def' на правильное JavaScript-слово 'function'!
         function openScreen(screenName) {
+            currentActiveMode = screenName;
             const screens = ['video_menu', 'animate_nosound', 'animate_sound'];
             
             screens.forEach(s => {
@@ -153,27 +193,37 @@
             });
             
             const activeScreenEl = document.getElementById(screenName);
-            if (activeScreenEl) activeScreenEl.classList.add('active');
-            
-            // На экранах видео нативная кнопка Telegram не нужна, прячем её
-            if (tg && tg.MainButton) tg.MainButton.hide(); 
+            if (activeScreenEl) {
+                activeScreenEl.classList.add('active');
+                updateVideoMainButton(); // Пересчитываем кнопку при смене экрана
+            }
         }
 
-        // Выбор формата видео (16:9 или 9:16)
+        // Переключение формата видео (16:9 или 9:16)
         function setAnimateRatio(ratio, element) {
             if (!element) return;
             element.parentElement.querySelectorAll('.ratio-btn').forEach(btn => btn.classList.remove('active'));
             element.classList.add('active');
             currentAnimateRatio = ratio;
+            updateVideoMainButton(); // Мгновенно обновляем текст кнопки
         }
 
-        // Выбор длительности видео (5 или 10 секунд)
+        // Переключение длительности видео (5 или 10 секунд)
         function setKlingDuration(duration, element) {
             if (!element) return;
             element.parentElement.querySelectorAll('.duration-btn').forEach(btn => btn.classList.remove('active'));
             element.classList.add('active');
             currentKlingDuration = duration;
+            updateVideoMainButton(); // Мгновенно обновляем текст кнопки
         }
+
+        // Добавили триггер на чекбокс звука, чтобы текст кнопки менялся при снятии галочки
+        window.addEventListener('load', () => {
+            const toggle = document.getElementById("use_audio_toggle");
+            if (toggle) {
+                toggle.addEventListener('change', updateVideoMainButton);
+            }
+        });
 
         // Системный передатчик JSON-данных обратно в бота
         function sendToTelegram(payload) {
@@ -207,7 +257,7 @@
                 mode_trigger: "video_menu",
                 sub_mode: "animate_sound", 
                 aspect_ratio: "auto",
-                duration: 5, // Базовый дефолт для говорящего аватара
+                duration: 5, 
                 with_audio: needAudioFile, 
                 start_step: "request_photo"
             });

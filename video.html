@@ -162,12 +162,14 @@
         </div>
     </div>
 
-    <!-- ЭКРАН 3: ОЖИВЛЕНИЕ ФОТО (СО ЗВУКОМ) -->
+    <!-- ========================================== -->
+    <!-- ЭКРАН 3: ОЖИВЛЕНИЕ ФОТО (СО ЗВУКОМ / СИНТЕЗ КЛИПОВ) -->
+    <!-- ========================================== -->
     <div id="animate_sound" class="screen">
         <button class="back-btn" onclick="openScreen('video_menu')">← Назад к видео</button>
         
         <div class="header" style="margin-bottom: 15px;">
-            <h1>Kling 2.6 Pro</h1>
+            <h1>Kling 2.6 Pro (Синтез речи)</h1>
             <p style="font-size: 12px;">Модель: fal-ai/kling-video/v2.6/pro/image-to-video</p>
         </div>
 
@@ -179,45 +181,56 @@
             </div>
         </div>
 
-        <!-- Выбор аудио-режима -->
-        <div style="background: var(--tg-theme-bg-color, #fff); padding: 15px; border-radius: 12px; border: 1px solid var(--tg-theme-border-color, #e1e6eb); margin-bottom: 20px;">
-            <label style="display: flex; align-items: center; font-weight: bold; font-size: 14px; cursor: pointer; user-select: none; color: var(--tg-theme-text-color, #000);">
-                <input type="checkbox" id="use_audio_toggle" checked style="width: 18px; height: 18px; margin-right: 10px; cursor: pointer;">
-                Добавить аудиофайл (Липсинк / Озвучка)
-            </label>
-            <div style="font-size: 12px; color: var(--tg-theme-hint-color, #777); margin-top: 5px;">Если галочка снята, бот попросит только фото и промпт.</div>
+        <!-- 1. Настройки Длительности для видео со звуком -->
+        <div style="background: var(--tg-theme-bg-color, #fff); padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid var(--tg-theme-border-color, #e1e6eb);">
+            <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Длительность видео</label>
+            <div style="display: flex; gap: 10px;">
+                <button class="duration-btn active" onclick="setKlingDuration(5, this)">5 секунд</button>
+                <button class="duration-btn" onclick="setKlingDuration(10, this)">10 секунд</button>
+            </div>
         </div>
-    </div>
 
-    <!-- ПОЛНОЭКРАННЫЙ ПЛЕЕР ПРЕВЬЮ -->
-    <div id="videoPlayerModal" class="video-modal" onclick="closePreviewVideo()">
-        <div class="video-modal-content" onclick="event.stopPropagation()">
-            <button class="video-modal-close" onclick="closePreviewVideo()">×</button>
-            <video id="previewVideoPlayer" playsinline loop controls autoplay muted></video>
+        <!-- 2. Настройки Формата для видео со звуком -->
+        <div style="background: var(--tg-theme-bg-color, #fff); padding: 15px; border-radius: 12px; border: 1px solid var(--tg-theme-border-color, #e1e6eb); margin-bottom: 15px;">
+            <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Формат видео</label>
+            <div class="ratio-selector">
+                <button class="ratio-btn active" onclick="setAnimateRatio('16:9', this)">16:9</button>
+                <button class="ratio-btn" onclick="setAnimateRatio('9:16', this)">9:16</button>
+            </div>
+        </div>
+
+        <!-- 3. НОВЫЙ БЛОК: Выбор встроенного AI-голоса (Voice IDs) -->
+        <div style="background: var(--tg-theme-bg-color, #fff); padding: 15px; border-radius: 12px; border: 1px solid var(--tg-theme-border-color, #e1e6eb); margin-bottom: 20px;">
+            <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Выбор AI-голоса озвучки</label>
+            <div style="display: flex; gap: 10px;">
+                <!-- При нажатии передаем ID голоса в кастомную функцию setVoiceId -->
+                <button class="duration-btn active" onclick="setVoiceId('voice_male_01', this)">🧑 Голос 1</button>
+                <button class="duration-btn" onclick="setVoiceId('voice_female_02', this)">👩 Голос 2</button>
+            </div>
+            <div style="font-size: 11px; color: var(--tg-theme-hint-color, #777); margin-top: 6px;">Бот озвучит ваш текст выбранным персонажем.</div>
         </div>
     </div>
-    <script>
+        <script>
         const tg = window.Telegram.WebApp;
 
-        // Переменные настроек видео
+        // Переменные настроек видеостудии
         let currentActiveMode = 'video_menu';
         let currentAnimateRatio = '16:9';  
         let currentKlingDuration = 5;  
+        let selectedVoiceId = 'voice_male_01'; // ID дефолтного голоса по умолчанию
 
-        // Инициализация WebApp при старте страницы
         window.addEventListener('DOMContentLoaded', () => {
             if (tg) {
                 tg.ready();  
                 tg.expand(); 
             }
-            updateVideoMainButton(); // Настраиваем видимость кнопки на старте
+            updateVideoMainButton();
         });
 
-        // ЛАКОНИЧНЫЙ ОБНОВЛЯТОР ТЕКСТА ГЛАВНОЙ КНОПКИ ТЕЛЕГРАМ ДЛЯ ВИДЕО
+        // ЛАКОНИЧНЫЙ ОБНОВЛЯТОР ТЕКСТА ГЛАВНОЙ КНОПКИ ТЕЛЕГРАМ
         function updateVideoMainButton() {
             if (!tg || !tg.MainButton) return;
             
-            // Если мы на главном меню видео — скрываем нативную кнопку
             if (currentActiveMode === 'video_menu') {
                 tg.MainButton.hide();
                 return;
@@ -226,26 +239,26 @@
             let buttonText = "";
             let currentCallback = null;
 
+            // Короткая кнопка для режима БЕЗ звука
             if (currentActiveMode === 'animate_nosound') {
                 buttonText = `${currentAnimateRatio} (${currentKlingDuration}s) Start ✨`;
                 currentCallback = sendAnimateNoSoundData;
             } 
+            // Короткая кнопка для режима СО звуком (показывает формат, секунды и какой голос выбран)
             else if (currentActiveMode === 'animate_sound') {
-                const toggle = document.getElementById("use_audio_toggle");
-                const withAudio = toggle && toggle.checked ? "LipSync" : "No Audio";
-                buttonText = `Auto (${withAudio}) Start ✨`;
+                const readableVoice = selectedVoiceId === 'voice_male_01' ? 'Voice 1' : 'Voice 2';
+                buttonText = `${currentAnimateRatio} (${currentKlingDuration}s) [${readableVoice}] Start ✨`;
                 currentCallback = sendAnimateSoundData;
             }
 
             if (buttonText && currentCallback) {
                 tg.MainButton.setText(buttonText);
                 tg.MainButton.show();
-                tg.MainButton.offClick(); // Очищаем старую память кликов
-                tg.MainButton.onClick(currentCallback); // Вешаем чистую отправку
+                tg.MainButton.offClick();
+                tg.MainButton.onClick(currentCallback);
             }
         }
 
-        // Функция переключения экранов внутри видеостудии
         function openScreen(screenName) {
             currentActiveMode = screenName;
             const screens = ['video_menu', 'animate_nosound', 'animate_sound'];
@@ -258,29 +271,35 @@
             const activeScreenEl = document.getElementById(screenName);
             if (activeScreenEl) {
                 activeScreenEl.classList.add('active');
-                updateVideoMainButton(); // Пересчитываем кнопку при смене экрана
+                updateVideoMainButton();
             }
         }
 
-        // Выбор формата видео (16:9 или 9:16)
         function setAnimateRatio(ratio, element) {
             if (!element) return;
             element.parentElement.querySelectorAll('.ratio-btn').forEach(btn => btn.classList.remove('active'));
             element.classList.add('active');
             currentAnimateRatio = ratio;
-            updateVideoMainButton(); // Обновляем текст кнопки
+            updateVideoMainButton();
         }
 
-        // Выбор длительности видео (5 или 10 секунд)
         function setKlingDuration(duration, element) {
             if (!element) return;
             element.parentElement.querySelectorAll('.duration-btn').forEach(btn => btn.classList.remove('active'));
             element.classList.add('active');
             currentKlingDuration = duration;
-            updateVideoMainButton(); // Обновляем текст кнопки
+            updateVideoMainButton();
         }
 
-        // Системный передатчик JSON-данных обратно в бота
+        // Новая функция: Переключает активный класс кнопок голоса и сохраняет ID
+        function setVoiceId(voiceId, element) {
+            if (!element) return;
+            element.parentElement.querySelectorAll('.duration-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            selectedVoiceId = voiceId;
+            updateVideoMainButton(); // Сразу пересчитываем текст на кнопке Telegram
+        }
+
         function sendToTelegram(payload) {
             try {
                 if (tg && tg.sendData) {
@@ -292,7 +311,6 @@
             }
         }
 
-        // Сбор данных для анимации БЕЗ звука
         function sendAnimateNoSoundData() {
             sendToTelegram({
                 mode_trigger: "video_menu",
@@ -304,21 +322,18 @@
             });
         }
 
-        // Сбор данных для анимации СО звуком
+        // Отправка данных для генерации со звуком (передает боту выбранный голос, формат и время)
         function sendAnimateSoundData() {
-            const audioToggle = document.getElementById("use_audio_toggle");
-            const needAudioFile = audioToggle ? audioToggle.checked : false;
             sendToTelegram({
                 mode_trigger: "video_menu",
                 sub_mode: "animate_sound", 
-                aspect_ratio: "auto",
-                duration: 5, 
-                with_audio: needAudioFile, 
-                start_step: "request_photo"
+                aspect_ratio: currentAnimateRatio,
+                duration: currentKlingDuration, 
+                voice_id: selectedVoiceId, // Бот получит 'voice_male_01' или 'voice_female_02'
+                start_step: "request_photo" // Затем бот попросит скинуть фото лица, а следом — текст
             });
         }
 
-        // Открытие полноэкранного плеера превью
         function openPreviewVideo(videoUrl) {
             if (!videoUrl || videoUrl.includes('ссылка_на_') || videoUrl === 'https://googleapis.com' || videoUrl === 'https://postimg.cc') {
                 if (tg && tg.showAlert) tg.showAlert("Видео-пример еще загружается!");
@@ -334,7 +349,6 @@
             }
         }
 
-        // Закрытие плеера и очистка памяти
         function closePreviewVideo() {
             const modal = document.getElementById('videoPlayerModal');
             const player = document.getElementById('previewVideoPlayer');
@@ -344,14 +358,7 @@
                 player.src = ""; 
             }
         }
-
-        // Добавили триггер на чекбокс звука
-        window.addEventListener('load', () => {
-            const toggle = document.getElementById("use_audio_toggle");
-            if (toggle) {
-                toggle.addEventListener('change', updateVideoMainButton);
-            }
-        });
     </script>
+
 </body>
 </html>

@@ -78,12 +78,6 @@
             color: var(--tg-theme-text-color, #333); border-radius: 6px; font-size: 13px; font-weight: bold; 
             cursor: pointer; margin-bottom: 15px; border: none; -webkit-tap-highlight-color: transparent;
         }
-        
-        .submit-btn {
-            width: 100%; padding: 15px; background: var(--tg-theme-button-color, #0088cc); 
-            color: var(--tg-theme-button-text-color, white); border: none; border-radius: 12px; 
-            font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 30px; -webkit-tap-highlight-color: transparent;
-        }
 
         /* ПОЛНОЭКРАННЫЙ СТИЛЬНЫЙ МОБИЛЬНЫЙ ПЛЕЕР ПРЕВЬЮ */
         .video-modal {
@@ -103,7 +97,7 @@
 </head>
 <body>
 
-    <!-- ЭКРАН 1: ГЛАВНОЕ МЕНЮ РАЗДЕЛА ВИДЕО (ИСПРАВЛЕНО: СРАЗУ ACTIVE) -->
+    <!-- ЭКРАН 1: ГЛАВНОЕ МЕНЮ РАЗДЕЛА ВИДЕО -->
     <div id="video_menu" class="screen active">
         <div class="header">
             <h1>Интеллектуальная AI Видеостудия</h1>
@@ -128,6 +122,80 @@
             </div>
         </div>
     </div>
+    <!-- ЭКРАН 2: ОЖИВЛЕНИЕ ФОТО (БЕЗ ЗВУКА) -->
+    <div id="animate_nosound" class="screen">
+        <button class="back-btn" onclick="openScreen('video_menu')">← Назад к видео</button>
+        
+        <div class="header" style="margin-bottom: 15px;">
+            <h1>Оживление фото (Kling v2.1)</h1>
+            <p style="font-size: 12px;">Модель: fal-ai/kling-video/v2.1/standard/image-to-video</p>
+        </div>
+
+        <div style="font-weight: bold; font-size: 14px; margin-bottom: 5px; color: var(--tg-theme-text-color, #222);">Примеры генераций (нажмите для просмотра):</div>
+        <div class="phone-templates-grid">
+            <div class="phone-template-card" onclick="openPreviewVideo('https://googleapis.com')">
+                <img src="https://postimg.cc" alt="Пример 1">
+                <div class="card-overlay">🎬 Природный пейзаж</div>
+            </div>
+            <div class="phone-template-card" onclick="openPreviewVideo('https://googleapis.com')">
+                <img src="https://postimg.cc" alt="Пример 2">
+                <div class="card-overlay">🎬 Оживление города</div>
+            </div>
+        </div>
+
+        <!-- Настройки Длительности -->
+        <div style="background: var(--tg-theme-bg-color, #fff); padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid var(--tg-theme-border-color, #e1e6eb);">
+            <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Длительность видео</label>
+            <div style="display: flex; gap: 10px;">
+                <button class="duration-btn active" onclick="setKlingDuration(5, this)">5 секунд</button>
+                <button class="duration-btn" onclick="setKlingDuration(10, this)">10 секунд</button>
+            </div>
+        </div>
+
+        <!-- Настройки Формата -->
+        <div style="background: var(--tg-theme-bg-color, #fff); padding: 15px; border-radius: 12px; border: 1px solid var(--tg-theme-border-color, #e1e6eb); margin-bottom: 20px;">
+            <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Формат видео</label>
+            <div class="ratio-selector">
+                <button class="ratio-btn active" onclick="setAnimateRatio('16:9', this)">16:9</button>
+                <button class="ratio-btn" onclick="setAnimateRatio('9:16', this)">9:16</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ЭКРАН 3: ОЖИВЛЕНИЕ ФОТО (СО ЗВУКОМ) -->
+    <div id="animate_sound" class="screen">
+        <button class="back-btn" onclick="openScreen('video_menu')">← Назад к видео</button>
+        
+        <div class="header" style="margin-bottom: 15px;">
+            <h1>Kling 2.6 Pro</h1>
+            <p style="font-size: 12px;">Модель: fal-ai/kling-video/v2.6/pro/image-to-video</p>
+        </div>
+
+        <div style="font-weight: bold; font-size: 14px; margin-bottom: 5px; color: var(--tg-theme-text-color, #222);">Примеры говорящих аватаров:</div>
+        <div class="phone-templates-grid">
+            <div class="phone-template-card" onclick="openPreviewVideo('https://googleapis.com')">
+                <img src="https://postimg.cc" alt="Пример 1">
+                <div class="card-overlay">🔊 Диктор новостей</div>
+            </div>
+        </div>
+
+        <!-- Выбор аудио-режима -->
+        <div style="background: var(--tg-theme-bg-color, #fff); padding: 15px; border-radius: 12px; border: 1px solid var(--tg-theme-border-color, #e1e6eb); margin-bottom: 20px;">
+            <label style="display: flex; align-items: center; font-weight: bold; font-size: 14px; cursor: pointer; user-select: none; color: var(--tg-theme-text-color, #000);">
+                <input type="checkbox" id="use_audio_toggle" checked style="width: 18px; height: 18px; margin-right: 10px; cursor: pointer;">
+                Добавить аудиофайл (Липсинк / Озвучка)
+            </label>
+            <div style="font-size: 12px; color: var(--tg-theme-hint-color, #777); margin-top: 5px;">Если галочка снята, бот попросит только фото и промпт.</div>
+        </div>
+    </div>
+
+    <!-- ПОЛНОЭКРАННЫЙ ПЛЕЕР ПРЕВЬЮ -->
+    <div id="videoPlayerModal" class="video-modal" onclick="closePreviewVideo()">
+        <div class="video-modal-content" onclick="event.stopPropagation()">
+            <button class="video-modal-close" onclick="closePreviewVideo()">×</button>
+            <video id="previewVideoPlayer" playsinline loop controls autoplay muted></video>
+        </div>
+    </div>
     <script>
         const tg = window.Telegram.WebApp;
 
@@ -142,12 +210,10 @@
                 tg.ready();  
                 tg.expand(); 
             }
-            updateVideoMainButton(); // Сразу настраиваем видимость кнопки
+            updateVideoMainButton(); // Настраиваем видимость кнопки на старте
         });
 
-        // ====================================================================================
         // ЛАКОНИЧНЫЙ ОБНОВЛЯТОР ТЕКСТА ГЛАВНОЙ КНОПКИ ТЕЛЕГРАМ ДЛЯ ВИДЕО
-        // ====================================================================================
         function updateVideoMainButton() {
             if (!tg || !tg.MainButton) return;
             
@@ -160,20 +226,17 @@
             let buttonText = "";
             let currentCallback = null;
 
-            // Собираем текст для режима БЕЗ звука (показываем формат и выбранные секунды)
             if (currentActiveMode === 'animate_nosound') {
                 buttonText = `${currentAnimateRatio} (${currentKlingDuration}s) Start ✨`;
                 currentCallback = sendAnimateNoSoundData;
             } 
-            // Собираем текст для режима СО звуком (формат там авто, пишем про звук)
             else if (currentActiveMode === 'animate_sound') {
-                const audioToggle = document.getElementById("use_audio_toggle");
-                const withAudio = audioToggle && audioToggle.checked ? "LipSync" : "No Audio";
+                const toggle = document.getElementById("use_audio_toggle");
+                const withAudio = toggle && toggle.checked ? "LipSync" : "No Audio";
                 buttonText = `Auto (${withAudio}) Start ✨`;
                 currentCallback = sendAnimateSoundData;
             }
 
-            // Выводим лаконичную кнопку на экран шторки Telegram
             if (buttonText && currentCallback) {
                 tg.MainButton.setText(buttonText);
                 tg.MainButton.show();
@@ -182,7 +245,7 @@
             }
         }
 
-        // ИСПРАВЛЕНО: Заменили Python-слово 'def' на правильное JavaScript-слово 'function'!
+        // Функция переключения экранов внутри видеостудии
         function openScreen(screenName) {
             currentActiveMode = screenName;
             const screens = ['video_menu', 'animate_nosound', 'animate_sound'];
@@ -199,31 +262,23 @@
             }
         }
 
-        // Переключение формата видео (16:9 или 9:16)
+        // Выбор формата видео (16:9 или 9:16)
         function setAnimateRatio(ratio, element) {
             if (!element) return;
             element.parentElement.querySelectorAll('.ratio-btn').forEach(btn => btn.classList.remove('active'));
             element.classList.add('active');
             currentAnimateRatio = ratio;
-            updateVideoMainButton(); // Мгновенно обновляем текст кнопки
+            updateVideoMainButton(); // Обновляем текст кнопки
         }
 
-        // Переключение длительности видео (5 или 10 секунд)
+        // Выбор длительности видео (5 или 10 секунд)
         function setKlingDuration(duration, element) {
             if (!element) return;
             element.parentElement.querySelectorAll('.duration-btn').forEach(btn => btn.classList.remove('active'));
             element.classList.add('active');
             currentKlingDuration = duration;
-            updateVideoMainButton(); // Мгновенно обновляем текст кнопки
+            updateVideoMainButton(); // Обновляем текст кнопки
         }
-
-        // Добавили триггер на чекбокс звука, чтобы текст кнопки менялся при снятии галочки
-        window.addEventListener('load', () => {
-            const toggle = document.getElementById("use_audio_toggle");
-            if (toggle) {
-                toggle.addEventListener('change', updateVideoMainButton);
-            }
-        });
 
         // Системный передатчик JSON-данных обратно в бота
         function sendToTelegram(payload) {
@@ -289,6 +344,14 @@
                 player.src = ""; 
             }
         }
+
+        // Добавили триггер на чекбокс звука
+        window.addEventListener('load', () => {
+            const toggle = document.getElementById("use_audio_toggle");
+            if (toggle) {
+                toggle.addEventListener('change', updateVideoMainButton);
+            }
+        });
     </script>
 </body>
 </html>

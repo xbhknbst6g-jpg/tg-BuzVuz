@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>AI Фотостудия</title>
+    
+    <!-- Официальный скрипт Telegram Web App -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <style>
+        /* ГЛОБАЛЬНЫЕ НАСТРОЙКИ ТЕМЫ TELEGRAM */
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            background-color: var(--tg-theme-secondary-bg-color, #f4f6f9); 
+            margin: 0; padding: 15px; 
+            padding-top: calc(env(safe-area-inset-top) + 15px);
+            padding-bottom: calc(env(safe-area-inset-bottom) + 15px);
+            color: var(--tg-theme-text-color, #333); 
+            -webkit-user-select: none; user-select: none;
+        }
+
+        .header { text-align: center; margin-bottom: 25px; padding-top: 10px; }
+        .header h1 { font-size: 22px; margin: 0 0 5px 0; color: var(--tg-theme-text-color, #111); }
+        .header p { font-size: 14px; margin: 0; color: var(--tg-theme-hint-color, #666); }
+        
+        .main-menu-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 20px; }
+        .menu-card { 
+            background: var(--tg-theme-bg-color, #fff); padding: 20px; border-radius: 12px; 
+            border: 1px solid var(--tg-theme-border-color, #e1e6eb); box-shadow: 0 4px 6px rgba(0,0,0,0.02); 
+            cursor: pointer; display: flex; align-items: center; gap: 15px; 
+            transition: transform 0.1s ease, background-color 0.1s ease; -webkit-tap-highlight-color: transparent; 
+        }
+        .menu-card:active { transform: scale(0.97); background-color: var(--tg-theme-secondary-bg-color, #fafafa); }
+        .menu-icon { font-size: 32px; width: 45px; text-align: center; }
+        .menu-info { display: flex; flex-direction: column; }
+        .menu-title { font-weight: bold; font-size: 16px; color: var(--tg-theme-text-color, #000); margin-bottom: 2px; }
+        .menu-desc { font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.3; }
+
+        .screen { display: none; }
+        .screen.active { display: block; animation: fadeIn 0.2s ease-in-out; }
+        
+        .phone-templates-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 15px 0; }
+        .phone-template-card {
+            position: relative; background: #000; border-radius: 12px; overflow: hidden;
+            aspect-ratio: 3 / 4; box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            border: 1px solid var(--tg-theme-border-color, #e1e6eb); transition: transform 0.1s ease;
+            cursor: pointer; -webkit-tap-highlight-color: transparent;
+        }
+        .phone-template-card:active { transform: scale(0.96); }
+        .phone-template-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .phone-template-card .card-overlay {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.85)); 
+            padding: 12px 8px 8px 8px; color: #fff; font-size: 11px; font-weight: 600; text-align: center; line-height: 1.3;
+        }
+        .phone-template-card.full-width { grid-column: span 2; aspect-ratio: 16 / 7; }
+
+        .ratio-btn, .quality-btn {
+            -webkit-appearance: none; appearance: none; outline: none;
+            border: 2px solid var(--tg-theme-border-color, #e1e6eb); border-radius: 8px; 
+            background: var(--tg-theme-bg-color, #fff); color: var(--tg-theme-text-color, #333); 
+            cursor: pointer; font-weight: bold; text-align: center; transition: all 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .ratio-selector { display: flex; flex-wrap: wrap; gap: 8px; margin: 15px 0; justify-content: space-between; }
+        .ratio-btn { flex: 1 1 28%; padding: 10px 5px; font-size: 12px; }
+        .quality-selector { display: flex; gap: 10px; margin: 15px 0; }
+        .quality-btn { flex: 1; padding: 12px; font-size: 13px; }
+
+        .ratio-btn.active, .quality-btn.active { 
+            border-color: var(--tg-theme-button-color, #0088cc) !important; 
+            background: rgba(0, 136, 204, 0.08) !important; 
+            color: var(--tg-theme-button-color, #0088cc) !important; font-weight: bold !important;
+        }
+        
+        .back-btn { 
+            display: inline-block; padding: 8px 14px; background: var(--tg-theme-secondary-bg-color, #e1e6eb); 
+            color: var(--tg-theme-text-color, #333); border-radius: 6px; font-size: 13px; font-weight: bold; 
+            cursor: pointer; margin-bottom: 15px; border: none; -webkit-tap-highlight-color: transparent;
+        }
+        
+        .tryon-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 15px; }
+        .tryon-card { background: var(--tg-theme-bg-color, #fff); border-radius: 12px; border: 1px solid var(--tg-theme-border-color, #ddd); padding: 12px; }
+        .tryon-card-title { font-size: 14px; font-weight: bold; margin-bottom: 8px; text-align: center; color: var(--tg-theme-text-color, #000); }
+        .tryon-images { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========================================== -->
+    <!-- ИСПРАВЛЕНО: ЭКРАН 1 ТЕПЕРЬ НАЗЫВАЕТСЯ FOTO -->
+    <!-- ========================================== -->
+    <div id="foto" class="screen active">
+        <div class="header">
+            <h1>Интеллектуальная AI Студия</h1>
+            <p>Выберите нужный инструмент генерации ниже</p>
+        </div>
+        
+        <div class="main-menu-grid">
+            <div class="menu-card" onclick="openScreen('text_image')">
+                <div class="menu-icon">📝</div>
+                <div class="menu-info">
+                    <div class="menu-title">1. Фото + Текст</div>
+                    <div class="menu-desc">Создание по вашему фото и описанию</div>
+                </div>
+            </div>
+            
+            <div class="menu-card" onclick="openScreen('face_swap')">
+                <div class="menu-icon">🎭</div>
+                <div class="menu-info">
+                    <div class="menu-title">2. Face Swap</div>
+                    <div class="menu-desc">Замена лиц (выберите интересующий вас шаблон)</div>
+                </div>
+            </div>
+            
+            <div class="menu-card" onclick="openScreen('tryon')">
+                <div class="menu-icon">👕</div>
+                <div class="menu-info">
+                    <div class="menu-title">3. Примерка одежды</div>
+                    <div class="menu-desc">Примерка любых вещей по вашей фигуре До / После</div>
+                </div>
+            </div>
+            
+            <div class="menu-card" onclick="openScreen('bg_change')">
+                <div class="menu-icon">🖼</div>
+                <div class="menu-info">
+                    <div class="menu-title">4. Смена фона</div>
+                    <div class="menu-desc">Умный перенос объекта на новый задний план</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ПОДРЕЖИМ 1: ФОТО + ТЕКСТ -->
+    <div id="text_image" class="screen">
+        <button class="back-btn" onclick="openScreen('foto')">⬅️ В меню</button>
+        <div class="header" style="margin-bottom: 10px; text-align: center;">
+            <h1>Настройка генерации Фото + Текст</h1>
+        </div>
+        <div class="ratio-selector">
+            <div class="ratio-btn active" id="text_ratio_9_16" onclick="setTextRatio('9:16')">📱 9:16</div>
+            <div class="ratio-btn" id="text_ratio_3_4" onclick="setTextRatio('3:4')">📸 3:4</div>
+            <div class="ratio-btn" id="text_ratio_1_1" onclick="setTextRatio('1:1')">🔲 1:1</div>
+            <div class="ratio-btn" id="text_ratio_4_3" onclick="setTextRatio('4:3')">🖼 4:3</div>
+            <div class="ratio-btn" id="text_ratio_16_9" onclick="setTextRatio('16:9')">💻 16:9</div>
+        </div>
+        <div class="quality-selector">
+            <div class="quality-btn active" id="text_qual_schnell" onclick="setQuality('schnell')">⚡ Standard</div>
+            <div class="quality-btn" id="text_qual_dev" onclick="setQuality('dev')">💎 Pro / 2K</div>
+            <div class="quality-btn" id="text_qual_ultra" onclick="setQuality('ultra_4k')">🔥 Ultra 4K</div>
+        </div>
+        <div class="tryon-grid">
+            <div class="tryon-card">
+                <div class="tryon-card-title">На пляже</div>
+                <div class="tryon-images">
+                    <div><img src="https://postimg.cc" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;"></div>
+                    <div><img src="https://postimg.cc" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ПОДРЕЖИМ 2: FACE SWAP (ИСПРАВЛЕНА СЕТКА ПРЕВИЮ) -->
+    <div id="face_swap" class="screen">
+        <button class="back-btn" onclick="openScreen('foto')">⬅️ В меню</button>
+        <div class="header" style="margin-bottom: 10px; text-align: center;">
+            <h1>Настройка Face Swap</h1>
+        </div>
+        <div class="ratio-selector">
+            <div class="ratio-btn active" id="swap_ratio_9_16" onclick="setSwapRatio('9:16')">📱 9:16</div>
+            <div class="ratio-btn" id="swap_ratio_3_4" onclick="setSwapRatio('3:4')">📸 3:4</div>
+            <div class="ratio-btn" id="swap_ratio_1_1" onclick="setSwapRatio('1:1')">🔲 1:1</div>
+            <div class="ratio-btn" id="swap_ratio_4_3" onclick="setSwapRatio('4:3')">🖼 4:3</div>
+            <div class="ratio-btn" id="swap_ratio_16_9" onclick="setSwapRatio('16:9')">💻 16:9</div>
+        </div>
+        <div class="quality-selector">
+            <div class="quality-btn active" id="swap_qual_schnell" onclick="setSwapQuality('schnell')">⚡ Standard</div>
+            <div class="quality-btn" id="swap_qual_dev" onclick="setSwapQuality('dev')">💎 Pro</div>
+            <div class="quality-btn" id="swap_qual_ultra" onclick="setSwapQuality('ultra_4k')">🔥 Ultra</div>
+        </div>
+        <div class="phone-templates-grid">
+            <div class="phone-template-card" onclick="selectReadyTemplate('girl_face', '3:4')">
+                <img src="https://postimg.cc">
+                <div class="card-overlay">👩 Девушка (3:4)</div>
+            </div>
+            <div class="phone-template-card full-width" onclick="selectReadyTemplate('Lying_down_phone', '16:9')">
+                <img src="https://postimg.cc">
+                <div class="card-overlay">📱 С телефоном (16:9)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ПОДРЕЖИМ 3: ПРИМЕРКА ОДЕЖДЫ -->
+    <div id="tryon" class="screen">
+        <button class="back-btn" onclick="openScreen('foto')">⬅️ В меню</button>
+        <div class="header" style="margin-bottom: 10px; text-align: center;">
+            <h1>Настройка примерки одежды</h1>
+        </div>
+        <div class="ratio-selector">
+            <div class="ratio-btn active" id="tryon_ratio_9_16" onclick="setTryOnRatio('9:16')">📱 9:16</div>
+            <div class="ratio-btn" id="tryon_ratio_3_4" onclick="setTryOnRatio('3:4')">📸 3:4</div>
+            <div class="ratio-btn" id="tryon_ratio_1_1" onclick="setTryOnRatio('1:1')">🔲 1:1</div>
+            <div class="ratio-btn" id="tryon_ratio_4_3" onclick="setTryOnRatio('4:3')">🖼 4:3</div>
+            <div class="ratio-btn" id="tryon_ratio_16_9" onclick="setTryOnRatio('16:9')">💻 16:9</div>
+        </div>
+        <div class="quality-selector">
+            <div class="quality-btn active" id="tryon_qual_schnell" onclick="setTryOnQuality('schnell')">⚡ Standard</div>
+            <div class="quality-btn" id="tryon_qual_dev" onclick="setTryOnQuality('dev')">💎 Pro</div>
+            <div class="quality-btn" id="tryon_qual_ultra" onclick="setTryOnQuality('ultra_4k')">🔥 Ultra</div>
+        </div>
+        <div class="tryon-grid">
+            <div class="tryon-card">
+                <div class="tryon-card-title">✨ Кожаный бомбер</div>
+                <div class="tryon-images">
+                    <div><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"></div>
+                    <div><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ПОДРЕЖИМ 4: СМЕНА ФОНА -->
+    <div id="bg_change" class="screen">
+        <button class="back-btn" onclick="openScreen('foto')">⬅️ В меню</button>
+        <div class="header" style="margin-bottom: 10px; text-align: center;">
+            <h1>Настройка смены фона</h1>
+        </div>
+        <div class="ratio-selector">
+            <div class="ratio-btn active" id="bg_ratio_9_16" onclick="setBgRatio('9:16')">📱 9:16</div>
+            <div class="ratio-btn" id="bg_ratio_3_4" onclick="setBgRatio('3:4')">📸 3:4</div>
+            <div class="ratio-btn" id="bg_ratio_1_1" onclick="setBgRatio('1:1')">🔲 1:1</div>
+            <div class="ratio-btn" id="bg_ratio_4_3" onclick="setBgRatio('4:3')">🖼 4:3</div>
+            <div class="ratio-btn" id="bg_ratio_16_9" onclick="setBgRatio('16:9')">💻 16:9</div>
+        </div>
+        <div class="quality-selector">
+            <div class="quality-btn active" id="bg_qual_schnell" onclick="setBgQuality('schnell')">⚡ Standard</div>
+            <div class="quality-btn" id="bg_qual_dev" onclick="setBgQuality('dev')">💎 Pro</div>
+            <div class="quality-btn" id="bg_qual_ultra" onclick="setBgQuality('ultra_4k')">🔥 Ultra</div>
+        </div>
+        <div class="tryon-grid">
+            <div class="tryon-card">
+                <div class="tryon-card-title">✨ Килиманджаро</div>
+                <div class="tryon-images">
+                    <div><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"></div>
+                    <div><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const tg = window.Telegram.WebApp;
+
+        // Переменные настроек
+        let currentActiveMode = 'foto';
+        let selectedTryOnRatio = '9:16';  
+        let selectedTextRatio = '9:16';   
+        let selectedSwapRatio = '9:16';   
+        let selectedBgRatio = '9:16';   
+        
+        let selectedTextQuality = 'schnell';
+        let selectedSwapQuality = 'schnell';
+        let selectedTryOnQuality = 'schnell';
+        let selectedBgQuality = 'schnell';
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (tg) {
+                tg.ready();  
+                tg.expand(); 
+            }
+            openScreen('foto'); // Стартовый запуск меню foto
+        });
+
+        function openScreen(screenName) {
+            currentActiveMode = screenName;
+            const screens = ['foto', 'face_swap', 'tryon', 'text_image', 'bg_change'];
+            
+            screens.forEach(s => {
+                const el = document.getElementById(s);
+                if (el) el.classList.remove('active');
+            });
+            
+            if (tg && tg.MainButton) tg.MainButton.hide();
+
+            const activeScreenEl = document.getElementById(screenName);
+            if (activeScreenEl) {
+                activeScreenEl.classList.add('active');
+                
+                if (screenName === 'face_swap') {
+                    setupMainButton("Загрузить свой шаблон в боте ✨", sendCustomFaceSwapData);
+                } else if (screenName === 'tryon') {
+                    setupMainButton("Запустить примерку одежды ✨", sendTryOnData);
+                } else if (screenName === 'text_image') {
+                    setupMainButton("Запустить генерацию Фото+Текст ✨", sendPhotoTextData);
+                } else if (screenName === 'bg_change') {
+                    setupMainButton("Запустить смену фона ✨", sendBgChangeData);
+                }
+            }
+        }
+
+        function setupMainButton(text, callback) {
+            if (!tg || !tg.MainButton) return;
+            tg.MainButton.setText(text);
+            tg.MainButton.show();
+            tg.MainButton.offClick(); 
+            tg.MainButton.onClick(callback);
+        }
+
+        function sendToTelegram(payload) {
+            try {
+                if (tg && tg.sendData) {
+                    tg.sendData(JSON.stringify(payload));
+                    tg.close();
+                }
+            } catch (e) {
+                console.error("Ошибка WebApp:", e);
+            }
+        }
+
+        function sendPhotoTextData() { sendToTelegram({ mode_trigger: 'text_image', aspect_ratio: selectedTextRatio, quality: selectedTextQuality }); }
+        function sendCustomFaceSwapData() { sendToTelegram({ mode_trigger: 'face_swap', is_custom_template: true, aspect_ratio: selectedSwapRatio, quality: selectedSwapQuality }); }
+        function sendTryOnData() { sendToTelegram({ mode_trigger: 'tryon', aspect_ratio: selectedTryOnRatio, quality: selectedTryOnQuality }); }
+        function sendBgChangeData() { sendToTelegram({ mode_trigger: 'bg_change', aspect_ratio: selectedBgRatio, quality: selectedBgQuality }); }
+
+        function clearAndSetActiveQuality(prefix, quality) {
+            ['schnell', 'dev', 'ultra'].forEach(q => {
+                const btn = document.getElementById(`${prefix}_qual_${q}`);
+                if (btn) btn.classList.remove('active');
+            });
+            const shortQual = quality === 'ultra_4k' ? 'ultra' : quality;
+            const targetBtn = document.getElementById(`${prefix}_qual_${shortQual}`);
+            if (targetBtn) targetBtn.classList.add('active');
+        }
+
+        function setTextQuality(quality) { selectedTextQuality = quality; clearAndSetActiveQuality('text', quality); }
+        function setSwapQuality(quality) { selectedSwapQuality = quality; clearAndSetActiveQuality('swap', quality); }
+        function setTryOnQuality(quality) { selectedTryOnQuality = quality; clearAndSetActiveQuality('tryon', quality); }
+        function setBgQuality(quality) { selectedBgQuality = quality; clearAndSetActiveQuality('bg', quality); }
+
+        function setQuality(quality) {
+            if (currentActiveMode === 'text_image') setTextQuality(quality);
+            if (currentActiveMode === 'face_swap') setSwapQuality(quality);
+            if (currentActiveMode === 'tryon') setTryOnQuality(quality);
+            if (currentActiveMode === 'bg_change') setBgQuality(quality);
+        }
+
+        function clearAndSetActiveRatio(prefix, ratio) {
+            const ratios = ['9_16', '3_4', '1_1', '4_3', '16_9'];
+            ratios.forEach(r => {
+                const btn = document.getElementById(`${prefix}_ratio_${r}`);
+                if (btn) btn.classList.remove('active');
+            });
+            const activeId = ratio.replace(':', '_');
+            const targetBtn = document.getElementById(`${prefix}_ratio_${activeId}`);
+            if (targetBtn) targetBtn.classList.add('active');
+        }
+
+        function setSwapRatio(ratio) { selectedSwapRatio = ratio; clearAndSetActiveRatio('swap', ratio); }
+        function setTryOnRatio(ratio) { selectedTryOnRatio = ratio; clearAndSetActiveRatio('tryon', ratio); }
+        function setTextRatio(ratio) { selectedTextRatio = ratio; clearAndSetActiveRatio('text', ratio); }
+        function setBgRatio(ratio) { selectedBgRatio = ratio; clearAndSetActiveRatio('bg', ratio); }
+
+        function selectReadyTemplate(templateId, forcedRatio) {
+            sendToTelegram({
+                mode_trigger: 'face_swap',
+                is_custom_template: false,
+                template_id: templateId, 
+                aspect_ratio: forcedRatio || "1:1",
+                quality: selectedSwapQuality
+            });
+        }
+    </script>
+</body>
+</html>

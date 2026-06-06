@@ -276,58 +276,60 @@
             openScreen('foto'); // Стартовый запуск меню foto
         });
 
-        // ====================================================================================
-        // ДИНАМИЧЕСКИЙ ОБНОВЛЯТОР ТЕКСТА ГЛАВНОЙ КНОПКИ ТЕЛЕГРАМ
+                // ====================================================================================
+        // КРАТКИЙ И ЛАКОНИЧНЫЙ ОБНОВЛЯТОР ТЕКСТА ГЛАВНОЙ КНОПКИ ТЕЛЕГРАМ
         // ====================================================================================
         function updateFotoMainButton() {
             if (!tg || !tg.MainButton) return;
             
-            // Если мы на главной странице foto — прячем кнопку
+            // Если пользователь на главной странице foto — скрываем кнопку
             if (currentActiveMode === 'foto') {
                 tg.MainButton.hide();
                 return;
             }
 
-            let buttonText = "";
+            let currentRatio = "";
+            let currentQuality = "";
             let currentCallback = null;
 
-            // Хелпер для превращения системного качества в красивый русский текст
+            // Хелпер для короткого вывода качества на русском/английском
             function getReadableQuality(q) {
                 if (q === 'schnell') return 'Standard';
                 if (q === 'dev') return 'Pro';
                 return 'Ultra 4K';
             }
 
-            // Проверяем текущий экран и собираем уникальный текст с выбранными параметрами
+            // Достаем настройки строго для текущего активного подрежима
             if (currentActiveMode === 'text_image') {
-                const qual = getReadableQuality(selectedTextQuality);
-                buttonText = `Формат ${selectedTextRatio} (${qual}) | Запустить Фото+Текст ✨`;
+                currentRatio = selectedTextRatio;
+                currentQuality = getReadableQuality(selectedTextQuality);
                 currentCallback = sendPhotoTextData;
             } 
             else if (currentActiveMode === 'face_swap') {
-                const qual = getReadableQuality(selectedSwapQuality);
-                buttonText = `Формат ${selectedSwapRatio} (${qual}) | Запустить Face Swap ✨`;
+                currentRatio = selectedSwapRatio;
+                currentQuality = getReadableQuality(selectedSwapQuality);
                 currentCallback = sendCustomFaceSwapData;
             } 
             else if (currentActiveMode === 'tryon') {
-                const qual = getReadableQuality(selectedTryOnQuality);
-                buttonText = `Формат ${selectedTryOnRatio} (${qual}) | Запустить Примерку ✨`;
+                currentRatio = selectedTryOnRatio;
+                currentQuality = getReadableQuality(selectedTryOnQuality);
                 currentCallback = sendTryOnData;
             } 
             else if (currentActiveMode === 'bg_change') {
-                const qual = getReadableQuality(selectedBgQuality);
-                buttonText = `Формат ${selectedBgRatio} (${qual}) | Запустить Смену фона ✨`;
+                currentRatio = selectedBgRatio;
+                currentQuality = getReadableQuality(selectedBgQuality);
                 currentCallback = sendBgChangeData;
             }
 
-            // Применяем настройки к нативной кнопке Telegram
-            if (buttonText && currentCallback) {
-                tg.MainButton.setText(buttonText);
+            // Выводим лаконичный текст строго в формате "9:16 (Pro) Start ✨"
+            if (currentRatio && currentQuality && currentCallback) {
+                tg.MainButton.setText(`${currentRatio} (${currentQuality}) Start ✨`);
                 tg.MainButton.show();
                 tg.MainButton.offClick(); // Очищаем память от старых кликов
-                tg.MainButton.onClick(currentCallback); // Привязываем чистый колбэк
+                tg.MainButton.onClick(currentCallback); // Привязываем колбэк отправки
             }
         }
+
 
         // Безопасное переключение подэкранов
         function openScreen(screenName) {

@@ -276,6 +276,60 @@
             openScreen('foto'); // Стартовый запуск меню foto
         });
 
+        // ====================================================================================
+        // ДИНАМИЧЕСКИЙ ОБНОВЛЯТОР ТЕКСТА ГЛАВНОЙ КНОПКИ ТЕЛЕГРАМ
+        // ====================================================================================
+        function updateFotoMainButton() {
+            if (!tg || !tg.MainButton) return;
+            
+            // Если мы на главной странице foto — прячем кнопку
+            if (currentActiveMode === 'foto') {
+                tg.MainButton.hide();
+                return;
+            }
+
+            let buttonText = "";
+            let currentCallback = null;
+
+            // Хелпер для превращения системного качества в красивый русский текст
+            function getReadableQuality(q) {
+                if (q === 'schnell') return 'Standard';
+                if (q === 'dev') return 'Pro';
+                return 'Ultra 4K';
+            }
+
+            // Проверяем текущий экран и собираем уникальный текст с выбранными параметрами
+            if (currentActiveMode === 'text_image') {
+                const qual = getReadableQuality(selectedTextQuality);
+                buttonText = `Формат ${selectedTextRatio} (${qual}) | Запустить Фото+Текст ✨`;
+                currentCallback = sendPhotoTextData;
+            } 
+            else if (currentActiveMode === 'face_swap') {
+                const qual = getReadableQuality(selectedSwapQuality);
+                buttonText = `Формат ${selectedSwapRatio} (${qual}) | Запустить Face Swap ✨`;
+                currentCallback = sendCustomFaceSwapData;
+            } 
+            else if (currentActiveMode === 'tryon') {
+                const qual = getReadableQuality(selectedTryOnQuality);
+                buttonText = `Формат ${selectedTryOnRatio} (${qual}) | Запустить Примерку ✨`;
+                currentCallback = sendTryOnData;
+            } 
+            else if (currentActiveMode === 'bg_change') {
+                const qual = getReadableQuality(selectedBgQuality);
+                buttonText = `Формат ${selectedBgRatio} (${qual}) | Запустить Смену фона ✨`;
+                currentCallback = sendBgChangeData;
+            }
+
+            // Применяем настройки к нативной кнопке Telegram
+            if (buttonText && currentCallback) {
+                tg.MainButton.setText(buttonText);
+                tg.MainButton.show();
+                tg.MainButton.offClick(); // Очищаем память от старых кликов
+                tg.MainButton.onClick(currentCallback); // Привязываем чистый колбэк
+            }
+        }
+
+        // Безопасное переключение подэкранов
         function openScreen(screenName) {
             currentActiveMode = screenName;
             const screens = ['foto', 'face_swap', 'tryon', 'text_image', 'bg_change'];
@@ -285,30 +339,12 @@
                 if (el) el.classList.remove('active');
             });
             
-            if (tg && tg.MainButton) tg.MainButton.hide();
-
             const activeScreenEl = document.getElementById(screenName);
             if (activeScreenEl) {
                 activeScreenEl.classList.add('active');
-                
-                if (screenName === 'face_swap') {
-                    setupMainButton("Загрузить свой шаблон в боте ✨", sendCustomFaceSwapData);
-                } else if (screenName === 'tryon') {
-                    setupMainButton("Запустить примерку одежды ✨", sendTryOnData);
-                } else if (screenName === 'text_image') {
-                    setupMainButton("Запустить генерацию Фото+Текст ✨", sendPhotoTextData);
-                } else if (screenName === 'bg_change') {
-                    setupMainButton("Запустить смену фона ✨", sendBgChangeData);
-                }
+                // Запускаем пересчет текста кнопки при входе на любой экран
+                updateFotoMainButton(); 
             }
-        }
-
-        function setupMainButton(text, callback) {
-            if (!tg || !tg.MainButton) return;
-            tg.MainButton.setText(text);
-            tg.MainButton.show();
-            tg.MainButton.offClick(); 
-            tg.MainButton.onClick(callback);
         }
 
         function sendToTelegram(payload) {
@@ -322,11 +358,13 @@
             }
         }
 
+        // Функции отправки JSON данных боту
         function sendPhotoTextData() { sendToTelegram({ mode_trigger: 'text_image', aspect_ratio: selectedTextRatio, quality: selectedTextQuality }); }
         function sendCustomFaceSwapData() { sendToTelegram({ mode_trigger: 'face_swap', is_custom_template: true, aspect_ratio: selectedSwapRatio, quality: selectedSwapQuality }); }
         function sendTryOnData() { sendToTelegram({ mode_trigger: 'tryon', aspect_ratio: selectedTryOnRatio, quality: selectedTryOnQuality }); }
         function sendBgChangeData() { sendToTelegram({ mode_trigger: 'bg_change', aspect_ratio: selectedBgRatio, quality: selectedBgQuality }); }
 
+        // Системный переключатель визуального качества
         function clearAndSetActiveQuality(prefix, quality) {
             ['schnell', 'dev', 'ultra'].forEach(q => {
                 const btn = document.getElementById(`${prefix}_qual_${q}`);
@@ -337,10 +375,11 @@
             if (targetBtn) targetBtn.classList.add('active');
         }
 
-        function setTextQuality(quality) { selectedTextQuality = quality; clearAndSetActiveQuality('text', quality); }
-        function setSwapQuality(quality) { selectedSwapQuality = quality; clearAndSetActiveQuality('swap', quality); }
-        function setTryOnQuality(quality) { selectedTryOnQuality = quality; clearAndSetActiveQuality('tryon', quality); }
-        function setBgQuality(quality) { selectedBgQuality = quality; clearAndSetActiveQuality('bg', quality); }
+        // Каждое переключение качества теперь принудительно обновляет текст на главной кнопке Telegram
+        function setTextQuality(quality) { selectedTextQuality = quality; clearAndSetActiveQuality('text', quality); updateFotoMainButton(); }
+        function setSwapQuality(quality) { selectedSwapQuality = quality; clearAndSetActiveQuality('swap', quality); updateFotoMainButton(); }
+        function setTryOnQuality(quality) { selectedTryOnQuality = quality; clearAndSetActiveQuality('tryon', quality); updateFotoMainButton(); }
+        function setBgQuality(quality) { selectedBgQuality = quality; clearAndSetActiveQuality('bg', quality); updateFotoMainButton(); }
 
         function setQuality(quality) {
             if (currentActiveMode === 'text_image') setTextQuality(quality);
@@ -349,6 +388,7 @@
             if (currentActiveMode === 'bg_change') setBgQuality(quality);
         }
 
+        // Системный переключатель форматов (Ratio)
         function clearAndSetActiveRatio(prefix, ratio) {
             const ratios = ['9_16', '3_4', '1_1', '4_3', '16_9'];
             ratios.forEach(r => {
@@ -360,10 +400,11 @@
             if (targetBtn) targetBtn.classList.add('active');
         }
 
-        function setSwapRatio(ratio) { selectedSwapRatio = ratio; clearAndSetActiveRatio('swap', ratio); }
-        function setTryOnRatio(ratio) { selectedTryOnRatio = ratio; clearAndSetActiveRatio('tryon', ratio); }
-        function setTextRatio(ratio) { selectedTextRatio = ratio; clearAndSetActiveRatio('text', ratio); }
-        function setBgRatio(ratio) { selectedBgRatio = ratio; clearAndSetActiveRatio('bg', ratio); }
+        // Каждое изменение формата теперь тоже мгновенно меняет текст на главной кнопке Telegram
+        function setSwapRatio(ratio) { selectedSwapRatio = ratio; clearAndSetActiveRatio('swap', ratio); updateFotoMainButton(); }
+        function setTryOnRatio(ratio) { selectedTryOnRatio = ratio; clearAndSetActiveRatio('tryon', ratio); updateFotoMainButton(); }
+        function setTextRatio(ratio) { selectedTextRatio = ratio; clearAndSetActiveRatio('text', ratio); updateFotoMainButton(); }
+        function setBgRatio(ratio) { selectedBgRatio = ratio; clearAndSetActiveRatio('bg', ratio); updateFotoMainButton(); }
 
         function selectReadyTemplate(templateId, forcedRatio) {
             sendToTelegram({

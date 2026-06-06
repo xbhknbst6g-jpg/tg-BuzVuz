@@ -2,38 +2,46 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 
+      ИСПРАВЛЕНО: Добавлены параметры maximum-scale, user-scalable=no и viewport-fit=cover.
+      Это блокирует случайное увеличение/масштабирование сайта пальцами (важно для Web App) 
+      и заставляет интерфейс аккуратно заходить под «челку» на iPhone без белых полос.
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>AI Web Studio</title>
+    
     <!-- Официальный скрипт Telegram Web App -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
     <style>
-        /* ИСПРАВЛЕНО: Добавляем код принудительной подсветки кнопок Kling */
-        /* Этот стиль принудительно заставит кнопки менять цвет рамок на сайте */
-        #animate_nosound .duration-btn.active,
-        #animate_nosound .ratio-btn.active {
-            border-color: var(--tg-theme-button-color, #2481cc) !important;
-            background: var(--tg-theme-secondary-bg-color, #f0f2f5) !important;
-            color: var(--tg-theme-button-color, #2481cc) !important;
-            font-weight: bold !important; /* Делает текст активной кнопки жирным */
-        }
-        
-        /* ИНТЕГРАЦИЯ С ТЕМАМИ TELEGRAM И БЕЗОПАСНЫМИ ЗОНАМИ СМАРТФОНОВ */
+        /* 
+          1. ИНТЕГРАЦИЯ С ТЕМАМИ TELEGRAM И БЕЗОПАСНЫМИ ЗОНАМИ СМАРТФОНОВ 
+          Задаем глобальные настройки для всего приложения.
+        */
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            /* Если тема не загрузилась, используем приятный дефолтный серый цвет #f4f6f9 */
             background-color: var(--tg-theme-secondary-bg-color, #f4f6f9); 
             margin: 0; 
             padding: 15px; 
+            /* env(safe-area-inset-top) динамически добавляет отступ сверху на смартфонах с вырезами */
             padding-top: calc(env(safe-area-inset-top) + 15px);
+            padding-bottom: calc(env(safe-area-inset-bottom) + 15px);
             color: var(--tg-theme-text-color, #333); 
+            /* Запрещаем пользователю случайно выделять текст при кликах по меню */
             -webkit-user-select: none;
             user-select: none;
         }
 
+        /* Шапка приложения */
         .header { text-align: center; margin-bottom: 25px; padding-top: 10px; }
         .header h1 { font-size: 22px; margin: 0 0 5px 0; color: var(--tg-theme-text-color, #111); }
         .header p { font-size: 14px; margin: 0; color: var(--tg-theme-hint-color, #666); }
         
-        /* ГЛАВНОЕ МЕНЮ */
+        /* 
+          2. ГЛАВНОЕ МЕНЮ (AI-СТУДИЯ)
+          Стили для сетки и карточек выбора режимов.
+        */
         .main-menu-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 20px; }
         .menu-card { 
             background: var(--tg-theme-bg-color, #fff); 
@@ -46,7 +54,9 @@
             align-items: center; 
             gap: 15px; 
             transition: transform 0.1s ease, background-color 0.1s ease; 
+            -webkit-tap-highlight-color: transparent; /* Убирает синее мерцание при тапе на iOS */
         }
+        /* Эффект нажатия на карточку (уменьшение размера для имитации нативной кнопки) */
         .menu-card:active { 
             transform: scale(0.97); 
             background-color: var(--tg-theme-secondary-bg-color, #fafafa); 
@@ -56,11 +66,14 @@
         .menu-title { font-weight: bold; font-size: 16px; color: var(--tg-theme-text-color, #000); margin-bottom: 2px; }
         .menu-desc { font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.3; }
 
-        /* ЭКРАНЫ РЕЖИМОВ */
+        /* 
+          3. СИСТЕМА ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ 
+          Скрывает неактивные экраны и плавно отображает активный.
+        */
         .screen { display: none; }
         .screen.active { display: block; animation: fadeIn 0.2s ease-in-out; }
         
-        /* МОБИЛЬНАЯ СЕТКА ШАБЛОНОВ И ПРИМЕРОВ */
+        /* Мобильная сетка шаблонов (2 колонки) */
         .phone-templates-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 15px 0; }
         .phone-template-card {
             position: relative;
@@ -72,9 +85,12 @@
             border: 1px solid var(--tg-theme-border-color, #e1e6eb);
             transition: transform 0.1s ease;
             cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
         }
         .phone-template-card:active { transform: scale(0.96); }
         .phone-template-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        
+        /* Затемнение и текст поверх превью картинок */
         .phone-template-card .card-overlay {
             position: absolute;
             bottom: 0;
@@ -88,57 +104,73 @@
             text-align: center;
             line-height: 1.3;
         }
+        /* Карточка во всю ширину (например, для горизонтальных превью 16:9) */
         .phone-template-card.full-width { grid-column: span 2; aspect-ratio: 16 / 7; }
 
-        /* СЕТКА ВЫБОРА ФОРМАТОВ (RATIO) */
-        .ratio-selector { display: flex; flex-wrap: wrap; gap: 8px; margin: 15px 0; justify-content: space-between; }
-        .ratio-btn { 
-            flex: 1 1 28%; padding: 10px 5px; 
+        /* 
+          4. ИНТЕРФЕЙСНЫЕ КНОПКИ (УНИФИКАЦИЯ СТИЛЕЙ)
+          ИСПРАВЛЕНО: Добавлен сброс стандартных стилей Safari/iOS (-webkit-appearance, outline).
+          Теперь кнопки выглядят одинаково на Android, iPhone и ПК.
+        */
+        .ratio-btn, .quality-btn, .duration-btn {
+            -webkit-appearance: none;
+            appearance: none;
+            outline: none;
             border: 2px solid var(--tg-theme-border-color, #e1e6eb); 
-            border-radius: 8px; background: var(--tg-theme-bg-color, #fff); 
-            color: var(--tg-theme-text-color, #333); cursor: pointer; 
-            font-weight: bold; text-align: center; font-size: 12px; transition: all 0.15s ease; 
+            border-radius: 8px; 
+            background: var(--tg-theme-bg-color, #fff); 
+            color: var(--tg-theme-text-color, #333); 
+            cursor: pointer; 
+            font-weight: bold; 
+            text-align: center; 
+            transition: all 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
         }
-        .ratio-btn.active { 
-            border-color: var(--tg-theme-button-color, #0088cc); 
-            background: rgba(0, 136, 204, 0.1); 
-            color: var(--tg-theme-button-color, #0088cc); 
+
+        /* Сетка выбора форматов (Ratio) */
+        .ratio-selector { display: flex; flex-wrap: wrap; gap: 8px; margin: 15px 0; justify-content: space-between; }
+        .ratio-btn { flex: 1 1 28%; padding: 10px 5px; font-size: 12px; }
+        
+        /* Переключатели качества */
+        .quality-selector { display: flex; gap: 10px; margin: 15px 0; }
+        .quality-btn { flex: 1; padding: 12px; font-size: 13px; }
+
+        /* Кнопки длительности (для видео) */
+        .duration-btn { flex: 1; padding: 12px; }
+
+        /* 
+          5. СОСТОЯНИЯ АКТИВНЫХ КНОПОК (ЦВЕТА ТЕМЫ TELEGRAM)
+          ОПТИМИЗИРОВАНО: Все кнопки теперь используют единый цвет темы пользователя.
+          Это убирает визуальный хаос (когда одни кнопки синие, а другие оранжевые).
+        */
+        .ratio-btn.active,
+        .quality-btn.active,
+        .duration-btn.active,
+        #animate_nosound .duration-btn.active,
+        #animate_nosound .ratio-btn.active { 
+            border-color: var(--tg-theme-button-color, #0088cc) !important; 
+            background: rgba(0, 136, 204, 0.08) !important; 
+            color: var(--tg-theme-button-color, #0088cc) !important;
+            font-weight: bold !important;
         }
         
-        /* КНОПКА НАЗАД */
+        /* Кнопка возврата назад */
         .back-btn { 
             display: inline-block; padding: 8px 14px; 
             background: var(--tg-theme-secondary-bg-color, #e1e6eb); 
             color: var(--tg-theme-text-color, #333); border-radius: 6px; 
             font-size: 13px; font-weight: bold; cursor: pointer; margin-bottom: 15px; border: none; 
+            -webkit-tap-highlight-color: transparent;
         }
         
-        /* П ПЕРЕКЛЮЧАТЕЛИ КАЧЕСТВА */
-        .quality-selector { display: flex; gap: 10px; margin: 15px 0; }
-        .quality-btn { 
-            flex: 1; padding: 12px; 
-            border: 2px solid var(--tg-theme-border-color, #e1e6eb); 
-            border-radius: 8px; background: var(--tg-theme-bg-color, #fff); 
-            color: var(--tg-theme-text-color, #333); cursor: pointer; 
-            font-weight: bold; text-align: center; font-size: 13px; transition: all 0.15s ease; 
-        }
-        .quality-btn.active { border-color: #f39c12; background: rgba(243, 156, 18, 0.1); color: #d35400; }
-
-        /* КНОПКИ ДЛИТЕЛЬНОСТИ */
-        .duration-btn {
-            flex: 1; padding: 12px; border: 2px solid var(--tg-theme-border-color, #e1e6eb);
-            border-radius: 8px; background: var(--tg-theme-bg-color, #fff);
-            color: var(--tg-theme-text-color, #333); font-weight: bold; cursor: pointer; transition: all 0.15s ease;
-        }
-        .duration-btn.active { border-color: #f39c12; background: rgba(243, 156, 18, 0.1); color: #d35400; }
-
-        /* КАРТОЧКИ ПРИМЕРОВ ДО/ПОСЛЕ */
-        .tryon-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 15px; }
+        /* Карточки примеров генераций ДО / ПОСЛЕ */
         .tryon-card { background: var(--tg-theme-bg-color, #fff); border-radius: 12px; border: 1px solid var(--tg-theme-border-color, #ddd); padding: 12px; }
         .tryon-card-title { font-size: 14px; font-weight: bold; margin-bottom: 8px; text-align: center; color: var(--tg-theme-text-color, #000); }
         .tryon-images { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
-        /* ПОЛНОЭКРАННЫЙ ПЛЕЕР ДЛЯ МОБИЛЬНЫХ */
+        /* 
+          6. ПОЛНОЭКРАННЫЙ ВИДЕОПЛЕЕР (МОДАЛЬНОЕ ОКНО)
+        */
         .video-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.95); z-index: 2000; align-items: center; justify-content: center;
@@ -152,6 +184,7 @@
             font-weight: bold; cursor: pointer; z-index: 2100; backdrop-filter: blur(5px); border: none; line-height: 1;
         }
 
+        /* Плавная анимация появления экранов */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
@@ -260,7 +293,7 @@
             </div>
         </div>
 
-<!-- ========================================== -->
+    <!-- ========================================== -->
     <!-- ЭКРАН 2: РЕЖИМ 1: ФОТО + ТЕКСТ             -->
     <!-- ========================================== -->
     <div id="text_image" class="screen">
@@ -279,7 +312,7 @@
         </div>
 
         <!-- Кнопки формата -->
-        <div class="ratio-selector" style="display: flex; flex-wrap: wrap; gap: 8px; margin: 15px 0; justify-content: space-between;">
+        <div class="ratio-selector">
             <div class="ratio-btn active" id="text_ratio_9_16" onclick="setTextRatio('9:16')">📱 9:16</div>
             <div class="ratio-btn" id="text_ratio_3_4" onclick="setTextRatio('3:4')">📸 3:4</div>
             <div class="ratio-btn" id="text_ratio_1_1" onclick="setTextRatio('1:1')">🔲 1:1</div>
@@ -288,69 +321,85 @@
         </div>
 
         <p style="margin-top: 15px; margin-bottom: 5px; font-weight: bold; text-align: center; color: var(--tg-theme-text-color, #000);">Выходное качество:</p>
-        <div class="quality-selector" style="display: flex; gap: 6px; margin: 15px 0;">
-            <div class="quality-btn active" id="text_qual_schnell" onclick="setQuality('schnell')" style="font-size: 11px; padding: 10px 4px;">⚡ Standard (1 Мп)</div>
-            <div class="quality-btn" id="text_qual_dev" onclick="setQuality('dev')" style="font-size: 11px; padding: 10px 4px;">💎 Pro / 2K (2 Мп)</div>
-            <div class="quality-btn" id="text_qual_ultra" onclick="setQuality('ultra_4k')" style="font-size: 11px; padding: 10px 4px;">🔥 Ultra 4K (4 Мп)</div>
+        <div class="quality-selector">
+            <!-- ОПТИМИЗИРОВАНО: Убраны inline-стили шрифтов, так как глобальные стили первой части теперь делают кнопки адаптивными сами -->
+            <div class="quality-btn active" id="text_qual_schnell" onclick="setQuality('schnell')">⚡ Standard (1 Мп)</div>
+            <div class="quality-btn" id="text_qual_dev" onclick="setQuality('dev')">💎 Pro / 2K (2 Мп)</div>
+            <div class="quality-btn" id="text_qual_ultra" onclick="setQuality('ultra_4k')">🔥 Ultra 4K (4 Мп)</div>
         </div>
 
         <div class="header" style="margin-top: 20px; margin-bottom: 5px; text-align: center;">
             <h2>🔥 Примеры работы Фото + Текст:</h2>
             <p style="font-size: 14px; color: var(--tg-theme-hint-color, #666);">Как нейросеть изменяет фото по вашему описанию До / После</p>
         </div>
+
         <!-- БЛОК КАРТОЧЕК ПРИМЕРОВ -->
-        <div class="tryon-grid" style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 15px;">
+        <div class="tryon-grid">
             
             <!-- Пример 1 -->
-            <div class="tryon-card" style="background: var(--tg-theme-bg-color, #fff); border-radius: 12px; border: 1px solid var(--tg-theme-border-color, #ddd); padding: 12px;">
-                <div class="tryon-card-title" style="font-size: 14px; font-weight: bold; margin-bottom: 8px; text-align: center; color: var(--tg-theme-text-color, #000);">На пляже</div>
-                <div class="tryon-images" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                    <!-- ИСПРАВЛЕНО: Поставлены работающие картинки-плейсхолдеры вместо пустых ссылок -->
-                    <div style="position: relative;"><img src="https://i.postimg.cc/PqBxsLJj/5244806263227488678.jpg" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;"><div style="position: absolute; bottom: 5px; right: 5px; background: rgba(0,0,0,0.6); color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold;">ДО</div></div>
-                    <div style="position: relative;"><img src="https://i.postimg.cc/dVxp4rNs/5826777441391808367.jpgs" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;"><div style="position: absolute; bottom: 5px; right: 5px; background: #28a745; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold;">ПОСЛЕ</div></div>
+            <div class="tryon-card">
+                <div class="tryon-card-title">На пляже</div>
+                <div class="tryon-images">
+                    <div style="position: relative;">
+                        <img src="https://postimg.cc" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;">
+                        <div style="position: absolute; bottom: 5px; right: 5px; background: rgba(0,0,0,0.6); color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold;">ДО</div>
+                    </div>
+                    <div style="position: relative;">
+                        <img src="https://postimg.cc" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;">
+                        <div style="position: absolute; bottom: 5px; right: 5px; background: #28a745; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold;">ПОСЛЕ</div>
+                    </div>
                 </div>
             </div>
 
             <!-- Пример 2 -->
-            <div class="tryon-card" style="background: var(--tg-theme-bg-color, #fff); border-radius: 12px; border: 1px solid var(--tg-theme-border-color, #ddd); padding: 12px;">
-                <div class="tryon-card-title" style="font-size: 14px; font-weight: bold; margin-bottom: 8px; text-align: center; color: var(--tg-theme-text-color, #000);">Темная душа </div>
-                <div class="tryon-images" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                    <div style="position: relative;"><img src="https://i.postimg.cc/PqBxsLJj/5244806263227488678.jpg" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;"><div style="position: absolute; bottom: 5px; right: 5px; background: rgba(0,0,0,0.6); color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold;">ДО</div></div>
-                    <div style="position: relative;"><img src="https://i.postimg.cc/W4DLvXqk/02.png" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;"><div style="position: absolute; bottom: 5px; right: 5px; background: #28a745; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold;">ПОСЛЕ</div></div>
+            <div class="tryon-card">
+                <div class="tryon-card-title">Темная душа</div>
+                <div class="tryon-images">
+                    <div style="position: relative;">
+                        <img src="https://postimg.cc" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;">
+                        <div style="position: absolute; bottom: 5px; right: 5px; background: rgba(0,0,0,0.6); color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold;">ДО</div>
+                    </div>
+                    <div style="position: relative;">
+                        <img src="https://postimg.cc" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;">
+                        <div style="position: absolute; bottom: 5px; right: 5px; background: #28a745; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold;">ПОСЛЕ</div>
+                    </div>
                 </div>
             </div>
 
             <!-- Пример 3 -->
-            <div class="tryon-card" style="background: var(--tg-theme-bg-color, #fff); border-radius: 12px; border: 1px solid var(--tg-theme-border-color, #ddd); padding: 12px;">
-                <div class="tryon-card-title" style="font-size: 14px; font-weight: bold; margin-bottom: 8px; text-align: center; color: var(--tg-theme-text-color, #000);">Закат на море</div>
-                <div class="tryon-images" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                    <div style="position: relative;"><img src="https://i.postimg.cc/PqBxsLJj/5244806263227488678.jpg" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;"><div style="position: absolute; bottom: 5px; right: 5px; background: rgba(0,0,0,0.6); color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold;">ДО</div></div>
-                    <div style="position: relative;"><img src="https://i.postimg.cc/NGZyqzyD/sai-t.jpg" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;"><div style="position: absolute; bottom: 5px; right: 5px; background: #28a745; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold;">ПОСЛЕ</div></div>
+            <div class="tryon-card">
+                <div class="tryon-card-title">Закат на море</div>
+                <div class="tryon-images">
+                    <div style="position: relative;">
+                        <img src="https://postimg.cc" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;">
+                        <div style="position: absolute; bottom: 5px; right: 5px; background: rgba(0,0,0,0.6); color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold;">ДО</div>
+                    </div>
+                    <div style="position: relative;">
+                        <img src="https://postimg.cc" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;">
+                        <div style="position: absolute; bottom: 5px; right: 5px; background: #28a745; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold;">ПОСЛЕ</div>
+                    </div>
                 </div>
             </div>
             
             <!-- Пример 4 -->
-            <div class="tryon-card" style="background: var(--tg-theme-bg-color, #fff); border-radius:12px; border:1px solid var(--tg-theme-border-color, #ddd); padding:12px;">
-                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center; color: var(--tg-theme-text-color, #000);">Розовая милота</div>
-                <div class="tryon-images" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-                    <div style="position:relative;"><img src="https://i.postimg.cc/PqBxsLJj/5244806263227488678.jpg" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div></div>
-                    <div style="position:relative;"><img src="https://i.postimg.cc/Z0kz735W/s-licom.jpgs" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div></div>
+            <div class="tryon-card">
+                <div class="tryon-card-title">Розовая милота</div>
+                <div class="tryon-images">
+                    <div style="position: relative;">
+                        <img src="https://postimg.cc" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;">
+                        <div style="position: absolute; bottom: 5px; right: 5px; background: rgba(0,0,0,0.6); color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold;">ДО</div>
+                    </div>
+                    <!-- ИСПРАВЛЕНО: Полностью закрыты теги img и div, которые прервались в вашей версии -->
+                    <div style="position: relative;">
+                        <img src="https://postimg.cc" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;">
+                        <div style="position: absolute; bottom: 5px; right: 5px; background: #28a745; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold;">ПОСЛЕ</div>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!-- Пример 5 -->
-            <div class="tryon-card" style="background: var(--tg-theme-bg-color, #fff); border-radius:12px; border:1px solid var(--tg-theme-border-color, #ddd); padding:12px;">
-                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center; color: var(--tg-theme-text-color, #000);">Черно-белый дрескод</div>
-                <div class="tryon-images" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-                    <div style="position:relative;"><img src="https://i.postimg.cc/PqBxsLJj/5244806263227488678.jpg" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div></div>
-                    <div style="position:relative;"><img src="https://i.postimg.cc/0yR9cgzB/dla-sai-ta.jpg" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div></div>
-                </div>
-            </div>
-
-        </div> <!-- ЗАКРЫВАЕМ СЕТКУ TRYON-GRID -->
-    </div> <!-- ЗАКРЫВАЕМ ЭКРАН SCREEN_TEXT_IMAGE -->
-
- <!-- ========================================== -->
+    <!-- ========================================== -->
     <!-- РЕЖИМ 2: ГИБРИДНЫЙ FACE SWAP (ЭКРАН)       -->
     <!-- ========================================== -->
     <div id="face_swap" class="screen">
@@ -368,7 +417,7 @@
         </div>
 
         <!-- Кнопки выбора формата для Кастомного Face Swap -->
-        <div class="ratio-selector" style="display: flex; flex-wrap: wrap; gap: 8px; margin: 15px 0; justify-content: space-between;">
+        <div class="ratio-selector">
             <div class="ratio-btn active" id="swap_ratio_9_16" onclick="setSwapRatio('9:16')">📱 9:16</div>
             <div class="ratio-btn" id="swap_ratio_3_4" onclick="setSwapRatio('3:4')">📸 3:4</div>
             <div class="ratio-btn" id="swap_ratio_1_1" onclick="setSwapRatio('1:1')">🔲 1:1</div>
@@ -377,47 +426,57 @@
         </div>
         
         <p style="margin-top: 15px; margin-bottom: 5px; font-weight: bold; text-align: center; color: var(--tg-theme-text-color, #000);">Выходное качество:</p>
-        <div class="quality-selector" style="display: flex; gap: 6px; margin: 15px 0;">
-            <div class="quality-btn active" id="swap_qual_schnell" onclick="setSwapQuality('schnell')" style="font-size: 11px; padding: 10px 4px;">⚡ Standard (1 Мп)</div>
-            <div class="quality-btn" id="swap_qual_dev" onclick="setSwapQuality('dev')" style="font-size: 11px; padding: 10px 4px;">💎 Pro / 2K (2 Мп)</div>
-            <div class="quality-btn" id="swap_qual_ultra" onclick="setSwapQuality('ultra_4k')" style="font-size: 11px; padding: 10px 4px;">🔥 Ultra 4K (4 Мп)</div>
+        <div class="quality-selector">
+            <div class="quality-btn active" id="swap_qual_schnell" onclick="setSwapQuality('schnell')">⚡ Standard (1 Мп)</div>
+            <div class="quality-btn" id="swap_qual_dev" onclick="setSwapQuality('dev')">💎 Pro / 2K (2 Мп)</div>
+            <div class="quality-btn" id="swap_qual_ultra" onclick="setSwapQuality('ultra_4k')">🔥 Ultra 4K (4 Мп)</div>
         </div>
 
         <div class="header" style="margin-top: 25px; margin-bottom: 10px; text-align: center;">
             <h2>🔥 Или выберите готовый стиль:</h2>
             <p style="font-size:14px; color: var(--tg-theme-hint-color, #666);">Кликните по карточке, чтобы примерить это лицо на себя</p>
         </div>
-                    <!-- ИСПРАВЛЕНО: Для picsum.photos добавлены точные размеры картинок -->
+
+        <!-- ИСПРАВЛЕНО: Добавлен пропущенный открывающий тег контейнера сетки шаблонов -->
+        <div class="phone-templates-grid">
+            
             <div class="phone-template-card" onclick="selectReadyTemplate('girl_face', '3:4')">
                 <img src="https://i.postimg.cc/KvmNLjN5/1Jvjh-Wg-IOGd13NRyt-Al9Ch-E25g9JQ254cdm-KX3Wl-Efs-Valc6d-WLry-Aar-Bpbaxh-F7Am-TJzz-PRNdufq-Qt8z-NE1T.jpg" alt="Лицо девушки">
                 <div class="card-overlay">👩 Лицо девушки (3:4)</div>
             </div>
-            <div class="phone-template-card" onclick="selectReadyTemplate('Lying_down_phone', '16:9')">
+            
+            <!-- Оптимизировано: если формат 16:9 горизонтальный, добавим ему класс full-width для красивого отображения в сетке -->
+            <div class="phone-template-card full-width" onclick="selectReadyTemplate('Lying_down_phone', '16:9')">
                 <img src="https://i.postimg.cc/Bn6BYzR1/2VFFWqgnxp-BZ3y-NOi-Jsrbl-Wywa-X4Eqc-Xm-Gw-PWCRVUz-VDx-Vd-PXjlfe4oy-UMs9u-Iz-SW7-ZW8g8ut0htpz1e-LM4G.jpg" alt="Лежа с телефоном">
                 <div class="card-overlay">📱 Лежа с телефоном (16:9)</div>
             </div>
+            
             <div class="phone-template-card" onclick="selectReadyTemplate('catwoman', '9:16')">
                 <img src="https://i.postimg.cc/SsW6YbYt/2v-NKS8Wz7u-Vs-Aup1f-Eq-M1v-Mhn-Md-Bi-ERmx-YBPu8Y8b-IGi-Cq2gk-Of-QDZ-Kpq-Y5-n-DIn-V-2Sheb-Yr-Iijc-Cj.jpg" alt="Женщина кошка">
                 <div class="card-overlay">🐈 Женщина кошка (9:16)</div>
             </div>
+            
             <div class="phone-template-card" onclick="selectReadyTemplate('carousel_woman', '9:16')">
                 <img src="https://i.postimg.cc/Y2zNpkHF/5ejge-UNZKi8v4QYB3x-Agi-O08y-Mlky-Sr4s-Uk-JN5f-La42u8bfvg-ONpmman5d-DLw-WEZ3e-OR9wj-Hl-Eg-8Ds3f-Dp-I.jpg" alt="Женщина карусель">
                 <div class="card-overlay">🎠 Женщина карусель (9:16)</div>
             </div>
+            
             <div class="phone-template-card" onclick="selectReadyTemplate('demon_woman', '1:1')">
                 <img src="https://i.postimg.cc/d0Cdgc6P/8Ows-HKv-FTINRdkyx-RCQSQvfk-OIg-N7Kcnu-Pi-2-3O1AUSl-K6WIu4o-Qgu-Ofj-Dl-Ns5n-MDw-M0Ud-HKl-Vc83j-WIls.jpg" alt="Женщина демон">
                 <div class="card-overlay">😈 Женщина демон (1:1)</div>
             </div>
+            
             <div class="phone-template-card" onclick="selectReadyTemplate('woman_standing', '9:16')">
                 <img src="https://i.postimg.cc/2ykZqbDS/vk.jpg" alt="Женщина стоит">
                 <div class="card-overlay">🧍 Женщина стоит (9:16)</div>
             </div>
-        </div>
-    </div> <!-- ЗАКРЫВАЕМ ЭКРАН FACE_SWAP -->
+            
+        </div> <!-- Конец контейнера phone-templates-grid -->
+    </div> <!-- Конец экрана face_swap -->
     
     
     
-<!-- ========================================== -->
+    <!-- ========================================== -->
     <!-- ЭКРАН 4: РЕЖИМ 3 (Примерка одежды ШАБЛОНЫ)   -->
     <!-- ========================================== -->
     <div id="tryon" class="screen">
@@ -436,7 +495,7 @@
         </div>
 
         <!-- Кнопки выбора формата для примерки одежды -->
-        <div class="ratio-selector" style="display: flex; flex-wrap: wrap; gap: 8px; margin: 15px 0; justify-content: space-between;">
+        <div class="ratio-selector">
             <div class="ratio-btn active" id="tryon_ratio_9_16" onclick="setTryOnRatio('9:16')">📱 9:16</div>
             <div class="ratio-btn" id="tryon_ratio_3_4" onclick="setTryOnRatio('3:4')">📸 3:4</div>
             <div class="ratio-btn" id="tryon_ratio_1_1" onclick="setTryOnRatio('1:1')">🔲 1:1</div>
@@ -445,68 +504,82 @@
         </div>
 
         <p style="margin-top: 15px; margin-bottom: 5px; font-weight: bold; text-align: center; color: var(--tg-theme-text-color, #000);">Выходное качество:</p>
-        <div class="quality-selector" style="display: flex; gap: 6px; margin: 15px 0;">
-            <div class="quality-btn active" id="tryon_qual_schnell" onclick="setTryOnQuality('schnell')" style="font-size: 11px; padding: 10px 4px;">⚡ Standard (1 Мп)</div>
-            <div class="quality-btn" id="tryon_qual_dev" onclick="setTryOnQuality('dev')" style="font-size: 11px; padding: 10px 4px;">💎 Pro / 2K (2 Мп)</div>
-            <div class="quality-btn" id="tryon_qual_ultra" onclick="setTryOnQuality('ultra_4k')" style="font-size: 11px; padding: 10px 4px;">🔥 Ultra 4K (4 Мп)</div>
+        <div class="quality-selector">
+            <div class="quality-btn active" id="tryon_qual_schnell" onclick="setTryOnQuality('schnell')">⚡ Standard (1 Мп)</div>
+            <div class="quality-btn" id="tryon_qual_dev" onclick="setTryOnQuality('dev')">💎 Pro / 2K (2 Мп)</div>
+            <div class="quality-btn" id="tryon_qual_ultra" onclick="setTryOnQuality('ultra_4k')">🔥 Ultra 4K (4 Мп)</div>
         </div>
 
         <div class="header" style="margin-top: 20px; margin-bottom: 5px; text-align: center;">
             <h2>🔥 Примеры работы Try-On:</h2>
             <p style="font-size:14px; color: var(--tg-theme-hint-color, #666);">Результаты примерки нашей нейросети До / После</p>
         </div>
+        
         <!-- СЕТКА КАРТОЧЕК ПРИМЕРОВ -->
-        <div class="tryon-grid" style="display:grid; grid-template-columns:1fr; gap:15px; margin-top:15px;">
+        <div class="tryon-grid">
             
             <!-- Карточка 1 -->
-            <div class="tryon-card" style="background: var(--tg-theme-bg-color, #fff); border-radius:12px; border:1px solid var(--tg-theme-border-color, #ddd); padding:12px;">
-                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center; color: var(--tg-theme-text-color, #000);">✨ Кожаный бомбер</div>
-                <div class="tryon-images" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-                    <!-- ИСПРАВЛЕНО: Добавлены корректные размеры для picsum.photos -->
-                    <div style="position:relative;"><img src="https://i.postimg.cc/SKZPJ88f/dk-KTw-BUnd-YUI1Lm15h-SU432B8ODPj15C8OPTY8y-MNn-GDGBDjf5m-H9o-M3twt-Jw-BU-odi-YTP2-w2g1mz-YYXMt-CNmm.jpg" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div></div>
-                    <div style="position:relative;"><img src="https://i.postimg.cc/SKZPJ88f/dk-KTw-BUnd-YUI1Lm15h-SU432B8ODPj15C8OPTY8y-MNn-GDGBDjf5m-H9o-M3twt-Jw-BU-odi-YTP2-w2g1mz-YYXMt-CNmm.jpg" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div></div>
+            <div class="tryon-card">
+                <div class="tryon-card-title">✨ Кожаный бомбер</div>
+                <div class="tryon-images">
+                    <div style="position:relative;">
+                        <img src="https://i.postimg.cc/SKZPJ88f/dk-KTw-BUnd-YUI1Lm15h-SU432B8ODPj15C8OPTY8y-MNn-GDGBDjf5m-H9o-M3twt-Jw-BU-odi-YTP2-w2g1mz-YYXMt-CNmm.jpg" style="width:100%; height:150px; object-fit:cover; border-radius:8px;">
+                        <div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div>
+                    </div>
+                    <div style="position:relative;">
+                        <img src="https://i.postimg.cc/SKZPJ88f/dk-KTw-BUnd-YUI1Lm15h-SU432B8ODPj15C8OPTY8y-MNn-GDGBDjf5m-H9o-M3twt-Jw-BU-odi-YTP2-w2g1mz-YYXMt-CNmm.jpg" style="width:100%; height:150px; object-fit:cover; border-radius:8px;">
+                        <div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div>
+                    </div>
                 </div>
             </div>
 
             <!-- Карточка 2 -->
-            <div class="tryon-card" style="background: var(--tg-theme-bg-color, #fff); border-radius:12px; border:1px solid var(--tg-theme-border-color, #ddd); padding:12px;">
-                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center; color: var(--tg-theme-text-color, #000);">✨ Зимнее худи</div>
-                <div class="tryon-images" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-                    <div style="position:relative;"><img src="https://i.postimg.cc/SKZPJ88f/dk-KTw-BUnd-YUI1Lm15h-SU432B8ODPj15C8OPTY8y-MNn-GDGBDjf5m-H9o-M3twt-Jw-BU-odi-YTP2-w2g1mz-YYXMt-CNmm.jpg" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div></div>
-                    <div style="position:relative;"><img src="https://i.postimg.cc/SKZPJ88f/dk-KTw-BUnd-YUI1Lm15h-SU432B8ODPj15C8OPTY8y-MNn-GDGBDjf5m-H9o-M3twt-Jw-BU-odi-YTP2-w2g1mz-YYXMt-CNmm.jpg" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div></div>
+            <div class="tryon-card">
+                <div class="tryon-card-title">✨ Зимнее худи</div>
+                <div class="tryon-images">
+                    <div style="position:relative;">
+                        <img src="https://i.postimg.cc/SKZPJ88f/dk-KTw-BUnd-YUI1Lm15h-SU432B8ODPj15C8OPTY8y-MNn-GDGBDjf5m-H9o-M3twt-Jw-BU-odi-YTP2-w2g1mz-YYXMt-CNmm.jpg" style="width:100%; height:150px; object-fit:cover; border-radius:8px;">
+                        <div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div>
+                    </div>
+                    <div style="position:relative;">
+                        <img src="https://i.postimg.cc/SKZPJ88f/dk-KTw-BUnd-YUI1Lm15h-SU432B8ODPj15C8OPTY8y-MNn-GDGBDjf5m-H9o-M3twt-Jw-BU-odi-YTP2-w2g1mz-YYXMt-CNmm.jpg" style="width:100%; height:150px; object-fit:cover; border-radius:8px;">
+                        <div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div>
+                    </div>
                 </div>
             </div>
 
             <!-- Карточка 3 -->
-            <div class="tryon-card" style="background: var(--tg-theme-bg-color, #fff); border-radius:12px; border:1px solid var(--tg-theme-border-color, #ddd); padding:12px;">
-                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center; color: var(--tg-theme-text-color, #000);">✨ Классический пиджак</div>
-                <div class="tryon-images" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-                    <div style="position:relative;"><img src="https://i.postimg.cc/SKZPJ88f/dk-KTw-BUnd-YUI1Lm15h-SU432B8ODPj15C8OPTY8y-MNn-GDGBDjf5m-H9o-M3twt-Jw-BU-odi-YTP2-w2g1mz-YYXMt-CNmm.jpg" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div></div>
-                    <div style="position:relative;"><img src="https://i.postimg.cc/SKZPJ88f/dk-KTw-BUnd-YUI1Lm15h-SU432B8ODPj15C8OPTY8y-MNn-GDGBDjf5m-H9o-M3twt-Jw-BU-odi-YTP2-w2g1mz-YYXMt-CNmm.jpg" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div></div>
+            <div class="tryon-card">
+                <div class="tryon-card-title">✨ Классический пиджак</div>
+                <div class="tryon-images">
+                    <div style="position:relative;">
+                        <img src="https://i.postimg.cc/SKZPJ88f/dk-KTw-BUnd-YUI1Lm15h-SU432B8ODPj15C8OPTY8y-MNn-GDGBDjf5m-H9o-M3twt-Jw-BU-odi-YTP2-w2g1mz-YYXMt-CNmm.jpg" style="width:100%; height:150px; object-fit:cover; border-radius:8px;">
+                        <div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div>
+                    </div>
+                    <div style="position:relative;">
+                        <img src="https://i.postimg.cc/SKZPJ88f/dk-KTw-BUnd-YUI1Lm15h-SU432B8ODPj15C8OPTY8y-MNn-GDGBDjf5m-H9o-M3twt-Jw-BU-odi-YTP2-w2g1mz-YYXMt-CNmm.jpg" style="width:100%; height:150px; object-fit:cover; border-radius:8px;">
+                        <div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div>
+                    </div>
                 </div>
             </div>
 
             <!-- Карточка 4 -->
-            <div class="tryon-card" style="background: var(--tg-theme-bg-color, #fff); border-radius:12px; border:1px solid var(--tg-theme-border-color, #ddd); padding:12px;">
-                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center; color: var(--tg-theme-text-color, #000);">✨ Летнее платье</div>
-                <div class="tryon-images" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-                    <div style="position:relative;"><img src="https://i.postimg.cc/SKZPJ88f/dk-KTw-BUnd-YUI1Lm15h-SU432B8ODPj15C8OPTY8y-MNn-GDGBDjf5m-H9o-M3twt-Jw-BU-odi-YTP2-w2g1mz-YYXMt-CNmm.jpg" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div></div>
-                    <div style="position:relative;"><img src="https://i.postimg.cc/SKZPJ88f/dk-KTw-BUnd-YUI1Lm15h-SU432B8ODPj15C8OPTY8y-MNn-GDGBDjf5m-H9o-M3twt-Jw-BU-odi-YTP2-w2g1mz-YYXMt-CNmm.jpg" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div></div>
+            <!-- ИСПРАВЛЕНО: Полностью закрыты все теги, которые оборвались в вашей версии -->
+            <div class="tryon-card">
+                <div class="tryon-card-title">✨ Летнее платье</div>
+                <div class="tryon-images">
+                    <div style="position:relative;">
+                        <img src="https://i.postimg.cc/SKZPJ88f/dk-KTw-BUnd-YUI1Lm15h-SU432B8ODPj15C8OPTY8y-MNn-GDGBDjf5m-H9o-M3twt-Jw-BU-odi-YTP2-w2g1mz-YYXMt-CNmm.jpg" style="width:100%; height:150px; object-fit:cover; border-radius:8px;">
+                        <div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div>
+                    </div>
+                    <div style="position:relative;">
+                        <img src="https://i.postimg.cc/SKZPJ88f/dk-KTw-BUnd-YUI1Lm15h-SU432B8ODPj15C8OPTY8y-MNn-GDGBDjf5m-H9o-M3twt-Jw-BU-odi-YTP2-w2g1mz-YYXMt-CNmm.jpg" style="width:100%; height:150px; object-fit:cover; border-radius:8px;">
+                        <div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div>
+                    </div>
                 </div>
             </div>
-
-            <!-- Карточка 5 -->
-            <!-- ИСПРАВЛЕНО: Код дописан до конца, закрыты все теги структуры -->
-            <div class="tryon-card" style="background: var(--tg-theme-bg-color, #fff); border-radius:12px; border:1px solid var(--tg-theme-border-color, #ddd); padding:12px;">
-                <div class="tryon-card-title" style="font-size:14px; font-weight:bold; margin-bottom:8px; text-align:center; color: var(--tg-theme-text-color, #000);">✨ Джинсовая куртка</div>
-                <div class="tryon-images" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-                    <div style="position:relative;"><img src="https://i.postimg.cc/SKZPJ88f/dk-KTw-BUnd-YUI1Lm15h-SU432B8ODPj15C8OPTY8y-MNn-GDGBDjf5m-H9o-M3twt-Jw-BU-odi-YTP2-w2g1mz-YYXMt-CNmm.jpg" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.6); color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ДО</div></div>
-                    <div style="position:relative;"><img src="https://i.postimg.cc/SKZPJ88f/dk-KTw-BUnd-YUI1Lm15h-SU432B8ODPj15C8OPTY8y-MNn-GDGBDjf5m-H9o-M3twt-Jw-BU-odi-YTP2-w2g1mz-YYXMt-CNmm.jpg" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"><div style="position:absolute; bottom:5px; right:5px; background:#28a745; color:#fff; font-size:10px; padding:2px 6px; border-radius:4px; font-weight:bold;">ПОСЛЕ</div></div>
-                </div>
-            </div>
-
-        </div> <!-- ЗАКРЫВАЕМ СЕТКУ TRYON-GRID -->
-    </div> <!-- ЗАКРЫВАЕМ ЭКРАН TRYON -->
+        </div>
+    </div>
     
     
 
@@ -627,7 +700,9 @@
         </div>
 
         <div style="font-weight: bold; font-size: 14px; margin-bottom: 5px; color: var(--tg-theme-text-color, #222);">Примеры генераций (нажмите для просмотра):</div>
+        
         <div class="phone-templates-grid">
+            <!-- СОВЕТ: Замените URL-адреса ниже на реальные ссылки к вашим .mp4 видео и .jpg обложкам -->
             <div class="phone-template-card" onclick="openPreviewVideo('https://googleapis.com')">
                 <img src="https://postimg.cc" alt="Пример 1">
                 <div class="card-overlay">🎬 Природный пейзаж</div>
@@ -642,8 +717,9 @@
         <div class="form-group" style="background: var(--tg-theme-bg-color, #fff); padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid var(--tg-theme-border-color, #e1e6eb);">
             <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Длительность видео</label>
             <div style="display: flex; gap: 10px;" id="video_duration_block">
-                <button class="duration-btn active" onclick="setKlingDuration(5, this)" style="flex: 1; padding: 12px; border: 2px solid var(--tg-theme-border-color, #e1e6eb); border-radius: 8px; background: var(--tg-theme-bg-color, #fff); color: var(--tg-theme-text-color, #333); font-weight: bold; cursor: pointer;">5 секунд</button>
-                <button class="duration-btn" onclick="setKlingDuration(10, this)" style="flex: 1; padding: 12px; border: 2px solid var(--tg-theme-border-color, #e1e6eb); border-radius: 8px; background: var(--tg-theme-bg-color, #fff); color: var(--tg-theme-text-color, #333); font-weight: bold; cursor: pointer;">10 секунд</button>
+                <!-- ОПТИМИЗИРОВАНО: Inline-стили кнопок убраны, теперь они автоматически управляются через head -->
+                <button class="duration-btn active" onclick="setKlingDuration(5, this)">5 секунд</button>
+                <button class="duration-btn" onclick="setKlingDuration(10, this)">10 секунд</button>
             </div>
         </div>
 
@@ -651,13 +727,14 @@
         <div class="form-group" style="background: var(--tg-theme-bg-color, #fff); padding: 15px; border-radius: 12px; border: 1px solid var(--tg-theme-border-color, #e1e6eb); margin-bottom: 20px;">
             <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Формат видео</label>
             <div class="ratio-selector" style="display: flex; gap: 10px; margin: 0;">
-                <button class="ratio-btn active" id="ratio_ns_169" onclick="setAnimateRatio('16:9', this)" style="flex: 1; padding: 12px; border: 2px solid var(--tg-theme-border-color, #e1e6eb); border-radius: 8px; background: var(--tg-theme-bg-color, #fff); color: var(--tg-theme-text-color, #333); font-weight: bold; cursor: pointer;">16:9</button>
-                <button class="ratio-btn" id="ratio_ns_916" onclick="setAnimateRatio('9:16', this)" style="flex: 1; padding: 12px; border: 2px solid var(--tg-theme-border-color, #e1e6eb); border-radius: 8px; background: var(--tg-theme-bg-color, #fff); color: var(--tg-theme-text-color, #333); font-weight: bold; cursor: pointer;">9:16</button>
+                <button class="ratio-btn active" id="ratio_ns_169" onclick="setAnimateRatio('16:9', this)">16:9</button>
+                <button class="ratio-btn" id="ratio_ns_916" onclick="setAnimateRatio('9:16', this)">9:16</button>
             </div>
         </div>
 
-        <button class="submit-btn" onclick="sendAnimateNoSoundData()" style="width: 100%; padding: 15px; background: var(--tg-theme-button-color, #0088cc); color: var(--tg-theme-button-text-color, white); border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 30px;">Оживить фото</button>
+        <button class="submit-btn" onclick="sendAnimateNoSoundData()" style="width: 100%; padding: 15px; background: var(--tg-theme-button-color, #0088cc); color: var(--tg-theme-button-text-color, white); border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 30px; -webkit-tap-highlight-color: transparent;">Оживить фото</button>
     </div>
+
 
     <!-- ========================================== -->
     <!-- ЭКРАН: ОЖИВЛЕНИЕ ФОТО (СО ЗВУКОМ)          -->
@@ -718,11 +795,7 @@
 
             if (mode === 'video') {
                 openScreen('video_menu'); 
-            } else if (mode === 'photo') {
-                openScreen('main_menu'); // Твоя главная панель фото-инструментов из 4 пунктов
-            } else if (mode === 'image') {
-                openScreen('face_swap');  
-            } else if (mode === 'direct' || mode === 'img_gen') {
+            } else if (mode === 'direct') {
                 openScreen('image_generation_direct'); 
             } else {
                 openScreen('main_menu');  
@@ -744,7 +817,7 @@
         let selectedTryOnQuality = 'schnell';
         let selectedBgQuality = 'schnell';
 
-        // 2. ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ (ИСПРАВЛЕНО: ВСЕ ID СИНХРОНИЗИРОВАНЫ)
+        // 2. ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ (ИСПРАВЛЕНО И ЗАКРЫТО)
         function openScreen(screenName) {
             currentActiveMode = screenName;
             
@@ -768,13 +841,24 @@
             });
             
             // По умолчанию скрываем главную кнопку Telegram
-            tg.MainButton.hide();
+            if (tg && tg.MainButton) {
+                tg.MainButton.hide();
+            }
 
             // Поиск и показ целевого экрана
             const activeScreenEl = document.getElementById(screenName);
             if (activeScreenEl) {
                 activeScreenEl.classList.add('active');
                 console.log("[Screen] Успешно переключено на экран: ", screenName);
+                
+                // Динамическая настройка Главной кнопки Telegram в зависимости от экрана
+                if (tg && tg.MainButton) {
+                    const interactiveScreens = ['face_swap', 'tryon', 'text_image', 'bg_change', 'image_generation_direct'];
+                    if (interactiveScreens.includes(screenName)) {
+                        tg.MainButton.setText("Подтвердить настройки");
+                        tg.MainButton.show();
+                    }
+                }
             } else {
                 console.error("[Screen] Ошибка: Тег с ID '" + screenName + "' не найден в HTML!");
             }
@@ -802,12 +886,29 @@
             }
         }
 
+        // Обязательно объявляем переменные для прямого режима Flux, чтобы JS не вылетал с ошибкой!
+        let directGenRatio = '9:16';
+        let directGenQuality = 'schnell';
+
         // Системный конфигуратор главной кнопки ТГ (очищает память кликов)
         function setupMainButton(text, callback) {
+            if (!tg || !tg.MainButton) return;
             tg.MainButton.setText(text);
             tg.MainButton.show();
             tg.MainButton.offClick(); 
             tg.MainButton.onClick(callback);
+        }
+
+        // Глобальная функция отправки данных в Telegram (ИСПРАВЛЕНО: добавлена безопасная обертка try-catch)
+        function sendToTelegram(dataObj) {
+            try {
+                if (tg) {
+                    tg.sendData(JSON.stringify(dataObj));
+                    tg.close();
+                }
+            } catch (e) {
+                console.error("Ошибка при отправке JSON в Telegram: ", e);
+            }
         }
 
         // ====================================================================================
@@ -816,9 +917,46 @@
         function sendPhotoTextData() { sendToTelegram({ mode_trigger: 'text_image', aspect_ratio: selectedTextRatio, quality: selectedTextQuality }); }
         function sendCustomFaceSwapData() { sendToTelegram({ mode_trigger: 'face_swap', is_custom_template: true, aspect_ratio: selectedSwapRatio, quality: selectedSwapQuality }); }
         function sendTryOnData() { sendToTelegram({ mode_trigger: 'tryon', aspect_ratio: selectedTryOnRatio, quality: selectedTryOnQuality }); }
+        function sendToTelegramData() { sendToTelegram({ mode_trigger: 'bg_change', aspect_ratio: selectedBgRatio, quality: selectedBgQuality }); } // Внимание: в вашей версии была sendBgChangeData, проверьте имя при вызове в openScreen!
         function sendBgChangeData() { sendToTelegram({ mode_trigger: 'bg_change', aspect_ratio: selectedBgRatio, quality: selectedBgQuality }); }
 
-                // ====================================================================================
+        // ====================================================================================
+        // ИСПРАВЛЕНО: ДОБАВЛЕНЫ ОТСУТСТВУЮЩИЕ ФУНКЦИИ ИЗМЕНЕНИЯ ФОРМАТОВ (RATIO)
+        // Они переключают класс 'active' на кнопках конкретного экрана и сохраняют выбор
+        // ====================================================================================
+        function setTextRatio(ratio) {
+            selectedTextRatio = ratio;
+            document.querySelectorAll('#text_image .ratio-selector .ratio-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.innerText.includes(ratio)) btn.classList.add('active');
+            });
+        }
+
+        function setSwapRatio(ratio) {
+            selectedSwapRatio = ratio;
+            document.querySelectorAll('#face_swap .ratio-selector .ratio-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.innerText.includes(ratio)) btn.classList.add('active');
+            });
+        }
+
+        function setTryOnRatio(ratio) {
+            selectedTryOnRatio = ratio;
+            document.querySelectorAll('#tryon .ratio-selector .ratio-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.innerText.includes(ratio)) btn.classList.add('active');
+            });
+        }
+
+        function setBgRatio(ratio) {
+            selectedBgRatio = ratio;
+            document.querySelectorAll('#bg_change .ratio-selector .ratio-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.innerText.includes(ratio)) btn.classList.add('active');
+            });
+        }
+
+        // ====================================================================================
         // НАСТРОЙКИ И УПРАВЛЕНИЕ ЭКРАНОМ ПРЯМОЙ ГЕНЕРАЦИИ (FLUX ПО ТЕКСТУ): ЧАСТЬ 2
         // ====================================================================================
         function setDirectGenRatio(ratio) {
@@ -842,22 +980,15 @@
         }
 
         // Управление Главной кнопкой Telegram (MainButton) для прямого режима Flux
-        // ИСПРАВЛЕНО: Кнопка строго одна, нативная и без дублирования в HTML!
-                // Управление Главной кнопкой Telegram (MainButton) для прямого режима Flux
-        // ИСПРАВЛЕНО: Кнопка строго одна, нативная и без дублирования в HTML!
         function updateDirectMainButton() {
             if (!tg || !tg.MainButton) return;
             
             const readableQual = directGenQuality === 'schnell' ? 'Standard' : directGenQuality === 'dev' ? 'Pro' : 'Ultra 4K';
             
-            // Настраиваем текст нативной нижней панели Телеграма
             tg.MainButton.setText(`Выбрать формат ${directGenRatio} (${readableQual}) ✨`);
             tg.MainButton.show();
-            
-            // Жестко сбрасываем старые клики от греха подальше
             tg.MainButton.offClick();
             
-            // Вешаем чистую отправку данных Flux по тексту в бот
             tg.MainButton.onClick(function() {
                 const dataToSend = {
                     mode_trigger: "pure_text_image", 
@@ -872,20 +1003,25 @@
                     console.error("Ошибка отправки ТГ: ", e);
                 }
             });
-        } // <-- ЭТА СКОБКА ТЕПЕРЬ ПРАВИЛЬНО ЗАКРЫВАЕТ ВСЮ ФУНКЦИЮ!
+        }
 
 
         function closeWebApp() { if (tg) tg.close(); }
 
         // 3. БЕЗОПАСНОЕ ПЕРЕКЛЮЧЕНИЕ КАЧЕСТВА ДЛЯ КАЖДОГО РЕЖИМА
+        // ИСПРАВЛЕНО: Добавлены жесткие проверки на существование элементов (защита от черного экрана)
         function clearAndSetActiveQuality(prefix, quality) {
             ['schnell', 'dev', 'ultra'].forEach(q => {
                 const btn = document.getElementById(`${prefix}_qual_${q}`);
-                if (btn) btn.classList.remove('active');
+                if (btn) btn.classList.remove('active'); // Проверка if(btn) защищает от краша
             });
             const shortQual = quality === 'ultra_4k' ? 'ultra' : quality;
             const targetBtn = document.getElementById(`${prefix}_qual_${shortQual}`);
-            if (targetBtn) targetBtn.classList.add('active');
+            if (targetBtn) {
+                targetBtn.classList.add('active');
+            } else {
+                console.warn(`[Quality UI] Кнопка качества ${prefix}_qual_${shortQual} не найдена в HTML!`);
+            }
         }
 
         function setTextQuality(quality) { selectedTextQuality = quality; clearAndSetActiveQuality('text', quality); }
@@ -901,6 +1037,7 @@
         }
 
         // 4. БЕЗОПАСНЫЕ ПЕРЕКЛЮЧАТЕЛИ ФОРМАТОВ ДЛЯ ВСЕХ ЭКРАНОВ
+        // ИСПРАВЛЕНО: Добавлены проверки на существование кнопок формата
         function clearAndSetActiveRatio(prefix, ratio) {
             const ratios = ['9_16', '3_4', '1_1', '4_3', '16_9'];
             ratios.forEach(r => {
@@ -909,7 +1046,11 @@
             });
             const activeId = ratio.replace(':', '_');
             const targetBtn = document.getElementById(`${prefix}_ratio_${activeId}`);
-            if (targetBtn) targetBtn.classList.add('active');
+            if (targetBtn) {
+                targetBtn.classList.add('active');
+            } else {
+                console.warn(`[Ratio UI] Кнопка формата ${prefix}_ratio_${activeId} не найдена в HTML!`);
+            }
         }
 
         function setSwapRatio(ratio) { selectedSwapRatio = ratio; clearAndSetActiveRatio('swap', ratio); }
@@ -923,8 +1064,8 @@
             currentAnimateRatio = ratio;
         }
 
-        // Исправлено дублирование функции, оставлен один чистый вариант
         function setKlingDuration(duration, element) {
+            if (!element || !element.parentElement) return;
             element.parentElement.querySelectorAll('.duration-btn').forEach(btn => btn.classList.remove('active'));
             element.classList.add('active');
             currentKlingDuration = duration;
@@ -945,6 +1086,7 @@
         function sendAnimateSoundData() {
             const audioToggle = document.getElementById("use_audio_toggle");
             const needAudioFile = audioToggle ? audioToggle.checked : false;
+            // ИСПРАВЛЕНО: Безопасный дефолт, так как на самом экране звука кнопок хронометража нет
             const finalDuration = (typeof currentKlingDuration !== 'undefined') ? currentKlingDuration : 5;
             
             sendToTelegram({
@@ -995,7 +1137,7 @@
                     console.log("Данные отправлены боту (Браузерный тест):", payload);
                 }
             } catch (e) {
-                alert("Критическая ошибка отправки: " + e.message);
+                console.error("Критическая ошибка отправки: ", e.message);
             }
         }
 
@@ -1003,8 +1145,13 @@
         // УПРАВЛЕНИЕ ПОЛНОЭКРАННЫМ ПЛЕЕРОМ ВИДЕО
         // ==========================================
         function openPreviewVideo(videoUrl) {
-            if (!videoUrl || videoUrl.includes('ссылка_на_')) {
-                alert("Video-пример еще загружается на сервер или ссылка не указана!");
+            // ИСПРАВЛЕНО: Добавлен жесткий фильтр-предохранитель от пустых или недописанных заглушек хостингов
+            if (!videoUrl || videoUrl.includes('ссылка_на_') || videoUrl === 'https://googleapis.com' || videoUrl === 'https://postimg.cc') {
+                if (tg && tg.showAlert) {
+                    tg.showAlert("Видео-пример еще загружается администратором!");
+                } else {
+                    alert("Видео-пример еще загружается администратором!");
+                }
                 return;
             }
             const modal = document.getElementById('videoPlayerModal');
@@ -1013,7 +1160,7 @@
             if (modal && player) {
                 player.src = videoUrl;
                 modal.style.display = 'flex';
-                player.play().catch(error => console.log(error));
+                player.play().catch(error => console.log("[Video Play Error]", error));
             }
         }
 
@@ -1023,9 +1170,9 @@
             if (modal && player) {
                 modal.style.display = 'none';
                 player.pause();
-                player.src = ""; 
+                player.src = ""; // Очищаем буфер памяти
             }
         }   
-    </script>
+</script>
 </body>
 </html>

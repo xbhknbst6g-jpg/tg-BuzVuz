@@ -212,15 +212,20 @@
             <div style="font-size: 12px; color: var(--tg-theme-hint-color, #777); margin-top: 5px;">Если выключено, видео сгенерируется без звука.</div>
         </div>
 
-        <!-- БЛОК ВЫБОРА ГОЛОСА -->
+        <!-- БЛОК ВЫБОРА ГОЛОСА (С подсказкой по правильному написанию промпта) -->
         <div id="voice_selector_block" style="background: var(--tg-theme-bg-color, #fff); padding: 15px; border-radius: 12px; border: 1px solid var(--tg-theme-border-color, #e1e6eb); margin-bottom: 20px;">
             <label style="display: block; font-weight: bold; font-size: 14px; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Выбор AI-голоса озвучки</label>
             <div style="display: flex; gap: 10px;">
                 <button class="duration-btn active" onclick="setVoiceId('voice_male_01', this)">🧑 Голос 1</button>
                 <button class="duration-btn" onclick="setVoiceId('voice_female_02', this)">👩 Голос 2</button>
             </div>
+            
+            <!-- Добавленная инструкция-подсказка для пользователя -->
+            <div style="font-size: 12px; line-height: 1.4; color: var(--tg-theme-hint-color, #777); margin-top: 10px; background: rgba(0,0,0,0.02); padding: 8px; border-radius: 6px;">
+                💡 <b>Чтобы персонаж заговорил:</b> в тексте описания для бота обязательно укажите его прямую речь в кавычках. <br>
+                <i>Пример: Девушка в кафе говорит: "Всем привет, как дела?".</i>
+            </div>
         </div>
-    </div>
 
     <!-- ПОЛНОЭКРАННЫЙ ПЛЕЕР ПРЕВЬЮ -->
     <div id="videoPlayerModal" class="video-modal" onclick="closePreviewVideo()">

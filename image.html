@@ -160,16 +160,23 @@
             }
         }
 
-        // Обновление и подсветка нативной кнопки Telegram
+                // ====================================================================================
+        // КРАТКИЙ И ЛАКОНИЧНЫЙ ОБНОВЛЯТОР ТЕКСТА ГЛАВНОЙ КНОПКИ ТЕЛЕГРАМ ДЛЯ FLUX
+        // ====================================================================================
         function updateDirectMainButton() {
             if (!tg || !tg.MainButton) return;
+            
+            // Превращаем системное качество в красивый короткий текст
             const readableQual = directGenQuality === 'schnell' ? 'Standard' : directGenQuality === 'dev' ? 'Pro' : 'Ultra 4K';
             
-            tg.MainButton.setText(`Выбрать формат ${directGenRatio} (${readableQual}) ✨`);
+            // Выводим лаконичный текст строго в формате "9:16 (Pro) Start ✨"
+            tg.MainButton.setText(`${directGenRatio} (${readableQual}) Start ✨`);
             tg.MainButton.show();
+            
             tg.MainButton.offClick(); // Безопасно очищаем память ТГ от прошлых кликов
-            tg.MainButton.onClick(sendFluxData); // Привязываем чистый колбэк
+            tg.MainButton.onClick(sendFluxData); // Привязываем чистый колбэк отправки
         }
+
     </script>
 </body>
 </html>

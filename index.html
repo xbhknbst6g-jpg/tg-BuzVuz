@@ -779,91 +779,76 @@
 <!-- ИСПРАВЛЕННЫЙ И БЕЗОПАСНЫЙ СКРИПТ: ЧАСТЬ 1  -->
 <!-- ========================================== -->
 <script>
-        // Инициализация Telegram WebApp API
-        const tg = window.Telegram.WebApp;
+    // 1. Инициализация Telegram WebApp API
+    const tg = window.Telegram.WebApp;
 
-        // === АВТООПРЕДЕЛЕНИЕ РЕЖИМА ПРИ ЗАПУСКЕ ИЗ БОТА ===
-        window.addEventListener('DOMContentLoaded', () => {
-            if (tg) {
-                tg.ready();  
-                tg.expand(); 
-            }
+    // 2. ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ НАСТРОЕК (Объявлены строго по одному разу!)
+    let currentActiveMode = 'main_menu';
+    let currentTemplateId = '';
+    
+    let selectedTryOnRatio = '9:16';  
+    let selectedTextRatio = '9:16';   
+    let selectedSwapRatio = '9:16';   
+    let selectedBgRatio = '9:16';   
+    let currentAnimateRatio = '16:9';  
+    let currentKlingDuration = 5;  
+    
+    let selectedTextQuality = 'schnell';
+    let selectedSwapQuality = 'schnell';
+    let selectedTryOnQuality = 'schnell';
+    let selectedBgQuality = 'schnell';
 
-            // Считываем хвостик ?mode= из ссылки бота
-            const urlParams = new URLSearchParams(window.location.search);
-            const mode = urlParams.get('mode');
+    let directGenRatio = '9:16';
+    let directGenQuality = 'schnell';
 
-            if (mode === 'video') {
-                openScreen('video_menu'); 
-            } else if (mode === 'direct') {
-                openScreen('image_generation_direct'); 
-            } else {
-                openScreen('main_menu');  
-            }
-        });
+    // 3. АВТООПРЕДЕЛЕНИЕ РЕЖИМА ПРИ ЗАПУСКЕ
+    window.addEventListener('DOMContentLoaded', () => {
+        if (tg) {
+            tg.ready();  
+            tg.expand(); 
+        }
 
-        // 1. ИНИЦИАЛИЗАЦИЯ ВСЕХ ПЕРЕМЕННЫХ НАСТРОЕК
-        let currentActiveMode = 'main_menu';
-        let currentTemplateId = '';
-        let selectedTryOnRatio = '9:16';  
-        let selectedTextRatio = '9:16';   
-        let selectedSwapRatio = '9:16';   
-        let selectedBgRatio = '9:16';   
-        let currentAnimateRatio = '16:9';  
-        let currentKlingDuration = 5;  
+        const urlParams = new URLSearchParams(window.location.search);
+        const mode = urlParams.get('mode');
+
+        if (mode === 'video') {
+            openScreen('video_menu'); 
+        } else if (mode === 'direct') {
+            openScreen('image_generation_direct'); 
+        } else {
+            openScreen('main_menu');  
+        }
+    });
+
+    // 4. СИСТЕМА ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ
+    function openScreen(screenName) {
+        currentActiveMode = screenName;
         
-        let selectedTextQuality = 'schnell';
-        let selectedSwapQuality = 'schnell';
-        let selectedTryOnQuality = 'schnell';
-        let selectedBgQuality = 'schnell';
+        const screens = [
+            'main_menu', 
+            'face_swap', 
+            'tryon', 
+            'text_image', 
+            'bg_change',
+            'video_menu',       
+            'animate_nosound',  
+            'animate_sound',
+            'image_generation_direct' 
+        ];
+        
+        screens.forEach(s => {
+            const el = document.getElementById(s);
+            if (el) el.classList.remove('active');
+        });
+        
+        if (tg && tg.MainButton) tg.MainButton.hide();
 
-        // 2. ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ (ИСПРАВЛЕНО И ЗАКРЫТО)
-        function openScreen(screenName) {
-            currentActiveMode = screenName;
+        const activeScreenEl = document.getElementById(screenName);
+        if (activeScreenEl) {
+            activeScreenEl.classList.add('active');
+            console.log("[Screen] Переключено на: ", screenName);
             
-            // Точный список ID тегов из твоей HTML-разметки страниц
-            const screens = [
-                'main_menu', 
-                'face_swap', 
-                'tryon', 
-                'text_image', 
-                'bg_change',
-                'video_menu',       
-                'animate_nosound',  
-                'animate_sound',
-                'image_generation_direct' 
-            ];
-            
-            // Скрываем абсолютно все экраны перед показом нужного
-            screens.forEach(s => {
-                const el = document.getElementById(s);
-                if (el) el.classList.remove('active');
-            });
-            
-            // По умолчанию скрываем главную кнопку Telegram
-            if (tg && tg.MainButton) {
-                tg.MainButton.hide();
-            }
-
-            // Поиск и показ целевого экрана
-            const activeScreenEl = document.getElementById(screenName);
-            if (activeScreenEl) {
-                activeScreenEl.classList.add('active');
-                console.log("[Screen] Успешно переключено на экран: ", screenName);
-                
-                // Динамическая настройка Главной кнопки Telegram в зависимости от экрана
-                if (tg && tg.MainButton) {
-                    const interactiveScreens = ['face_swap', 'tryon', 'text_image', 'bg_change', 'image_generation_direct'];
-                    if (interactiveScreens.includes(screenName)) {
-                        tg.MainButton.setText("Подтвердить настройки");
-                        tg.MainButton.show();
-                    }
-                }
-            } else {
-                console.error("[Screen] Ошибка: Тег с ID '" + screenName + "' не найден в HTML!");
-            }
-
-            // Настройка поведения и привязка функций клика Telegram MainButton
+            // Привязка нативной кнопки под каждый экран
             if (screenName === 'face_swap') {
                 setupMainButton("Загрузить свой шаблон в боте ✨", sendCustomFaceSwapData);
             } else if (screenName === 'tryon') {
@@ -873,306 +858,212 @@
             } else if (screenName === 'bg_change') {
                 setupMainButton("Запустить смену фона ✨", sendBgChangeData);
             } else if (screenName === 'image_generation_direct') {
-                if (typeof updateDirectMainButton === 'function') updateDirectMainButton();
-            } else if (screenName === 'video_swap' || screenName === 'animate_nosound' || screenName === 'animate_sound') {
-                tg.MainButton.hide(); 
+                updateDirectMainButton();
             }
-            
-            // Жесткий триггер-предохранитель от непредвиденных ошибок
-            if (!screens.includes(screenName)) {
-                const directData = { mode_trigger: screenName };
-                tg.sendData(JSON.stringify(directData));
+        } else {
+            console.error("[Screen] Ошибка: Тег с ID '" + screenName + "' не найден в HTML!");
+        }
+    }
+
+    // 5. КОНФИГУРАТОР ГЛАВНОЙ КНОПКИ ТГ
+    function setupMainButton(text, callback) {
+        if (!tg || !tg.MainButton) return;
+        tg.MainButton.setText(text);
+        tg.MainButton.show();
+        tg.MainButton.offClick(); 
+        tg.MainButton.onClick(callback);
+    }
+
+    function closeWebApp() { if (tg) tg.close(); }
+
+    // 6. ЕДИНАЯ СИСТЕМНАЯ ФУНКЦИЯ ОТПРАВКИ ДАННЫХ В ТЕЛЕГРАМ
+    function sendToTelegram(payload) {
+        try {
+            if (tg && tg.sendData) {
+                tg.sendData(JSON.stringify(payload));
                 tg.close();
-            }
-        }
-
-        // Обязательно объявляем переменные для прямого режима Flux, чтобы JS не вылетал с ошибкой!
-        let directGenRatio = '9:16';
-        let directGenQuality = 'schnell';
-
-        // Системный конфигуратор главной кнопки ТГ (очищает память кликов)
-        function setupMainButton(text, callback) {
-            if (!tg || !tg.MainButton) return;
-            tg.MainButton.setText(text);
-            tg.MainButton.show();
-            tg.MainButton.offClick(); 
-            tg.MainButton.onClick(callback);
-        }
-
-        // Глобальная функция отправки данных в Telegram (ИСПРАВЛЕНО: добавлена безопасная обертка try-catch)
-        function sendToTelegram(dataObj) {
-            try {
-                if (tg) {
-                    tg.sendData(JSON.stringify(dataObj));
-                    tg.close();
-                }
-            } catch (e) {
-                console.error("Ошибка при отправке JSON в Telegram: ", e);
-            }
-        }
-
-        // ====================================================================================
-        // ЕДИНИЧНЫЕ ФУНКЦИИ ОТПРАВКИ JSON ДЛЯ ЭКРАНОВ ФОТО-СТУДИИ
-        // ====================================================================================
-        function sendPhotoTextData() { sendToTelegram({ mode_trigger: 'text_image', aspect_ratio: selectedTextRatio, quality: selectedTextQuality }); }
-        function sendCustomFaceSwapData() { sendToTelegram({ mode_trigger: 'face_swap', is_custom_template: true, aspect_ratio: selectedSwapRatio, quality: selectedSwapQuality }); }
-        function sendTryOnData() { sendToTelegram({ mode_trigger: 'tryon', aspect_ratio: selectedTryOnRatio, quality: selectedTryOnQuality }); }
-        function sendToTelegramData() { sendToTelegram({ mode_trigger: 'bg_change', aspect_ratio: selectedBgRatio, quality: selectedBgQuality }); } // Внимание: в вашей версии была sendBgChangeData, проверьте имя при вызове в openScreen!
-        function sendBgChangeData() { sendToTelegram({ mode_trigger: 'bg_change', aspect_ratio: selectedBgRatio, quality: selectedBgQuality }); }
-
-        // ====================================================================================
-        // ИСПРАВЛЕНО: ДОБАВЛЕНЫ ОТСУТСТВУЮЩИЕ ФУНКЦИИ ИЗМЕНЕНИЯ ФОРМАТОВ (RATIO)
-        // Они переключают класс 'active' на кнопках конкретного экрана и сохраняют выбор
-        // ====================================================================================
-        function setTextRatio(ratio) {
-            selectedTextRatio = ratio;
-            document.querySelectorAll('#text_image .ratio-selector .ratio-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.innerText.includes(ratio)) btn.classList.add('active');
-            });
-        }
-
-        function setSwapRatio(ratio) {
-            selectedSwapRatio = ratio;
-            document.querySelectorAll('#face_swap .ratio-selector .ratio-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.innerText.includes(ratio)) btn.classList.add('active');
-            });
-        }
-
-        function setTryOnRatio(ratio) {
-            selectedTryOnRatio = ratio;
-            document.querySelectorAll('#tryon .ratio-selector .ratio-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.innerText.includes(ratio)) btn.classList.add('active');
-            });
-        }
-
-        function setBgRatio(ratio) {
-            selectedBgRatio = ratio;
-            document.querySelectorAll('#bg_change .ratio-selector .ratio-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.innerText.includes(ratio)) btn.classList.add('active');
-            });
-        }
-
-        // ====================================================================================
-        // НАСТРОЙКИ И УПРАВЛЕНИЕ ЭКРАНОМ ПРЯМОЙ ГЕНЕРАЦИИ (FLUX ПО ТЕКСТУ): ЧАСТЬ 2
-        // ====================================================================================
-        function setDirectGenRatio(ratio) {
-            document.querySelectorAll('#image_generation_direct .ratio-selector .ratio-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.innerText.includes(ratio)) btn.classList.add('active');
-            });
-            directGenRatio = ratio;
-            updateDirectMainButton();
-        }
-
-        function setDirectGenQuality(quality) {
-            document.querySelectorAll('#image_generation_direct .quality-selector .quality-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (quality === 'schnell' && btn.innerText.includes('Standard')) btn.classList.add('active');
-                if (quality === 'dev' && btn.innerText.includes('Pro')) btn.classList.add('active');
-                if (quality === 'ultra_4k' && btn.innerText.includes('Ultra')) btn.classList.add('active');
-            });
-            directGenQuality = quality;
-            updateDirectMainButton();
-        }
-
-        // Управление Главной кнопкой Telegram (MainButton) для прямого режима Flux
-        function updateDirectMainButton() {
-            if (!tg || !tg.MainButton) return;
-            
-            const readableQual = directGenQuality === 'schnell' ? 'Standard' : directGenQuality === 'dev' ? 'Pro' : 'Ultra 4K';
-            
-            tg.MainButton.setText(`Выбрать формат ${directGenRatio} (${readableQual}) ✨`);
-            tg.MainButton.show();
-            tg.MainButton.offClick();
-            
-            tg.MainButton.onClick(function() {
-                const dataToSend = {
-                    mode_trigger: "pure_text_image", 
-                    aspect_ratio: directGenRatio,
-                    quality: directGenQuality
-                };
-                
-                try {
-                    tg.sendData(JSON.stringify(dataToSend));
-                    tg.close();
-                } catch(e) {
-                    console.error("Ошибка отправки ТГ: ", e);
-                }
-            });
-        }
-
-
-        function closeWebApp() { if (tg) tg.close(); }
-
-        // 3. БЕЗОПАСНОЕ ПЕРЕКЛЮЧЕНИЕ КАЧЕСТВА ДЛЯ КАЖДОГО РЕЖИМА
-        // ИСПРАВЛЕНО: Добавлены жесткие проверки на существование элементов (защита от черного экрана)
-        function clearAndSetActiveQuality(prefix, quality) {
-            ['schnell', 'dev', 'ultra'].forEach(q => {
-                const btn = document.getElementById(`${prefix}_qual_${q}`);
-                if (btn) btn.classList.remove('active'); // Проверка if(btn) защищает от краша
-            });
-            const shortQual = quality === 'ultra_4k' ? 'ultra' : quality;
-            const targetBtn = document.getElementById(`${prefix}_qual_${shortQual}`);
-            if (targetBtn) {
-                targetBtn.classList.add('active');
             } else {
-                console.warn(`[Quality UI] Кнопка качества ${prefix}_qual_${shortQual} не найдена в HTML!`);
+                console.log("Браузерный тест отправки:", payload);
             }
+        } catch (e) {
+            console.error("Критическая ошибка отправки: ", e.message);
         }
+    }
 
-        function setTextQuality(quality) { selectedTextQuality = quality; clearAndSetActiveQuality('text', quality); }
-        function setSwapQuality(quality) { selectedSwapQuality = quality; clearAndSetActiveQuality('swap', quality); }
-        function setTryOnQuality(quality) { selectedTryOnQuality = quality; clearAndSetActiveQuality('tryon', quality); }
-        function setBgQuality(quality) { selectedBgQuality = quality; clearAndSetActiveQuality('bg', quality); }
+    // 7. ФУНКЦИИ ОТПРАВКИ JSON ДЛЯ ЭКРАНОВ СТУДИИ
+    function sendPhotoTextData() { sendToTelegram({ mode_trigger: 'text_image', aspect_ratio: selectedTextRatio, quality: selectedTextQuality }); }
+    function sendCustomFaceSwapData() { sendToTelegram({ mode_trigger: 'face_swap', is_custom_template: true, aspect_ratio: selectedSwapRatio, quality: selectedSwapQuality }); }
+    function sendTryOnData() { sendToTelegram({ mode_trigger: 'tryon', aspect_ratio: selectedTryOnRatio, quality: selectedTryOnQuality }); }
+    function sendBgChangeData() { sendToTelegram({ mode_trigger: 'bg_change', aspect_ratio: selectedBgRatio, quality: selectedBgQuality }); }
 
-        function setQuality(quality) {
-            if (currentActiveMode === 'text_image') setTextQuality(quality);
-            if (currentActiveMode === 'face_swap') setSwapQuality(quality);
-            if (currentActiveMode === 'tryon') setTryOnQuality(quality);
-            if (currentActiveMode === 'bg_change') setBgQuality(quality);
-        }
+    // 8. БЕЗОПАСНОЕ ПЕРЕКЛЮЧЕНИЕ КАЧЕСТВА
+    function clearAndSetActiveQuality(prefix, quality) {
+        ['schnell', 'dev', 'ultra'].forEach(q => {
+            const btn = document.getElementById(`${prefix}_qual_${q}`);
+            if (btn) btn.classList.remove('active');
+        });
+        const shortQual = quality === 'ultra_4k' ? 'ultra' : quality;
+        const targetBtn = document.getElementById(`${prefix}_qual_${shortQual}`);
+        if (targetBtn) targetBtn.classList.add('active');
+    }
 
-        // 4. БЕЗОПАСНЫЕ ПЕРЕКЛЮЧАТЕЛИ ФОРМАТОВ ДЛЯ ВСЕХ ЭКРАНОВ
-        // ИСПРАВЛЕНО: Добавлены проверки на существование кнопок формата
-        function clearAndSetActiveRatio(prefix, ratio) {
-            const ratios = ['9_16', '3_4', '1_1', '4_3', '16_9'];
-            ratios.forEach(r => {
-                const btn = document.getElementById(`${prefix}_ratio_${r}`);
-                if (btn) btn.classList.remove('active');
+    function setTextQuality(quality) { selectedTextQuality = quality; clearAndSetActiveQuality('text', quality); }
+    function setSwapQuality(quality) { selectedSwapQuality = quality; clearAndSetActiveQuality('swap', quality); }
+    function setTryOnQuality(quality) { selectedTryOnQuality = quality; clearAndSetActiveQuality('tryon', quality); }
+    function setBgQuality(quality) { selectedBgQuality = quality; clearAndSetActiveQuality('bg', quality); }
+
+    function setQuality(quality) {
+        if (currentActiveMode === 'text_image') setTextQuality(quality);
+        if (currentActiveMode === 'face_swap') setSwapQuality(quality);
+        if (currentActiveMode === 'tryon') setTryOnQuality(quality);
+        if (currentActiveMode === 'bg_change') setBgQuality(quality);
+    }
+
+    // 9. БЕЗОПАСНЫЕ ПЕРЕКЛЮЧАТЕЛИ ФОРМАТОВ (RATIO)
+    function clearAndSetActiveRatio(prefix, ratio) {
+        const ratios = ['9_16', '3_4', '1_1', '4_3', '16_9'];
+        ratios.forEach(r => {
+            const btn = document.getElementById(`${prefix}_ratio_${r}`);
+            if (btn) btn.classList.remove('active');
+        });
+        const activeId = ratio.replace(':', '_');
+        const targetBtn = document.getElementById(`${prefix}_ratio_${activeId}`);
+        if (targetBtn) targetBtn.classList.add('active');
+    }
+
+    function setSwapRatio(ratio) { selectedSwapRatio = ratio; clearAndSetActiveRatio('swap', ratio); }
+    function setTryOnRatio(ratio) { selectedTryOnRatio = ratio; clearAndSetActiveRatio('tryon', ratio); }
+    function setTextRatio(ratio) { selectedTextRatio = ratio; clearAndSetActiveRatio('text', ratio); }
+    function setBgRatio(ratio) { selectedBgRatio = ratio; clearAndSetActiveRatio('bg', ratio); }
+
+    // 10. УПРАВЛЕНИЕ РЕЖИМАМИ ВИДЕО И FLUX
+    function setAnimateRatio(ratio, element) {
+        document.querySelectorAll('#animate_nosound .ratio-btn').forEach(btn => btn.classList.remove('active'));
+        if (element) element.classList.add('active');
+        currentAnimateRatio = ratio;
+    }
+
+    function setKlingDuration(duration, element) {
+        if (!element || !element.parentElement) return;
+        element.parentElement.querySelectorAll('.duration-btn').forEach(btn => btn.classList.remove('active'));
+        element.classList.add('active');
+        currentKlingDuration = duration;
+    }
+
+    function sendAnimateNoSoundData() {
+        sendToTelegram({
+            mode_trigger: "video_menu",
+            sub_mode: "animate_nosound",
+            model_path: "fal-ai/kling-video/v2.1/standard/image-to-video",
+            aspect_ratio: currentAnimateRatio,
+            duration: currentKlingDuration,
+            start_step: "request_photo" 
+        });
+    }
+
+    function sendAnimateSoundData() {
+        const audioToggle = document.getElementById("use_audio_toggle");
+        const needAudioFile = audioToggle ? audioToggle.checked : false;
+        sendToTelegram({
+            mode_trigger: "video_menu",
+            sub_mode: "animate_sound", 
+            aspect_ratio: "auto",
+            duration: currentKlingDuration, 
+            with_audio: needAudioFile, 
+            start_step: "request_photo"
+        });
+    }
+
+    function selectReadyTemplate(templateId, forcedRatio) {
+        const prompts = {
+            "girl_face": "Close-up portrait of a beautiful girl, professional studio lighting",
+            "Lying_down_phone": "A person lying down comfortably on a cozy bed, holding a modern smartphone in hands",
+            "catwoman": "A fierce catwoman in a sleek black tactical suit, neon cyberpunk background",
+            "carousel_woman": "A happy woman riding a retro vintage wooden carousel horse at night",
+            "demon_woman": "A dark mystical demon woman with elegant small horns, glowing eyes",
+            "woman_standing": "Full body shot of a stylish woman standing on a modern city street"
+        };
+
+        sendToTelegram({
+            mode_trigger: 'face_swap',
+            is_custom_template: false,
+            template_id: templateId, 
+            template_prompt: prompts[templateId] || "Beautiful portrait", 
+            aspect_ratio: forcedRatio || "1:1",
+            quality: selectedSwapQuality
+        });
+    }
+
+    function setDirectGenRatio(ratio) {
+        document.querySelectorAll('#image_generation_direct .ratio-selector .ratio-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.innerText.includes(ratio)) btn.classList.add('active');
+        });
+        directGenRatio = ratio;
+        updateDirectMainButton();
+    }
+
+    function setDirectGenQuality(quality) {
+        document.querySelectorAll('#image_generation_direct .quality-selector .quality-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (quality === 'schnell' && btn.innerText.includes('Standard')) btn.classList.add('active');
+            if (quality === 'dev' && btn.innerText.includes('Pro')) btn.classList.add('active');
+            if (quality === 'ultra_4k' && btn.innerText.includes('Ultra')) btn.classList.add('active');
+        });
+        directGenQuality = quality;
+        updateDirectMainButton();
+    }
+
+    // Управление Главной кнопкой Telegram (MainButton) для прямого режима Flux
+    function updateDirectMainButton() {
+        if (!tg || !tg.MainButton) return;
+        const readableQual = directGenQuality === 'schnell' ? 'Standard' : directGenQuality === 'dev' ? 'Pro' : 'Ultra 4K';
+        
+        tg.MainButton.setText(`Выбрать формат ${directGenRatio} (${readableQual}) ✨`);
+        tg.MainButton.show();
+        tg.MainButton.offClick();
+        
+        tg.MainButton.onClick(function() {
+            sendToTelegram({
+                mode_trigger: "pure_text_image", 
+                aspect_ratio: directGenRatio,
+                quality: directGenQuality
             });
-            const activeId = ratio.replace(':', '_');
-            const targetBtn = document.getElementById(`${prefix}_ratio_${activeId}`);
-            if (targetBtn) {
-                targetBtn.classList.add('active');
+        });
+    }
+
+    // ==========================================
+    // 11. УПРАВЛЕНИЕ ПОЛНОЭКРАННЫМ ВИДЕОПЛЕЕРОМ
+    // ==========================================
+    function openPreviewVideo(videoUrl) {
+        // Предохранитель от пустых или недописанных заглушек хостингов
+        if (!videoUrl || videoUrl.includes('ссылка_на_') || videoUrl === 'https://googleapis.com' || videoUrl === 'https://postimg.cc') {
+            if (tg && tg.showAlert) {
+                tg.showAlert("Видео-пример еще загружается администратором!");
             } else {
-                console.warn(`[Ratio UI] Кнопка формата ${prefix}_ratio_${activeId} не найдена в HTML!`);
+                alert("Видео-пример еще загружается администратором!");
             }
+            return;
         }
-
-        function setSwapRatio(ratio) { selectedSwapRatio = ratio; clearAndSetActiveRatio('swap', ratio); }
-        function setTryOnRatio(ratio) { selectedTryOnRatio = ratio; clearAndSetActiveRatio('tryon', ratio); }
-        function setTextRatio(ratio) { selectedTextRatio = ratio; clearAndSetActiveRatio('text', ratio); }
-        function setBgRatio(ratio) { selectedBgRatio = ratio; clearAndSetActiveRatio('bg', ratio); }
-
-        function setAnimateRatio(ratio, element) {
-            document.querySelectorAll('#animate_nosound .ratio-btn').forEach(btn => btn.classList.remove('active'));
-            if (element) element.classList.add('active');
-            currentAnimateRatio = ratio;
+        const modal = document.getElementById('videoPlayerModal');
+        const player = document.getElementById('previewVideoPlayer');
+        
+        if (modal && player) {
+            player.src = videoUrl;
+            modal.style.display = 'flex';
+            player.play().catch(e => console.log("[Video Play Error]", e));
         }
+    }
 
-        function setKlingDuration(duration, element) {
-            if (!element || !element.parentElement) return;
-            element.parentElement.querySelectorAll('.duration-btn').forEach(btn => btn.classList.remove('active'));
-            element.classList.add('active');
-            currentKlingDuration = duration;
-            console.log(`[Video] Выбран хронометраж: ${currentKlingDuration} секунд.`);
+    function closePreviewVideo() {
+        const modal = document.getElementById('videoPlayerModal');
+        const player = document.getElementById('previewVideoPlayer');
+        if (modal && player) {
+            modal.style.display = 'none';
+            player.pause();
+            player.src = ""; // Очищаем буфер памяти устройства
         }
-
-        function sendAnimateNoSoundData() {
-            sendToTelegram({
-                mode_trigger: "video_menu",
-                sub_mode: "animate_nosound",
-                model_path: "fal-ai/kling-video/v2.1/standard/image-to-video",
-                aspect_ratio: currentAnimateRatio,
-                duration: currentKlingDuration,
-                start_step: "request_photo" 
-            });
-        }
-
-        function sendAnimateSoundData() {
-            const audioToggle = document.getElementById("use_audio_toggle");
-            const needAudioFile = audioToggle ? audioToggle.checked : false;
-            // ИСПРАВЛЕНО: Безопасный дефолт, так как на самом экране звука кнопок хронометража нет
-            const finalDuration = (typeof currentKlingDuration !== 'undefined') ? currentKlingDuration : 5;
-            
-            sendToTelegram({
-                mode_trigger: "video_menu",
-                sub_mode: "animate_sound", 
-                aspect_ratio: "auto",
-                duration: finalDuration, 
-                with_audio: needAudioFile, 
-                start_step: "request_photo"
-            });
-        }
-
-        // ====================================================================================
-        // КЛИК ПО ГОТОВОЙ КАРТОЧКЕ СТИЛЯ (FACE SWAP - СПОСОБ 2)
-        // ====================================================================================
-        function selectReadyTemplate(templateId, forcedRatio) {
-            const prompts = {
-                "girl_face": "Close-up portrait of a beautiful girl, professional studio lighting",
-                "Lying_down_phone": "A person lying down comfortably on a cozy bed, holding a modern smartphone in hands, relaxed atmosphere, soft room lighting",
-                "catwoman": "A fierce catwoman in a sleek black tactical suit with cat ears, neon cyberpunk background, cinematic atmosphere",
-                "carousel_woman": "A happy woman riding a retro vintage wooden carousel horse at night, bright bokeh lights amusement park background",
-                "demon_woman": "A dark mystical demon woman with elegant small horns, glowing eyes, dark fantasy style, smoke and red fire embers background",
-                "woman_standing": "Full body shot of a stylish woman standing on a modern city street, elegant fashion outfit, sharp focus, natural daylight"
-            };
-
-            sendToTelegram({
-                mode_trigger: 'face_swap',
-                is_custom_template: false,
-                template_id: templateId, 
-                template_prompt: prompts[templateId] || "Beautiful portrait photograph look", 
-                aspect_ratio: forcedRatio || "1:1",
-                quality: selectedSwapQuality
-            });
-        }
-
-        // ==========================================
-        // ЕДИНАЯ СИСТЕМНАЯ ФУНКЦИЯ ОТПРАВКИ ДАННЫХ В ТЕЛЕГРАМ
-        // ==========================================
-        function sendToTelegram(payload) {
-            try {
-                if (window.Telegram?.WebApp && window.Telegram.WebApp.sendData) {
-                    window.Telegram.WebApp.sendData(JSON.stringify(payload));
-                    window.Telegram.WebApp.close();
-                } else if (typeof tg !== 'undefined' && tg.sendData) {
-                    tg.sendData(JSON.stringify(payload));
-                    tg.close();
-                } else {
-                    console.log("Данные отправлены боту (Браузерный тест):", payload);
-                }
-            } catch (e) {
-                console.error("Критическая ошибка отправки: ", e.message);
-            }
-        }
-
-        // ==========================================
-        // УПРАВЛЕНИЕ ПОЛНОЭКРАННЫМ ПЛЕЕРОМ ВИДЕО
-        // ==========================================
-        function openPreviewVideo(videoUrl) {
-            // ИСПРАВЛЕНО: Добавлен жесткий фильтр-предохранитель от пустых или недописанных заглушек хостингов
-            if (!videoUrl || videoUrl.includes('ссылка_на_') || videoUrl === 'https://googleapis.com' || videoUrl === 'https://postimg.cc') {
-                if (tg && tg.showAlert) {
-                    tg.showAlert("Видео-пример еще загружается администратором!");
-                } else {
-                    alert("Видео-пример еще загружается администратором!");
-                }
-                return;
-            }
-            const modal = document.getElementById('videoPlayerModal');
-            const player = document.getElementById('previewVideoPlayer');
-            
-            if (modal && player) {
-                player.src = videoUrl;
-                modal.style.display = 'flex';
-                player.play().catch(error => console.log("[Video Play Error]", error));
-            }
-        }
-
-        function closePreviewVideo() {
-            const modal = document.getElementById('videoPlayerModal');
-            const player = document.getElementById('previewVideoPlayer');
-            if (modal && player) {
-                modal.style.display = 'none';
-                player.pause();
-                player.src = ""; // Очищаем буфер памяти
-            }
-        }   
+    }   
 </script>
 </body>
 </html>

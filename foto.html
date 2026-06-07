@@ -512,101 +512,7 @@
         // ====================================================================================
         // СИСТЕМНАЯ ИНИЦИАЛИЗАЦИЯ И ПЕРЕМЕННЫЕ
         // ====================================================================================
-        const tg = window.Telegram.WebApp;
-
-        // Инициализация переменных настроек (Стартовый режим переименован в 'foto')
-        let currentActiveMode = 'foto';
-        let selectedTryOnRatio = '9:16';  
-        let selectedTextRatio = '9:16';   
-        let selectedSwapRatio = '9:16';   
-        let selectedBgRatio = '9:16';   
-        
-        let selectedTextQuality = 'schnell';
-        let selectedSwapQuality = 'schnell';
-        let selectedTryOnQuality = 'schnell';
-        let selectedBgQuality = 'schnell';
-
-        // Старт WebApp и автоматическое разворачивание шторки
-        window.addEventListener('DOMContentLoaded', () => {
-            if (tg) {
-                tg.ready();  
-                tg.expand(); 
-            }
-            openScreen('foto'); // Намертво открываем главное меню фото-студии при старте
-        });
-
-
-        // ====================================================================================
-        // РОУТЕР ЭКРАНОВ И УМНЫЙ СЧЕТЧИК МОНЕТ НА КНОПКАХ START
-        // ====================================================================================
-
-        // Безопасное переключение подэкранов внутри foto.html
-        function openScreen(screenName) {
-            currentActiveMode = screenName;
-            const screens = ['foto', 'face_swap', 'tryon', 'text_image', 'bg_change'];
-            
-            screens.forEach(s => {
-                const el = document.getElementById(s);
-                if (el) el.classList.remove('active');
-            });
-            
-            // ДОБАВЛЕНО: Если пользователь выходит в главное меню 'foto', 
-            // мы принудительно сбрасываем открытые под-шаги экрана Фото+Текст, 
-            // чтобы при следующем заходе он гарантированно увидел заново чистую галерею прямоугольников!
-            if (screenName === 'foto') {
-                isTextImageStyleSelected = false;
-                selectedStyleName = "";
-                document.getElementById('text_image_title').innerText = "Примеры генераций Фото + Текст";
-                document.getElementById('text_image_subtitle').innerText = "Выберите желаемый стиль для настройки:";
-                document.getElementById('text_image_back_btn').innerText = "⬅️ В меню";
-                document.getElementById('text_image_large_preview').src = "";
-                document.getElementById('text_image_settings_block').style.display = "none";
-                document.getElementById('text_image_gallery').style.display = "grid";
-            }
-
-            if (tg && tg.MainButton) tg.MainButton.hide();
-
-            const activeScreenEl = document.getElementById(screenName);
-            if (activeScreenEl) {
-                activeScreenEl.classList.add('active');
-                updateFotoMainButton(); 
-            }
-        }
-
-        // КРАТКИЙ И ЛАКОНИЧНЫЙ ОБНОВЛЯТОР ТЕКСТА ГЛАВНОЙ КНОПКИ ТЕЛЕГРАМ
-        function updateFotoMainButton() {
-            if (!tg || !tg.MainButton) return;
-            
-            // ИСПРАВЛЕНО: Поскольку на всех 4 экранах подрежимов теперь работают встроенные 
-            // горизонтальные неоновые кнопки пульта, нативная синяя кнопка Telegram больше вообще 
-            // не нужна. Мы полностью выключаем её отображение, чтобы исключить дублирование на экране!
-            tg.MainButton.hide();
-        }
-
-        // УМНЫЙ ОБНОВЛЯТОР СТОИМОСТИ НА ВСТРОЕННЫХ НЕОНОВЫХ КНОПКАХ (ИСПРАВЛЕНО!)
-        function updateNeoStartButtonText() {
-            // Ищем кнопки на всех экранах по очереди. Обновится только та, которая сейчас есть на экране!
-            const btnText = document.getElementById('neo_text_submit_btn');
-            const btnSwap = document.getElementById('neo_swap_submit_btn');
-            const btnTryon = document.getElementById('neo_tryon_submit_btn');
-            const btnBg = document.getElementById('neo_bg_submit_btn');
-            
-            if (btnText) btnText.innerHTML = `Start (1🪙)`;
-            if (btnSwap) btnSwap.innerHTML = `Start (1🪙)`;
-            if (btnTryon) btnTryon.innerHTML = `Start (1🪙)`;
-            if (btnBg) btnBg.innerHTML = `Start (1🪙)`;
-        }
-
-
-                // ====================================================================================
-        // ЛОГИКА И НАТИВНЫЕ ПОПАПЫ ДЛЯ ЭКРАНА «ФОТО + ТЕКСТ»
-        // ====================================================================================
-        
-        // Системные переменные для контроля шагов Фото + Текст
-        let isTextImageStyleSelected = false; 
-        let selectedStyleName = ""; 
-
-        // 1. ФУНКЦИЯ КЛИКА ПО КАРТОЧКЕ (Сброс кнопок-капсул в дефолт и показ пульта)
+                // 1. ФУНКЦИЯ КЛИКА ПО КАРТОЧКЕ (Сброс кнопок-капсул в дефолт и показ пульта)
         function selectTextImageStyle(styleName, imageUrl) {
             isTextImageStyleSelected = true;
             selectedStyleName = styleName;
@@ -710,6 +616,104 @@
                 }
             });
         }
+
+        
+        
+        const tg = window.Telegram.WebApp;
+
+        // Инициализация переменных настроек (Стартовый режим переименован в 'foto')
+        let currentActiveMode = 'foto';
+        let selectedTryOnRatio = '9:16';  
+        let selectedTextRatio = '9:16';   
+        let selectedSwapRatio = '9:16';   
+        let selectedBgRatio = '9:16';   
+        
+        let selectedTextQuality = 'schnell';
+        let selectedSwapQuality = 'schnell';
+        let selectedTryOnQuality = 'schnell';
+        let selectedBgQuality = 'schnell';
+
+                // Системные переменные для контроля шагов Фото + Текст
+        let isTextImageStyleSelected = false; 
+        let selectedStyleName = ""; 
+
+
+        // Старт WebApp и автоматическое разворачивание шторки
+        window.addEventListener('DOMContentLoaded', () => {
+            if (tg) {
+                tg.ready();  
+                tg.expand(); 
+            }
+            openScreen('foto'); // Намертво открываем главное меню фото-студии при старте
+        });
+
+
+        // ====================================================================================
+        // РОУТЕР ЭКРАНОВ И УМНЫЙ СЧЕТЧИК МОНЕТ НА КНОПКАХ START
+        // ====================================================================================
+
+        // Безопасное переключение подэкранов внутри foto.html
+        function openScreen(screenName) {
+            currentActiveMode = screenName;
+            const screens = ['foto', 'face_swap', 'tryon', 'text_image', 'bg_change'];
+            
+            screens.forEach(s => {
+                const el = document.getElementById(s);
+                if (el) el.classList.remove('active');
+            });
+            
+            // ДОБАВЛЕНО: Если пользователь выходит в главное меню 'foto', 
+            // мы принудительно сбрасываем открытые под-шаги экрана Фото+Текст, 
+            // чтобы при следующем заходе он гарантированно увидел заново чистую галерею прямоугольников!
+            if (screenName === 'foto') {
+                isTextImageStyleSelected = false;
+                selectedStyleName = "";
+                document.getElementById('text_image_title').innerText = "Примеры генераций Фото + Текст";
+                document.getElementById('text_image_subtitle').innerText = "Выберите желаемый стиль для настройки:";
+                document.getElementById('text_image_back_btn').innerText = "⬅️ В меню";
+                document.getElementById('text_image_large_preview').src = "";
+                document.getElementById('text_image_settings_block').style.display = "none";
+                document.getElementById('text_image_gallery').style.display = "grid";
+            }
+
+            if (tg && tg.MainButton) tg.MainButton.hide();
+
+            const activeScreenEl = document.getElementById(screenName);
+            if (activeScreenEl) {
+                activeScreenEl.classList.add('active');
+                updateFotoMainButton(); 
+            }
+        }
+
+        // КРАТКИЙ И ЛАКОНИЧНЫЙ ОБНОВЛЯТОР ТЕКСТА ГЛАВНОЙ КНОПКИ ТЕЛЕГРАМ
+        function updateFotoMainButton() {
+            if (!tg || !tg.MainButton) return;
+            
+            // ИСПРАВЛЕНО: Поскольку на всех 4 экранах подрежимов теперь работают встроенные 
+            // горизонтальные неоновые кнопки пульта, нативная синяя кнопка Telegram больше вообще 
+            // не нужна. Мы полностью выключаем её отображение, чтобы исключить дублирование на экране!
+            tg.MainButton.hide();
+        }
+
+        // УМНЫЙ ОБНОВЛЯТОР СТОИМОСТИ НА ВСТРОЕННЫХ НЕОНОВЫХ КНОПКАХ (ИСПРАВЛЕНО!)
+        function updateNeoStartButtonText() {
+            // Ищем кнопки на всех экранах по очереди. Обновится только та, которая сейчас есть на экране!
+            const btnText = document.getElementById('neo_text_submit_btn');
+            const btnSwap = document.getElementById('neo_swap_submit_btn');
+            const btnTryon = document.getElementById('neo_tryon_submit_btn');
+            const btnBg = document.getElementById('neo_bg_submit_btn');
+            
+            if (btnText) btnText.innerHTML = `Start (1🪙)`;
+            if (btnSwap) btnSwap.innerHTML = `Start (1🪙)`;
+            if (btnTryon) btnTryon.innerHTML = `Start (1🪙)`;
+            if (btnBg) btnBg.innerHTML = `Start (1🪙)`;
+        }
+
+
+                // ====================================================================================
+        // ЛОГИКА И НАТИВНЫЕ ПОПАПЫ ДЛЯ ЭКРАНА «ФОТО + ТЕКСТ»
+        // ====================================================================================
+        
 
 
 

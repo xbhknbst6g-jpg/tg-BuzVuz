@@ -518,7 +518,96 @@
     <script>
 
         // ====================================================================================
-        // ОБНОВЛЕННЫЙ БЛОК НАТИВНЫХ ПОПАПОВ ДЛЯ КНОПОК-КАПСУЛ «ФОТО + ТЕКСТ»
+        // СИСТЕМНАЯ ИНИЦИАЛИЗАЦИЯ И ПЕРЕМЕННЫЕ
+        // ====================================================================================
+        const tg = window.Telegram.WebApp;
+
+        // Инициализация переменных настроек (Стартовый режим переименован в 'foto')
+        let currentActiveMode = 'foto';
+        let selectedTryOnRatio = '9:16';  
+        let selectedTextRatio = '9:16';   
+        let selectedSwapRatio = '9:16';   
+        let selectedBgRatio = '9:16';   
+        
+        let selectedTextQuality = 'schnell';
+        let selectedSwapQuality = 'schnell';
+        let selectedTryOnQuality = 'schnell';
+        let selectedBgQuality = 'schnell';
+
+        // Старт WebApp и автоматическое разворачивание шторки
+        window.addEventListener('DOMContentLoaded', () => {
+            if (tg) {
+                tg.ready();  
+                tg.expand(); 
+            }
+            openScreen('foto'); // Намертво открываем главное меню фото-студии при старте
+        });
+
+
+        // ====================================================================================
+        // РОУТЕР ЭКРАНОВ И УМНЫЙ СЧЕТЧИК МОНЕТ НА КНОПКАХ START
+        // ====================================================================================
+
+        // Безопасное переключение подэкранов внутри foto.html
+        function openScreen(screenName) {
+            currentActiveMode = screenName;
+            const screens = ['foto', 'face_swap', 'tryon', 'text_image', 'bg_change'];
+            
+            screens.forEach(s => {
+                const el = document.getElementById(s);
+                if (el) el.classList.remove('active');
+            });
+            
+            // ДОБАВЛЕНО: Если пользователь выходит в главное меню 'foto', 
+            // мы принудительно сбрасываем открытые под-шаги экрана Фото+Текст, 
+            // чтобы при следующем заходе он гарантированно увидел заново чистую галерею прямоугольников!
+            if (screenName === 'foto') {
+                isTextImageStyleSelected = false;
+                selectedStyleName = "";
+                document.getElementById('text_image_title').innerText = "Примеры генераций Фото + Текст";
+                document.getElementById('text_image_subtitle').innerText = "Выберите желаемый стиль для настройки:";
+                document.getElementById('text_image_back_btn').innerText = "⬅️ В меню";
+                document.getElementById('text_image_large_preview').src = "";
+                document.getElementById('text_image_settings_block').style.display = "none";
+                document.getElementById('text_image_gallery').style.display = "grid";
+            }
+
+            if (tg && tg.MainButton) tg.MainButton.hide();
+
+            const activeScreenEl = document.getElementById(screenName);
+            if (activeScreenEl) {
+                activeScreenEl.classList.add('active');
+                updateFotoMainButton(); 
+            }
+        }
+
+        // КРАТКИЙ И ЛАКОНИЧНЫЙ ОБНОВЛЯТОР ТЕКСТА ГЛАВНОЙ КНОПКИ ТЕЛЕГРАМ
+        function updateFotoMainButton() {
+            if (!tg || !tg.MainButton) return;
+            
+            // ИСПРАВЛЕНО: Поскольку на всех 4 экранах подрежимов теперь работают встроенные 
+            // горизонтальные неоновые кнопки пульта, нативная синяя кнопка Telegram больше вообще 
+            // не нужна. Мы полностью выключаем её отображение, чтобы исключить дублирование на экране!
+            tg.MainButton.hide();
+        }
+
+        // УМНЫЙ ОБНОВЛЯТОР СТОИМОСТИ НА ВСТРОЕННЫХ НЕОНОВЫХ КНОПКАХ (ИСПРАВЛЕНО!)
+        function updateNeoStartButtonText() {
+            // Ищем кнопки на всех экранах по очереди. Обновится только та, которая сейчас есть на экране!
+            const btnText = document.getElementById('neo_text_submit_btn');
+            const btnSwap = document.getElementById('neo_swap_submit_btn');
+            const btnTryon = document.getElementById('neo_tryon_submit_btn');
+            const btnBg = document.getElementById('neo_bg_submit_btn');
+            
+            if (btnText) btnText.innerHTML = `Start (1🪙)`;
+            if (btnSwap) btnSwap.innerHTML = `Start (1🪙)`;
+            if (btnTryon) btnTryon.innerHTML = `Start (1🪙)`;
+            if (btnBg) btnBg.innerHTML = `Start (1🪙)`;
+        }
+
+
+                // ====================================================================================
+        // ЛОГИКА И НАТИВНЫЕ ПОПАПЫ ДЛЯ ЭКРАНА «ФОТО + ТЕКСТ»
         // ====================================================================================
         
         // Системные переменные для контроля шагов Фото + Текст
@@ -570,7 +659,7 @@
             }
         }
 
-        // 3. ВЫЗОВ НАТИВНОГО МЕНЮ ВЫБОРА КАЧЕСТВА TELEGRAM (Исправлен вывод текста)
+        // 3. ВЫЗОВ НАТИВНОГО МЕНЮ ВЫБОРА КАЧЕСТВА TELEGRAM (Action Sheet)
         function showNativeQualityPopup() {
             if (!tg) return;
             
@@ -580,12 +669,13 @@
                 buttons: [
                     { id: "schnell", type: "default", text: "⚡ Standard (1🪙)" },
                     { id: "dev", type: "default", text: "💎 2K Pro (1🪙)" },
-                    { id: "ultra_4k", type: "default", text: "🔥 4K Ultra (1🪙)" },
-                    { type: "cancel", text: "Закрыть" }
+                    { id: "ultra_4k", type: "default", text: "🔥 4K Ultra (1🪙)" }
                 ]
             };
 
             tg.showPopup(params, function(buttonId) {
+                if (!buttonId || buttonId === "cancel") return;
+                
                 if (buttonId === "schnell") {
                     selectedTextQuality = "schnell";
                     document.getElementById('btn_text_quality').innerHTML = `⚡ Standard`;
@@ -600,7 +690,7 @@
             });
         }
 
-        // 4. ВЫЗОВ НАТИВНОГО МЕНЮ ВЫБОРА СООТНОШЕНИЯ СТОРОН (Исправлен вывод текста)
+        // 4. ВЫЗОВ НАТИВНОГО МЕНЮ ВЫБОРА СООТНОШЕНИЯ СТОРОН TELEGRAM
         function showNativeRatioPopup() {
             if (!tg) return;
 
@@ -612,8 +702,7 @@
                     { id: "3:4", type: "default", text: "📸 Портретный 3:4" },
                     { id: "1:1", type: "default", text: "🔲 Квадратный 1:1" },
                     { id: "4:3", type: "default", text: "🖼 Альбомный 4:3" },
-                    { id: "16:9", type: "default", text: "💻 Широкоформатный 16:9" },
-                    { type: "cancel", text: "Закрыть" }
+                    { id: "16:9", type: "default", text: "💻 Широкоформатный 16:9" }
                 ]
             };
 
@@ -632,36 +721,10 @@
             });
         }
 
-        // 5. СЧЕТЧИК МОНЕТ НА ВСТРОЕННОЙ НЕОНОВОЙ КНОПКЕ
-        function updateNeoStartButtonText() {
-            const btn = document.getElementById('neo_text_submit_btn');
-            if (!btn) return;
-            btn.innerHTML = `Start (1🪙)`;
-        }
 
-        // 6. ОБНОВЛЕННАЯ ФУНКЦИЯ ОТПРАВКИ JSON ДЛЯ МОДИФИЦИРОВАННОГО РЕЖИМА
-        // Передает боту точные выбранные из выпадающих списков параметры и имя стиля
-        function sendPhotoTextData() { 
-            sendToTelegram({ 
-                mode_trigger: 'text_image', 
-                chosen_style: selectedStyleName, // Передаст боту, например, "🏖 На пляже"
-                aspect_ratio: selectedTextRatio, 
-                quality: selectedTextQuality 
-            }); 
-        }
 
-        // 7. СИНХРОНИЗИРОВАННЫЙ ОБЩИЙ РОУТЕР НАТИВНОЙ КНОПКИ ДЛЯ ВСЕХ ЭКРАНОВ
-        function updateFotoMainButton() {
-            if (!tg || !tg.MainButton) return;
-            
-            // ИСПРАВЛЕНО: Так как во ВСЕХ режимах теперь работают ваши встроенные 
-            // горизонтальные неоновые кнопки пульта, нативная синяя кнопка Telegram больше 
-            // не нужна. Мы её скрываем наглухо, чтобы на экране не было дублирования!
-            tg.MainButton.hide();
-        }
-
-        // ====================================================================================
-        // ДОБАВЛЕНО: НАТИВНЫЕ ПОПАПЫ ДЛЯ КНОПОК-КАПСУЛ ОСТАЛЬНЫХ 3 РЕЖИМОВ (Face Swap, Примерка, Фон)
+                // ====================================================================================
+        // НАТИВНЫЕ ПОПАПЫ ДЛЯ КНОПОК-КАПСУЛ FACE SWAP, ПРИМЕРКИ И СМЕНЫ ФОНА
         // ====================================================================================
 
         // ----- РЕЖИМ 2: FACE SWAP -----
@@ -673,14 +736,14 @@
                 buttons: [
                     { id: "schnell", type: "default", text: "⚡ Standard (1🪙)" },
                     { id: "dev", type: "default", text: "💎 Pro (1🪙)" },
-                    { id: "ultra_4k", type: "default", text: "🔥 Ultra (1🪙)" },
-                    { type: "cancel", text: "Закрыть" }
+                    { id: "ultra_4k", type: "default", text: "🔥 Ultra (1🪙)" }
                 ]
             }, function(buttonId) {
                 if (!buttonId || buttonId === "cancel") return;
                 selectedSwapQuality = buttonId;
                 let text = buttonId === "schnell" ? "⚡ Standard" : buttonId === "dev" ? "💎 Pro" : "🔥 Ultra";
                 document.getElementById('btn_swap_quality').innerHTML = text;
+                updateNeoStartButtonText();
             });
         }
 
@@ -691,17 +754,17 @@
                 message: "Выберите соотношение сторон финального шаблона кадра",
                 buttons: [
                     { id: "9:16", type: "default", text: "📱 Вертикальный 9:16" },
-                    { id: "3:4", type: "default", text: "📸 alignment 3:4" },
+                    { id: "3:4", type: "default", text: "📸 Портретный 3:4" },
                     { id: "1:1", type: "default", text: "🔲 Квадратный 1:1" },
                     { id: "4:3", type: "default", text: "🖼 Альбомный 4:3" },
-                    { id: "16:9", type: "default", text: "💻 Широкоформатный 16:9" },
-                    { type: "cancel", text: "Закрыть" }
+                    { id: "16:9", type: "default", text: "💻 Широкоформатный 16:9" }
                 ]
             }, function(buttonId) {
                 if (!buttonId || buttonId === "cancel") return;
                 selectedSwapRatio = buttonId;
                 let icon = buttonId === "3:4" ? "📸" : buttonId === "1:1" ? "🔲" : buttonId === "4:3" ? "🖼" : buttonId === "16:9" ? "💻" : "📱";
                 document.getElementById('btn_swap_ratio').innerHTML = `${icon} ${buttonId}`;
+                updateNeoStartButtonText();
             });
         }
 
@@ -714,14 +777,14 @@
                 buttons: [
                     { id: "schnell", type: "default", text: "⚡ Standard (1🪙)" },
                     { id: "dev", type: "default", text: "💎 Pro (1🪙)" },
-                    { id: "ultra_4k", type: "default", text: "🔥 Ultra (1🪙)" },
-                    { type: "cancel", text: "Закрыть" }
+                    { id: "ultra_4k", type: "default", text: "🔥 Ultra (1🪙)" }
                 ]
             }, function(buttonId) {
                 if (!buttonId || buttonId === "cancel") return;
                 selectedTryOnQuality = buttonId;
                 let text = buttonId === "schnell" ? "⚡ Standard" : buttonId === "dev" ? "💎 Pro" : "🔥 Ultra";
                 document.getElementById('btn_tryon_quality').innerHTML = text;
+                updateNeoStartButtonText();
             });
         }
 
@@ -735,14 +798,14 @@
                     { id: "3:4", type: "default", text: "📸 Портретный 3:4" },
                     { id: "1:1", type: "default", text: "🔲 Квадратный 1:1" },
                     { id: "4:3", type: "default", text: "🖼 Альбомный 4:3" },
-                    { id: "16:9", type: "default", text: "💻 Широкоформатный 16:9" },
-                    { type: "cancel", text: "Закрыть" }
+                    { id: "16:9", type: "default", text: "💻 Широкоформатный 16:9" }
                 ]
             }, function(buttonId) {
                 if (!buttonId || buttonId === "cancel") return;
                 selectedTryOnRatio = buttonId;
                 let icon = buttonId === "3:4" ? "📸" : buttonId === "1:1" ? "🔲" : buttonId === "4:3" ? "🖼" : buttonId === "16:9" ? "💻" : "📱";
                 document.getElementById('btn_tryon_ratio').innerHTML = `${icon} ${buttonId}`;
+                updateNeoStartButtonText();
             });
         }
 
@@ -755,14 +818,14 @@
                 buttons: [
                     { id: "schnell", type: "default", text: "⚡ Standard (1🪙)" },
                     { id: "dev", type: "default", text: "💎 Pro (1🪙)" },
-                    { id: "ultra_4k", type: "default", text: "🔥 Ultra (1🪙)" },
-                    { type: "cancel", text: "Закрыть" }
+                    { id: "ultra_4k", type: "default", text: "🔥 Ultra (1🪙)" }
                 ]
             }, function(buttonId) {
                 if (!buttonId || buttonId === "cancel") return;
                 selectedBgQuality = buttonId;
                 let text = buttonId === "schnell" ? "⚡ Standard" : buttonId === "dev" ? "💎 Pro" : "🔥 Ultra";
                 document.getElementById('btn_bg_quality').innerHTML = text;
+                updateNeoStartButtonText();
             });
         }
 
@@ -776,78 +839,22 @@
                     { id: "3:4", type: "default", text: "📸 Портретный 3:4" },
                     { id: "1:1", type: "default", text: "🔲 Квадратный 1:1" },
                     { id: "4:3", type: "default", text: "🖼 Альбомный 4:3" },
-                    { id: "16:9", type: "default", text: "💻 Широкоформатный 16:9" },
-                    { type: "cancel", text: "Закрыть" }
+                    { id: "16:9", type: "default", text: "💻 Широкоформатный 16:9" }
                 ]
             }, function(buttonId) {
                 if (!buttonId || buttonId === "cancel") return;
                 selectedBgRatio = buttonId;
                 let icon = buttonId === "3:4" ? "📸" : buttonId === "1:1" ? "🔲" : buttonId === "4:3" ? "🖼" : buttonId === "16:9" ? "💻" : "📱";
                 document.getElementById('btn_bg_ratio').innerHTML = `${icon} ${buttonId}`;
+                updateNeoStartButtonText();
             });
         }
 
+
+
+                // ====================================================================================
+        // ПЕРЕДАТЧИКИ JSON БОТУ И СИНХРОНИЗАЦИЯ С ПРЕСЕТАМИ ШАБЛОНОВ
         // ====================================================================================
-        // СИСТЕМНАЯ ИНИЦИАЛИЗАЦИЯ И ПЕРЕМЕННЫЕ
-        // ====================================================================================
-        const tg = window.Telegram.WebApp;
-
-        // Инициализация переменных настроек (Стартовый режим переименован в 'foto')
-        let currentActiveMode = 'foto';
-        let selectedTryOnRatio = '9:16';  
-        let selectedTextRatio = '9:16';   
-        let selectedSwapRatio = '9:16';   
-        let selectedBgRatio = '9:16';   
-        
-        let selectedTextQuality = 'schnell';
-        let selectedSwapQuality = 'schnell';
-        let selectedTryOnQuality = 'schnell';
-        let selectedBgQuality = 'schnell';
-
-        // Старт WebApp и автоматическое разворачивание шторки
-        window.addEventListener('DOMContentLoaded', () => {
-            if (tg) {
-                tg.ready();  
-                tg.expand(); 
-            }
-            openScreen('foto'); // Намертво открываем главное меню фото-студии при старте
-        });
-
-        // ====================================================================================
-        // КРАТКИЙ И ЛАКОНИЧНЫЙ ОБНОВЛЯТОР ТЕКСТА ГЛАВНОЙ КНОПКИ ТЕЛЕГРАМ
-        // ====================================================================================
-        // Безопасное переключение подэкранов внутри foto.html
-        function openScreen(screenName) {
-            currentActiveMode = screenName;
-            const screens = ['foto', 'face_swap', 'tryon', 'text_image', 'bg_change'];
-            
-            screens.forEach(s => {
-                const el = document.getElementById(s);
-                if (el) el.classList.remove('active');
-            });
-            
-            // ДОБАВЛЕНО: Если пользователь выходит в главное меню 'foto', 
-            // мы принудительно сбрасываем открытые под-шаги экрана Фото+Текст, 
-            // чтобы при следующем заходе он гарантированно увидел заново чистую галерею прямоугольников!
-            if (screenName === 'foto') {
-                isTextImageStyleSelected = false;
-                selectedStyleName = "";
-                document.getElementById('text_image_title').innerText = "Примеры генераций Фото + Текст";
-                document.getElementById('text_image_subtitle').innerText = "Выберите желаемый стиль для настройки:";
-                document.getElementById('text_image_back_btn').innerText = "⬅️ В меню";
-                document.getElementById('text_image_large_preview').src = "";
-                document.getElementById('text_image_settings_block').style.display = "none";
-                document.getElementById('text_image_gallery').style.display = "grid";
-            }
-
-            if (tg && tg.MainButton) tg.MainButton.hide();
-
-            const activeScreenEl = document.getElementById(screenName);
-            if (activeScreenEl) {
-                activeScreenEl.classList.add('active');
-                updateFotoMainButton(); 
-            }
-        }
 
         // Главный системный передатчик пакетов JSON обратно в чат бота
         function sendToTelegram(payload) {
@@ -862,8 +869,7 @@
         }
 
         // Функции сборки JSON-пакетов для отправки боту
-        // ИСПРАВЛЕНО: Теперь функции отправки Face Swap, Примерки и Фона берут точные значения
-        // напрямую из сохраненных переменных, которые обновляются при кликах на кнопки-капсулы!
+        // Код берет точные значения напрямую из сохраненных переменных, которые обновляются при кликах на кнопки-капсулы!
         function sendPhotoTextData() { 
             sendToTelegram({ 
                 mode_trigger: 'text_image', 
@@ -899,19 +905,8 @@
         }
 
         // Переключатель классов активного качества (Quality UI)
-        function clearAndSetActiveQuality(prefix, quality) {
-            ['schnell', 'dev', 'ultra'].forEach(q => {
-                const btn = document.getElementById(`${prefix}_qual_${q}`);
-                if (btn) btn.classList.remove('active');
-            });
-            const shortQual = quality === 'ultra_4k' ? 'ultra' : quality;
-            const targetBtn = document.getElementById(`${prefix}_qual_${shortQual}`);
-            if (targetBtn) targetBtn.classList.add('active');
-        }
-
-        // ====================================================================================
-        // СИНХРОНИЗАЦИЯ КНОПОК-КАПСУЛ С ПЕРЕМЕННЫМИ ПРИ КЛИКАХ НА ПРЕСЕТЫ ШАБЛОНОВ
-        // ====================================================================================
+        // Оставлена пустой для обратной совместимости, чтобы старые вызовы не ломали логику
+        function clearAndSetActiveQuality(prefix, quality) { return; }
 
         function setTextQuality(quality) { selectedTextQuality = quality; }
         function setSwapQuality(quality) { selectedSwapQuality = quality; }
@@ -926,14 +921,13 @@
         }
 
         // Переключатель классов активного формата кадра (Ratio UI)
-        // ШПАРГАЛКА: Оставлена для совместимости, пустая, чтобы старые вызовы не крашили скрипт
+        // Оставлена пустой для обратной совместимости, чтобы старые вызовы не ломали логику
         function clearAndSetActiveRatio(prefix, ratio) { return; }
 
         // Функции принудительной синхронизации формата (Ratio) для каждого экрана фото-студии
         function setSwapRatio(ratio) { 
             selectedSwapRatio = ratio; 
             let icon = ratio === "3:4" ? "📸" : ratio === "1:1" ? "🔲" : ratio === "4:3" ? "🖼" : ratio === "16:9" ? "💻" : "📱";
-            // ИСПРАВЛЕНО: Меняем строго кнопку Face Swap
             const el = document.getElementById('btn_swap_ratio');
             if (el) el.innerHTML = `${icon} ${ratio}`;
         }
@@ -941,7 +935,6 @@
         function setTryOnRatio(ratio) { 
             selectedTryOnRatio = ratio; 
             let icon = ratio === "3:4" ? "📸" : ratio === "1:1" ? "🔲" : ratio === "4:3" ? "🖼" : ratio === "16:9" ? "💻" : "📱";
-            // ИСПРАВЛЕНО: Меняем строго кнопку Примерки одежды
             const el = document.getElementById('btn_tryon_ratio');
             if (el) el.innerHTML = `${icon} ${ratio}`;
         }
@@ -949,7 +942,6 @@
         function setTextRatio(ratio) { 
             selectedTextRatio = ratio; 
             let icon = ratio === "3:4" ? "📸" : ratio === "1:1" ? "🔲" : ratio === "4:3" ? "🖼" : ratio === "16:9" ? "💻" : "📱";
-            // ИСПРАВЛЕНО: Меняем строго кнопку Фото + Текст
             const el = document.getElementById('btn_text_ratio');
             if (el) el.innerHTML = `${icon} ${ratio}`;
         }
@@ -957,7 +949,6 @@
         function setBgRatio(ratio) { 
             selectedBgRatio = ratio; 
             let icon = ratio === "3:4" ? "📸" : ratio === "1:1" ? "🔲" : ratio === "4:3" ? "🖼" : ratio === "16:9" ? "💻" : "📱";
-            // ИСПРАВЛЕНО: Меняем строго кнопку Смены фона
             const el = document.getElementById('btn_bg_ratio');
             if (el) el.innerHTML = `${icon} ${ratio}`;
         }
@@ -980,3 +971,4 @@
     </script>
 </body>
 </html>
+

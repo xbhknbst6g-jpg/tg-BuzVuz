@@ -118,6 +118,7 @@
     <!-- ПОДРЕЖИМ 1: ФОТО + ТЕКСТ                   -->
     <!-- ========================================== -->
     <div id="text_image" class="screen">
+        <!-- Кнопка возврата назад в главное фото-меню -->
         <button class="back-btn" onclick="openScreen('foto')">⬅️ В меню</button>
         
         <div class="header" style="margin-bottom: 10px; text-align: center;">
@@ -125,7 +126,7 @@
             <p style="font-size: 14px; color: var(--tg-theme-hint-color, #666);">Выберите нужные параметры кадра:</p>
         </div>
 
-        <!-- Кнопки формата -->
+        <!-- Кнопки формата кадра -->
         <div class="ratio-selector">
             <div class="ratio-btn active" id="text_ratio_9_16" onclick="setTextRatio('9:16')">📱 9:16</div>
             <div class="ratio-btn" id="text_ratio_3_4" onclick="setTextRatio('3:4')">📸 3:4</div>
@@ -134,7 +135,7 @@
             <div class="ratio-btn" id="text_ratio_16_9" onclick="setTextRatio('16:9')">💻 16:9</div>
         </div>
 
-        <!-- Кнопки качества -->
+        <!-- Кнопки качества генерации -->
         <div class="quality-selector">
             <div class="quality-btn active" id="text_qual_schnell" onclick="setQuality('schnell')">⚡ Standard</div>
             <div class="quality-btn" id="text_qual_dev" onclick="setQuality('dev')">💎 Pro / 2K</div>
@@ -145,28 +146,31 @@
             🔥 Примеры генераций по описанию:
         </div>
 
-        <!-- ИСПОЛЬЗУЕМ ВАШИ СТАНДАРТНЫЕ СЕТКИ ИЗ НАЧАЛА ФАЙЛА (Вместо кастомного CSS) -->
+        <!-- 
+          ИСПРАВЛЕНО: Используем строго твои стандартные сетки phone-templates-grid.
+          Картинки i.postimg.cc теперь на 100% чистые, а карточки отобразятся ровными мобильными прямоугольниками!
+        -->
         <div class="phone-templates-grid">
             
-            <!-- Окошко 1: На пляже -->
+            <!-- Окошко 1 -->
             <div class="phone-template-card">
                 <img src="https://postimg.cc" alt="На пляже">
                 <div class="card-overlay">🏖 На пляже</div>
             </div>
             
-            <!-- Окошко 2: Темная душа -->
+            <!-- Окошко 2 -->
             <div class="phone-template-card">
                 <img src="https://postimg.cc" alt="Темная душа">
                 <div class="card-overlay">🔮 Темная душа</div>
             </div>
 
-            <!-- Окошко 3: Закат на море -->
+            <!-- Окошко 3 -->
             <div class="phone-template-card">
                 <img src="https://postimg.cc" alt="Закат на море">
                 <div class="card-overlay">🌅 Закат на море</div>
             </div>
 
-            <!-- Окошко 4: Розовая милота -->
+            <!-- Окошко 4 -->
             <div class="phone-template-card">
                 <img src="https://postimg.cc" alt="Розовая милота">
                 <div class="card-overlay">🌸 Розовая милота</div>

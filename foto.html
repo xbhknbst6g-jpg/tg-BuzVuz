@@ -383,14 +383,14 @@
             <!-- ВСЕ НАСТРОЙКИ В ОДНУ СТРОКУ КНОПКАМИ-КАПСУЛАМИ -->
                         <div class="single-row-controls">
                 <div class="control-col">
-                    <button id="btn_text_quality" class="capsule-btn">💎 Standard</button>
+                    <button id="btn_text_quality" class="capsule-btn">⚡ Standard</button>
                 </div>
                 <div class="control-col">
-                    <button id="btn_text_ratio" class="capsule-btn">📱 9:16</button>
+                    <button id="btn_text_ratio" class="capsule-btn">9:16</button>
                 </div>
                 <div class="control-col control-col-btn">
                     <button id="neo_text_submit_btn" class="neo-start-btn" onclick="sendPhotoTextData()">
-                        Start (1🪙)
+                        Start 1 🪙
                     </button>
                 </div>
             </div>
@@ -427,32 +427,20 @@
         </div>
 
         <!-- ВСЕ НАСТРОЙКИ В ОДНУ СТРОКУ КНОПКАМИ-КАПСУЛАМИ (ДОБАВЛЕНО ДЛЯ FACE SWAP) -->
-        <div class="single-row-controls" style="margin-bottom: 25px;">
-            
-            <!-- Колонна 1: Вызов нативного меню Качества -->
+        <div class="single-row-controls">
             <div class="control-col">
-                <div class="control-label">Качество</div>
-                <button id="btn_swap_quality" class="capsule-btn" onclick="showNativeSwapQualityPopup()">
-                    ⚡ Standard
-                </button>
+                <button id="btn_swap_quality" class="capsule-btn">⚡ Standard</button>
             </div>
-
-            <!-- Колонна 2: Вызов нативного меню Соотношения сторон -->
             <div class="control-col">
-                <div class="control-label">Соотношение сторон</div>
-                <button id="btn_swap_ratio" class="capsule-btn" onclick="showNativeSwapRatioPopup()">
-                    📱 9:16
-                </button>
+                <button id="btn_swap_ratio" class="capsule-btn">9:16</button>
             </div>
-
-            <!-- Колонна 3: Встроенная неоновая кнопка Start -->
             <div class="control-col control-col-btn">
-                <div class="control-label">&nbsp;</div>
                 <button id="neo_swap_submit_btn" class="neo-start-btn" onclick="sendCustomFaceSwapData()">
-                    Start (1🪙)
+                    Start 1 🪙
                 </button>
             </div>
-        </div> <!-- Конец строки управления single-row-controls -->
+        </div>
+
 
         <!-- Готовые пресеты для клика -->
         <p style="font-size: 14px; text-align: center; color: var(--tg-theme-hint-color, #666); margin-bottom: 10px; font-weight: bold;">🎯 Или выберите готовый шаблон ниже:</p>
@@ -498,32 +486,19 @@
         </div>
 
         <!-- ВСЕ НАСТРОЙКИ В ОДНУ СТРОКУ КНОПКАМИ-КАПСУЛАМИ (ДОБАВЛЕНО ДЛЯ ПРИМЕРКИ) -->
-        <div class="single-row-controls" style="margin-bottom: 20px;">
-            
-            <!-- Колонна 1: Вызов нативного меню Качества -->
+        <div class="single-row-controls">
             <div class="control-col">
-                <div class="control-label">Качество</div>
-                <button id="btn_tryon_quality" class="capsule-btn" onclick="showNativeTryOnQualityPopup()">
-                    ⚡ Standard
-                </button>
+                <button id="btn_tryon_quality" class="capsule-btn">⚡ Standard</button>
             </div>
-
-            <!-- Колонна 2: Вызов нативного меню Соотношения сторон -->
             <div class="control-col">
-                <div class="control-label">Соотношение сторон</div>
-                <button id="btn_tryon_ratio" class="capsule-btn" onclick="showNativeTryOnRatioPopup()">
-                    📱 9:16
-                </button>
+                <button id="btn_tryon_ratio" class="capsule-btn">9:16</button>
             </div>
-
-            <!-- Колонна 3: Встроенная неоновая кнопка Start -->
             <div class="control-col control-col-btn">
-                <div class="control-label">&nbsp;</div>
                 <button id="neo_tryon_submit_btn" class="neo-start-btn" onclick="sendTryOnData()">
-                    Start (1🪙)
+                    Start 1 🪙
                 </button>
             </div>
-        </div> <!-- Конец строки управления single-row-controls -->
+        </div>
     </div> <!-- Конец экрана tryon -->
 
 
@@ -561,34 +536,19 @@
 
         <!-- ВСЕ НАСТРОЙКИ В ОДНУ СТРОКУ КНОПКАМИ-КАПСУЛАМИ (УНИВЕРСАЛЬНЫЙ НАДЁЖНЫЙ ВАРИАНТ) -->
         <div class="single-row-controls">
-            
-            <!-- Колонна 1: Качество -->
             <div class="control-col">
-                <select id="btn_text_quality" class="capsule-btn" onchange="selectedTextQuality = this.value; updateNeoStartButtonText();">
-                    <option value="schnell" selected>⚡ Standard</option>
-                    <option value="dev">💎 2K Pro</option>
-                    <option value="ultra_4k">🔥 4K Ultra</option>
-                </select>
+                <button id="btn_bg_quality" class="capsule-btn">⚡ Standard</button>
             </div>
-
-            <!-- Колонна 2: Соотношение сторон -->
             <div class="control-col">
-                <select id="btn_text_ratio" class="capsule-btn" onchange="selectedTextRatio = this.value; updateNeoStartButtonText();">
-                    <option value="9:16" selected>📱 9:16</option>
-                    <option value="3:4">📸 3:4</option>
-                    <option value="1:1">🔲 1:1</option>
-                    <option value="4:3">🖼 4:3</option>
-                    <option value="16:9">💻 16:9</option>
-                </select>
+                <button id="btn_bg_ratio" class="capsule-btn">9:16</button>
             </div>
-
-            <!-- Колонна 3: Встроенная неоновая кнопка Start -->
             <div class="control-col control-col-btn">
-                <button id="neo_text_submit_btn" class="neo-start-btn" onclick="sendPhotoTextData()">
-                    Start (1🪙)
+                <button id="neo_bg_submit_btn" class="neo-start-btn" onclick="sendBgChangeData()">
+                    Start 1 🪙
                 </button>
             </div>
-        </div> <!-- Конец строки single-row-controls -->
+        </div>
+
     </div> <!-- Конец экрана bg_change -->
 
     <!-- ========================================== -->
@@ -786,61 +746,93 @@
 
 
         // ====================================================================================
-        // 7. УПРАВЛЕНИЕ КАСТОМНОЙ ВЫЕЗЖАЮЩЕЙ ШТОРКОЙ СПИСКОМ
+        // 7. УПРАВЛЕНИЕ УНИВЕРСАЛЬНОЙ КАСТОМНОЙ ШТОРКОЙ ДЛЯ ВСЕХ ЭКРАНОВ СТУДИИ (БЕЗ ИКОНОК)
         // ====================================================================================
 
-        // Открытие шторки для выбора КАЧЕСТВА Фото + Текст
-        function showNativeQualityPopup() {
+        // ОТКРЫТИЕ ШТОРКИ КАЧЕСТВА ДЛЯ ЛЮБОГО АКТИВНОГО ЭКРАНА
+        function openUniversalQualitySheet() {
             const titleEl = document.getElementById('custom_sheet_title');
             const listEl = document.getElementById('custom_sheet_list');
             if (!titleEl || !listEl) return;
 
             titleEl.innerText = "КАЧЕСТВО ГЕНЕРАЦИИ";
             
-            // Генерируем пункты списка, как на твоем скриншоте (цены прижаты вправо)
+            // Чистый аккуратный список без смайликов, цены прижаты вправо
             listEl.innerHTML = `
-                <li><button class="custom-sheet-item" onclick="selectCustomQuality('schnell', '⚡ Standard')"><span>⚡ Standard</span><span class="coin-price">1🪙</span></button></li>
-                <li><button class="custom-sheet-item" onclick="selectCustomQuality('dev', '💎 2K Pro')"><span>💎 2K Pro</span><span class="coin-price">1🪙</span></button></li>
-                <li><button class="custom-sheet-item" onclick="selectCustomQuality('ultra_4k', '🔥 4K Ultra')"><span>🔥 4K Ultra</span><span class="coin-price">1🪙</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('schnell', '⚡ Standard')"><span>Standard</span><span class="coin-price">1🪙</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('dev', '💎 Pro')"><span>Pro</span><span class="coin-price">1🪙</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('ultra_4k', '🔥 Ultra')"><span>Ultra</span><span class="coin-price">1🪙</span></button></li>
             `;
 
             document.getElementById('custom_action_sheet').classList.add('active');
         }
 
-        // Обработчик выбора качества из шторки
-        function selectCustomQuality(id, text) {
-            selectedTextQuality = id;
-            document.getElementById('btn_text_quality').innerHTML = text;
+        // Умный обработчик качества: определяет экран, меняет его кнопку и переменную
+        function selectQualityFromSheet(id, text) {
+            if (currentActiveMode === 'text_image') {
+                selectedTextQuality = id;
+                document.getElementById('btn_text_quality').innerHTML = text;
+            } else if (currentActiveMode === 'face_swap') {
+                selectedSwapQuality = id;
+                document.getElementById('btn_swap_quality').innerHTML = text;
+            } else if (currentActiveMode === 'tryon') {
+                selectedTryOnQuality = id;
+                document.getElementById('btn_tryon_quality').innerHTML = text;
+            } else if (currentActiveMode === 'bg_change') {
+                selectedBgQuality = id;
+                document.getElementById('btn_bg_quality').innerHTML = text;
+            }
             updateNeoStartButtonText();
             closeCustomSheet();
         }
 
-        // Открытие шторки для выбора СООТНОШЕНИЯ СТОРОН Фото + Текст
-        function showNativeRatioPopup() {
+        // ОТКРЫТИЕ ШТОРКИ ФОРМАТА ДЛЯ ЛЮБОГО АКТИВНОГО ЭКРАНА (БЕЗ ИКОНОК, ТОЛЬКО ЦИФРЫ)
+        function openUniversalRatioSheet() {
             const titleEl = document.getElementById('custom_sheet_title');
             const listEl = document.getElementById('custom_sheet_list');
             if (!titleEl || !listEl) return;
 
-            titleEl.innerText = "СООТНОШЕНИЕ СТОРОН КАДРА";
+            titleEl.innerText = "СООТНОШЕНИЕ СТОРОН";
             
+            // Чистые аккуратные цифры без лишних слов «Вертикальный», «Портретный»
             listEl.innerHTML = `
-                <li><button class="custom-sheet-item" onclick="selectCustomRatio('9:16', '📱 9:16')"><span>📱 Вертикальный 9:16</span></button></li>
-                <li><button class="custom-sheet-item" onclick="selectCustomRatio('3:4', '📸 3:4')"><span>📸 Портретный 3:4</span></button></li>
-                <li><button class="custom-sheet-item" onclick="selectCustomRatio('1:1', '🔲 1:1')"><span>🔲 Квадратный 1:1</span></button></li>
-                <li><button class="custom-sheet-item" onclick="selectCustomRatio('4:3', '🖼 4:3')"><span>🖼 Альбомный 4:3</span></button></li>
-                <li><button class="custom-sheet-item" onclick="selectCustomRatio('16:9', '💻 16:9')"><span>💻 Широкоформатный 16:9</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('9:16')"><span>9:16</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('3:4')"><span>3:4</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('1:1')"><span>1:1</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('4:3')"><span>4:3</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('16:9')"><span>16:9</span></button></li>
             `;
 
             document.getElementById('custom_action_sheet').classList.add('active');
         }
 
-        // Обработчик выбора соотношения сторон из шторки
-        function selectCustomRatio(id, text) {
-            selectedTextRatio = id;
-            document.getElementById('btn_text_ratio').innerHTML = text;
+        // Умный обработчик формата: определяет экран и вызывает его родную функцию синхронизации иконок
+        function selectRatioFromSheet(id) {
+            if (currentActiveMode === 'text_image') {
+                setTextRatio(id);
+            } else if (currentActiveMode === 'face_swap') {
+                setSwapRatio(id);
+            } else if (currentActiveMode === 'tryon') {
+                setTryOnRatio(id);
+            } else if (currentActiveMode === 'bg_change') {
+                setBgRatio(id);
+            }
             updateNeoStartButtonText();
             closeCustomSheet();
         }
+
+        // Перенаправляем старые функции вызова из DOMContentLoaded на наш единый пульт управления шторкой
+        function showNativeQualityPopup() { openUniversalQualitySheet(); }
+        function showNativeRatioPopup() { openUniversalRatioSheet(); }
+        
+        function showNativeSwapQualityPopup() { openUniversalQualitySheet(); }
+        function showNativeSwapRatioPopup() { openUniversalRatioSheet(); }
+        
+        function showNativeTryOnQualityPopup() { openUniversalQualitySheet(); }
+        function showNativeTryOnRatioPopup() { openUniversalRatioSheet(); }
+        
+        function showNativeBgQualityPopup() { openUniversalQualitySheet(); }
+        function showNativeBgRatioPopup() { openUniversalRatioSheet(); }
 
         // Функция закрытия шторки
         function closeCustomSheet() {
@@ -848,207 +840,9 @@
             if (sheet) sheet.classList.remove('active');
         }
 
-        // ====================================================================================
-        // 8. ВЫЗОВЫ НАТИВНЫХ МЕНЮ ДЛЯ ЭКРАНА FACE SWAP (ИСПРАВЛЕНО С ИКОНКАМИ)
-        // ====================================================================================
-        
-        // ВЫЗОВ НАТИВНОГО МЕНЮ ВЫБОРА КАЧЕСТВА FACE SWAP
-        function showNativeSwapQualityPopup() {
-            if (!tg) return;
-            tg.showPopup({
-                title: "Качество Face Swap",
-                message: "Выберите разрешение для замены лиц (Стоимость: 1🪙)",
-                buttons: [
-                    { id: "schnell", type: "default", text: "⚡ Standard (1🪙)" },
-                    { id: "dev", type: "default", text: "💎 Pro (1🪙)" },
-                    { id: "ultra_4k", type: "default", text: "🔥 Ultra (1🪙)" },
-                    { type: "cancel", text: "Закрыть" }
-                ]
-            }, function(buttonId) {
-                if (buttonId && buttonId !== "cancel") {
-                    selectedSwapQuality = buttonId;
-                    
-                    let icon = "⚡";
-                    let label = "Standard";
-                    
-                    if (buttonId === "dev") {
-                        icon = "💎";
-                        label = "Pro";
-                    }
-                    if (buttonId === "ultra_4k") {
-                        icon = "🔥";
-                        label = "Ultra";
-                    }
-                    
-                    // Обновляем кнопку качества Face Swap по твоему фирменному стилю!
-                    document.getElementById('btn_swap_quality').innerHTML = `${icon} ${label}`;
-                    updateNeoStartButtonText();
-                }
-            });
-        }
-
-        // ВЫЗОВ НАТИВНОГО МЕНЮ ВЫБОРА СООТНОШЕНИЯ СТОРОН FACE SWAP
-        function showNativeSwapRatioPopup() {
-            if (!tg) return;
-            tg.showPopup({
-                title: "Формат Face Swap",
-                message: "Выберите соотношение сторон финального шаблона кадра",
-                buttons: [
-                    { id: "9:16", type: "default", text: "📱 Вертикальный 9:16" },
-                    { id: "3:4", type: "default", text: "📸 Портретный 3:4" },
-                    { id: "1:1", type: "default", text: "🔲 Квадратный 1:1" },
-                    { id: "4:3", type: "default", text: "🖼 Альбомный 4:3" },
-                    { id: "16:9", type: "default", text: "💻 Широкоформатный 16:9" },
-                    { type: "cancel", text: "Закрыть" }
-                ]
-            }, function(buttonId) {
-                if (buttonId && buttonId !== "cancel") {
-                    selectedSwapRatio = buttonId;
-                    let icon = buttonId === "3:4" ? "📸" : buttonId === "1:1" ? "🔲" : buttonId === "4:3" ? "🖼" : buttonId === "16:9" ? "💻" : "📱";
-                    
-                    // Обновляем кнопку формата Face Swap
-                    document.getElementById('btn_swap_ratio').innerHTML = `${icon} ${buttonId}`;
-                    updateNeoStartButtonText();
-                }
-            });
-        }
-
 
         // ====================================================================================
-        // 9. ВЫЗОВЫ НАТИВНЫХ МЕНЮ ДЛЯ ЭКРАНА ПРИМЕРКИ ОДЕЖДЫ (ИСПРАВЛЕНО С ИКОНКАМИ)
-        // ====================================================================================
-
-        // ВЫЗОВ НАТИВНОГО МЕНЮ ВЫБОРА КАЧЕСТВА ПРИМЕРКИ
-        function showNativeTryOnQualityPopup() {
-            if (!tg) return;
-            tg.showPopup({
-                title: "Качество примерки",
-                message: "Выберите разрешение переноса одежды (Стоимость: 1🪙)",
-                buttons: [
-                    { id: "schnell", type: "default", text: "⚡ Standard (1🪙)" },
-                    { id: "dev", type: "default", text: "💎 Pro (1🪙)" },
-                    { id: "ultra_4k", type: "default", text: "🔥 Ultra (1🪙)" },
-                    { type: "cancel", text: "Закрыть" }
-                ]
-            }, function(buttonId) {
-                if (buttonId && buttonId !== "cancel") {
-                    selectedTryOnQuality = buttonId;
-                    
-                    let icon = "⚡";
-                    let label = "Standard";
-                    
-                    if (buttonId === "dev") {
-                        icon = "💎";
-                        label = "Pro";
-                    }
-                    if (buttonId === "ultra_4k") {
-                        icon = "🔥";
-                        label = "Ultra";
-                    }
-                    
-                    // Обновляем кнопку качества Примерки по твоему методу!
-                    document.getElementById('btn_tryon_quality').innerHTML = `${icon} ${label}`;
-                    updateNeoStartButtonText();
-                }
-            });
-        }
-        
-        // ВЫЗОВ НАТИВНОГО МЕНЮ ВЫБОРА СООТНОШЕНИЯ СТОРОН ПРИМЕРКИ
-        function showNativeTryOnRatioPopup() {
-            if (!tg) return;
-            tg.showPopup({
-                title: "Формат примерки одежды",
-                message: "Выберите соотношение сторон для генерации вашей фигуры",
-                buttons: [
-                    { id: "9:16", type: "default", text: "📱 Вертикальный 9:16" },
-                    { id: "3:4", type: "default", text: "📸 Портретный 3:4" },
-                    { id: "1:1", type: "default", text: "🔲 Квадратный 1:1" },
-                    { id: "4:3", type: "default", text: "🖼 Альбомный 4:3" },
-                    { id: "16:9", type: "default", text: "💻 Широкоформатный 16:9" },
-                    { type: "cancel", text: "Закрыть" }
-                ]
-            }, function(buttonId) {
-                if (buttonId && buttonId !== "cancel") {
-                    selectedTryOnRatio = buttonId;
-                    let icon = buttonId === "3:4" ? "📸" : buttonId === "1:1" ? "🔲" : buttonId === "4:3" ? "🖼" : buttonId === "16:9" ? "💻" : "📱";
-                    
-                    // Обновляем кнопку формата Примерки сторон
-                    document.getElementById('btn_tryon_ratio').innerHTML = `${icon} ${buttonId}`;
-                    updateNeoStartButtonText();
-                }
-            });
-        }
-
-
-
-        // ====================================================================================
-        // 10. ВЫЗОВЫ НАТИВНЫХ МЕНЮ ДЛЯ ЭКРАНА СМЕНЫ ФОНА (ИСПРАВЛЕНО С ИКОНКАМИ)
-        // ====================================================================================
-
-        // ВЫЗОВ НАТИВНОГО МЕНЮ ВЫБОРА КАЧЕСТВА СМЕНЫ ФОНА
-        function showNativeBgQualityPopup() {
-            if (!tg) return;
-            tg.showPopup({
-                title: "Качество смены фона",
-                message: "Выберите разрешение прорисовки заднего плана (Стоимость: 1🪙)",
-                buttons: [
-                    { id: "schnell", type: "default", text: "⚡ Standard (1🪙)" },
-                    { id: "dev", type: "default", text: "💎 Pro (1🪙)" },
-                    { id: "ultra_4k", type: "default", text: "🔥 Ultra (1🪙)" },
-                    { type: "cancel", text: "Закрыть" }
-                ]
-            }, function(buttonId) {
-                if (buttonId && buttonId !== "cancel") {
-                    selectedBgQuality = buttonId;
-                    
-                    let icon = "⚡";
-                    let label = "Standard";
-                    
-                    if (buttonId === "dev") {
-                        icon = "💎";
-                        label = "Pro";
-                    }
-                    if (buttonId === "ultra_4k") {
-                        icon = "🔥";
-                        label = "Ultra";
-                    }
-                    
-                    // Обновляем кнопку качества Смены фона по твоему методу!
-                    document.getElementById('btn_bg_quality').innerHTML = `${icon} ${label}`;
-                    updateNeoStartButtonText();
-                }
-            });
-        }
-
-        // ВЫЗОВ НАТИВНОГО МЕНЮ ВЫБОРА СООТНОШЕНИЯ СТОРОН СМЕНЫ ФОНА
-        function showNativeBgRatioPopup() {
-            if (!tg) return;
-            tg.showPopup({
-                title: "Формат смены фона",
-                message: "Выберите итоговое соотношение сторон для переноса объекта",
-                buttons: [
-                    { id: "9:16", type: "default", text: "📱 Вертикальный 9:16" },
-                    { id: "3:4", type: "default", text: "📸 Портретный 3:4" },
-                    { id: "1:1", type: "default", text: "🔲 Квадратный 1:1" },
-                    { id: "4:3", type: "default", text: "🖼 Альбомный 4:3" },
-                    { id: "16:9", type: "default", text: "💻 Широкоформатный 16:9" },
-                    { type: "cancel", text: "Закрыть" }
-                ]
-            }, function(buttonId) {
-                if (buttonId && buttonId !== "cancel") {
-                    selectedBgRatio = buttonId;
-                    let icon = buttonId === "3:4" ? "📸" : buttonId === "1:1" ? "🔲" : buttonId === "4:3" ? "🖼" : buttonId === "16:9" ? "💻" : "📱";
-                    
-                    // Обновляем кнопку формата Смены фона
-                    document.getElementById('btn_bg_ratio').innerHTML = `${icon} ${buttonId}`;
-                    updateNeoStartButtonText();
-                }
-            });
-        }
-
-
-        // ====================================================================================
-        // 11. ПЕРЕДАТЧИКИ JSON БОТУ И СИНХРОНИЗАЦИЯ С ПРЕСЕТАМИ ШАБЛОНОВ
+        // 8. ПЕРЕДАТЧИКИ JSON БОТУ И СИНХРОНИЗАЦИЯ С ПРЕСЕТАМИ ШАБЛОНОВ
         // ====================================================================================
 
         // Главный системный передатчик пакетов JSON обратно в чат бота

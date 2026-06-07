@@ -83,21 +83,27 @@
         .tryon-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 15px; }
         .tryon-card { background: var(--tg-theme-bg-color, #fff); border-radius: 12px; border: 1px solid var(--tg-theme-border-color, #ddd); padding: 12px; }
         .tryon-card-title { font-size: 14px; font-weight: bold; margin-bottom: 8px; text-align: center; color: var(--tg-theme-text-color, #000); }
-                /* Сетка для картинок примеров ДО / ПОСЛЕ */
-                /* Новая сетка для одиночных примеров (1 колонка) */
-        .tryon-images { 
-            display: grid; 
-            grid-template-columns: 1fr; /* Теперь картинка занимает всю ширину карточки */
-            margin-top: 5px;
+
+
+        /* Небольшие аккуратные окошки примеров для Фото + Текст */
+        .text-image-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 аккуратные колонки в ряд */
+            gap: 10px;
+            margin-top: 15px;
         }
-        
-        /* Автоматически делает каждую картинку формата 9:16 */
-        .tryon-images img {
-            width: 100%;
-            height: auto;
-            aspect-ratio: 9 / 16; /* Идеальные вертикальные пропорции */
-            object-fit: cover;
+        .text-image-preview-card {
+            position: relative;
             border-radius: 8px;
+            overflow: hidden;
+            aspect-ratio: 3 / 4; /* Небольшой вертикальный прямоугольник */
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            border: 1px solid var(--tg-theme-border-color, #e1e6eb);
+        }
+        .text-image-preview-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             display: block;
         }
         
@@ -130,46 +136,63 @@
 <body>
 
     <!-- ========================================== -->
-    <!-- ИСПРАВЛЕНО: ЭКРАН 1 ТЕПЕРЬ НАЗЫВАЕТСЯ FOTO -->
+    <!-- ПОДРЕЖИМ 1: ФОТО + ТЕКСТ                   -->
     <!-- ========================================== -->
-    <div id="foto" class="screen active">
-        <div class="header">
-            <h1>Интеллектуальная AI Студия</h1>
-            <p>Выберите нужный инструмент генерации ниже</p>
-        </div>
+    <div id="text_image" class="screen">
+        <button class="back-btn" onclick="openScreen('foto')">⬅️ В меню</button>
         
-        <div class="main-menu-grid">
-            <div class="menu-card" onclick="openScreen('text_image')">
-                <div class="menu-icon">📝</div>
-                <div class="menu-info">
-                    <div class="menu-title">1. Фото + Текст</div>
-                    <div class="menu-desc">Создание по вашему фото и описанию</div>
-                </div>
+        <div class="header" style="margin-bottom: 10px; text-align: center;">
+            <h1>Настройка генерации Фото + Текст</h1>
+            <p style="font-size: 14px; color: var(--tg-theme-hint-color, #666);">Выберите нужные параметры кадра:</p>
+        </div>
+
+        <!-- Кнопки формата -->
+        <div class="ratio-selector">
+            <div class="ratio-btn active" id="text_ratio_9_16" onclick="setTextRatio('9:16')">📱 9:16</div>
+            <div class="ratio-btn" id="text_ratio_3_4" onclick="setTextRatio('3:4')">📸 3:4</div>
+            <div class="ratio-btn" id="text_ratio_1_1" onclick="setTextRatio('1:1')">🔲 1:1</div>
+            <div class="ratio-btn" id="text_ratio_4_3" onclick="setTextRatio('4:3')">🖼 4:3</div>
+            <div class="ratio-btn" id="text_ratio_16_9" onclick="setTextRatio('16:9')">💻 16:9</div>
+        </div>
+
+        <!-- Кнопки качества -->
+        <div class="quality-selector">
+            <div class="quality-btn active" id="text_qual_schnell" onclick="setQuality('schnell')">⚡ Standard</div>
+            <div class="quality-btn" id="text_qual_dev" onclick="setQuality('dev')">💎 Pro / 2K</div>
+            <div class="quality-btn" id="text_qual_ultra" onclick="setQuality('ultra_4k')">🔥 Ultra 4K</div>
+        </div>
+
+        <div style="font-weight: bold; font-size: 14px; margin-top: 20px; margin-bottom: 5px; color: var(--tg-theme-text-color, #222); text-align: center;">
+            🔥 Примеры генераций по описанию:
+        </div>
+
+        <!-- ИСПОЛЬЗУЕМ ВАШИ СТАНДАРТНЫЕ СЕТКИ ИЗ НАЧАЛА ФАЙЛА (Вместо кастомного CSS) -->
+        <div class="phone-templates-grid">
+            
+            <!-- Окошко 1: На пляже -->
+            <div class="phone-template-card">
+                <img src="https://postimg.cc" alt="На пляже">
+                <div class="card-overlay">🏖 На пляже</div>
             </div>
             
-            <div class="menu-card" onclick="openScreen('face_swap')">
-                <div class="menu-icon">🎭</div>
-                <div class="menu-info">
-                    <div class="menu-title">2. Face Swap</div>
-                    <div class="menu-desc">Замена лиц (выберите интересующий вас шаблон)</div>
-                </div>
+            <!-- Окошко 2: Темная душа -->
+            <div class="phone-template-card">
+                <img src="https://postimg.cc" alt="Темная душа">
+                <div class="card-overlay">🔮 Темная душа</div>
             </div>
-            
-            <div class="menu-card" onclick="openScreen('tryon')">
-                <div class="menu-icon">👕</div>
-                <div class="menu-info">
-                    <div class="menu-title">3. Примерка одежды</div>
-                    <div class="menu-desc">Примерка любых вещей по вашей фигуре До / После</div>
-                </div>
+
+            <!-- Окошко 3: Закат на море -->
+            <div class="phone-template-card">
+                <img src="https://postimg.cc" alt="Закат на море">
+                <div class="card-overlay">🌅 Закат на море</div>
             </div>
-            
-            <div class="menu-card" onclick="openScreen('bg_change')">
-                <div class="menu-icon">🖼</div>
-                <div class="menu-info">
-                    <div class="menu-title">4. Смена фона</div>
-                    <div class="menu-desc">Умный перенос объекта на новый задний план</div>
-                </div>
+
+            <!-- Окошко 4: Розовая милота -->
+            <div class="phone-template-card">
+                <img src="https://postimg.cc" alt="Розовая милота">
+                <div class="card-overlay">🌸 Розовая милота</div>
             </div>
+
         </div>
     </div>
 
@@ -359,7 +382,7 @@
         </div>
     </div>
 
-    
+
     <script>
         const tg = window.Telegram.WebApp;
 

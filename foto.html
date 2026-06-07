@@ -350,46 +350,50 @@
     </div>
 
     <script>
-                // Системная переменная, чтобы понимать, на каком шаге внутри Фото+Текст находится юзер
+        // Системные переменные для контроля шагов Фото + Текст
         let isTextImageStyleSelected = false; 
-        let selectedStyleName = ""; // Сюда запишем имя выбранного стиля
+        let selectedStyleName = ""; 
 
-        // Функция срабатывает, когда юзер тапает по маленькому прямоугольнику-примеру
+        // 1. ФУНКЦИЯ КЛИКА ПО КАРТОЧКЕ (Увеличение и показ настроек)
         function selectTextImageStyle(styleName, imageUrl) {
             isTextImageStyleSelected = true;
             selectedStyleName = styleName;
 
-            // 1. Меняем заголовки на экране на название стиля
+            // Меняем тексты заголовков и имя кнопки "Назад"
             document.getElementById('text_image_title').innerText = styleName;
             document.getElementById('text_image_subtitle').innerText = "Настройте формат и качество для генерации:";
             document.getElementById('text_image_back_btn').innerText = "⬅️ К галерее";
 
-            // 2. Подставляем ссылку в большое превью и переключаем видимость блоков
+            // Подставляем картинку, прячем сетку и ПЛАВНО включаем блок настроек
             document.getElementById('text_image_large_preview').src = imageUrl;
-            document.getElementById('text_image_gallery').style.display = "none"; // Прячем плитку
-            document.getElementById('text_image_settings_block').style.display = "block"; // Показываем настройки
+            document.getElementById('text_image_gallery').style.display = "none"; 
+            document.getElementById('text_image_settings_block').style.display = "block"; 
 
-            // 3. Запускаем пересчет нативной нижней кнопки Telegram (она плавно появится)
+            // Показываем нативную кнопку Telegram "Start"
             updateFotoMainButton();
         }
 
-        // Умный обработчик кнопки "Назад" на экране Фото+Текст
+        // 2. УМНАЯ ФУНКЦИЯ ВОЗВРАТА НАЗАД (ИСПРАВЛЕНО!)
         function handleTextBackClick() {
             if (isTextImageStyleSelected) {
-                // Если юзер был в настройках — возвращаем его к плитке примеров
+                // Если юзер был внутри настроек стиля — сбрасываем состояние и возвращаем галерею
                 isTextImageStyleSelected = false;
-                
+                selectedStyleName = "";
+
+                // Возвращаем дефолтные тексты заголовков и имя кнопки меню
                 document.getElementById('text_image_title').innerText = "Примеры генераций Фото + Текст";
                 document.getElementById('text_image_subtitle').innerText = "Выберите желаемый стиль для настройки:";
                 document.getElementById('text_image_back_btn').innerText = "⬅️ В меню";
 
-                document.getElementById('text_image_gallery').style.style.display = "grid"; // Возвращаем сетку
-                document.getElementById('text_image_settings_block').style.display = "none"; // Прячем настройки
-                
-                // Пересчитываем кнопку Telegram (она автоматически спрячется, так как стиль не выбран)
+                // ИСПРАВЛЕНО: Стираем ссылку из превью, прячем настройки и ЖЕСТКО включаем сетку grid
+                document.getElementById('text_image_large_preview').src = "";
+                document.getElementById('text_image_settings_block').style.display = "none"; 
+                document.getElementById('text_image_gallery').style.display = "grid"; // Тут была опечатка style.style
+
+                // Скрываем нативную кнопку Telegram, так как стиль больше не выбран
                 updateFotoMainButton();
             } else {
-                // Если юзер и так был в галерее — возвращаем его в главное меню foto
+                // Если юзер и так стоял в галерее примеров — просто выходим в главное меню foto
                 openScreen('foto');
             }
         }

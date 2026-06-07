@@ -157,20 +157,23 @@
 
         /* 💊 Тонкие изящные кнопки-капсулы, как в Nano Banana */
         .capsule-btn {
-            -webkit-appearance: none !important; appearance: none !important; outline: none !important;
-            box-shadow: none !important; border: none !important; /* Убираем рамки */
+            -webkit-appearance: none !important; 
+            appearance: none !important; 
+            outline: none !important;
+            box-shadow: 0 2px 6px rgba(0, 136, 204, 0.1) !important;
+            
             width: 100%;
-            padding: 8px 12px !important; /* Делаем кнопку компактной по высоте */
-            font-size: 14px !important; 
-            font-weight: 500 !important; /* Текст не жирный, а аккуратный */
+            padding: 10px 12px !important; /* Чуть увеличили внутренний отступ для центровки */
+            font-size: 13px !important; 
+            font-weight: 800 !important; 
             text-align: center !important;
-            border-radius: 20px !important; /* Мягкое скругление капсулы */
-            background: rgba(255, 255, 255, 0.08) !important; /* Очень легкий полупрозрачный фон */
-            color: #fff !important; /* Белый аккуратный текст */
+            text-align-last: center !important; /* Центрирует текст внутри select */
+            
+            border: 2px solid #0088cc !important; 
+            border-radius: 30px !important; 
+            background-color: #ffffff !important; 
+            color: #0088cc !important; 
             cursor: pointer;
-            display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important;
-            transition: background 0.15s ease !important;
-            -webkit-tap-highlight-color: transparent !important;
         }
         .capsule-btn:active {
             background: rgba(255, 255, 255, 0.15) !important;
@@ -478,33 +481,36 @@
             </div>
         </div>
 
-        <!-- ВСЕ НАСТРОЙКИ В ОДНУ СТРОКУ КНОПКАМИ-КАПСУЛАМИ (ДОБАВЛЕНО ДЛЯ СМЕНЫ ФОНА) -->
-        <div class="single-row-controls" style="margin-bottom: 20px;">
+        <!-- ВСЕ НАСТРОЙКИ В ОДНУ СТРОКУ КНОПКАМИ-КАПСУЛАМИ (УНИВЕРСАЛЬНЫЙ НАДЁЖНЫЙ ВАРИАНТ) -->
+        <div class="single-row-controls">
             
-            <!-- Колонна 1: Вызов нативного меню Качества -->
+            <!-- Колонна 1: Качество -->
             <div class="control-col">
-                <div class="control-label">Качество</div>
-                <button id="btn_bg_quality" class="capsule-btn" onclick="showNativeBgQualityPopup()">
-                    ⚡ Standard
-                </button>
+                <select id="btn_text_quality" class="capsule-btn" onchange="selectedTextQuality = this.value; updateNeoStartButtonText();">
+                    <option value="schnell" selected>⚡ Standard</option>
+                    <option value="dev">💎 2K Pro</option>
+                    <option value="ultra_4k">🔥 4K Ultra</option>
+                </select>
             </div>
 
-            <!-- Колонна 2: Вызов нативного меню Соотношения сторон -->
+            <!-- Колонна 2: Соотношение сторон -->
             <div class="control-col">
-                <div class="control-label">Соотношение сторон</div>
-                <button id="btn_bg_ratio" class="capsule-btn" onclick="showNativeBgRatioPopup()">
-                    📱 9:16
-                </button>
+                <select id="btn_text_ratio" class="capsule-btn" onchange="selectedTextRatio = this.value; updateNeoStartButtonText();">
+                    <option value="9:16" selected>📱 9:16</option>
+                    <option value="3:4">📸 3:4</option>
+                    <option value="1:1">🔲 1:1</option>
+                    <option value="4:3">🖼 4:3</option>
+                    <option value="16:9">💻 16:9</option>
+                </select>
             </div>
 
             <!-- Колонна 3: Встроенная неоновая кнопка Start -->
             <div class="control-col control-col-btn">
-                <div class="control-label">&nbsp;</div>
-                <button id="neo_bg_submit_btn" class="neo-start-btn" onclick="sendBgChangeData()">
+                <button id="neo_text_submit_btn" class="neo-start-btn" onclick="sendPhotoTextData()">
                     Start (1🪙)
                 </button>
             </div>
-        </div> <!-- Конец строки управления single-row-controls -->
+        </div> <!-- Конец строки single-row-controls -->
     </div> <!-- Конец экрана bg_change -->
 
     <script>

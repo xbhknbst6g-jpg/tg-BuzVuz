@@ -155,30 +155,30 @@
         text-overflow: ellipsis;
     }
 
-        /* 💊 НАСТОЯЩИЕ КРУГЛЫЕ КНОПКИ-КАПСУЛЫ (ТЕКСТ СТРОГО ПО ЦЕНТРУ) */
+        /* 💊 КРУГЛЫЕ КНОПКИ-КАПСУЛЫ (ГОРЯЧИЙ ОРАНЖЕВЫЙ НЕОН С АЛЫМ КАНТОМ) */
         .capsule-btn {
             -webkit-appearance: none !important; 
             appearance: none !important; 
             outline: none !important;
-            box-shadow: 0 2px 6px rgba(0, 136, 204, 0.1) !important;
+            /* Неоновое оранжево-алое свечение кнопок */
+            box-shadow: 0 2px 10px rgba(255, 69, 0, 0.2) !important;
             
             width: 100%;
             padding: 10px 8px !important;
             font-size: 13px !important; 
             font-weight: 800 !important; 
             
-            /* Жесткое выравнивание текста строго по центру капсулы */
             text-align: center !important;
             display: flex !important; 
             align-items: center !important; 
             justify-content: center !important; 
             gap: 4px !important;
             
-            /* Яркий нативный синий цвет Telegram прописан жестко кодом */
-            border: 2px solid #0088cc !important; 
+            /* Алый кант (border) + Оранжевый цвет текста (color) */
+            border: 2px solid #ff1e00 !important; 
             border-radius: 30px !important; 
             background-color: #ffffff !important; 
-            color: #0088cc !important; 
+            color: #ff6600 !important; 
             
             cursor: pointer;
             white-space: nowrap;
@@ -187,9 +187,10 @@
             transition: all 0.15s ease !important; 
             -webkit-tap-highlight-color: transparent !important;
         }
+        
         .capsule-btn:active {
             transform: scale(0.95) !important;
-            background-color: rgba(0, 136, 204, 0.08) !important;
+            background-color: rgba(255, 30, 0, 0.05) !important; /* Легкий алый оттенок при клике */
         }
 
 
@@ -273,7 +274,7 @@
             list-style: none;
         }
 
-                .custom-sheet-item {
+        .custom-sheet-item {
             width: 100%;
             padding: 12px 16px;
             font-size: 15px;
@@ -300,8 +301,9 @@
             background: rgba(255, 255, 255, 0.08);
         }
 
+        /* Выделяем оранжевым цветом цену в монетах внутри шторки */
         .custom-sheet-item .coin-price {
-            color: var(--tg-theme-button-color, #0088cc); /* Выделяем цену синим цветом */
+            color: #ff6600 !important; 
             font-size: 13px;
             font-weight: 800;
         }

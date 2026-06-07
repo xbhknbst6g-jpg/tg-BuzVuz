@@ -143,50 +143,59 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- ПОДРЕЖИМ 1: ФОТО + ТЕКСТ                   -->
+    <!-- ПОДРЕЖИМ 1: ФОТО + ТЕКСТ (ИНТЕРАКТИВНЫЙ)   -->
     <!-- ========================================== -->
     <div id="text_image" class="screen">
-        <button class="back-btn" onclick="openScreen('foto')">⬅️ В меню</button>
+        <!-- Умная кнопка назад: если открыты настройки — возвращает к галерее, если галерея — в меню -->
+        <button class="back-btn" id="text_image_back_btn" onclick="handleTextBackClick()">⬅️ В меню</button>
         
-        <div class="header" style="margin-bottom: 10px; text-align: center;">
-            <h1>Настройка генерации Фото + Текст</h1>
-            <p style="font-size: 14px; color: var(--tg-theme-hint-color, #666);">Выберите нужные параметры кадра:</p>
+        <div class="header" style="margin-bottom: 15px; text-align: center;">
+            <h1 id="text_image_title">Примеры генераций Фото + Текст</h1>
+            <p id="text_image_subtitle" style="font-size: 14px; color: var(--tg-theme-hint-color, #666);">Выберите желаемый стиль для настройки:</p>
         </div>
 
-        <div class="ratio-selector">
-            <div class="ratio-btn active" id="text_ratio_9_16" onclick="setTextRatio('9:16')">📱 9:16</div>
-            <div class="ratio-btn" id="text_ratio_3_4" onclick="setTextRatio('3:4')">📸 3:4</div>
-            <div class="ratio-btn" id="text_ratio_1_1" onclick="setTextRatio('1:1')">🔲 1:1</div>
-            <div class="ratio-btn" id="text_ratio_4_3" onclick="setTextRatio('4:3')">🖼 4:3</div>
-            <div class="ratio-btn" id="text_ratio_16_9" onclick="setTextRatio('16:9')">💻 16:9</div>
-        </div>
-
-        <div class="quality-selector">
-            <div class="quality-btn active" id="text_qual_schnell" onclick="setQuality('schnell')">⚡ Standard</div>
-            <div class="quality-btn" id="text_qual_dev" onclick="setQuality('dev')">💎 Pro / 2K</div>
-            <div class="quality-btn" id="text_qual_ultra" onclick="setQuality('ultra_4k')">🔥 Ultra 4K</div>
-        </div>
-
-        <div style="font-weight: bold; font-size: 14px; margin-top: 20px; margin-bottom: 5px; color: var(--tg-theme-text-color, #222); text-align: center;">
-            🔥 Примеры генераций по описанию:
-        </div>
-
-        <div class="phone-templates-grid">
-            <div class="phone-template-card">
+        <!-- ШАГ 1: ГАЛЕРЕЯ ДЛЯ КЛИКА (Изначально видна) -->
+        <div class="phone-templates-grid" id="text_image_gallery">
+            <div class="phone-template-card" onclick="selectTextImageStyle('🏖 На пляже', 'https://postimg.cc')">
                 <img src="https://postimg.cc" alt="На пляже">
                 <div class="card-overlay">🏖 На пляже</div>
             </div>
-            <div class="phone-template-card">
+            <div class="phone-template-card" onclick="selectTextImageStyle('🔮 Темная душа', 'https://postimg.cc')">
                 <img src="https://postimg.cc" alt="Темная душа">
                 <div class="card-overlay">🔮 Темная душа</div>
             </div>
-            <div class="phone-template-card">
+            <div class="phone-template-card" onclick="selectTextImageStyle('🌅 Закат на море', 'https://postimg.cc')">
                 <img src="https://postimg.cc" alt="Закат на море">
                 <div class="card-overlay">🌅 Закат на море</div>
             </div>
-            <div class="phone-template-card">
+            <div class="phone-template-card" onclick="selectTextImageStyle('🌸 Розовая милота', 'https://postimg.cc')">
                 <img src="https://postimg.cc" alt="Розовая милота">
                 <div class="card-overlay">🌸 Розовая милота</div>
+            </div>
+        </div>
+
+        <!-- ШАГ 2: БЛОК НАСТРОЕК (Изначально скрыт через display: none) -->
+        <div id="text_image_settings_block" style="display: none;">
+            
+            <!-- Огромное увеличенное превью выбранного стиля в формате 9:16 -->
+            <div class="tryon-card" style="margin-bottom: 20px; padding: 6px;">
+                <img id="text_image_large_preview" src="" style="width: 100%; height: auto; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 10px; display: block;">
+            </div>
+
+            <p style="font-size: 14px; text-align: center; color: var(--tg-theme-hint-color, #666); margin-bottom: 5px;">Выберите формат финального кадра:</p>
+            <div class="ratio-selector">
+                <div class="ratio-btn active" id="text_ratio_9_16" onclick="setTextRatio('9:16')">📱 9:16</div>
+                <div class="ratio-btn" id="text_ratio_3_4" onclick="setTextRatio('3:4')">📸 3:4</div>
+                <div class="ratio-btn" id="text_ratio_1_1" onclick="setTextRatio('1:1')">🔲 1:1</div>
+                <div class="ratio-btn" id="text_ratio_4_3" onclick="setTextRatio('4:3')">🖼 4:3</div>
+                <div class="ratio-btn" id="text_ratio_16_9" onclick="setTextRatio('16:9')">💻 16:9</div>
+            </div>
+
+            <p style="font-size: 14px; text-align: center; color: var(--tg-theme-hint-color, #666); margin-bottom: 5px;">Выходное качество:</p>
+            <div class="quality-selector">
+                <div class="quality-btn active" id="text_qual_schnell" onclick="setQuality('schnell')">⚡ Standard</div>
+                <div class="quality-btn" id="text_qual_dev" onclick="setQuality('dev')">💎 Pro / 2K</div>
+                <div class="quality-btn" id="text_qual_ultra" onclick="setQuality('ultra_4k')">🔥 Ultra 4K</div>
             </div>
         </div>
     </div>
@@ -201,6 +210,7 @@
             <h1>Настройка Face Swap</h1>
         </div>
 
+        <!-- КАРТОЧКА-ОБРАЗЕЦ ИЗ 3 ШАГОВ НАВЕРХУ -->
         <div class="tryon-card" style="margin-bottom: 20px;">
             <div class="tryon-card-title">💡 Как это работает (Пример):</div>
             <div class="swap-steps-grid">
@@ -234,6 +244,7 @@
             <div class="quality-btn" id="swap_qual_ultra" onclick="setSwapQuality('ultra_4k')">🔥 Ultra</div>
         </div>
 
+        <!-- Готовые пресеты для клика -->
         <div class="phone-templates-grid">
             <div class="phone-template-card" onclick="selectReadyTemplate('girl_face', '3:4')">
                 <img src="https://postimg.cc">
@@ -250,15 +261,32 @@
     <!-- ПОДРЕЖИМ 3: ПРИМЕРКА ОДЕЖДЫ                -->
     <!-- ========================================== -->
     <div id="tryon" class="screen">
-        <!-- Кнопка возврата назад в главное фото-меню -->
         <button class="back-btn" onclick="openScreen('foto')">⬅️ В меню</button>
         
         <div class="header" style="margin-bottom: 10px; text-align: center;">
             <h1>Настройка примерки одежды</h1>
-            <p style="font-size: 14px; color: var(--tg-theme-hint-color, #666);">Выберите нужные параметры кадра:</p>
         </div>
 
-        <!-- Кнопки формата кадра -->
+        <!-- КАРТОЧКА-ОБРАЗЕЦ ИЗ 3 ШАГОВ НАВЕРХУ -->
+        <div class="tryon-card" style="margin-bottom: 20px;">
+            <div class="tryon-card-title">💡 Как это работает (Пример):</div>
+            <div class="swap-steps-grid">
+                <div style="position: relative;">
+                    <img src="https://postimg.cc" alt="Фигура">
+                    <div style="position: absolute; bottom: 4px; left: 4px; background: rgba(0,0,0,0.7); color: #fff; font-size: 9px; padding: 2px 4px; border-radius: 4px; font-weight: bold;">1. Фигура</div>
+                </div>
+                <div style="position: relative;">
+                    <img src="https://postimg.cc" alt="Вещь">
+                    <div style="position: absolute; bottom: 4px; left: 4px; background: rgba(0,0,0,0.7); color: #fff; font-size: 9px; padding: 2px 4px; border-radius: 4px; font-weight: bold;">2. Вещь</div>
+                </div>
+                <div style="position: relative;">
+                    <img src="https://postimg.cc" alt="Итог">
+                    <div style="position: absolute; bottom: 4px; left: 4px; background: #28a745; color: #fff; font-size: 9px; padding: 2px 4px; border-radius: 4px; font-weight: bold;">3. Итог 🔥</div>
+                </div>
+            </div>
+        </div>
+
+        <p style="font-size: 14px; text-align: center; color: var(--tg-theme-hint-color, #666); margin-bottom: 5px;">Выберите формат финального кадра:</p>
         <div class="ratio-selector">
             <div class="ratio-btn active" id="tryon_ratio_9_16" onclick="setTryOnRatio('9:16')">📱 9:16</div>
             <div class="ratio-btn" id="tryon_ratio_3_4" onclick="setTryOnRatio('3:4')">📸 3:4</div>
@@ -267,50 +295,105 @@
             <div class="ratio-btn" id="tryon_ratio_16_9" onclick="setTryOnRatio('16:9')">💻 16:9</div>
         </div>
 
-        <!-- Кнопки качества генерации -->
         <div class="quality-selector">
             <div class="quality-btn active" id="tryon_qual_schnell" onclick="setTryOnQuality('schnell')">⚡ Standard</div>
             <div class="quality-btn" id="tryon_qual_dev" onclick="setTryOnQuality('dev')">💎 Pro</div>
             <div class="quality-btn" id="tryon_qual_ultra" onclick="setTryOnQuality('ultra_4k')">🔥 Ultra</div>
         </div>
-
-        <div style="font-weight: bold; font-size: 14px; margin-top: 20px; margin-bottom: 5px; color: var(--tg-theme-text-color, #222); text-align: center;">
-            🔥 Примеры примерки вещей:
+    </div>
+        <!-- ========================================== -->
+    <!-- ПОДРЕЖИМ 4: СМЕНА ФОНА                     -->
+    <!-- ========================================== -->
+    <div id="bg_change" class="screen">
+        <button class="back-btn" onclick="openScreen('foto')">⬅️ В меню</button>
+        
+        <div class="header" style="margin-bottom: 10px; text-align: center;">
+            <h1>Настройка смены фона</h1>
         </div>
 
-        <!-- 
-          ИСПРАВЛЕНО: Теперь примеры одежды выводятся в виде сетки небольших аккуратных прямоугольников 
-          через твои стандартные классы phone-templates-grid, точно как в Face Swap и Фото+Текст!
-        -->
-        <div class="phone-templates-grid">
-            
-            <!-- Окошко 1: Бомбер -->
-            <div class="phone-template-card">
-                <img src="https://postimg.cc" alt="Кожаный бомбер">
-                <div class="card-overlay">✨ Кожаный бомбер</div>
+        <!-- КАРТОЧКА-ОБРАЗЕЦ ИЗ 3 ШАГОВ НАВЕРХУ -->
+        <div class="tryon-card" style="margin-bottom: 20px;">
+            <div class="tryon-card-title">💡 Как это работает (Пример):</div>
+            <div class="swap-steps-grid">
+                <!-- Шаг 1: Исходный объект -->
+                <div style="position: relative;">
+                    <img src="https://postimg.cc" alt="Объект">
+                    <div style="position: absolute; bottom: 4px; left: 4px; background: rgba(0,0,0,0.7); color: #fff; font-size: 9px; padding: 2px 4px; border-radius: 4px; font-weight: bold;">1. Объект</div>
+                </div>
+                <!-- Шаг 2: Описание нового фона текстом -->
+                <div style="position: relative;">
+                    <img src="https://postimg.cc" alt="Текст">
+                    <div style="position: absolute; bottom: 4px; left: 4px; background: rgba(0,0,0,0.7); color: #fff; font-size: 9px; padding: 2px 4px; border-radius: 4px; font-weight: bold;">2. Текст</div>
+                </div>
+                <!-- Шаг 3: Итог генерации -->
+                <div style="position: relative;">
+                    <img src="https://postimg.cc" alt="Итог">
+                    <div style="position: absolute; bottom: 4px; left: 4px; background: #28a745; color: #fff; font-size: 9px; padding: 2px 4px; border-radius: 4px; font-weight: bold;">3. Итог 🔥</div>
+                </div>
             </div>
-            
-            <!-- Окошко 2: Зимнее худи -->
-            <div class="phone-template-card">
-                <img src="https://postimg.cc" alt="Зимнее худи">
-                <div class="card-overlay">✨ Зимнее худи</div>
-            </div>
+        </div>
 
-            <!-- Окошко 3: Классический пиджак -->
-            <div class="phone-template-card">
-                <img src="https://postimg.cc" alt="Пиджак">
-                <div class="card-overlay">✨ Классический пиджак</div>
-            </div>
+        <p style="font-size: 14px; text-align: center; color: var(--tg-theme-hint-color, #666); margin-bottom: 5px;">Выберите формат финального кадра:</p>
+        <div class="ratio-selector">
+            <div class="ratio-btn active" id="bg_ratio_9_16" onclick="setBgRatio('9:16')">📱 9:16</div>
+            <div class="ratio-btn" id="bg_ratio_3_4" onclick="setBgRatio('3:4')">📸 3:4</div>
+            <div class="ratio-btn" id="bg_ratio_1_1" onclick="setBgRatio('1:1')">🔲 1:1</div>
+            <div class="ratio-btn" id="bg_ratio_4_3" onclick="setBgRatio('4:3')">🖼 4:3</div>
+            <div class="ratio-btn" id="bg_ratio_16_9" onclick="setBgRatio('16:9')">💻 16:9</div>
+        </div>
 
-            <!-- Окошко 4: Летнее платье -->
-            <div class="phone-template-card">
-                <img src="https://postimg.cc" alt="Летнее платье">
-                <div class="card-overlay">✨ Летнее платье</div>
-            </div>
-
+        <div class="quality-selector">
+            <div class="quality-btn active" id="bg_qual_schnell" onclick="setBgQuality('schnell')">⚡ Standard</div>
+            <div class="quality-btn" id="bg_qual_dev" onclick="setBgQuality('dev')">💎 Pro</div>
+            <div class="quality-btn" id="bg_qual_ultra" onclick="setBgQuality('ultra_4k')">🔥 Ultra</div>
         </div>
     </div>
+
     <script>
+                // Системная переменная, чтобы понимать, на каком шаге внутри Фото+Текст находится юзер
+        let isTextImageStyleSelected = false; 
+        let selectedStyleName = ""; // Сюда запишем имя выбранного стиля
+
+        // Функция срабатывает, когда юзер тапает по маленькому прямоугольнику-примеру
+        function selectTextImageStyle(styleName, imageUrl) {
+            isTextImageStyleSelected = true;
+            selectedStyleName = styleName;
+
+            // 1. Меняем заголовки на экране на название стиля
+            document.getElementById('text_image_title').innerText = styleName;
+            document.getElementById('text_image_subtitle').innerText = "Настройте формат и качество для генерации:";
+            document.getElementById('text_image_back_btn').innerText = "⬅️ К галерее";
+
+            // 2. Подставляем ссылку в большое превью и переключаем видимость блоков
+            document.getElementById('text_image_large_preview').src = imageUrl;
+            document.getElementById('text_image_gallery').style.display = "none"; // Прячем плитку
+            document.getElementById('text_image_settings_block').style.display = "block"; // Показываем настройки
+
+            // 3. Запускаем пересчет нативной нижней кнопки Telegram (она плавно появится)
+            updateFotoMainButton();
+        }
+
+        // Умный обработчик кнопки "Назад" на экране Фото+Текст
+        function handleTextBackClick() {
+            if (isTextImageStyleSelected) {
+                // Если юзер был в настройках — возвращаем его к плитке примеров
+                isTextImageStyleSelected = false;
+                
+                document.getElementById('text_image_title').innerText = "Примеры генераций Фото + Текст";
+                document.getElementById('text_image_subtitle').innerText = "Выберите желаемый стиль для настройки:";
+                document.getElementById('text_image_back_btn').innerText = "⬅️ В меню";
+
+                document.getElementById('text_image_gallery').style.style.display = "grid"; // Возвращаем сетку
+                document.getElementById('text_image_settings_block').style.display = "none"; // Прячем настройки
+                
+                // Пересчитываем кнопку Telegram (она автоматически спрячется, так как стиль не выбран)
+                updateFotoMainButton();
+            } else {
+                // Если юзер и так был в галерее — возвращаем его в главное меню foto
+                openScreen('foto');
+            }
+        }
+
         const tg = window.Telegram.WebApp;
 
         // Инициализация переменных настроек (Стартовый режим переименован в 'foto')
@@ -359,9 +442,23 @@
 
             // Достаем сохраненные настройки строго под текущий активный подрежим
             if (currentActiveMode === 'text_image') {
+                // ПРЕДОХРАНИТЕЛЬ: Если стиль в галерее еще не выбран — кнопку Телеграма не показываем!
+                if (!isTextImageStyleSelected) {
+                    tg.MainButton.hide();
+                    return;
+                }
                 currentRatio = selectedTextRatio;
                 currentQuality = getReadableQuality(selectedTextQuality);
-                currentCallback = sendPhotoTextData;
+                
+                // Модифицируем отправку: передаем боту не просто настройки, но и имя выбранного стиля!
+                currentCallback = function() {
+                    sendToTelegram({ 
+                        mode_trigger: 'text_image', 
+                        chosen_style: selectedStyleName, // Передаст боту, например, "🏖 На пляже"
+                        aspect_ratio: selectedTextRatio, 
+                        quality: selectedTextQuality 
+                    });
+                };
             } 
             else if (currentActiveMode === 'face_swap') {
                 currentRatio = selectedSwapRatio;

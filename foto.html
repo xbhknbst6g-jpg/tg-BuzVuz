@@ -95,6 +95,29 @@
             from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
         }
+                /* Компактный контейнер для увеличенного фото (Шаг 2) */
+        .text-image-compact-preview {
+            width: 100%;
+            display: flex;
+            justify-content: center; /* Центрируем картинку на экране */
+            margin-bottom: 12px;
+        }
+
+        /* 
+          Задаем жесткое ограничение по высоте (240px).
+          Картинка сохранит пропорции 9:16, но сожмется,
+          освободив место для кнопок размеров и качества!
+        */
+        #text_image_large_preview {
+            height: 240px; /* Фиксированная аккуратная высота */
+            width: auto;   /* Ширина подстроится автоматически под 9:16 */
+            aspect-ratio: 9 / 16;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            display: block;
+        }
+
     </style>
 </head>
 <body>
@@ -174,15 +197,16 @@
             </div>
         </div>
 
-        <!-- ШАГ 2: БЛОК НАСТРОЕК (Изначально скрыт через display: none) -->
+        <!-- ШАГ 2: БЛОК НАСТРОЕК (Изначально скрыт) -->
         <div id="text_image_settings_block" style="display: none;">
             
-            <!-- Огромное увеличенное превью выбранного стиля в формате 9:16 -->
-            <div class="tryon-card" style="margin-bottom: 20px; padding: 6px;">
-                <img id="text_image_large_preview" src="" style="width: 100%; height: auto; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 10px; display: block;">
+            <!-- ИСПРАВЛЕНО: Новый компактный контейнер, который держит картинку по центру и сжимает её -->
+            <div class="text-image-compact-preview">
+                <img id="text_image_large_preview" src="" alt="Выбранный стиль">
             </div>
 
-            <p style="font-size: 14px; text-align: center; color: var(--tg-theme-hint-color, #666); margin-bottom: 5px;">Выберите формат финального кадра:</p>
+            <!-- Ниже сразу идут кнопки формата и качества — теперь они видны без скролла! -->
+            <p style="font-size: 13px; text-align: center; color: var(--tg-theme-hint-color, #666); margin: 5px 0;">Выберите формат кадра:</p>
             <div class="ratio-selector">
                 <div class="ratio-btn active" id="text_ratio_9_16" onclick="setTextRatio('9:16')">📱 9:16</div>
                 <div class="ratio-btn" id="text_ratio_3_4" onclick="setTextRatio('3:4')">📸 3:4</div>
@@ -191,7 +215,7 @@
                 <div class="ratio-btn" id="text_ratio_16_9" onclick="setTextRatio('16:9')">💻 16:9</div>
             </div>
 
-            <p style="font-size: 14px; text-align: center; color: var(--tg-theme-hint-color, #666); margin-bottom: 5px;">Выходное качество:</p>
+            <p style="font-size: 13px; text-align: center; color: var(--tg-theme-hint-color, #666); margin: 5px 0;">Выходное качество:</p>
             <div class="quality-selector">
                 <div class="quality-btn active" id="text_qual_schnell" onclick="setQuality('schnell')">⚡ Standard</div>
                 <div class="quality-btn" id="text_qual_dev" onclick="setQuality('dev')">💎 Pro / 2K</div>

@@ -283,8 +283,9 @@
             color: #fff;
             text-align: center !important;
             display: flex !important;
-            justify-content: center !important; 
             align-items: center !important;
+            justify-content: space-between !important; 
+            gap: 12px !important;
             
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
@@ -810,11 +811,11 @@
             
             // Чистые аккуратные цифры без лишних слов «Вертикальный», «Портретный»
             listEl.innerHTML = `
-                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('9:16')"><span>9:16</span></button></li>
-                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('3:4')"><span>3:4</span></button></li>
-                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('1:1')"><span>1:1</span></button></li>
-                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('4:3')"><span>4:3</span></button></li>
-                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('16:9')"><span>16:9</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('9:16')"><span style="width: 100%; text-align: center;">9:16</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('3:4')"><span style="width: 100%; text-align: center;">3:4</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('1:1')"><span style="width: 100%; text-align: center;">1:1</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('4:3')"><span style="width: 100%; text-align: center;">4:3</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('16:9')"><span style="width: 100%; text-align: center;">16:9</span></button></li>
             `;
 
             document.getElementById('custom_action_sheet').classList.add('active');

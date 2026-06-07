@@ -97,27 +97,31 @@
     }
 
     /* Компактный контейнер для увеличенного фото (Шаг 2) */
+    /* 📸 УВЕЛИЧЕННОЕ КОМПАКТНОЕ ПРЕВЬЮ ПО ЦЕНТРУ С ПРИЖАТИЕМ КНОПОК ВНИЗ */
     .text-image-compact-preview {
         width: 100%;
-        display: flex;
-        justify-content: center; /* Центрируем картинку на экране */
-        margin-bottom: 12px;
+        /* Увеличиваем высоту картинки, чтобы она занимала максимум свободного места */
+        height: calc(100vh - 210px) !important; 
+        max-height: 520px !important; /* Ограничитель для больших мониторов ПК */
+        margin: 0 auto 20px auto !important; /* Отступ снизу толкает кнопки к полу */
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        overflow: hidden !important;
+        border-radius: 16px !important;
+        background: #000000 !important; /* Черная подложка, если пропорции фото не на весь экран */
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+        box-sizing: border-box !important;
     }
 
-    /* 
-      Задаем жесткое ограничение по высоте (240px).
-      Картинка сохранит пропорции 9:16, но сожмется,
-      освободив место для кнопок размеров и качества!
-    */
-    #text_image_large_preview {
-        height: 240px; /* Фиксированная аккуратная высота */
-        width: auto;   /* Ширина подстроится автоматически под 9:16 */
-        aspect-ratio: 9 / 16;
-        object-fit: cover;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        display: block;
+    /* Сама картинка внутри контейнера */
+    .text-image-compact-preview img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: contain !important; /* Картинка полностью помещается без обрезки голов и ног */
+        display: block !important;
     }
+
         
     /* НАСТРОЙКА КНОПОК НЕОНОВЫХ  */
     /* Горизонтальная ультракомпактная панель */

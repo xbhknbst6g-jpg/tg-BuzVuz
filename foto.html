@@ -651,19 +651,20 @@
             }
         }
 
-        // 3. ВЫЗОВ НАТИВНОЙ ШТОРКИ КАЧЕСТВА (Action Sheet строго снизу)
+        // 3. ВЫЗОВ НАСТОЯЩЕЙ ШТОРКИ КАЧЕСТВА (Action Sheet строго снизу)
         function showNativeQualityPopup() {
             if (!tg) return;
             
+            // ИСПРАВЛЕНО: Убраны параметры message и type, которые ломали Action Sheet
             tg.showActionSheet({
-                title: "КАЧЕСТВО", // Бледный заголовок внутри шторки
+                title: "КАЧЕСТВО",
                 buttons: [
                     { id: "schnell", text: "⚡ Standard  •  1🪙" },
                     { id: "dev", text: "💎 2K Pro  •  1🪙" },
                     { id: "ultra_4k", text: "🔥 4K Ultra  •  1🪙" }
                 ]
             }, function(buttonId) {
-                if (!buttonId) return; // Если юзер просто смахнул шторку вниз
+                if (!buttonId) return; 
                 
                 if (buttonId === "schnell") {
                     selectedTextQuality = "schnell";
@@ -678,12 +679,12 @@
             });
         }
 
-        // 4. ВЫЗОВ НАТИВНОЙ ШТОРКИ ФОРМАТА (Action Sheet строго снизу)
+        // 4. ВЫЗОВ НАСТОЯЩЕЙ ШТОРКИ ФОРМАТА (Action Sheet строго снизу)
         function showNativeRatioPopup() {
             if (!tg) return;
 
             tg.showActionSheet({
-                title: "СООТНОШЕНИЕ СТОРОН", // Бледный заголовок внутри шторки
+                title: "СООТНОШЕНИЕ СТОРОН",
                 buttons: [
                     { id: "9:16", text: "📱 Вертикальный 9:16" },
                     { id: "3:4", text: "📸 Портретный 3:4" },

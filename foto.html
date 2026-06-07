@@ -499,10 +499,26 @@
                 if (el) el.classList.remove('active');
             });
             
+            // ДОБАВЛЕНО: Если пользователь выходит в главное меню 'foto', 
+            // мы принудительно сбрасываем открытые под-шаги экрана Фото+Текст, 
+            // чтобы при следующем заходе он гарантированно увидел заново чистую галерею прямоугольников!
+            if (screenName === 'foto') {
+                isTextImageStyleSelected = false;
+                selectedStyleName = "";
+                document.getElementById('text_image_title').innerText = "Примеры генераций Фото + Текст";
+                document.getElementById('text_image_subtitle').innerText = "Выберите желаемый стиль для настройки:";
+                document.getElementById('text_image_back_btn').innerText = "⬅️ В меню";
+                document.getElementById('text_image_large_preview').src = "";
+                document.getElementById('text_image_settings_block').style.display = "none";
+                document.getElementById('text_image_gallery').style.display = "grid";
+            }
+
+            if (tg && tg.MainButton) tg.MainButton.hide();
+
             const activeScreenEl = document.getElementById(screenName);
             if (activeScreenEl) {
                 activeScreenEl.classList.add('active');
-                updateFotoMainButton(); // Принудительно обновляем текст кнопки при смене экрана
+                updateFotoMainButton(); 
             }
         }
 

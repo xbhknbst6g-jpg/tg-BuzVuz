@@ -155,33 +155,25 @@
         text-overflow: ellipsis;
     }
 
-        /* 💊 НАСТОЯЩИЕ КРУГЛЫЕ КНОПКИ-КАПСУЛЫ */
+        /* 💊 Тонкие изящные кнопки-капсулы, как в Nano Banana */
         .capsule-btn {
-            -webkit-appearance: none; appearance: none; outline: none;
+            -webkit-appearance: none !important; appearance: none !important; outline: none !important;
+            box-shadow: none !important; border: none !important; /* Убираем рамки */
             width: 100%;
-            padding: 12px 8px;
-            font-size: 13px; 
-            font-weight: 800; /* Делаем текст жирным и читаемым */
-            text-align: center;
-            border: 2px solid var(--tg-theme-button-color, #0088cc) !important; /* Яркая синяя рамка */
-            border-radius: 30px !important; /* Жестко закругляем в идеальную капсулу */
-            background: rgba(0, 136, 204, 0.06) !important; /* Легкий синеватый нативный фон */
-            color: var(--tg-theme-button-color, #0088cc) !important; /* Синий текст */
+            padding: 8px 12px !important; /* Делаем кнопку компактной по высоте */
+            font-size: 14px !important; 
+            font-weight: 500 !important; /* Текст не жирный, а аккуратный */
+            text-align: center !important;
+            border-radius: 20px !important; /* Мягкое скругление капсулы */
+            background: rgba(255, 255, 255, 0.08) !important; /* Очень легкий полупрозрачный фон */
+            color: #fff !important; /* Белый аккуратный текст */
             cursor: pointer;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            box-shadow: 0 2px 8px rgba(0, 136, 204, 0.1);
-            transition: all 0.15s ease;
-            -webkit-tap-highlight-color: transparent;
+            display: flex !important; align-items: center !important; justify-content: center !important; gap: 6px !important;
+            transition: background 0.15s ease !important;
+            -webkit-tap-highlight-color: transparent !important;
         }
         .capsule-btn:active {
-            transform: scale(0.95);
-            background: rgba(0, 136, 204, 0.15) !important;
+            background: rgba(255, 255, 255, 0.15) !important;
         }
 
 
@@ -659,22 +651,19 @@
             }
         }
 
-        // 3. ВЫЗОВ НАТИВНОГО МЕНЮ ВЫБОРА КАЧЕСТВА TELEGRAM (Action Sheet)
+        // 3. ВЫЗОВ НАТИВНОЙ ШТОРКИ КАЧЕСТВА (Action Sheet строго снизу)
         function showNativeQualityPopup() {
             if (!tg) return;
             
-            const params = {
-                title: "Качество генерации",
-                message: "Выберите необходимое разрешение (Стоимость: 1🪙)",
+            tg.showActionSheet({
+                title: "КАЧЕСТВО", // Бледный заголовок внутри шторки
                 buttons: [
-                    { id: "schnell", type: "default", text: "⚡ Standard (1🪙)" },
-                    { id: "dev", type: "default", text: "💎 2K Pro (1🪙)" },
-                    { id: "ultra_4k", type: "default", text: "🔥 4K Ultra (1🪙)" }
+                    { id: "schnell", text: "⚡ Standard  •  1🪙" },
+                    { id: "dev", text: "💎 2K Pro  •  1🪙" },
+                    { id: "ultra_4k", text: "🔥 4K Ultra  •  1🪙" }
                 ]
-            };
-
-            tg.showPopup(params, function(buttonId) {
-                if (!buttonId || buttonId === "cancel") return;
+            }, function(buttonId) {
+                if (!buttonId) return; // Если юзер просто смахнул шторку вниз
                 
                 if (buttonId === "schnell") {
                     selectedTextQuality = "schnell";
@@ -686,38 +675,33 @@
                     selectedTextQuality = "ultra_4k";
                     document.getElementById('btn_text_quality').innerHTML = `🔥 4K Ultra`;
                 }
-                updateNeoStartButtonText();
             });
         }
 
-        // 4. ВЫЗОВ НАТИВНОГО МЕНЮ ВЫБОРА СООТНОШЕНИЯ СТОРОН TELEGRAM
+        // 4. ВЫЗОВ НАТИВНОЙ ШТОРКИ ФОРМАТА (Action Sheet строго снизу)
         function showNativeRatioPopup() {
             if (!tg) return;
 
-            const params = {
-                title: "Соотношение сторон кадра",
-                message: "Выберите формат выводимого изображения",
+            tg.showActionSheet({
+                title: "СООТНОШЕНИЕ СТОРОН", // Бледный заголовок внутри шторки
                 buttons: [
-                    { id: "9:16", type: "default", text: "📱 Вертикальный 9:16" },
-                    { id: "3:4", type: "default", text: "📸 Портретный 3:4" },
-                    { id: "1:1", type: "default", text: "🔲 Квадратный 1:1" },
-                    { id: "4:3", type: "default", text: "🖼 Альбомный 4:3" },
-                    { id: "16:9", type: "default", text: "💻 Широкоформатный 16:9" }
+                    { id: "9:16", text: "📱 Вертикальный 9:16" },
+                    { id: "3:4", text: "📸 Портретный 3:4" },
+                    { id: "1:1", text: "🔲 Квадратный 1:1" },
+                    { id: "4:3", text: "🖼 Альбомный 4:3" },
+                    { id: "16:9", text: "💻 Широкоформатный 16:9" }
                 ]
-            };
-
-            tg.showPopup(params, function(buttonId) {
-                if (buttonId && buttonId !== "cancel") {
-                    selectedTextRatio = buttonId;
-                    let icon = "📱";
-                    if (buttonId === "3:4") icon = "📸";
-                    if (buttonId === "1:1") icon = "🔲";
-                    if (buttonId === "4:3") icon = "🖼";
-                    if (buttonId === "16:9") icon = "💻";
-                    
-                    document.getElementById('btn_text_ratio').innerHTML = `${icon} ${buttonId}`;
-                    updateNeoStartButtonText();
-                }
+            }, function(buttonId) {
+                if (!buttonId) return;
+                
+                selectedTextRatio = buttonId;
+                let icon = "📱";
+                if (buttonId === "3:4") icon = "📸";
+                if (buttonId === "1:1") icon = "🔲";
+                if (buttonId === "4:3") icon = "🖼";
+                if (buttonId === "16:9") icon = "💻";
+                
+                document.getElementById('btn_text_ratio').innerHTML = `${icon} ${buttonId}`;
             });
         }
 

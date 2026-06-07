@@ -203,6 +203,114 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+                /* 📱 СОБСТВЕННАЯ КАСТOMНАЯ ШТОРКА (ACTION SHEET) */
+        .custom-sheet-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(2px);
+            z-index: 9999;
+            display: none; /* Изначально скрыта */
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        
+        .custom-sheet-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .custom-sheet-panel {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: #1c1c1e; /* Нативный темный фон шторки Telegram */
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            padding: 16px;
+            transform: translateY(100%);
+            transition: transform 0.25s cubic-bezier(0.1, 0.7, 0.1, 1);
+            color: #fff;
+            box-sizing: border-box;
+        }
+        
+        .custom-sheet-overlay.active .custom-sheet-panel {
+            transform: translateY(0);
+        }
+
+        /* Заголовок шторки */
+        .custom-sheet-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #8e8e93; /* Бледный серый заголовок */
+            text-align: center;
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Кнопки внутри списка */
+        .custom-sheet-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            background: #2c2c2e; /* Фон контейнера списка */
+            border-radius: 12px;
+            overflow: hidden;
+            padding: 0; margin: 0 0 12px 0;
+            list-style: none;
+        }
+
+        .custom-sheet-item {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 16px;
+            font-weight: 500;
+            background: none;
+            border: none;
+            color: #fff;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between; /* Прижимает монеты/цену вправо */
+            align-items: center;
+            transition: background 0.1s ease;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .custom-sheet-item:not(:last-child) {
+            border-bottom: 0.5px solid rgba(255, 255, 255, 0.05); /* Тонкий разделитель */
+        }
+
+        .custom-sheet-item:active {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .custom-sheet-item .coin-price {
+            color: #8e8e93;
+            font-size: 14px;
+        }
+
+        /* Кнопка Закрыть в самом низу шторки */
+        .custom-sheet-close-btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            background: #2c2c2e;
+            color: #ff3b30; /* Красный текст */
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            transition: background 0.1s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .custom-sheet-close-btn:active {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+
     </style>
 </head>
 <body>
@@ -512,6 +620,18 @@
             </div>
         </div> <!-- Конец строки single-row-controls -->
     </div> <!-- Конец экрана bg_change -->
+        <!-- ========================================== -->
+    <!-- УНИВЕРСАЛЬНАЯ КАСТОМНАЯ ШТОРКА (HTML ПОДЛОЖКА) -->
+    <!-- ========================================== -->
+    <div id="custom_action_sheet" class="custom-sheet-overlay" onclick="closeCustomSheet()">
+        <div class="custom-sheet-panel" onclick="event.stopPropagation()">
+            <div id="custom_sheet_title" class="custom-sheet-title">Заголовок</div>
+            <ul id="custom_sheet_list" class="custom-sheet-list">
+                <!-- Сюда JavaScript будет сам на лету подставлять нужные списки -->
+            </ul>
+            <button class="custom-sheet-close-btn" onclick="closeCustomSheet()">Закрыть</button>
+        </div>
+    </div>
 
     <script>
 
@@ -695,75 +815,66 @@
 
 
         // ====================================================================================
-        // 7. ВЫЗОВЫ НАТИВНЫХ МЕНЮ ДЛЯ ЭКРАНА «ФОТО + ТЕКСТ»
+        // 7. УПРАВЛЕНИЕ КАСТОМНОЙ ВЫЕЗЖАЮЩЕЙ ШТОРКОЙ СПИСКОМ
         // ====================================================================================
 
-        // ВЫЗОВ НАТИВНОГО МЕНЮ ВЫБОРА КАЧЕСТВА ФОТО + ТЕКСТ
+        // Открытие шторки для выбора КАЧЕСТВА Фото + Текст
         function showNativeQualityPopup() {
-            if (!tg) return;
+            const titleEl = document.getElementById('custom_sheet_title');
+            const listEl = document.getElementById('custom_sheet_list');
+            if (!titleEl || !listEl) return;
+
+            titleEl.innerText = "КАЧЕСТВО ГЕНЕРАЦИИ";
             
-            tg.showPopup({
-                title: "Качество генерации",
-                message: "Выберите необходимое разрешение (Стоимость: 1🪙)",
-                buttons: [
-                    { id: "schnell", type: "default", text: "⚡ Standard (1🪙)" },
-                    { id: "dev", type: "default", text: "💎 2K Pro (1🪙)" },
-                    { id: "ultra_4k", type: "default", text: "🔥 4K Ultra (1🪙)" },
-                    { type: "cancel", text: "Закрыть" }
-                ]
-            }, function(buttonId) {
-                if (buttonId && buttonId !== "cancel") {
-                    selectedTextQuality = buttonId;
-                    
-                    let icon = "⚡";
-                    let label = "Standard";
-                    
-                    if (buttonId === "dev") {
-                        icon = "💎";
-                        label = "2K Pro";
-                    }
-                    if (buttonId === "ultra_4k") {
-                        icon = "🔥";
-                        label = "4K Ultra";
-                    }
-                    
-                    // Обновляем кнопку Качества Фото + Текст по твоему методу!
-                    document.getElementById('btn_text_quality').innerHTML = `${icon} ${label}`;
-                    updateNeoStartButtonText();
-                }
-            });
+            // Генерируем пункты списка, как на твоем скриншоте (цены прижаты вправо)
+            listEl.innerHTML = `
+                <li><button class="custom-sheet-item" onclick="selectCustomQuality('schnell', '⚡ Standard')"><span>⚡ Standard</span><span class="coin-price">1🪙</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectCustomQuality('dev', '💎 2K Pro')"><span>💎 2K Pro</span><span class="coin-price">1🪙</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectCustomQuality('ultra_4k', '🔥 4K Ultra')"><span>🔥 4K Ultra</span><span class="coin-price">1🪙</span></button></li>
+            `;
+
+            document.getElementById('custom_action_sheet').classList.add('active');
         }
 
-        // ВЫЗОВ НАТИВНОГО МЕНЮ ВЫБОРА СООТНОШЕНИЯ СТОРОН ФОТО + ТЕКСТ
-        function showNativeRatioPopup() {
-            if (!tg) return;
+        // Обработчик выбора качества из шторки
+        function selectCustomQuality(id, text) {
+            selectedTextQuality = id;
+            document.getElementById('btn_text_quality').innerHTML = text;
+            updateNeoStartButtonText();
+            closeCustomSheet();
+        }
 
-            tg.showPopup({
-                title: "Соотношение сторон кадра",
-                message: "Выберите формат выводимого изображения",
-                buttons: [
-                    { id: "9:16", type: "default", text: "📱 Вертикальный 9:16" },
-                    { id: "3:4", type: "default", text: "📸 Портретный 3:4" },
-                    { id: "1:1", type: "default", text: "🔲 Квадратный 1:1" },
-                    { id: "4:3", type: "default", text: "🖼 Альбомный 4:3" },
-                    { id: "16:9", type: "default", text: "💻 Широкоформатный 16:9" },
-                    { type: "cancel", text: "Закрыть" }
-                ]
-            }, function(buttonId) {
-                if (buttonId && buttonId !== "cancel") {
-                    selectedTextRatio = buttonId;
-                    
-                    let icon = "📱";
-                    if (buttonId === "3:4") icon = "📸";
-                    if (buttonId === "1:1") icon = "🔲";
-                    if (buttonId === "4:3") icon = "🖼";
-                    if (buttonId === "16:9") icon = "💻";
-                    
-                    // Обновляем кнопку Формата Фото + Текст по твоему методу!
-                    document.getElementById('btn_text_ratio').innerHTML = `${icon} ${buttonId}`;
-                    updateNeoStartButtonText();
-                }
-            });
+        // Открытие шторки для выбора СООТНОШЕНИЯ СТОРОН Фото + Текст
+        function showNativeRatioPopup() {
+            const titleEl = document.getElementById('custom_sheet_title');
+            const listEl = document.getElementById('custom_sheet_list');
+            if (!titleEl || !listEl) return;
+
+            titleEl.innerText = "СООТНОШЕНИЕ СТОРОН КАДРА";
+            
+            listEl.innerHTML = `
+                <li><button class="custom-sheet-item" onclick="selectCustomRatio('9:16', '📱 9:16')"><span>📱 Вертикальный 9:16</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectCustomRatio('3:4', '📸 3:4')"><span>📸 Портретный 3:4</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectCustomRatio('1:1', '🔲 1:1')"><span>🔲 Квадратный 1:1</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectCustomRatio('4:3', '🖼 4:3')"><span>🖼 Альбомный 4:3</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectCustomRatio('16:9', '💻 16:9')"><span>💻 Широкоформатный 16:9</span></button></li>
+            `;
+
+            document.getElementById('custom_action_sheet').classList.add('active');
+        }
+
+        // Обработчик выбора соотношения сторон из шторки
+        function selectCustomRatio(id, text) {
+            selectedTextRatio = id;
+            document.getElementById('btn_text_ratio').innerHTML = text;
+            updateNeoStartButtonText();
+            closeCustomSheet();
+        }
+
+        // Функция закрытия шторки
+        function closeCustomSheet() {
+            const sheet = document.getElementById('custom_action_sheet');
+            if (sheet) sheet.classList.remove('active');
         }
 
         // ====================================================================================

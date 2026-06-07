@@ -651,20 +651,20 @@
             }
         }
 
-        // 3. ВЫЗОВ НАСТОЯЩЕЙ ШТОРКИ КАЧЕСТВА (Action Sheet строго снизу)
+        // 3. ВЫЗОВ НАТИВНОЙ ШТОРКИ КАЧЕСТВА (Строго снизу экрана через showPopup)
         function showNativeQualityPopup() {
             if (!tg) return;
             
-            // ИСПРАВЛЕНО: Убраны параметры message и type, которые ломали Action Sheet
-            tg.showActionSheet({
-                title: "КАЧЕСТВО",
+            tg.showPopup({
+                title: "КАЧЕСТВО ГЕНЕРАЦИИ",
+                message: "", // ОСТАВЛЯЕМ ПУСТЫМ! Это принудительно выкатит шторку снизу кадра
                 buttons: [
-                    { id: "schnell", text: "⚡ Standard  •  1🪙" },
-                    { id: "dev", text: "💎 2K Pro  •  1🪙" },
-                    { id: "ultra_4k", text: "🔥 4K Ultra  •  1🪙" }
+                    { id: "schnell", type: "default", text: "⚡ Standard  •  1🪙" },
+                    { id: "dev", type: "default", text: "💎 2K Pro  •  1🪙" },
+                    { id: "ultra_4k", type: "default", text: "🔥 4K Ultra  •  1🪙" }
                 ]
             }, function(buttonId) {
-                if (!buttonId) return; 
+                if (!buttonId || buttonId === "cancel") return;
                 
                 if (buttonId === "schnell") {
                     selectedTextQuality = "schnell";
@@ -676,33 +676,36 @@
                     selectedTextQuality = "ultra_4k";
                     document.getElementById('btn_text_quality').innerHTML = `🔥 4K Ultra`;
                 }
+                updateNeoStartButtonText();
             });
         }
 
-        // 4. ВЫЗОВ НАСТОЯЩЕЙ ШТОРКИ ФОРМАТА (Action Sheet строго снизу)
+        // 4. ВЫЗОВ НАТИВНОЙ ШТОРКИ ФОРМАТА (Строго снизу экрана через showPopup)
         function showNativeRatioPopup() {
             if (!tg) return;
 
-            tg.showActionSheet({
-                title: "СООТНОШЕНИЕ СТОРОН",
+            tg.showPopup({
+                title: "СООТНОШЕНИЕ СТОРОН КАДРА",
+                message: "", // ОСТАВЛЯЕМ ПУСТЫМ! Это принудительно выкатит шторку снизу кадра
                 buttons: [
-                    { id: "9:16", text: "📱 Вертикальный 9:16" },
-                    { id: "3:4", text: "📸 Портретный 3:4" },
-                    { id: "1:1", text: "🔲 Квадратный 1:1" },
-                    { id: "4:3", text: "🖼 Альбомный 4:3" },
-                    { id: "16:9", text: "💻 Широкоформатный 16:9" }
+                    { id: "9:16", type: "default", text: "📱 Вертикальный 9:16" },
+                    { id: "3:4", type: "default", text: "📸 Портретный 3:4" },
+                    { id: "1:1", type: "default", text: "🔲 Квадратный 1:1" },
+                    { id: "4:3", type: "default", text: "🖼 Альбомный 4:3" },
+                    { id: "16:9", type: "default", text: "💻 Широкоформатный 16:9" }
                 ]
             }, function(buttonId) {
-                if (!buttonId) return;
-                
-                selectedTextRatio = buttonId;
-                let icon = "📱";
-                if (buttonId === "3:4") icon = "📸";
-                if (buttonId === "1:1") icon = "🔲";
-                if (buttonId === "4:3") icon = "🖼";
-                if (buttonId === "16:9") icon = "💻";
-                
-                document.getElementById('btn_text_ratio').innerHTML = `${icon} ${buttonId}`;
+                if (buttonId && buttonId !== "cancel") {
+                    selectedTextRatio = buttonId;
+                    let icon = "📱";
+                    if (buttonId === "3:4") icon = "📸";
+                    if (buttonId === "1:1") icon = "🔲";
+                    if (buttonId === "4:3") icon = "🖼";
+                    if (buttonId === "16:9") icon = "💻";
+                    
+                    document.getElementById('btn_text_ratio').innerHTML = `${icon} ${buttonId}`;
+                    updateNeoStartButtonText();
+                }
             });
         }
 

@@ -155,50 +155,58 @@
         text-overflow: ellipsis;
     }
 
-/* Красивые круглые кнопки-капсулы, как в Telegram */
+        /* 💊 НАСТОЯЩИЕ КРУГЛЫЕ КНОПКИ-КАПСУЛЫ */
         .capsule-btn {
             -webkit-appearance: none; appearance: none; outline: none;
             width: 100%;
-            padding: 12px 6px;
-            font-size: 13px; font-weight: bold; text-align: center;
-            border: 2px solid var(--tg-theme-button-color, #0088cc); /* Синяя рамка в цвет темы ТГ */
-            border-radius: 24px; /* Закругляем углы, превращая кнопку в капсулу */
-            background: var(--tg-theme-bg-color, #fff);
-            color: var(--tg-theme-button-color, #0088cc); /* Текст синий */
+            padding: 12px 8px;
+            font-size: 13px; 
+            font-weight: 800; /* Делаем текст жирным и читаемым */
+            text-align: center;
+            border: 2px solid var(--tg-theme-button-color, #0088cc) !important; /* Яркая синяя рамка */
+            border-radius: 30px !important; /* Жестко закругляем в идеальную капсулу */
+            background: rgba(0, 136, 204, 0.06) !important; /* Легкий синеватый нативный фон */
+            color: var(--tg-theme-button-color, #0088cc) !important; /* Синий текст */
             cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0, 88, 204, 0.08); /* Легкая тень */
-            display: flex; align-items: center; justify-content: center; gap: 4px;
-            transition: all 0.15s ease; -webkit-tap-highlight-color: transparent;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            box-shadow: 0 2px 8px rgba(0, 136, 204, 0.1);
+            transition: all 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
         }
         .capsule-btn:active {
             transform: scale(0.95);
-            background: rgba(0, 136, 204, 0.08);
+            background: rgba(0, 136, 204, 0.15) !important;
         }
 
-    /* 👑 КНОПКА СТАРТ С НЕОНОВЫМ СВЕЧЕНИЕМ С КРУГЛЫМИ УГЛАМИ */
-    .neo-start-btn {
-        -webkit-appearance: none; appearance: none; outline: none;
-        width: 100%;
-        padding: 12px 5px;
-        font-size: 13px; font-weight: 900;
-        text-align: center;
-        color: #fff;
-        background: linear-gradient(135deg, #0088cc, #00bfff);
-        border: none;
-        border-radius: 20px; /* Синхронизируем округлость с капсулами */
-        cursor: pointer;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        box-shadow: 0 0 12px rgba(0, 136, 204, 0.4), inset 0 1px 1px rgba(255,255,255,0.2);
-        text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-        transition: all 0.15s ease;
-        -webkit-tap-highlight-color: transparent;
-    }
-    
-    .neo-start-btn:active {
-        transform: scale(0.96);
-        box-shadow: 0 0 4px rgba(0, 136, 204, 0.6);
-    }
+
+        /* 👑 КНОПКА СТАРТ С НЕОНОВЫМ СВЕЧЕНИЕМ С КРУГЛЫМИ УГЛАМИ */
+        .neo-start-btn {
+            -webkit-appearance: none; appearance: none; outline: none;
+            width: 100%;
+            padding: 12px 5px;
+            font-size: 13px; font-weight: 900;
+            text-align: center;
+            color: #fff;
+            background: linear-gradient(135deg, #0088cc, #00bfff);
+            border: none;
+            
+            /* ИСПРАВЛЕНО: Задаем жесткое скругление 30px, чтобы кнопка стала идеальной капсулой */
+            border-radius: 30px !important; 
+            
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 12px rgba(0, 136, 204, 0.4), inset 0 1px 1px rgba(255,255,255,0.2);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            transition: all 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
 
     </style>
 </head>
@@ -289,20 +297,18 @@
                 <img id="text_image_large_preview" src="" alt="Выбранный стиль">
             </div>
 
-            <!-- ИСПРАВЛЕНО: Кнопки-капсулы выстроены строго в одну красивую строку -->
+            <!-- ВСЕ НАСТРОЙКИ В ОДНУ СТРОКУ КНОПКАМИ-КАПСУЛАМИ (ИСПРАВЛЕНО) -->
             <div class="single-row-controls">
                 
-                <!-- Колонна 1: Качество (Кнопка-капсула, вызывающая меню Telegram) -->
+                <!-- Колонна 1: Качество (Надпись теперь внутри кнопки!) -->
                 <div class="control-col">
-                    <div class="control-label">Качество</div>
                     <button id="btn_text_quality" class="capsule-btn" onclick="showNativeQualityPopup()">
                         💎 Standard
                     </button>
                 </div>
 
-                <!-- Колонна 2: Соотношение сторон (Кнопка-капсула, вызывающая меню Telegram) -->
+                <!-- Колонна 2: Соотношение сторон (Надпись теперь внутри кнопки!) -->
                 <div class="control-col">
-                    <div class="control-label">Соотношение сторон</div>
                     <button id="btn_text_ratio" class="capsule-btn" onclick="showNativeRatioPopup()">
                         📱 9:16
                     </button>
@@ -310,7 +316,6 @@
 
                 <!-- Колонна 3: Встроенная неоновая кнопка Start -->
                 <div class="control-col control-col-btn">
-                    <div class="control-label">&nbsp;</div>
                     <button id="neo_text_submit_btn" class="neo-start-btn" onclick="sendPhotoTextData()">
                         Start (1🪙)
                     </button>
@@ -565,7 +570,7 @@
             }
         }
 
-        // 3. ВЫЗОВ НАТИВНОГО МЕНЮ ВЫБОРА КАЧЕСТВА TELEGRAM (Action Sheet)
+        // 3. ВЫЗОВ НАТИВНОГО МЕНЮ ВЫБОРА КАЧЕСТВА TELEGRAM (Исправлен вывод текста)
         function showNativeQualityPopup() {
             if (!tg) return;
             
@@ -595,7 +600,7 @@
             });
         }
 
-        // 4. ВЫЗОВ НАТИВНОГО МЕНЮ ВЫБОРА СООТНОШЕНИЯ СТОРОН TELEGRAM
+        // 4. ВЫЗОВ НАТИВНОГО МЕНЮ ВЫБОРА СООТНОШЕНИЯ СТОРОН (Исправлен вывод текста)
         function showNativeRatioPopup() {
             if (!tg) return;
 

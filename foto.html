@@ -651,17 +651,18 @@
             }
         }
 
-        // 3. ВЫЗОВ НАТИВНОЙ ШТОРКИ КАЧЕСТВА (Строго снизу экрана через showPopup)
+        // 3. ВЫЗОВ НАТИВНОГО МЕНЮ ВЫБОРА КАЧЕСТВА (ИСПРАВЛЕНО: Возвращены типы кнопок)
         function showNativeQualityPopup() {
             if (!tg) return;
             
             tg.showPopup({
-                title: "КАЧЕСТВО ГЕНЕРАЦИИ",
-                message: "", // ОСТАВЛЯЕМ ПУСТЫМ! Это принудительно выкатит шторку снизу кадра
+                title: "Качество генерации",
+                message: "Выберите необходимое разрешение (Стоимость: 1🪙)",
                 buttons: [
-                    { id: "schnell", type: "default", text: "⚡ Standard  •  1🪙" },
-                    { id: "dev", type: "default", text: "💎 2K Pro  •  1🪙" },
-                    { id: "ultra_4k", type: "default", text: "🔥 4K Ultra  •  1🪙" }
+                    { id: "schnell", type: "default", text: "⚡ Standard (1🪙)" },
+                    { id: "dev", type: "default", text: "💎 2K Pro (1🪙)" },
+                    { id: "ultra_4k", type: "default", text: "🔥 4K Ultra (1🪙)" },
+                    { type: "cancel", text: "Закрыть" }
                 ]
             }, function(buttonId) {
                 if (!buttonId || buttonId === "cancel") return;
@@ -680,19 +681,20 @@
             });
         }
 
-        // 4. ВЫЗОВ НАТИВНОЙ ШТОРКИ ФОРМАТА (Строго снизу экрана через showPopup)
+        // 4. ВЫЗОВ НАТИВНОГО МЕНЮ ВЫБОРА СООТНОШЕНИЯ СТОРОН (ИСПРАВЛЕНО: Возвращены типы кнопок)
         function showNativeRatioPopup() {
             if (!tg) return;
 
             tg.showPopup({
-                title: "СООТНОШЕНИЕ СТОРОН КАДРА",
-                message: "", // ОСТАВЛЯЕМ ПУСТЫМ! Это принудительно выкатит шторку снизу кадра
+                title: "Соотношение сторон кадра",
+                message: "Выберите формат выводимого изображения",
                 buttons: [
                     { id: "9:16", type: "default", text: "📱 Вертикальный 9:16" },
                     { id: "3:4", type: "default", text: "📸 Портретный 3:4" },
                     { id: "1:1", type: "default", text: "🔲 Квадратный 1:1" },
                     { id: "4:3", type: "default", text: "🖼 Альбомный 4:3" },
-                    { id: "16:9", type: "default", text: "💻 Широкоформатный 16:9" }
+                    { id: "16:9", type: "default", text: "💻 Широкоформатный 16:9" },
+                    { type: "cancel", text: "Закрыть" }
                 ]
             }, function(buttonId) {
                 if (buttonId && buttonId !== "cancel") {

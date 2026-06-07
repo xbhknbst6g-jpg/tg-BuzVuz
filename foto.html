@@ -83,7 +83,43 @@
         .tryon-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 15px; }
         .tryon-card { background: var(--tg-theme-bg-color, #fff); border-radius: 12px; border: 1px solid var(--tg-theme-border-color, #ddd); padding: 12px; }
         .tryon-card-title { font-size: 14px; font-weight: bold; margin-bottom: 8px; text-align: center; color: var(--tg-theme-text-color, #000); }
-        .tryon-images { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+                /* Сетка для картинок примеров ДО / ПОСЛЕ */
+                /* Новая сетка для одиночных примеров (1 колонка) */
+        .tryon-images { 
+            display: grid; 
+            grid-template-columns: 1fr; /* Теперь картинка занимает всю ширину карточки */
+            margin-top: 5px;
+        }
+        
+        /* Автоматически делает каждую картинку формата 9:16 */
+        .tryon-images img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 9 / 16; /* Идеальные вертикальные пропорции */
+            object-fit: cover;
+            border-radius: 8px;
+            display: block;
+        }
+        
+ /* режим фейссвапа       
+                /* Специальная сетка для 3 шагов Face Swap */
+        .swap-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Ровно 3 равные колонки */
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        /* Вытягиваем картинки шагов строго в 9:16 */
+        .swap-steps-grid img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 9 / 16; /* Вертикальный формат смартфона */
+            object-fit: cover;
+            border-radius: 6px;
+            display: block;
+        }
+
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(4px); }
@@ -156,22 +192,54 @@
             <div class="quality-btn" id="text_qual_ultra" onclick="setQuality('ultra_4k')">🔥 Ultra 4K</div>
         </div>
         <div class="tryon-grid">
-            <div class="tryon-card">
-                <div class="tryon-card-title">На пляже</div>
-                <div class="tryon-images">
-                    <div><img src="https://postimg.cc" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;"></div>
-                    <div><img src="https://postimg.cc" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;"></div>
+    <div class="tryon-card">
+        <div class="tryon-card-title">На пляже</div>
+        <div class="tryon-images">
+            <!-- Мы убрали длинный style, картинки теперь чистые -->
+            <div><img src="https://postimg.cc" alt="Пример"></div>
+        </div>
+    </div>
+</div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- ПОДРЕЖИМ 2: FACE SWAP                      -->
+    <!-- ========================================== -->
+    <div id="face_swap" class="screen">
+        <button class="back-btn" onclick="openScreen('foto')">⬅️ В меню</button>
+        
+        <div class="header" style="margin-bottom: 15px; text-align: center;">
+            <h1>Настройка Face Swap</h1>
+        </div>
+
+        <!-- КАРТОЧКА-ОБРАЗЕЦ ИЗ 3 ШАГОВ (ДОБАВЛЕНО) -->
+        <div class="tryon-card" style="margin-bottom: 20px;">
+            <div class="tryon-card-title">💡 Как это работает (Пример):</div>
+            
+            <div class="swap-steps-grid">
+                <!-- Шаг 1: Селфи -->
+                <div style="position: relative;">
+                    <img src="https://postimg.cc" alt="Ваше селфи">
+                    <div style="position: absolute; bottom: 4px; left: 4px; background: rgba(0,0,0,0.7); color: #fff; font-size: 9px; padding: 2px 4px; border-radius: 4px; font-weight: bold;">1. Селфи</div>
+                </div>
+                
+                <!-- Шаг 2: Шаблон -->
+                <div style="position: relative;">
+                    <img src="https://postimg.cc" alt="Шаблон">
+                    <div style="position: relative; position: absolute; bottom: 4px; left: 4px; background: rgba(0,0,0,0.7); color: #fff; font-size: 9px; padding: 2px 4px; border-radius: 4px; font-weight: bold;">2. Шаблон</div>
+                </div>
+                
+                <!-- Шаг 3: Результат -->
+                <div style="position: relative;">
+                    <img src="https://postimg.cc" alt="Результат">
+                    <div style="position: absolute; bottom: 4px; left: 4px; background: #28a745; color: #fff; font-size: 9px; padding: 2px 4px; border-radius: 4px; font-weight: bold;">3. Итог 🔥</div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- ПОДРЕЖИМ 2: FACE SWAP (ИСПРАВЛЕНА СЕТКА ПРЕВИЮ) -->
-    <div id="face_swap" class="screen">
-        <button class="back-btn" onclick="openScreen('foto')">⬅️ В меню</button>
-        <div class="header" style="margin-bottom: 10px; text-align: center;">
-            <h1>Настройка Face Swap</h1>
-        </div>
+        <!-- Дальше у вас идут кнопки выбора формата (ratio-selector) -->
+        <p style="font-size: 14px; text-align: center; color: var(--tg-theme-hint-color, #666); margin-bottom: 5px;">Выберите формат для загрузки своего шаблона:</p>
         <div class="ratio-selector">
             <div class="ratio-btn active" id="swap_ratio_9_16" onclick="setSwapRatio('9:16')">📱 9:16</div>
             <div class="ratio-btn" id="swap_ratio_3_4" onclick="setSwapRatio('3:4')">📸 3:4</div>
@@ -179,29 +247,52 @@
             <div class="ratio-btn" id="swap_ratio_4_3" onclick="setSwapRatio('4:3')">🖼 4:3</div>
             <div class="ratio-btn" id="swap_ratio_16_9" onclick="setSwapRatio('16:9')">💻 16:9</div>
         </div>
+        
         <div class="quality-selector">
             <div class="quality-btn active" id="swap_qual_schnell" onclick="setSwapQuality('schnell')">⚡ Standard</div>
             <div class="quality-btn" id="swap_qual_dev" onclick="setSwapQuality('dev')">💎 Pro</div>
             <div class="quality-btn" id="swap_qual_ultra" onclick="setSwapQuality('ultra_4k')">🔥 Ultra</div>
         </div>
-        <div class="phone-templates-grid">
-            <div class="phone-template-card" onclick="selectReadyTemplate('girl_face', '3:4')">
-                <img src="https://postimg.cc">
-                <div class="card-overlay">👩 Девушка (3:4)</div>
-            </div>
-            <div class="phone-template-card full-width" onclick="selectReadyTemplate('Lying_down_phone', '16:9')">
-                <img src="https://postimg.cc">
-                <div class="card-overlay">📱 С телефоном (16:9)</div>
-            </div>
-        </div>
     </div>
 
-    <!-- ПОДРЕЖИМ 3: ПРИМЕРКА ОДЕЖДЫ -->
+    <!-- ========================================== -->
+    <!-- ПОДРЕЖИМ 3: ПРИМЕРКА ОДЕЖДЫ                -->
+    <!-- ========================================== -->
     <div id="tryon" class="screen">
         <button class="back-btn" onclick="openScreen('foto')">⬅️ В меню</button>
-        <div class="header" style="margin-bottom: 10px; text-align: center;">
+        
+        <div class="header" style="margin-bottom: 15px; text-align: center;">
             <h1>Настройка примерки одежды</h1>
         </div>
+
+        <!-- КАРТОЧКА-ОБРАЗЕЦ ИЗ 3 ШАГОВ ДЛЯ ПРИМЕРКИ -->
+        <div class="tryon-card" style="margin-bottom: 20px;">
+            <div class="tryon-card-title">💡 Как это работает (Пример):</div>
+            
+            <div class="swap-steps-grid">
+                <!-- Шаг 1: Ваше фото -->
+                <div style="position: relative;">
+                    <img src="https://postimg.cc" alt="Ваше фото">
+                    <div style="position: absolute; bottom: 4px; left: 4px; background: rgba(0,0,0,0.7); color: #fff; font-size: 9px; padding: 2px 4px; border-radius: 4px; font-weight: bold;">1. Фигура</div>
+                </div>
+                
+                <!-- Шаг 2: Фото вещи -->
+                <div style="position: relative;">
+                    <!-- Здесь используется изображение кожаного бомбера, которое у вас уже прописано в примерах ниже -->
+                    <img src="https://postimg.cc" alt="Фото вещи">
+                    <div style="position: absolute; bottom: 4px; left: 4px; background: rgba(0,0,0,0.7); color: #fff; font-size: 9px; padding: 2px 4px; border-radius: 4px; font-weight: bold;">2. Вещь</div>
+                </div>
+                
+                <!-- Шаг 3: Результат примерки -->
+                <div style="position: relative;">
+                    <img src="https://postimg.cc" alt="Итог примерки">
+                    <div style="position: absolute; bottom: 4px; left: 4px; background: #28a745; color: #fff; font-size: 9px; padding: 2px 4px; border-radius: 4px; font-weight: bold;">3. Итог 🔥</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Дальше у вас идут кнопки выбора формата (ratio-selector) -->
+        <p style="font-size: 14px; text-align: center; color: var(--tg-theme-hint-color, #666); margin-bottom: 5px;">Выберите формат финального кадра:</p>
         <div class="ratio-selector">
             <div class="ratio-btn active" id="tryon_ratio_9_16" onclick="setTryOnRatio('9:16')">📱 9:16</div>
             <div class="ratio-btn" id="tryon_ratio_3_4" onclick="setTryOnRatio('3:4')">📸 3:4</div>
@@ -214,23 +305,46 @@
             <div class="quality-btn" id="tryon_qual_dev" onclick="setTryOnQuality('dev')">💎 Pro</div>
             <div class="quality-btn" id="tryon_qual_ultra" onclick="setTryOnQuality('ultra_4k')">🔥 Ultra</div>
         </div>
-        <div class="tryon-grid">
-            <div class="tryon-card">
-                <div class="tryon-card-title">✨ Кожаный бомбер</div>
-                <div class="tryon-images">
-                    <div><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"></div>
-                    <div><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"></div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- ПОДРЕЖИМ 4: СМЕНА ФОНА                     -->
+    <!-- ========================================== -->
+    <div id="bg_change" class="screen">
+        <button class="back-btn" onclick="openScreen('foto')">⬅️ В меню</button>
+        
+        <div class="header" style="margin-bottom: 15px; text-align: center;">
+            <h1>Настройка смены фона</h1>
+        </div>
+
+        <!-- КАРТОЧКА-ОБРАЗЕЦ ИЗ 3 ШАГОВ ДЛЯ СМЕНЫ ФОНА -->
+        <div class="tryon-card" style="margin-bottom: 20px;">
+            <div class="tryon-card-title">💡 Как это работает (Пример):</div>
+            
+            <div class="swap-steps-grid">
+                <!-- Шаг 1: Объект -->
+                <div style="position: relative;">
+                    <img src="https://postimg.cc" alt="Ваш объект">
+                    <div style="position: absolute; bottom: 4px; left: 4px; background: rgba(0,0,0,0.7); color: #fff; font-size: 9px; padding: 2px 4px; border-radius: 4px; font-weight: bold;">1. Объект</div>
+                </div>
+                
+                <!-- Шаг 2: Текст фона -->
+                <div style="position: relative;">
+                    <!-- В качестве заставки для текста используем красивый плейсхолдер с надписью "Горы" -->
+                    <img src="https://postimg.cc" alt="Текст фона">
+                    <div style="position: absolute; bottom: 4px; left: 4px; background: rgba(0,0,0,0.7); color: #fff; font-size: 9px; padding: 2px 4px; border-radius: 4px; font-weight: bold;">2. Текст</div>
+                </div>
+                
+                <!-- Шаг 3: Результат переноса -->
+                <div style="position: relative;">
+                    <img src="https://postimg.cc" alt="Итог смены фона">
+                    <div style="position: absolute; bottom: 4px; left: 4px; background: #28a745; color: #fff; font-size: 9px; padding: 2px 4px; border-radius: 4px; font-weight: bold;">3. Итог 🔥</div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- ПОДРЕЖИМ 4: СМЕНА ФОНА -->
-    <div id="bg_change" class="screen">
-        <button class="back-btn" onclick="openScreen('foto')">⬅️ В меню</button>
-        <div class="header" style="margin-bottom: 10px; text-align: center;">
-            <h1>Настройка смены фона</h1>
-        </div>
+        <!-- Дальше у вас идут кнопки выбора формата (ratio-selector) -->
+        <p style="font-size: 14px; text-align: center; color: var(--tg-theme-hint-color, #666); margin-bottom: 5px;">Выберите формат финального кадра:</p>
         <div class="ratio-selector">
             <div class="ratio-btn active" id="bg_ratio_9_16" onclick="setBgRatio('9:16')">📱 9:16</div>
             <div class="ratio-btn" id="bg_ratio_3_4" onclick="setBgRatio('3:4')">📸 3:4</div>
@@ -243,16 +357,9 @@
             <div class="quality-btn" id="bg_qual_dev" onclick="setBgQuality('dev')">💎 Pro</div>
             <div class="quality-btn" id="bg_qual_ultra" onclick="setBgQuality('ultra_4k')">🔥 Ultra</div>
         </div>
-        <div class="tryon-grid">
-            <div class="tryon-card">
-                <div class="tryon-card-title">✨ Килиманджаро</div>
-                <div class="tryon-images">
-                    <div><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"></div>
-                    <div><img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;"></div>
-                </div>
-            </div>
-        </div>
     </div>
+
+    
     <script>
         const tg = window.Telegram.WebApp;
 

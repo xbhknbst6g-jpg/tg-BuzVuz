@@ -2,6 +2,10 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <!-- 
+      Блокирует случайное увеличение/масштабирование сайта пальцами (важно для Web App) 
+      и заставляет интерфейс аккуратно заходить под «челку» на iPhone без белых полос.
+    -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>AI Фотостудия</title>
     
@@ -9,7 +13,7 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
     <style>
-        /* ГЛОБАЛЬНЫЕ НАСТРОЙКИ ТЕМЫ TELEGRAM */
+        /* 1. ГЛОБАЛЬНЫЕ НАСТРОЙКИ ТЕМЫ TELEGRAM */
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
             background-color: var(--tg-theme-secondary-bg-color, #f4f6f9); 
@@ -20,10 +24,12 @@
             -webkit-user-select: none; user-select: none;
         }
 
+        /* Шапка приложения */
         .header { text-align: center; margin-bottom: 25px; padding-top: 10px; }
         .header h1 { font-size: 22px; margin: 0 0 5px 0; color: var(--tg-theme-text-color, #111); }
         .header p { font-size: 14px; margin: 0; color: var(--tg-theme-hint-color, #666); }
         
+        /* 2. ГЛАВНОЕ МЕНЮ (AI-СТУДИЯ) */
         .main-menu-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 20px; }
         .menu-card { 
             background: var(--tg-theme-bg-color, #fff); padding: 20px; border-radius: 12px; 
@@ -37,9 +43,11 @@
         .menu-title { font-weight: bold; font-size: 16px; color: var(--tg-theme-text-color, #000); margin-bottom: 2px; }
         .menu-desc { font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.3; }
 
+        /* 3. СИСТЕМА ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ */
         .screen { display: none; }
         .screen.active { display: block; animation: fadeIn 0.2s ease-in-out; }
         
+        /* СТАНДАРТНАЯ СЕТКА МОБИЛЬНЫХ ПРЯМОУГОЛЬНИКОВ (2 колонки) */
         .phone-templates-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 15px 0; }
         .phone-template-card {
             position: relative; background: #000; border-radius: 12px; overflow: hidden;
@@ -56,6 +64,7 @@
         }
         .phone-template-card.full-width { grid-column: span 2; aspect-ratio: 16 / 7; }
 
+        /* 4. ИНТЕРФЕЙСНЫЕ КНОПКИ (ФОРМАТ И КАЧЕСТВО) */
         .ratio-btn, .quality-btn {
             -webkit-appearance: none; appearance: none; outline: none;
             border: 2px solid var(--tg-theme-border-color, #e1e6eb); border-radius: 8px; 
@@ -74,58 +83,28 @@
             color: var(--tg-theme-button-color, #0088cc) !important; font-weight: bold !important;
         }
         
+        /* КНОПКА ВОЗВРАТА НАЗАД */
         .back-btn { 
             display: inline-block; padding: 8px 14px; background: var(--tg-theme-secondary-bg-color, #e1e6eb); 
             color: var(--tg-theme-text-color, #333); border-radius: 6px; font-size: 13px; font-weight: bold; 
             cursor: pointer; margin-bottom: 15px; border: none; -webkit-tap-highlight-color: transparent;
         }
         
-        .tryon-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 15px; }
+        /* КАРТОЧКИ ДЛЯ ТРЕХШАГОВЫХ ПРИМЕРОВ */
         .tryon-card { background: var(--tg-theme-bg-color, #fff); border-radius: 12px; border: 1px solid var(--tg-theme-border-color, #ddd); padding: 12px; }
         .tryon-card-title { font-size: 14px; font-weight: bold; margin-bottom: 8px; text-align: center; color: var(--tg-theme-text-color, #000); }
 
-
-        /* Небольшие аккуратные окошки примеров для Фото + Текст */
-        .text-image-preview-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 2 аккуратные колонки в ряд */
-            gap: 10px;
-            margin-top: 15px;
-        }
-        .text-image-preview-card {
-            position: relative;
-            border-radius: 8px;
-            overflow: hidden;
-            aspect-ratio: 3 / 4; /* Небольшой вертикальный прямоугольник */
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-            border: 1px solid var(--tg-theme-border-color, #e1e6eb);
-        }
-        .text-image-preview-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-        
- /* режим фейссвапа       
-                /* Специальная сетка для 3 шагов Face Swap */
+        /* 5. СПЕЦИАЛЬНАЯ СЕТКА ДЛЯ 3 ШАГОВ (FACE SWAP И ПРИМЕРКА) */
         .swap-steps-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* Ровно 3 равные колонки */
-            gap: 6px;
-            margin-top: 10px;
+            grid-template-columns: repeat(3, 1fr); /* Ровно 3 равные колонки в ряд */
+            gap: 6px; margin-top: 10px;
         }
-
-        /* Вытягиваем картинки шагов строго в 9:16 */
         .swap-steps-grid img {
-            width: 100%;
-            height: auto;
+            width: 100%; height: auto;
             aspect-ratio: 9 / 16; /* Вертикальный формат смартфона */
-            object-fit: cover;
-            border-radius: 6px;
-            display: block;
+            object-fit: cover; border-radius: 6px; display: block;
         }
-
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(4px); }

@@ -117,6 +117,89 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             display: block;
         }
+        
+/* НАСТРОЙКА КНОПОК НЕОНОВЫХ  */
+                /* Горизонтальная панель управления (Все настройки в одну строку) */
+        .single-row-controls {
+            display: flex;
+            gap: 8px;
+            align-items: flex-end;
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        /* Колонки для выпадающих списков */
+        .control-col {
+            display: flex;
+            flex-direction: column;
+            flex: 1; /* Первые две колонки делят место поровну */
+            min-width: 0;
+        }
+
+        /* Заголовки над выпадающими списками ("Качество", "Соотношение сторон") */
+        .control-label {
+            font-size: 11px;
+            font-weight: bold;
+            color: var(--tg-theme-hint-color, #777);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Стилизация выпадающих списков (Селекторов) */
+        .neo-select {
+            -webkit-appearance: none; appearance: none; outline: none;
+            width: 100%;
+            padding: 12px 24px 12px 10px;
+            font-size: 13px; font-weight: bold;
+            border: 2px solid var(--tg-theme-border-color, #e1e6eb);
+            border-radius: 10px;
+            background: var(--tg-theme-bg-color, #fff);
+            color: var(--tg-theme-text-color, #333);
+            cursor: pointer;
+            /* Кастомная стильная стрелочка справа */
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://w3.org' viewBox='0 0 24 24' fill='none' stroke='%23777' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 12px;
+            transition: border-color 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .neo-select:focus {
+            border-color: var(--tg-theme-button-color, #0088cc);
+        }
+
+        /* 👑 КНОПКА СТАРТ С НЕОНОВЫМ СВЕЧЕНИЕМ */
+        .control-col-btn {
+            flex: 1.2; /* Кнопка чуть шире списков, чтобы влезла цена */
+        }
+        .neo-start-btn {
+            -webkit-appearance: none; appearance: none; outline: none;
+            width: 100%;
+            padding: 12px 5px;
+            font-size: 14px; font-weight: 900;
+            text-align: center;
+            color: #fff;
+            background: linear-gradient(135deg, #0088cc, #00bfff);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            /* ЭФФЕКТ НЕОНОВОГО СВЕЧЕНИЯ */
+            box-shadow: 0 0 12px rgba(0, 136, 204, 0.4), inset 0 1px 1px rgba(255,255,255,0.2);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            transition: all 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* Анимация при нажатии на неоновую кнопку */
+        .neo-start-btn:active {
+            transform: scale(0.96);
+            box-shadow: 0 0 4px rgba(0, 136, 204, 0.6);
+        }
 
     </style>
 </head>
@@ -200,29 +283,46 @@
         <!-- ШАГ 2: БЛОК НАСТРОЕК (Изначально скрыт) -->
         <div id="text_image_settings_block" style="display: none;">
             
-            <!-- ИСПРАВЛЕНО: Новый компактный контейнер, который держит картинку по центру и сжимает её -->
+            <!-- Компактное превью по центру -->
             <div class="text-image-compact-preview">
                 <img id="text_image_large_preview" src="" alt="Выбранный стиль">
             </div>
 
-            <!-- Ниже сразу идут кнопки формата и качества — теперь они видны без скролла! -->
-            <p style="font-size: 13px; text-align: center; color: var(--tg-theme-hint-color, #666); margin: 5px 0;">Выберите формат кадра:</p>
-            <div class="ratio-selector">
-                <div class="ratio-btn active" id="text_ratio_9_16" onclick="setTextRatio('9:16')">📱 9:16</div>
-                <div class="ratio-btn" id="text_ratio_3_4" onclick="setTextRatio('3:4')">📸 3:4</div>
-                <div class="ratio-btn" id="text_ratio_1_1" onclick="setTextRatio('1:1')">🔲 1:1</div>
-                <div class="ratio-btn" id="text_ratio_4_3" onclick="setTextRatio('4:3')">🖼 4:3</div>
-                <div class="ratio-btn" id="text_ratio_16_9" onclick="setTextRatio('16:9')">💻 16:9</div>
-            </div>
+            <!-- Все настройки выстроены строго в ОДНУ горизонтальную строку -->
+            <div class="single-row-controls">
+                
+                <!-- Колонна 1: Выбор Качества -->
+                <div class="control-col">
+                    <div class="control-label">Качество</div>
+                    <select id="neo_text_quality" class="neo-select" onchange="onNeoQualityChange(this.value)">
+                        <option value="schnell">Standard (1🪙)</option>
+                        <option value="dev">2K Pro (1🪙)</option>
+                        <option value="ultra_4k">4K Ultra (1🪙)</option>
+                    </select>
+                </div>
 
-            <p style="font-size: 13px; text-align: center; color: var(--tg-theme-hint-color, #666); margin: 5px 0;">Выходное качество:</p>
-            <div class="quality-selector">
-                <div class="quality-btn active" id="text_qual_schnell" onclick="setQuality('schnell')">⚡ Standard</div>
-                <div class="quality-btn" id="text_qual_dev" onclick="setQuality('dev')">💎 Pro / 2K</div>
-                <div class="quality-btn" id="text_qual_ultra" onclick="setQuality('ultra_4k')">🔥 Ultra 4K</div>
-            </div>
-        </div>
-    </div>
+                <!-- Колонна 2: Выбор Соотношения сторон -->
+                <div class="control-col">
+                    <div class="control-label">Соотношение сторон</div>
+                    <select id="neo_text_ratio" class="neo-select" onchange="onNeoRatioChange(this.value)">
+                        <option value="9:16">📱 9:16</option>
+                        <option value="3:4">📸 3:4</option>
+                        <option value="1:1">🔲 1:1</option>
+                        <option value="4:3">🖼 4:3</option>
+                        <option value="16:9">💻 16:9</option>
+                    </select>
+                </div>
+
+                <!-- Колонна 3: Неоновая встроенная кнопка Start -->
+                <div class="control-col control-col-btn">
+                    <div class="control-label">&nbsp;</div>
+                    <button id="neo_text_submit_btn" class="neo-start-btn" onclick="sendPhotoTextData()">
+                        Start (1🪙)
+                    </button>
+                </div>
+            </div> <!-- Закрывает строку single-row-controls -->
+        </div> <!-- Закрывает блок настроек text_image_settings_block -->
+    </div> <!-- Закрывает весь экран text_image -->
 
     <!-- ========================================== -->
     <!-- ПОДРЕЖИМ 2: FACE SWAP                      -->
@@ -374,51 +474,148 @@
     </div>
 
     <script>
+
+        // ====================================================================================
+        // БЛОК ИНТЕРАКТИВНЫХ ФУНКЦИЙ ДЛЯ НЕОНОВОГО ПУЛЬТА «ФОТО + ТЕКСТ» В ОДНУ СТРОКУ
+        // ====================================================================================
+        
         // Системные переменные для контроля шагов Фото + Текст
         let isTextImageStyleSelected = false; 
         let selectedStyleName = ""; 
 
-        // 1. ФУНКЦИЯ КЛИКА ПО КАРТОЧКЕ (Увеличение и показ настроек)
+        // 1. ФУНКЦИЯ КЛИКА ПО КАРТОЧКЕ СТИЛЯ (Увеличение и переключение на пульт)
         function selectTextImageStyle(styleName, imageUrl) {
             isTextImageStyleSelected = true;
             selectedStyleName = styleName;
 
-            // Меняем тексты заголовков и имя кнопки "Назад"
+            // Динамически меняем тексты заголовков и имя кнопки "Назад"
             document.getElementById('text_image_title').innerText = styleName;
-            document.getElementById('text_image_subtitle').innerText = "Настройте формат и качество для генерации:";
+            document.getElementById('text_image_subtitle').innerText = "Настройте параметры кадра и запустите генерацию:";
             document.getElementById('text_image_back_btn').innerText = "⬅️ К галерее";
 
-            // Подставляем картинку, прячем сетку и ПЛАВНО включаем блок настроек
+            // Подставляем картинку в компактное превью
             document.getElementById('text_image_large_preview').src = imageUrl;
+            
+            // Переключаем видимость блоков (прячем галерею, выкатываем неоновый пульт)
             document.getElementById('text_image_gallery').style.display = "none"; 
             document.getElementById('text_image_settings_block').style.display = "block"; 
 
-            // Показываем нативную кнопку Telegram "Start"
-            updateFotoMainButton();
+            // Сбрасываем выпадающие списки на дефолтные значения при каждом новом открытии
+            document.getElementById('neo_text_quality').value = 'schnell';
+            document.getElementById('neo_text_ratio').value = '9:16';
+            
+            // Синхронизируем дефолты с глобальными переменными
+            selectedTextQuality = 'schnell';
+            selectedTextRatio = '9:16';
+
+            // Обновляем текст на неоновой кнопке
+            updateNeoStartButtonText();
+            
+            // ЖЕСТКИЙ ПРЕДОХРАНИТЕЛЬ: Скрываем нативную синюю кнопку ТГ, у нас теперь своя встроенная!
+            if (tg && tg.MainButton) tg.MainButton.hide();
         }
 
-        // 2. УМНАЯ ФУНКЦИЯ ВОЗВРАТА НАЗАД (ИСПРАВЛЕНО!)
+        // 2. УМНАЯ ФУНКЦИЯ ВОЗВРАТА НАЗАД К ГАЛЕРЕЕ КАРТОЧЕК
         function handleTextBackClick() {
             if (isTextImageStyleSelected) {
-                // Если юзер был внутри настроек стиля — сбрасываем состояние и возвращаем галерею
                 isTextImageStyleSelected = false;
                 selectedStyleName = "";
 
-                // Возвращаем дефолтные тексты заголовков и имя кнопки меню
+                // Возвращаем стандартные заголовки меню
                 document.getElementById('text_image_title').innerText = "Примеры генераций Фото + Текст";
                 document.getElementById('text_image_subtitle').innerText = "Выберите желаемый стиль для настройки:";
                 document.getElementById('text_image_back_btn').innerText = "⬅️ В меню";
 
-                // ИСПРАВЛЕНО: Стираем ссылку из превью, прячем настройки и ЖЕСТКО включаем сетку grid
+                // Очищаем превью, скрываем пульт и жестко возвращаем сетку grid для галереи
                 document.getElementById('text_image_large_preview').src = "";
                 document.getElementById('text_image_settings_block').style.display = "none"; 
-                document.getElementById('text_image_gallery').style.display = "grid"; // Тут была опечатка style.style
+                document.getElementById('text_image_gallery').style.display = "grid"; 
 
-                // Скрываем нативную кнопку Telegram, так как стиль больше не выбран
-                updateFotoMainButton();
+                // Прячем нативную кнопку ТГ на случай непредвиденных сбоев
+                if (tg && tg.MainButton) tg.MainButton.hide();
             } else {
-                // Если юзер и так стоял в галерее примеров — просто выходим в главное меню foto
+                // Если юзер и так стоял в галерее примеров — выходим в главное меню фотостудии foto
                 openScreen('foto');
+            }
+        }
+
+        // 3. ОБРАБОТЧИК ИЗМЕНЕНИЯ КАЧЕСТВА В ВЫПАДАЮЩЕМ СПИСКЕ
+        function onNeoQualityChange(val) {
+            selectedTextQuality = val;
+            updateNeoStartButtonText(); // Пересчитываем монеты на кнопке, если нужно
+        }
+
+        // 4. ОБРАБОТЧИК ИЗМЕНЕНИЯ ФОРМАТА В ВЫПАДАЮЩЕМ СПИСКЕ
+        function onNeoRatioChange(val) {
+            selectedTextRatio = val;
+            updateNeoStartButtonText(); // Пересчитываем монеты на кнопке, если нужно
+        }
+
+        // 5. ДИНАМИЧЕСКИЙ ОБНОВЛЯТОР СТОИМОСТИ НА НЕОНОВОЙ КНОПКЕ
+        function updateNeoStartButtonText() {
+            const btn = document.getElementById('neo_text_submit_btn');
+            if (!btn) return;
+            
+            // Задаем фиксированную базовую стоимость генерации
+            let coinsCost = 1; 
+            
+            // Выводим текст строго по ТЗ: "Start (1🪙)"
+            btn.innerHTML = `Start (${coinsCost}🪙)`;
+        }
+
+        // 6. ОБНОВЛЕННАЯ ФУНКЦИЯ ОТПРАВКИ JSON ДЛЯ МОДИФИЦИРОВАННОГО РЕЖИМА
+        // Передает боту точные выбранные из выпадающих списков параметры и имя стиля
+        function sendPhotoTextData() { 
+            sendToTelegram({ 
+                mode_trigger: 'text_image', 
+                chosen_style: selectedStyleName, // Передаст боту, например, "🏖 На пляже"
+                aspect_ratio: selectedTextRatio, 
+                quality: selectedTextQuality 
+            }); 
+        }
+
+        // 7. СИНХРОНИЗИРОВАННЫЙ ОБЩИЙ РОУТЕР НАТИВНОЙ КНОПКИ ДЛЯ ОСТАЛЬНЫХ 3 ЭКРАНОВ
+        function updateFotoMainButton() {
+            if (!tg || !tg.MainButton) return;
+            
+            // Если пользователь на главном меню foto или на интерактивном Фото+Текст — нативную синюю кнопку ТГ прячем наглухо!
+            if (currentActiveMode === 'foto' || currentActiveMode === 'text_image') {
+                tg.MainButton.hide();
+                return;
+            }
+
+            let currentRatio = "";
+            let currentQuality = "";
+            let currentCallback = null;
+
+            function getReadableQuality(q) {
+                if (q === 'schnell') return 'Standard';
+                if (q === 'dev') return 'Pro';
+                return 'Ultra 4K';
+            }
+
+            // Для оставшихся трех экранов (face_swap, tryon, bg_change) нативная кнопка продолжит работать по-старому
+            if (currentActiveMode === 'face_swap') {
+                currentRatio = selectedSwapRatio;
+                currentQuality = getReadableQuality(selectedSwapQuality);
+                currentCallback = sendCustomFaceSwapData;
+            } 
+            else if (currentActiveMode === 'tryon') {
+                currentRatio = selectedTryOnRatio;
+                currentQuality = getReadableQuality(selectedTryOnQuality);
+                currentCallback = sendTryOnData;
+            } 
+            else if (currentActiveMode === 'bg_change') {
+                currentRatio = selectedBgRatio;
+                currentQuality = getReadableQuality(selectedBgQuality);
+                currentCallback = sendBgChangeData;
+            }
+
+            if (currentRatio && currentQuality && currentCallback) {
+                tg.MainButton.setText(`${currentRatio} (${currentQuality}) Start ✨`);
+                tg.MainButton.show();
+                tg.MainButton.offClick();
+                tg.MainButton.onClick(currentCallback);
             }
         }
 

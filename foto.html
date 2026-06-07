@@ -155,36 +155,25 @@
         text-overflow: ellipsis;
     }
 
-    /* 💊 СТИЛЬНЫЕ КНОПКИ-КАПСУЛЫ (Вместо серых списков select) */
-    .capsule-btn {
-        -webkit-appearance: none; appearance: none; outline: none;
-        width: 100%;
-        padding: 12px 6px;
-        font-size: 13px;
-        font-weight: bold;
-        text-align: center;
-        border: 2px solid var(--tg-theme-border-color, #e1e6eb);
-        border-radius: 20px; /* Делаем идеальную круглую форму капсулы */
-        background: var(--tg-theme-bg-color, #fff);
-        color: var(--tg-theme-text-color, #333);
-        cursor: pointer;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 4px;
-        transition: all 0.15s ease;
-        -webkit-tap-highlight-color: transparent;
-    }
-    
-    /* Эффект легкого подсвечивания при фокусе или клике */
-    .capsule-btn:active {
-        transform: scale(0.96);
-        border-color: var(--tg-theme-button-color, #0088cc);
-        background: rgba(0, 136, 204, 0.04);
-    }
+/* Красивые круглые кнопки-капсулы, как в Telegram */
+        .capsule-btn {
+            -webkit-appearance: none; appearance: none; outline: none;
+            width: 100%;
+            padding: 12px 6px;
+            font-size: 13px; font-weight: bold; text-align: center;
+            border: 2px solid var(--tg-theme-button-color, #0088cc); /* Синяя рамка в цвет темы ТГ */
+            border-radius: 24px; /* Закругляем углы, превращая кнопку в капсулу */
+            background: var(--tg-theme-bg-color, #fff);
+            color: var(--tg-theme-button-color, #0088cc); /* Текст синий */
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 88, 204, 0.08); /* Легкая тень */
+            display: flex; align-items: center; justify-content: center; gap: 4px;
+            transition: all 0.15s ease; -webkit-tap-highlight-color: transparent;
+        }
+        .capsule-btn:active {
+            transform: scale(0.95);
+            background: rgba(0, 136, 204, 0.08);
+        }
 
     /* 👑 КНОПКА СТАРТ С НЕОНОВЫМ СВЕЧЕНИЕМ С КРУГЛЫМИ УГЛАМИ */
     .neo-start-btn {
@@ -300,10 +289,10 @@
                 <img id="text_image_large_preview" src="" alt="Выбранный стиль">
             </div>
 
-            <!-- ВСЕ НАСТРОЙКИ В ОДНУ СТРОКУ КНОПКАМИ-КАПСУЛАМИ -->
+            <!-- ИСПРАВЛЕНО: Кнопки-капсулы выстроены строго в одну красивую строку -->
             <div class="single-row-controls">
                 
-                <!-- Колонна 1: Вызов нативного меню Качества -->
+                <!-- Колонна 1: Качество (Кнопка-капсула, вызывающая меню Telegram) -->
                 <div class="control-col">
                     <div class="control-label">Качество</div>
                     <button id="btn_text_quality" class="capsule-btn" onclick="showNativeQualityPopup()">
@@ -311,7 +300,7 @@
                     </button>
                 </div>
 
-                <!-- Колонна 2: Вызов нативного меню Соотношения сторон -->
+                <!-- Колонна 2: Соотношение сторон (Кнопка-капсула, вызывающая меню Telegram) -->
                 <div class="control-col">
                     <div class="control-label">Соотношение сторон</div>
                     <button id="btn_text_ratio" class="capsule-btn" onclick="showNativeRatioPopup()">
@@ -328,7 +317,6 @@
                 </div>
             </div> <!-- Конец строки single-row-controls -->
         </div> <!-- Конец блока настроек text_image_settings_block -->
-    </div> <!-- Закрывает весь экран text_image -->
 
 
     <!-- ========================================== -->

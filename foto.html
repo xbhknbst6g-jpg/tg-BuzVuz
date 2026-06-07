@@ -933,6 +933,7 @@
         function setSwapRatio(ratio) { 
             selectedSwapRatio = ratio; 
             let icon = ratio === "3:4" ? "📸" : ratio === "1:1" ? "🔲" : ratio === "4:3" ? "🖼" : ratio === "16:9" ? "💻" : "📱";
+            // ИСПРАВЛЕНО: Меняем строго кнопку Face Swap
             const el = document.getElementById('btn_swap_ratio');
             if (el) el.innerHTML = `${icon} ${ratio}`;
         }
@@ -940,6 +941,7 @@
         function setTryOnRatio(ratio) { 
             selectedTryOnRatio = ratio; 
             let icon = ratio === "3:4" ? "📸" : ratio === "1:1" ? "🔲" : ratio === "4:3" ? "🖼" : ratio === "16:9" ? "💻" : "📱";
+            // ИСПРАВЛЕНО: Меняем строго кнопку Примерки одежды
             const el = document.getElementById('btn_tryon_ratio');
             if (el) el.innerHTML = `${icon} ${ratio}`;
         }
@@ -947,6 +949,7 @@
         function setTextRatio(ratio) { 
             selectedTextRatio = ratio; 
             let icon = ratio === "3:4" ? "📸" : ratio === "1:1" ? "🔲" : ratio === "4:3" ? "🖼" : ratio === "16:9" ? "💻" : "📱";
+            // ИСПРАВЛЕНО: Меняем строго кнопку Фото + Текст
             const el = document.getElementById('btn_text_ratio');
             if (el) el.innerHTML = `${icon} ${ratio}`;
         }
@@ -954,6 +957,7 @@
         function setBgRatio(ratio) { 
             selectedBgRatio = ratio; 
             let icon = ratio === "3:4" ? "📸" : ratio === "1:1" ? "🔲" : ratio === "4:3" ? "🖼" : ratio === "16:9" ? "💻" : "📱";
+            // ИСПРАВЛЕНО: Меняем строго кнопку Смены фона
             const el = document.getElementById('btn_bg_ratio');
             if (el) el.innerHTML = `${icon} ${ratio}`;
         }

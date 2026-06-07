@@ -155,7 +155,7 @@
         text-overflow: ellipsis;
     }
 
-        /* 💊 Тонкие изящные кнопки-капсулы, как в Nano Banana */
+        /* 💊 НАСТОЯЩИЕ КРУГЛЫЕ КНОПКИ-КАПСУЛЫ (ТЕКСТ СТРОГО ПО ЦЕНТРУ) */
         .capsule-btn {
             -webkit-appearance: none !important; 
             appearance: none !important; 
@@ -163,20 +163,33 @@
             box-shadow: 0 2px 6px rgba(0, 136, 204, 0.1) !important;
             
             width: 100%;
-            padding: 10px 12px !important; /* Чуть увеличили внутренний отступ для центровки */
+            padding: 10px 8px !important;
             font-size: 13px !important; 
             font-weight: 800 !important; 
-            text-align: center !important;
-            text-align-last: center !important; /* Центрирует текст внутри select */
             
+            /* Жесткое выравнивание текста строго по центру капсулы */
+            text-align: center !important;
+            display: flex !important; 
+            align-items: center !important; 
+            justify-content: center !important; 
+            gap: 4px !important;
+            
+            /* Яркий нативный синий цвет Telegram прописан жестко кодом */
             border: 2px solid #0088cc !important; 
             border-radius: 30px !important; 
             background-color: #ffffff !important; 
             color: #0088cc !important; 
+            
             cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: all 0.15s ease !important; 
+            -webkit-tap-highlight-color: transparent !important;
         }
         .capsule-btn:active {
-            background: rgba(255, 255, 255, 0.15) !important;
+            transform: scale(0.95) !important;
+            background-color: rgba(0, 136, 204, 0.08) !important;
         }
 
 
@@ -607,8 +620,8 @@
             selectedTextQuality = 'schnell';
             selectedTextRatio = '9:16';
             
-            document.getElementById('btn_text_quality').innerHTML = `💎 Standard`;
-            document.getElementById('btn_text_ratio').innerHTML = `📱 9:16`;
+            document.getElementById('btn_text_quality').innerHTML = `⚡ Standard`;
+            document.getElementById('btn_text_ratio').innerHTML = `9:16`;
 
             updateNeoStartButtonText();
             
@@ -737,10 +750,10 @@
             const btnTryon = document.getElementById('neo_tryon_submit_btn');
             const btnBg = document.getElementById('neo_bg_submit_btn');
             
-            if (btnText) btnText.innerHTML = `Start (1🪙)`;
-            if (btnSwap) btnSwap.innerHTML = `Start (1🪙)`;
-            if (btnTryon) btnTryon.innerHTML = `Start (1🪙)`;
-            if (btnBg) btnBg.innerHTML = `Start (1🪙)`;
+            if (btnText) btnText.innerHTML = `Start 1 🪙`;
+            if (btnSwap) btnSwap.innerHTML = `Start 1 🪙`;
+            if (btnTryon) btnTryon.innerHTML = `Start 1 🪙`;
+            if (btnBg) btnBg.innerHTML = `Start 1 🪙`;
         }
 
 
@@ -759,9 +772,9 @@
             
             // Чистый аккуратный список без смайликов, цены прижаты вправо
             listEl.innerHTML = `
-                <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('schnell', '⚡ Standard')"><span>Standard</span><span class="coin-price">1🪙</span></button></li>
-                <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('dev', '💎 Pro')"><span>Pro</span><span class="coin-price">1🪙</span></button></li>
-                <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('ultra_4k', '🔥 Ultra')"><span>Ultra</span><span class="coin-price">1🪙</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('schnell', '⚡ Standard')"><span>Standard</span><span class="coin-price">1 🪙</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('dev', '💎 Pro')"><span>Pro</span><span class="coin-price">1 🪙</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('ultra_4k', '🔥 Ultra')"><span>Ultra</span><span class="coin-price">1 🪙</span></button></li>
             `;
 
             document.getElementById('custom_action_sheet').classList.add('active');
@@ -914,33 +927,31 @@
         function clearAndSetActiveRatio(prefix, ratio) { return; }
 
         // Функции принудительной синхронизации формата (Ratio) для каждого экрана фото-студии
+        // ИСПРАВЛЕНО: Полностью убраны все иконки и смайлики, выводятся только чистые цифры!
         function setSwapRatio(ratio) { 
             selectedSwapRatio = ratio; 
-            let icon = ratio === "3:4" ? "📸" : ratio === "1:1" ? "🔲" : ratio === "4:3" ? "🖼" : ratio === "16:9" ? "💻" : "📱";
             const el = document.getElementById('btn_swap_ratio');
-            if (el) el.innerHTML = `${icon} ${ratio}`;
+            if (el) el.innerHTML = ratio;
         }
         
         function setTryOnRatio(ratio) { 
             selectedTryOnRatio = ratio; 
-            let icon = ratio === "3:4" ? "📸" : ratio === "1:1" ? "🔲" : ratio === "4:3" ? "🖼" : ratio === "16:9" ? "💻" : "📱";
             const el = document.getElementById('btn_tryon_ratio');
-            if (el) el.innerHTML = `${icon} ${ratio}`;
+            if (el) el.innerHTML = ratio;
         }
         
         function setTextRatio(ratio) { 
             selectedTextRatio = ratio; 
-            let icon = ratio === "3:4" ? "📸" : ratio === "1:1" ? "🔲" : ratio === "4:3" ? "🖼" : ratio === "16:9" ? "💻" : "📱";
             const el = document.getElementById('btn_text_ratio');
-            if (el) el.innerHTML = `${icon} ${ratio}`;
+            if (el) el.innerHTML = ratio;
         }
         
         function setBgRatio(ratio) { 
             selectedBgRatio = ratio; 
-            let icon = ratio === "3:4" ? "📸" : ratio === "1:1" ? "🔲" : ratio === "4:3" ? "🖼" : ratio === "16:9" ? "💻" : "📱";
             const el = document.getElementById('btn_bg_ratio');
-            if (el) el.innerHTML = `${icon} ${ratio}`;
+            if (el) el.innerHTML = ratio;
         }
+
 
         // Клик по готовому пресету на экране Face Swap
         function selectReadyTemplate(templateId, forcedRatio) {

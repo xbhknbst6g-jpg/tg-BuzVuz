@@ -382,6 +382,36 @@
             resize: none; outline: none; margin-bottom: 12px;
         }
 
+/* 🔥 НОВАЯ КНОПКА НАЗАД В ВИДЕ ОГНЕННОЙ КАПСУЛЫ */
+        .back-tab-btn {
+            -webkit-appearance: none; appearance: none; outline: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            
+            /* Точные размеры и геометрия как у вкладки .tab-btn.active */
+            border: 2px solid #ff1e00 !important;     /* Насыщенный алый кант */
+            background-color: #ff6600 !important; /* Горячий оранжевый фон */
+            color: #ffffff !important;            /* Белоснежная стрелка */
+            box-shadow: 0 4px 12px rgba(255, 30, 0, 0.2) !important; /* Неоновое свечение */
+            
+            border-radius: 30px !important; 
+            padding: 7px 16px !important; 
+            font-size: 14px !important; 
+            font-weight: 800 !important;
+            cursor: pointer;
+            margin-bottom: 15px; 
+            transition: all 0.15s ease !important; 
+            -webkit-tap-highlight-color: transparent !important;
+        }
+
+        .back-tab-btn:active {
+            transform: scale(0.95) !important;
+            background-color: #e65c00 !important;
+            border-color: #e61b00 !important;
+        }
+
+
     </style>
 </head>
 <body>
@@ -437,8 +467,8 @@
     <!-- ПОДРЕЖИМ 1: ФОТО + ТЕКСТ (ИНТЕРАКТИВНЫЙ)   -->
     <!-- ========================================== -->
     <div id="text_image" class="screen">
-        <!-- Умная кнопка назад -->
-        <button class="back-btn" id="text_image_back_btn" onclick="handleTextBackClick()">⬅️ В меню</button>
+        <!-- Новая компактная огненная стрелка назад -->
+        <button class="back-tab-btn" onclick="handleTextBackClick()">⬅️</button>
         
         <div class="header" style="margin-bottom: 15px; text-align: center;">
             <h1 id="text_image_title">Примеры генераций Фото + Текст</h1>
@@ -720,7 +750,6 @@
 
             document.getElementById('text_image_title').innerText = styleName;
             document.getElementById('text_image_subtitle').innerText = "Настройте параметры кадра и запустите генерацию:";
-            document.getElementById('text_image_back_btn').innerText = "⬅️ К галерее";
 
             document.getElementById('text_image_large_preview').src = imageUrl;
             document.getElementById('text_image_gallery').style.display = "none"; 
@@ -758,7 +787,6 @@
 
             // Сбрасываем блок настроек шага 2 при любом переключении вкладок
             settingsBlock.style.display = 'none';
-            document.getElementById('text_image_back_btn').innerText = "⬅️ В меню";
 
             if (category === 'custom') {
                 gallery.style.display = 'none';
@@ -797,8 +825,7 @@
             
             // Ставим заглушку на превью для кастомного режима
             document.getElementById('text_image_large_preview').src = 'https://postimg.cc'; 
-            
-            document.getElementById('text_image_back_btn').innerText = "⬅️ К стилю";
+    
         }
         // ====================================================================================
         // 3. УМНАЯ ФУНКЦИЯ ВОЗВРАТА НАЗАД К ГАЛЕРЕЕ КАРТОЧЕК
@@ -811,8 +838,7 @@
 
                 document.getElementById('text_image_title').innerText = "Примеры генераций Фото + Текст";
                 document.getElementById('text_image_subtitle').innerText = "Выберите желаемый стиль для настройки:";
-                document.getElementById('text_image_back_btn').innerText = "⬅️ В меню";
-
+                
                 document.getElementById('text_image_large_preview').src = "";
                 document.getElementById('text_image_settings_block').style.display = "none"; 
 
@@ -900,7 +926,6 @@
                 selectedStyleName = "";
                 document.getElementById('text_image_title').innerText = "Примеры генераций Фото + Текст";
                 document.getElementById('text_image_subtitle').innerText = "Выберите желаемый стиль для настройки:";
-                document.getElementById('text_image_back_btn').innerText = "⬅️ В меню";
                 document.getElementById('text_image_large_preview').src = "";
                 document.getElementById('text_image_settings_block').style.display = "none";
                 document.getElementById('text_image_gallery').style.display = "grid";

@@ -329,9 +329,63 @@
             font-weight: 800;
         }
 
+
+
+/* 💊 ВЕРХНИЕ ВКЛАДКИ-КАПСУЛЫ В ОГНЕННОМ СТИЛЕ */
+        .tabs-container {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 4px 2px 14px 2px;
+            margin-top: 5px;
+            scrollbar-width: none; /* Скрываем скроллбар в Firefox */
+            -webkit-overflow-scrolling: touch; /* Плавный скролл на iOS */
+        }
+        .tabs-container::-webkit-scrollbar {
+            display: none; /* Скрываем скроллбар в Chrome/Safari */
+        }
+
+        /* Обычное состояние вкладки (в тон интерфейса ТГ) */
+        .tab-btn {
+            -webkit-appearance: none; appearance: none; outline: none;
+            border: 1px solid var(--tg-theme-border-color, #e1e6eb); 
+            border-radius: 30px; 
+            background: var(--tg-theme-bg-color, #fff); 
+            color: var(--tg-theme-text-color, #333); 
+            padding: 8px 16px; font-size: 13px; font-weight: 700;
+            white-space: nowrap; cursor: pointer; transition: all 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* 🔥 Активное состояние вкладки (Один в один как capsule-btn!) */
+        .tab-btn.active {
+            border: 2px solid #ff1e00 !important;     /* Насыщенный алый кант */
+            background-color: #ff6600 !important; /* Горячий оранжевый фон */
+            color: #ffffff !important;            /* Белоснежный сочный текст */
+            box-shadow: 0 4px 12px rgba(255, 30, 0, 0.2) !important; /* Неоновое свечение */
+            padding: 7px 15px; /* Коррекция из-за border 2px, чтобы размер не прыгал */
+        }
+        
+        /* 📱 ОФОРМЛЕНИЕ ДЛЯ ПОЛЯ ВВОДА ВКЛАДКИ "СВОЙ" */
+        .custom-prompt-container {
+            background: var(--tg-theme-bg-color, #fff);
+            border: 1px solid var(--tg-theme-border-color, #e1e6eb);
+            border-radius: 12px; padding: 15px; margin: 15px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.01);
+        }
+        .custom-prompt-container textarea {
+            width: 100%; box-sizing: border-box; border-radius: 8px;
+            border: 1px solid var(--tg-theme-border-color, #e1e6eb);
+            background: var(--tg-theme-secondary-bg-color, #f4f6f9);
+            color: var(--tg-theme-text-color, #333);
+            padding: 12px; font-size: 14px; font-family: inherit;
+            resize: none; outline: none; margin-bottom: 12px;
+        }
+
     </style>
 </head>
 <body>
+
 
 
     <!-- ========================================== -->
@@ -378,11 +432,12 @@
         </div>
     </div>
 
+
     <!-- ========================================== -->
     <!-- ПОДРЕЖИМ 1: ФОТО + ТЕКСТ (ИНТЕРАКТИВНЫЙ)   -->
     <!-- ========================================== -->
     <div id="text_image" class="screen">
-        <!-- Умная кнопка назад: если открыты настройки — возвращает к галерее, если галерея — в меню -->
+        <!-- Умная кнопка назад -->
         <button class="back-btn" id="text_image_back_btn" onclick="handleTextBackClick()">⬅️ В меню</button>
         
         <div class="header" style="margin-bottom: 15px; text-align: center;">
@@ -390,54 +445,77 @@
             <p id="text_image_subtitle" style="font-size: 14px; color: var(--tg-theme-hint-color, #666);">Выберите желаемый стиль для настройки:</p>
         </div>
 
+        <!-- ОГНЕННЫЕ ВКЛАДКИ ФИЛЬТРАЦИИ СВЕРХУ -->
+        <div class="tabs-container" id="text_image_tabs">
+            <button class="tab-btn active" onclick="switchTextTab('all', this)">Все</button>
+            <button class="tab-btn" onclick="switchTextTab('men', this)">Муж</button>
+            <button class="tab-btn" onclick="switchTextTab('women', this)">Жен</button>
+            <button class="tab-btn" onclick="switchTextTab('kids', this)">Дети</button>
+            <button class="tab-btn" onclick="switchTextTab('custom', this)">Свой</button>
+        </div>
+
         <!-- ШАГ 1: ГАЛЕРЕЯ ДЛЯ КЛИКА (Изначально видна) -->
         <div class="phone-templates-grid" id="text_image_gallery">
-            <div class="phone-template-card" onclick="selectTextImageStyle('Outside the cityе', 'https://i.postimg.cc/cHRZDY1c/sai-t.jpg')">
-                <img src="https://i.postimg.cc/cHRZDY1c/sai-t.jpg" alt="Outside the cityе">
+            <div class="phone-template-card" data-category="women" onclick="selectTextImageStyle('Outside the cityе', 'https://i.postimg.cc/cHRZDY1c/sai-t.jpg')">
+                <img src="https://postimg.cc" alt="Outside the cityе">
                 <div class="card-overlay">Outside the cityе</div>
             </div>
-            <div class="phone-template-card" onclick="selectTextImageStyle('The Dark Soul', 'https://i.postimg.cc/W4DLvXqk/02.png')">
-                <img src="https://i.postimg.cc/W4DLvXqk/02.png" alt="The Dark Soul">
+            <div class="phone-template-card" data-category="men" onclick="selectTextImageStyle('The Dark Soul', 'https://i.postimg.cc/W4DLvXqk/02.pngc')">
+                <img src="https://postimg.cc" alt="The Dark Soul">
                 <div class="card-overlay">The Dark Soul</div>
             </div>
-            <div class="phone-template-card" onclick="selectTextImageStyle('On sports', 'https://i.postimg.cc/L8D378Qf/GEM3Nqu-I43e3gq-Wz5j-Ol-E-L2YT0AJ8.png')">
-                <img src="https://i.postimg.cc/L8D378Qf/GEM3Nqu-I43e3gq-Wz5j-Ol-E-L2YT0AJ8.png" alt="On sports">
+            <div class="phone-template-card" data-category="men" onclick="selectTextImageStyle('On sports', 'https://i.postimg.cc/W4DLvXqk/02.png')">
+                <img src="https://postimg.cc" alt="On sports">
                 <div class="card-overlay">On sports</div>
             </div>
-            <div class="phone-template-card" onclick="selectTextImageStyle('In the centre', 'https://i.postimg.cc/j5dQt093/5838254766532791856.jpg')">
-                <img src="https://i.postimg.cc/j5dQt093/5838254766532791856.jpg" alt="In the centre">
+            <div class="phone-template-card" data-category="women" onclick="selectTextImageStyle('In the centre', 'https://i.postimg.cc/cHRZDY1c/sai-t.jpg')">
+                <img src="https://postimg.cc" alt="In the centre">
                 <div class="card-overlay">In the centre</div>
             </div>
-            <div class="phone-template-card" onclick="selectTextImageStyle('Evening vibe', 'https://i.postimg.cc/FH5y1J8S/5844728862795828808.jpg')">
-                <img src="https://i.postimg.cc/FH5y1J8S/5844728862795828808.jpg" alt="Evening vibe">
+            <div class="phone-template-card" data-category="kids" onclick="selectTextImageStyle('Evening vibe', 'https://i.postimg.cc/L8D378Qf/GEM3Nqu-I43e3gq-Wz5j-Ol-E-L2YT0AJ8.png')">
+                <img src="https://postimg.cc" alt="Evening vibe">
                 <div class="card-overlay">Evening vibe</div>
             </div>
+        </div>
+
+        <!-- ИНТЕРФЕЙС ДЛЯ РЕЖИМА "СВОЙ" (Изначально скрыт) -->
+        <div id="custom_prompt_block" class="custom-prompt-container" style="display: none;">
+            <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Ваше описание задумки:</div>
+            <textarea id="custom_prompt_input" placeholder="Опишите, что сгенерировать (например: парень в черной кожаной куртке, стиль киберпанк, неоновые огни)..." rows="4"></textarea>
+            
+            <!-- Кнопка "Далее" в твоем фирменном стиле кнопки старта -->
+            <button class="neo-start-btn" onclick="selectCustomStyle()">Далее к настройкам ➡️</button>
         </div>
 
         <!-- ШАГ 2: БЛОК НАСТРОЕК (Изначально скрыт) -->
         <div id="text_image_settings_block" style="display: none;">
             
-            <!-- Компактное превью по центру экрана -->
+            <!-- Компактное превью по центру экрана из твоих стилей -->
             <div class="text-image-compact-preview">
                 <img id="text_image_large_preview" src="" alt="Выбранный стиль">
             </div>
 
-            <!-- ВСЕ НАСТРОЙКИ В ОДНУ СТРОКУ КНОПКАМИ-КАПСУЛАМИ -->
-                        <div class="single-row-controls">
+            <!-- Горизонтальная ультракомпактная панель с твоими заголовками control-label -->
+            <div class="single-row-controls">
                 <div class="control-col">
+                    <div class="control-label">Качество</div>
                     <button id="btn_text_quality" class="capsule-btn">⚡ Standard</button>
                 </div>
                 <div class="control-col">
+                    <div class="control-label">Формат</div>
                     <button id="btn_text_ratio" class="capsule-btn">9:16</button>
                 </div>
                 <div class="control-col control-col-btn">
+                    <div class="control-label">Запуск</div>
                     <button id="neo_text_submit_btn" class="neo-start-btn" onclick="sendPhotoTextData()">
                         Start 1 🪙
                     </button>
                 </div>
             </div>
-        </div> <!-- Конец блока настроек text_image_settings_block -->
-    </div> <!-- ИСПРАВЛЕНО: Добавили закрывающий тег для всего экрана text_image! -->
+        </div> <!-- Конец блока настроек -->
+    </div>
+
+
 
     <!-- ========================================== -->
     <!-- ПОДРЕЖИМ 2: FACE SWAP                      -->
@@ -628,6 +706,9 @@
                 // Системные переменные для контроля шагов Фото + Текст
         let isTextImageStyleSelected = false; 
         let selectedStyleName = ""; 
+        // Переменная для отслеживания режима: готовый шаблон или свой текст
+        let currentGenerationMode = 'preset';
+
       
         
         // ====================================================================================
@@ -657,9 +738,72 @@
             if (tg && tg.MainButton) tg.MainButton.hide();
         }
 
+
+        // ====================================================================================
+        // 2. ФУНКЦИЯ переключения табов (вкладок)
+        // ====================================================================================
+
+        function switchTextTab(category, element) {
+            // Снимаем класс active со всех вкладок
+            const tabs = document.querySelectorAll('#text_image_tabs .tab-btn');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Добавляем класс active нажатой вкладке
+            element.classList.add('active');
+
+            const gallery = document.getElementById('text_image_gallery');
+            const customBlock = document.getElementById('custom_prompt_block');
+            const settingsBlock = document.getElementById('text_image_settings_block');
+            const cards = document.querySelectorAll('.phone-template-card');
+
+            // Сбрасываем блок настроек шага 2 при любом переключении вкладок
+            settingsBlock.style.display = 'none';
+            document.getElementById('text_image_back_btn').innerText = "⬅️ В меню";
+
+            if (category === 'custom') {
+                gallery.style.display = 'none';
+                customBlock.style.display = 'block';
+            } else {
+                gallery.style.display = 'grid';
+                customBlock.style.display = 'none';
+
+                // Фильтруем карточки по data-category
+                cards.forEach(card => {
+                    const cardCategory = card.getAttribute('data-category');
+                    if (category === 'all' || cardCategory === category) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            }
+        }
+
+        // ====================================================================================
+        // 2. ФУНКЦИЯ перехода к финальным настройкам для вкладки "Свой"
+        // ====================================================================================
+
+        function selectCustomStyle() {
+            const promptText = document.getElementById('custom_prompt_input').value.trim();
+            if (!promptText) {
+                alert("Пожалуйста, введите описание вашей задумки!");
+                return;
+            }
+            
+            document.getElementById('custom_prompt_block').style.display = 'none';
+            
+            const settingsBlock = document.getElementById('text_image_settings_block');
+            settingsBlock.style.display = 'block';
+            
+            // Ставим заглушку на превью для кастомного режима
+            document.getElementById('text_image_large_preview').src = 'https://postimg.cc'; 
+            
+            document.getElementById('text_image_back_btn').innerText = "⬅️ К стилю";
+        }
         // ====================================================================================
         // 3. УМНАЯ ФУНКЦИЯ ВОЗВРАТА НАЗАД К ГАЛЕРЕЕ КАРТОЧЕК
         // ====================================================================================
+        
         function handleTextBackClick() {
             if (isTextImageStyleSelected) {
                 isTextImageStyleSelected = false;
@@ -671,13 +815,26 @@
 
                 document.getElementById('text_image_large_preview').src = "";
                 document.getElementById('text_image_settings_block').style.display = "none"; 
-                document.getElementById('text_image_gallery').style.display = "grid"; 
+
+                // --- ВОТ ЭТОТ КУСОК ОБНОВИЛСЯ ---
+                // Проверяем, активна ли вкладка "Свой"
+                const activeTabButton = document.querySelector('#text_image_tabs .tab-btn.active');
+                const isCustomTab = activeTabButton && activeTabButton.innerText === 'Свой';
+
+                if (isCustomTab) {
+                    document.getElementById('custom_prompt_block').style.display = "block"; // Показываем текстовое поле
+                    document.getElementById('text_image_gallery').style.display = "none";   // Прячем галерею
+                } else {
+                    document.getElementById('text_image_gallery').style.display = "grid";   // Показываем галерею
+                    document.getElementById('custom_prompt_block').style.display = "none";   // Прячем текстовое поле
+                }
+                // --------------------------------
 
                 if (tg && tg.MainButton) tg.MainButton.hide();
             } else {
                 openScreen('foto');
             }
-        }        
+        }
 
         // ====================================================================================
         // 4. Старт WebApp, автоматическое разворачивание шторки и привязка кнопок

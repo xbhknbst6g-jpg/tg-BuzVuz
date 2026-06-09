@@ -517,14 +517,6 @@
             </div>
         </div>
 
-        <!-- ИНТЕРФЕЙС ДЛЯ РЕЖИМА "СВОЙ" (Изначально скрыт) -->
-        <div id="custom_prompt_block" class="custom-prompt-container" style="display: none;">
-            <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Ваше описание задумки:</div>
-            <textarea id="custom_prompt_input" placeholder="Опишите, что сгенерировать (например: парень в черной кожаной куртке, стиль киберпанк, неоновые огни)..." rows="4"></textarea>
-            
-            <!-- Кнопка "Далее" в твоем фирменном стиле кнопки старта -->
-            <button class="neo-start-btn" onclick="selectCustomStyle()">Далее к настройкам ➡️</button>
-        </div>
 
         <!-- ШАГ 2: БЛОК НАСТРОЕК (Изначально скрыт) -->
         <div id="text_image_settings_block" style="display: none;">
@@ -537,6 +529,10 @@
                     Шаг 2: Нажмите кнопку START.<br>
                     Шаг 3: Бот в чате Telegram попросит вас отправить селфи и написать ваш текст задумки!
                 </div>
+            </div>
+            <!-- 🔥 ЧЕРНЫЙ КОНТЕЙНЕР ДЛЯ ФОТО (Просто добавили точный ID к твоему блоку) -->
+            <div class="text-image-compact-preview" id="text_image_preview_container">
+                <img id="text_image_large_preview" src="" alt="Выбранный стиль">
             </div>
             
             <!-- Компактное превью по центру экрана из твоих стилей -->
@@ -800,35 +796,35 @@
 
             const gallery = document.getElementById('text_image_gallery');
             const settingsBlock = document.getElementById('text_image_settings_block');
-            const previewContainer = document.querySelector('.text-image-compact-preview');
+            const previewContainer = document.getElementById('text_image_preview_container');
             const instructionText = document.getElementById('custom_instruction_text');
-            const cards = document.querySelectorAll('.phone-template-card');
 
-            // Сбрасываем заголовки в стандартный дефолт при переключении
+            // Сбрасываем заголовки в дефолт
             document.getElementById('text_image_title').innerText = "Примеры генераций Фото + Текст";
             document.getElementById('text_image_subtitle').innerText = "Выберите желаемый стиль для настройки:";
 
             if (category === 'custom') {
-                currentGenerationMode = 'custom'; // Переключаем в кастомный режим
-                isTextImageStyleSelected = true;  // Ставим true, чтобы кнопки внизу активировались
+                currentGenerationMode = 'custom'; 
+                isTextImageStyleSelected = true;  
                 selectedStyleName = "Свой промпт";
 
                 gallery.style.display = 'none';        // Прячем сетку картинок
-                settingsBlock.style.display = 'block';  // СРАЗУ открываем блок с кнопками управления!
+                settingsBlock.style.display = 'block';  // СРАЗУ открываем блок с кнопками управления
                 
-                if (previewContainer) previewContainer.style.display = 'none'; // Скрываем блок для фото
-                if (instructionText) instructionText.style.display = 'block';  // Показываем блок инструкции с шагами
+                if (previewContainer) previewContainer.style.display = 'none'; // Полностью скрываем черную рамку с надписью
+                if (instructionText) instructionText.style.display = 'block';  // Показываем инструкцию
             } else {
-                currentGenerationMode = 'preset'; // Возвращаем режим готовых пресетов
-                isTextImageStyleSelected = false; // Сбрасываем флаг, кнопки спрячутся до клика по карточке
+                currentGenerationMode = 'preset'; 
+                isTextImageStyleSelected = false; 
 
-                gallery.style.display = 'grid';        // Показываем сетку картинок обратно
+                gallery.style.display = 'grid';        // Возвращаем сетку картинок
                 settingsBlock.style.display = 'none';  // Скрываем блок настроек и кнопки
                 
-                if (previewContainer) previewContainer.style.display = 'flex'; // Возвращаем блок фото для обычных шаблонов
+                if (previewContainer) previewContainer.style.display = 'flex'; // Возвращаем черную рамку для обычных шаблонов
                 if (instructionText) instructionText.style.display = 'none';  // Скрываем инструкцию
 
                 // Твоя оригинальная фильтрация карточек по data-category
+                const cards = document.querySelectorAll('.phone-template-card');
                 cards.forEach(card => {
                     const cardCategory = card.getAttribute('data-category');
                     if (category === 'all' || cardCategory === category) {

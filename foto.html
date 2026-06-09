@@ -518,10 +518,10 @@
         </div>
 
 
-        <!-- ШАГ 2: БЛОК НАСТРОЕК (Изначально скрыт) -->
+        <!-- ШАГ 2: БЛОК НАСТРОЕК (Полная замена внутренностей) -->
         <div id="text_image_settings_block" style="display: none;">
-
-            <!-- 🔥 ДОБАВИЛИ ТОЛЬКО ЭТОТ БЛОК ТЕКСТА (Для вкладки "Свой") -->
+            
+            <!-- 1. ТЕКСТ ИНСТРУКЦИИ ДЛЯ ВКЛАДКИ "СВОЙ" -->
             <div id="custom_instruction_text" class="custom-prompt-container" style="display: none; margin-bottom: 15px;">
                 <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Как работает режим:</div>
                 <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.4;">
@@ -530,23 +530,19 @@
                     Шаг 3: Бот в чате Telegram попросит вас отправить селфи и написать ваш текст задумки!
                 </div>
             </div>
-            <!-- 🔥 ЧЕРНЫЙ КОНТЕЙНЕР ДЛЯ ФОТО (Просто добавили точный ID к твоему блоку) -->
+
+            <!-- 2. ТОЛЬКО ОДИН ЧЕРНЫЙ КОНТЕЙНЕР ПРЕВЬЮ С ТОЧНЫМ ID -->
             <div class="text-image-compact-preview" id="text_image_preview_container">
                 <img id="text_image_large_preview" src="" alt="Выбранный стиль">
             </div>
-            
-            <!-- Компактное превью по центру экрана из твоих стилей -->
-            <div class="text-image-compact-preview">
-                <img id="text_image_large_preview" src="" alt="Выбранный стиль">
-            </div>
 
-            <!-- Горизонтальная ультракомпактная панель с твоими заголовками control-label -->
+            <!-- 3. ТВОИ ОГНЕННЫЕ КНОПКИ УПРАВЛЕНИЯ СНИЗУ -->
             <div class="single-row-controls">
                 <div class="control-col">
-                    <button id="btn_text_quality" class="capsule-btn">⚡ Standard</button>
+                    <button id="btn_text_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
                 </div>
                 <div class="control-col">
-                    <button id="btn_text_ratio" class="capsule-btn">9:16</button>
+                    <button id="btn_text_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">9:16</button>
                 </div>
                 <div class="control-col control-col-btn">
                     <button id="neo_text_submit_btn" class="neo-start-btn" onclick="sendPhotoTextData()">
@@ -554,7 +550,7 @@
                     </button>
                 </div>
             </div>
-        </div> <!-- Конец блока настроек -->
+        </div>
     </div>
 
 

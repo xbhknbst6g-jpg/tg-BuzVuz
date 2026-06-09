@@ -528,6 +528,16 @@
 
         <!-- ШАГ 2: БЛОК НАСТРОЕК (Изначально скрыт) -->
         <div id="text_image_settings_block" style="display: none;">
+
+            <!-- 🔥 ДОБАВИЛИ ТОЛЬКО ЭТОТ БЛОК ТЕКСТА (Для вкладки "Свой") -->
+            <div id="custom_instruction_text" class="custom-prompt-container" style="display: none; margin-bottom: 15px;">
+                <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Как работает режим:</div>
+                <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.4;">
+                    Шаг 1: Настройте формат и качество кадра внизу.<br>
+                    Шаг 2: Нажмите кнопку START.<br>
+                    Шаг 3: Бот в чате Telegram попросит вас отправить селфи и написать ваш текст задумки!
+                </div>
+            </div>
             
             <!-- Компактное превью по центру экрана из твоих стилей -->
             <div class="text-image-compact-preview">
@@ -751,6 +761,10 @@
         // 2. ФУНКЦИЯ КЛИКА ПО КАРТОЧКЕ (Сброс кнопок-капсул в дефолт и показ пульта)
         // ====================================================================================
         function selectTextImageStyle(styleName, imageUrl) {
+            // 🔥 ДОБАВИЛИ ДВЕ СТРОЧКИ В САМОЕ НАЧАЛО для свой:
+            if (document.getElementById('custom_instruction_text')) document.getElementById('custom_instruction_text').style.display = 'none';
+            if (document.getElementById('text_image_preview_container')) document.getElementById('text_image_preview_container').style.display = 'flex';
+
             isTextImageStyleSelected = true;
             selectedStyleName = styleName;
 
@@ -774,43 +788,47 @@
         }
 
 
-        // ====================================================================================
-        // 2. ФУНКЦИЯ переключения табов (вкладок)
-        // ====================================================================================
-
+// ====================================================================================
+// 2. ФУНКЦИЯ переключения табов (вкладок)
+// ====================================================================================
+        
         function switchTextTab(category, element) {
             // Снимаем класс active со всех вкладок
             const tabs = document.querySelectorAll('#text_image_tabs .tab-btn');
             tabs.forEach(tab => tab.classList.remove('active'));
-            
-            // Добавляем класс active нажатой вкладке
             element.classList.add('active');
 
             const gallery = document.getElementById('text_image_gallery');
-            const customBlock = document.getElementById('custom_prompt_block');
             const settingsBlock = document.getElementById('text_image_settings_block');
+            const previewContainer = document.getElementById('text_image_preview_container');
+            const instructionText = document.getElementById('custom_instruction_text');
             const cards = document.querySelectorAll('.phone-template-card');
 
-            // Сбрасываем блок настроек шага 2 при любом переключении вкладок
-            settingsBlock.style.display = 'none';
-
-            // 1. ВОТ ЭТО ОЧЕНЬ ВАЖНО ДОБАВИТЬ: Сбрасываем флаг выбора стиля
-            isTextImageStyleSelected = false; 
+            // Сбрасываем заголовки в стандартный дефолт при переключении
+            document.getElementById('text_image_title').innerText = "Примеры генераций Фото + Текст";
+            document.getElementById('text_image_subtitle').innerText = "Выберите желаемый стиль для настройки:";
 
             if (category === 'custom') {
-                // 2. ВОТ ЭТО ОЧЕНЬ ВАЖНО ДОБАВИТЬ: Включаем режим своего текста
-                currentGenerationMode = 'custom'; 
+                currentGenerationMode = 'custom'; // Переключаем в кастомный режим
+                isTextImageStyleSelected = true;  // Ставим true, чтобы кнопки внизу активировались
+                selectedStyleName = "Свой промпт";
 
-                gallery.style.display = 'none';
-                customBlock.style.display = 'block';
+                gallery.style.display = 'none';        // Прячем сетку картинок
+                settingsBlock.style.display = 'block';  // СРАЗУ открываем блок с кнопками управления!
+                
+                if (previewContainer) previewContainer.style.display = 'none'; // Скрываем блок для фото
+                if (instructionText) instructionText.style.display = 'block';  // Показываем блок инструкции с шагами
             } else {
-                // 3. ВОТ ЭТО ОЧЕНЬ ВАЖНО ДОБАВИТЬ: Возвращаем режим готовых шаблонов
-                currentGenerationMode = 'preset'; 
+                currentGenerationMode = 'preset'; // Возвращаем режим готовых пресетов
+                isTextImageStyleSelected = false; // Сбрасываем флаг, кнопки спрячутся до клика по карточке
 
-                gallery.style.display = 'grid';
-                customBlock.style.display = 'none';
+                gallery.style.display = 'grid';        // Показываем сетку картинок обратно
+                settingsBlock.style.display = 'none';  // Скрываем блок настроек и кнопки
+                
+                if (previewContainer) previewContainer.style.display = 'flex'; // Возвращаем блок фото для обычных шаблонов
+                if (instructionText) instructionText.style.display = 'none';  // Скрываем инструкцию
 
-                // Фильтруем карточки по data-category
+                // Твоя оригинальная фильтрация карточек по data-category
                 cards.forEach(card => {
                     const cardCategory = card.getAttribute('data-category');
                     if (category === 'all' || cardCategory === category) {

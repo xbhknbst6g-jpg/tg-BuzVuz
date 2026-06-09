@@ -421,6 +421,27 @@
         }
 
 
+/* 📱 ПРИЖИМАЕМ КНОПКИ НАСТРОЕК К САМОМУ ПОЛУ ЭКРАНА СМАРТФОНА */
+        .single-row-controls {
+            position: fixed !important;
+            bottom: calc(env(safe-area-inset-bottom) + 16px) !important; /* Учитываем челки и отступы iOS/Android */
+            left: 15px !important;
+            right: 15px !important;
+            width: calc(100% - 30px) !important;
+            display: flex !important;
+            gap: 8px !important;
+            z-index: 999 !important; /* Чтобы кнопки всегда были поверх прокрутки текста */
+            background: transparent !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Добавим небольшой отступ снизу для блоков контента, чтобы они не залезали под фиксированные кнопки */
+        .custom-prompt-container, .text-image-compact-preview {
+            margin-bottom: 85px !important; 
+        }
+
+
+
     </style>
 </head>
 <body>

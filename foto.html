@@ -382,33 +382,42 @@
             resize: none; outline: none; margin-bottom: 12px;
         }
 
-/* 🔥 НОВАЯ КНОПКА НАЗАД В ВИДЕ ОГНЕННОЙ КАПСУЛЫ */
+/* 💊 КРУГЛАЯ ОРАНЖЕВАЯ КНОПКА С МИНИМАЛИСТИЧНЫМ ШЕВРОНОМ НАЗАД */
         .back-tab-btn {
             -webkit-appearance: none; appearance: none; outline: none;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            position: relative; /* Нужно для позиционирования стрелки внутри */
             
-            /* Точные размеры и геометрия как у вкладки .tab-btn.active */
-            border: 2px solid #ff1e00 !important;     /* Насыщенный алый кант */
-            background-color: #ff6600 !important; /* Горячий оранжевый фон */
-            color: #ffffff !important;            /* Белоснежная стрелка */
-            box-shadow: 0 4px 12px rgba(255, 30, 0, 0.2) !important; /* Неоновое свечение */
+            border: 2px solid #ff1e00 !important;
+            background-color: #ff6600 !important;
+            box-shadow: 0 4px 12px rgba(255, 30, 0, 0.2) !important;
             
-            border-radius: 30px !important; 
-            padding: 7px 16px !important; 
-            font-size: 14px !important; 
-            font-weight: 800 !important;
+            border-radius: 50% !important; /* Идеальный круг */
+            width: 36px !important;
+            height: 36px !important;
+            min-width: 36px !important;
+            padding: 0 !important;
             cursor: pointer;
-            margin-bottom: 15px; 
-            transition: all 0.15s ease !important; 
+            transition: all 0.15s ease !important;
             -webkit-tap-highlight-color: transparent !important;
         }
 
+        /* Рисуем белую угловую стрелку (как на скрине Magnific, только влево) */
+        .back-tab-btn::before {
+            content: "";
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-left: 2.5px solid #ffffff;  /* Толщина стрелки */
+            border-bottom: 2.5px solid #ffffff; /* Толщина стрелки */
+            transform: translate(2px, 0) rotate(45deg); /* Поворачиваем углом влево */
+        }
+
         .back-tab-btn:active {
-            transform: scale(0.95) !important;
+            transform: scale(0.92) !important;
             background-color: #e65c00 !important;
-            border-color: #e61b00 !important;
         }
 
 
@@ -468,7 +477,7 @@
     <!-- ========================================== -->
     <div id="text_image" class="screen">
         <!-- Новая компактная огненная стрелка назад -->
-        <button class="back-tab-btn" onclick="handleTextBackClick()">⬅️</button>
+        <button class="back-tab-btn" onclick="handleTextBackClick()"></button>
         
         <div class="header" style="margin-bottom: 15px; text-align: center;">
             <h1 id="text_image_title">Примеры генераций Фото + Текст</h1>

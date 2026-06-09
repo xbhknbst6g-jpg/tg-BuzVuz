@@ -889,37 +889,46 @@
         }
 
 
-        // ====================================================================================
-        // 3. УМНАЯ ФУНКЦИЯ ВОЗВРАТА НАЗАД К ГАЛЕРЕЕ КАРТОЧЕК
-        // ====================================================================================
+// ====================================================================================
+// 3. УМНАЯ ФУНКЦИЯ ВОЗВРАТА НАЗАД К ГАЛЕРЕЕ КАРТОЧЕК
+// ====================================================================================
         
         function handleTextBackClick() {
+            const gallery = document.getElementById('text_image_gallery');
+            const settingsBlock = document.getElementById('text_image_settings_block');
+            const instructionText = document.getElementById('custom_instruction_text');
+            const presetPreviewBlock = document.getElementById('preset_preview_block');
+
+            // 1. Проверяем, горит ли сейчас оранжевым вкладка "Свой"
+            const activeTabButton = document.querySelector('#text_image_tabs .tab-btn.active');
+            const isCustomTab = activeTabButton && activeTabButton.innerText === 'Свой';
+
+            // 🔥 Если мы находимся во вкладке "Свой" — СРАЗУ с первого клика улетаем в меню
+            if (isCustomTab) {
+                isTextImageStyleSelected = false;
+                selectedStyleName = "";
+                if (settingsBlock) settingsBlock.style.display = "none";
+                openScreen('foto'); // Твой переход на главную страницу студии
+                return; // Останавливаем выполнение функции, чтобы код ниже не срабатывал
+            }
+
+            // 2. Обычная логика возврата для готовых шаблонов (Муж, Жен, Дети, Все)
             if (isTextImageStyleSelected) {
                 isTextImageStyleSelected = false;
                 selectedStyleName = "";
 
                 document.getElementById('text_image_title').innerText = "Примеры генераций Фото + Текст";
                 document.getElementById('text_image_subtitle').innerText = "Выберите желаемый стиль для настройки:";
+
+                if (settingsBlock) settingsBlock.style.display = "none"; 
+                if (presetPreviewBlock) presetPreviewBlock.style.display = "none";
+                if (instructionText) instructionText.style.display = "none";
                 
-                document.getElementById('text_image_large_preview').src = "";
-                document.getElementById('text_image_settings_block').style.display = "none"; 
-
-                // --- ВОТ ЭТОТ КУСОК ОБНОВИЛСЯ ---
-                // Проверяем, активна ли вкладка "Свой"
-                const activeTabButton = document.querySelector('#text_image_tabs .tab-btn.active');
-                const isCustomTab = activeTabButton && activeTabButton.innerText === 'Свой';
-
-                if (isCustomTab) {
-                    document.getElementById('custom_prompt_block').style.display = "block"; // Показываем текстовое поле
-                    document.getElementById('text_image_gallery').style.display = "none";   // Прячем галерею
-                } else {
-                    document.getElementById('text_image_gallery').style.display = "grid";   // Показываем галерею
-                    document.getElementById('custom_prompt_block').style.display = "none";   // Прячем текстовое поле
-                }
-                // --------------------------------
+                if (gallery) gallery.style.display = "grid"; // Возвращаем сетку картинок
 
                 if (tg && tg.MainButton) tg.MainButton.hide();
             } else {
+                // Если мы и так просто смотрели галерею шаблонов — уходим в меню
                 openScreen('foto');
             }
         }

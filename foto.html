@@ -518,10 +518,10 @@
         </div>
 
 
-        <!-- ШАГ 2: БЛОК НАСТРОЕК (Полная замена внутренностей) -->
+        <!-- ШАГ 2: БЛОК НАСТРОЕК (Полностью разделенный) -->
         <div id="text_image_settings_block" style="display: none;">
             
-            <!-- 1. ТЕКСТ ИНСТРУКЦИИ ДЛЯ ВКЛАДКИ "СВОЙ" -->
+            <!-- 1. ИНСТРУКЦИЯ ДЛЯ ВКЛАДКИ "СВОЙ" (Чистый текст, никакой черной рамки рядом нет!) -->
             <div id="custom_instruction_text" class="custom-prompt-container" style="display: none; margin-bottom: 15px;">
                 <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Как работает режим:</div>
                 <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.4;">
@@ -531,12 +531,14 @@
                 </div>
             </div>
 
-            <!-- 2. ТОЛЬКО ОДИН ЧЕРНЫЙ КОНТЕЙНЕР ПРЕВЬЮ С ТОЧНЫМ ID -->
-            <div class="text-image-compact-preview" id="text_image_preview_container">
-                <img id="text_image_large_preview" src="" alt="Выбранный стиль">
+            <!-- 2. СЛУЖЕБНЫЙ КОНТЕЙНЕР ДЛЯ ШАБЛОНОВ (Включается только когда кликают по готовой картинке) -->
+            <div id="preset_preview_block" style="display: none;">
+                <div class="text-image-compact-preview">
+                    <img id="text_image_large_preview" src="" alt="Выбранный стиль">
+                </div>
             </div>
 
-            <!-- 3. ТВОИ ОГНЕННЫЕ КНОПКИ УПРАВЛЕНИЯ СНИЗУ -->
+            <!-- 3. ТВОИ ОГНЕННЫЕ КНОПКИ УПРАВЛЕНИЯ СНИЗУ (Горят всегда) -->
             <div class="single-row-controls">
                 <div class="control-col">
                     <button id="btn_text_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
@@ -749,33 +751,32 @@
 
       
         
-        // ====================================================================================
-        // 2. ФУНКЦИЯ КЛИКА ПО КАРТОЧКЕ (Сброс кнопок-капсул в дефолт и показ пульта)
-        // ====================================================================================
+// ====================================================================================
+// 2. ФУНКЦИЯ КЛИКА ПО КАРТОЧКЕ (Сброс кнопок-капсул в дефолт и показ пульта)
+// ====================================================================================
+        
         function selectTextImageStyle(styleName, imageUrl) {
-            // 🔥 ДОБАВИЛИ ДВЕ СТРОЧКИ В САМОЕ НАЧАЛО для свой:
-            if (document.getElementById('custom_instruction_text')) document.getElementById('custom_instruction_text').style.display = 'none';
-            if (document.getElementById('text_image_preview_container')) document.getElementById('text_image_preview_container').style.display = 'flex';
-
             isTextImageStyleSelected = true;
             selectedStyleName = styleName;
 
             document.getElementById('text_image_title').innerText = styleName;
             document.getElementById('text_image_subtitle').innerText = "Настройте параметры кадра и запустите генерацию:";
 
-            document.getElementById('text_image_large_preview').src = imageUrl;
             document.getElementById('text_image_gallery').style.display = "none"; 
-            document.getElementById('text_image_settings_block').style.display = "block"; 
+            document.getElementById('text_image_settings_block').style.display = "block"; // Открываем пульт управления
+            
+            // Показываем черную рамку с картинкой превью (только для шаблонов!)
+            if (document.getElementById('preset_preview_block')) document.getElementById('preset_preview_block').style.display = 'block';
+            if (document.getElementById('custom_instruction_text')) document.getElementById('custom_instruction_text').style.display = 'none';
 
-            // Сбрасываем глобальные переменные и текст на кнопках-капсулах в красивый стартовый дефолт
+            document.getElementById('text_image_large_preview').src = imageUrl;
+
             selectedTextQuality = 'schnell';
             selectedTextRatio = '9:16';
-            
             document.getElementById('btn_text_quality').innerHTML = `⚡ Standard`;
             document.getElementById('btn_text_ratio').innerHTML = `9:16`;
 
-            updateNeoStartButtonText();
-            
+            if (typeof updateNeoStartButtonText === 'function') updateNeoStartButtonText();
             if (tg && tg.MainButton) tg.MainButton.hide();
         }
 
@@ -785,17 +786,15 @@
 // ====================================================================================
         
         function switchTextTab(category, element) {
-            // Снимаем класс active со всех вкладок
             const tabs = document.querySelectorAll('#text_image_tabs .tab-btn');
             tabs.forEach(tab => tab.classList.remove('active'));
             element.classList.add('active');
 
             const gallery = document.getElementById('text_image_gallery');
             const settingsBlock = document.getElementById('text_image_settings_block');
-            const previewContainer = document.getElementById('text_image_preview_container');
+            const presetPreviewBlock = document.getElementById('preset_preview_block');
             const instructionText = document.getElementById('custom_instruction_text');
 
-            // Сбрасываем заголовки в дефолт
             document.getElementById('text_image_title').innerText = "Примеры генераций Фото + Текст";
             document.getElementById('text_image_subtitle').innerText = "Выберите желаемый стиль для настройки:";
 
@@ -804,22 +803,19 @@
                 isTextImageStyleSelected = true;  
                 selectedStyleName = "Свой промпт";
 
-                gallery.style.display = 'none';        // Прячем сетку картинок
-                settingsBlock.style.display = 'block';  // СРАЗУ открываем блок с кнопками управления
-                
-                if (previewContainer) previewContainer.style.display = 'none'; // Полностью скрываем черную рамку с надписью
-                if (instructionText) instructionText.style.display = 'block';  // Показываем инструкцию
+                gallery.style.display = 'none';            // Прячем сетку шаблонов
+                settingsBlock.style.display = 'block';      // Открываем блок с кнопками
+                if (presetPreviewBlock) presetPreviewBlock.style.display = 'none'; // НАГЛУХО ПРЯЧЕМ ЧЕРНЫЙ ПРЯМОУГОЛЬНИК
+                if (instructionText) instructionText.style.display = 'block';      // Показываем инструкцию
             } else {
                 currentGenerationMode = 'preset'; 
                 isTextImageStyleSelected = false; 
 
-                gallery.style.display = 'grid';        // Возвращаем сетку картинок
-                settingsBlock.style.display = 'none';  // Скрываем блок настроек и кнопки
-                
-                if (previewContainer) previewContainer.style.display = 'flex'; // Возвращаем черную рамку для обычных шаблонов
-                if (instructionText) instructionText.style.display = 'none';  // Скрываем инструкцию
+                gallery.style.display = 'grid';            // Показываем сетку шаблонов обратно
+                settingsBlock.style.display = 'none';      // Скрываем нижний блок
+                if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';
+                if (instructionText) instructionText.style.display = 'none';
 
-                // Твоя оригинальная фильтрация карточек по data-category
                 const cards = document.querySelectorAll('.phone-template-card');
                 cards.forEach(card => {
                     const cardCategory = card.getAttribute('data-category');

@@ -794,10 +794,19 @@
             // Сбрасываем блок настроек шага 2 при любом переключении вкладок
             settingsBlock.style.display = 'none';
 
+            // 1. ВОТ ЭТО ОЧЕНЬ ВАЖНО ДОБАВИТЬ: Сбрасываем флаг выбора стиля
+            isTextImageStyleSelected = false; 
+
             if (category === 'custom') {
+                // 2. ВОТ ЭТО ОЧЕНЬ ВАЖНО ДОБАВИТЬ: Включаем режим своего текста
+                currentGenerationMode = 'custom'; 
+
                 gallery.style.display = 'none';
                 customBlock.style.display = 'block';
             } else {
+                // 3. ВОТ ЭТО ОЧЕНЬ ВАЖНО ДОБАВИТЬ: Возвращаем режим готовых шаблонов
+                currentGenerationMode = 'preset'; 
+
                 gallery.style.display = 'grid';
                 customBlock.style.display = 'none';
 
@@ -813,9 +822,9 @@
             }
         }
 
-        // ====================================================================================
-        // 2. ФУНКЦИЯ перехода к финальным настройкам для вкладки "Свой"
-        // ====================================================================================
+// ====================================================================================
+// 2. ФУНКЦИЯ перехода к финальным настройкам для вкладки "Свой"
+// ====================================================================================
 
         function selectCustomStyle() {
             const promptText = document.getElementById('custom_prompt_input').value.trim();
@@ -824,15 +833,35 @@
                 return;
             }
             
+            // 🔥 ДОБАВИЛИ: Активируем системные переменные, чтобы назад возвращало правильно
+            isTextImageStyleSelected = true; 
+            selectedStyleName = "Кастомный промпт"; 
+
+            // 🔥 ДОБАВИЛИ: Меняем заголовки экрана под кастомный режим
+            document.getElementById('text_image_title').innerText = "Ваша задумка";
+            document.getElementById('text_image_subtitle').innerText = "Настройте параметры кадра и запустите генерацию:";
+            
+            // Скрываем форму ввода текста и открываем настройки Шага 2
             document.getElementById('custom_prompt_block').style.display = 'none';
+            document.getElementById('text_image_settings_block').style.display = 'block';
             
-            const settingsBlock = document.getElementById('text_image_settings_block');
-            settingsBlock.style.display = 'block';
-            
-            // Ставим заглушку на превью для кастомного режима
+            // 🔥 ИСПРАВИЛИ ССЫЛКУ: Ставим рабочую картинку-заглушку на превью
             document.getElementById('text_image_large_preview').src = 'https://postimg.cc'; 
-    
+
+            // 🔥 ДОБАВИЛИ: Сбрасываем глобальные переменные и текст на кнопках в стартовый дефолт
+            selectedTextQuality = 'schnell';
+            selectedTextRatio = '9:16';
+            
+            document.getElementById('btn_text_quality').innerHTML = `⚡ Standard`;
+            document.getElementById('btn_text_ratio').innerHTML = `9:16`;
+
+            // 🔥 ДОБАВИЛИ: Твой фирменный пересчет баланса монет
+            updateNeoStartButtonText();
+            
+            if (tg && tg.MainButton) tg.MainButton.hide();
         }
+
+
         // ====================================================================================
         // 3. УМНАЯ ФУНКЦИЯ ВОЗВРАТА НАЗАД К ГАЛЕРЕЕ КАРТОЧЕК
         // ====================================================================================

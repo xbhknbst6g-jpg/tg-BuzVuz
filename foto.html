@@ -331,7 +331,7 @@
 
 
 
-        /* 📱 РАСТЯГИВАЕМ КОНТЕЙНЕР НА ВСЮ ШИРИНУ ЭКРАНА СМАРТФОНА (контейнер кнопок муж жен семья общие) */
+        /* 📱 РАСТЯГИВАЕМ КОНТЕЙНЕР НА ВСЮ ШИРИНУ ЭКРАНА СМАРТФОНА */
         .tabs-container {
             display: grid !important;
             /* 1 колонка для круглой стрелки (30px) + 6 одинаковых колонок для вкладок */
@@ -340,28 +340,28 @@
             align-items: center !important;
             width: 100% !important;
             padding: 4px 0 14px 0 !important; /* Убираем боковые паддинги, чтобы встали в край */
-            margin-top: 5px;
+            margin-top: 5px !important;
             box-sizing: border-box !important;
             overflow: hidden !important; /* Блокируем скролл, всё влезет в ряд */
         }
 
         /* 💊 АВТО-КОМПАКТНЫЕ КНОПКИ ДЛЯ ПОЛНОЙ ЛИНИИ */
         .tab-btn {
-            -webkit-appearance: none; appearance: none; outline: none;
-            border: 1px solid var(--tg-theme-border-color, #e1e6eb); 
-            border-radius: 20px;
-            background: var(--tg-theme-bg-color, #fff); 
-            color: var(--tg-theme-text-color, #333); 
+            -webkit-appearance: none !important; appearance: none !important; outline: none !important;
+            border: 1px solid var(--tg-theme-border-color, #e1e6eb) !important; 
+            border-radius: 20px !important;
+            background: var(--tg-theme-bg-color, #fff) !important; 
+            color: var(--tg-theme-text-color, #333) !important; 
             
             /* Ужимаем паддинги до минимума, чтобы текст не обрезался */
             padding: 6px 2px !important; 
             font-size: 10.5px !important; /* Тонкий аккуратный шрифт для узких экранов */
-            font-weight: 700;
+            font-weight: 700 !important;
             text-align: center !important;
-            white-space: nowrap; 
-            cursor: pointer; 
-            transition: all 0.15s ease;
-            -webkit-tap-highlight-color: transparent;
+            white-space: nowrap !important; 
+            cursor: pointer !important; 
+            transition: all 0.15s ease !important;
+            -webkit-tap-highlight-color: transparent !important;
             width: 100% !important; /* Занимает всю свою колонку сетки */
             box-sizing: border-box !important;
         }
@@ -376,11 +376,11 @@
 
         /* ⬅️ ИДЕАЛЬНО ПОДГНАННАЯ СТРЕЛКА НАЗАД */
         .back-tab-btn {
-            -webkit-appearance: none; appearance: none; outline: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            position: relative; 
+            -webkit-appearance: none !important; appearance: none !important; outline: none !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            position: relative !important; 
             
             border: 1px solid #ff1e00 !important;
             background-color: #ff6600 !important;
@@ -389,21 +389,22 @@
             border-radius: 50% !important; 
             width: 30px !important;
             height: 30px !important;
+            min-width: 30px !important;
             padding: 0 !important;
-            cursor: pointer;
+            cursor: pointer !important;
             transition: all 0.15s ease !important;
             -webkit-tap-highlight-color: transparent !important;
             box-sizing: border-box !important;
         }
 
         .back-tab-btn::before {
-            content: "";
-            position: absolute;
-            width: 6px; 
-            height: 6px; 
-            border-left: 2px solid #ffffff;  
-            border-bottom: 2px solid #ffffff; 
-            transform: translate(1px, 0) rotate(45deg); 
+            content: "" !important;
+            position: absolute !important;
+            width: 6px !important; 
+            height: 6px !important; 
+            border-left: 2px solid #ffffff !important;  
+            border-bottom: 2px solid #ffffff !important; 
+            transform: translate(1px, 0) rotate(45deg) !important; 
         }
 
         .back-tab-btn:active {

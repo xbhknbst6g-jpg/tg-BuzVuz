@@ -578,7 +578,7 @@
 
 
 
-<!-- ========================================== -->
+    <!-- ========================================== -->
     <!-- ПОДРЕЖИМ 2: FACE SWAP                      -->
     <!-- ========================================== -->
     <div id="face_swap" class="screen">
@@ -589,11 +589,11 @@
             <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); margin-left: 5px; white-space: nowrap;">Настройка Face Swap</div>
         </div>
 
-        <!-- 🔥 СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (Изначально полностью скрыт, как text_image_settings_block!) -->
+        <!-- 🔥 СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (Изначально полностью скрыт, как в Фото+Текст!) -->
         <div id="face_swap_settings_block" style="display: none;">
             
             <!-- ЦЕНТРАЛЬНЫЙ БЛОК ДЛЯ КАРТИНОК И ИНСТРУКЦИИ -->
-            <div class="custom-prompt-container" style="margin-top: 15px; margin-bottom: 85px !important;">
+            <div class="custom-prompt-container" style="margin-top: 15px;">
                 <div style="font-size: 14px; font-weight: bold; margin-bottom: 12px; color: var(--tg-theme-text-color, #000); text-align: center;">📍 Как это работает (Пример):</div>
                 
                 <div class="swap-steps-grid">
@@ -619,7 +619,7 @@
                 </div>
             </div>
 
-                    <!-- 🔥 ПАНЕЛЬ КНОПОК FACE SWAP (НАМЕРТВО ПРИКЛЕЕНА К ПОЛУ И НЕ ЗАВИСИТ ОТ ДЛИНЫ ТЕКСТА) -->
+            <!-- ТВОИ ОГНЕННЫЕ КНОПКИ УПРАВЛЕНИЯ СНИЗУ -->
             <div class="single-row-controls" style="position: fixed !important; bottom: calc(env(safe-area-inset-bottom) + 16px) !important; left: 15px !important; right: 15px !important; width: calc(100% - 30px) !important; display: flex !important; gap: 8px !important; z-index: 999 !important; box-sizing: border-box !important; background: transparent !important;">
                 <div class="control-col">
                     <button id="btn_swap_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
@@ -973,7 +973,7 @@ function handleSwapBackClick() {
                 document.getElementById('text_image_settings_block').style.display = "none";
                 document.getElementById('text_image_gallery').style.display = "grid";
                 
-                // Скрываем блок Face Swap при выходе в меню
+                // 🔥 Скрываем блок Face Swap при выходе в меню
                 const swapSettings = document.getElementById('face_swap_settings_block');
                 if (swapSettings) swapSettings.style.display = "none";
             }
@@ -985,7 +985,7 @@ function handleSwapBackClick() {
                 activeScreenEl.classList.add('active');
                 updateFotoMainButton(); 
                 
-                // МГНОВЕННОЕ ВКЛЮЧЕНИЕ: без таймеров, в один клик переводим из display: none в block!
+                // 🔥 МГНОВЕННОЕ ВКЛЮЧЕНИЕ СИНХРОННО С ЭКРАНОМ (Как вкладка "Свой")
                 if (screenName === 'face_swap') {
                     const swapSettings = document.getElementById('face_swap_settings_block');
                     if (swapSettings) swapSettings.style.display = "block";

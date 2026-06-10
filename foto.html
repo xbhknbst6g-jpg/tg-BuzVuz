@@ -331,58 +331,50 @@
 
 
 
-/* 💊 ВЕРХНИЕ ВКЛАДКИ-КАПСУЛЫ В ОГНЕННОМ СТИЛЕ */
+        /* 📱 РАСТЯГИВАЕМ КОНТЕЙНЕР НА ВСЮ ШИРИНУ ЭКРАНА СМАРТФОНА (контейнер кнопок муж жен семья общие) */
         .tabs-container {
-            display: flex;
-            gap: 5px;
-            overflow-x: auto;
-            padding: 4px 2px 14px 2px;
+            display: grid !important;
+            /* 1 колонка для круглой стрелки (30px) + 6 одинаковых колонок для вкладок */
+            grid-template-columns: 30px repeat(6, 1fr) !important;
+            gap: 4px !important; /* Минимальный плотный отступ между капсулами */
+            align-items: center !important;
+            width: 100% !important;
+            padding: 4px 0 14px 0 !important; /* Убираем боковые паддинги, чтобы встали в край */
             margin-top: 5px;
-            scrollbar-width: none; /* Скрываем скроллбар в Firefox */
-            -webkit-overflow-scrolling: touch; /* Плавный скролл на iOS */
-        }
-        .tabs-container::-webkit-scrollbar {
-            display: none; /* Скрываем скроллбар в Chrome/Safari */
+            box-sizing: border-box !important;
+            overflow: hidden !important; /* Блокируем скролл, всё влезет в ряд */
         }
 
-        /* Обычное состояние вкладки (в тон интерфейса ТГ) */
-        .tab-btn {
-            -webkit-appearance: none; appearance: none; outline: none;
-            border: 1px solid var(--tg-theme-border-color, #e1e6eb); 
-            border-radius: 20px; 
-            background: var(--tg-theme-bg-color, #fff); 
-            color: var(--tg-theme-text-color, #333); 
-            padding: 6px 11px !important; 
-            white-space: nowrap; cursor: pointer; transition: all 0.15s ease;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        /* 💊 УЛЬТРАКОМПАКТНЫЕ КНОПКИ-ВКЛАДКИ */
+        /* 💊 АВТО-КОМПАКТНЫЕ КНОПКИ ДЛЯ ПОЛНОЙ ЛИНИИ */
         .tab-btn {
             -webkit-appearance: none; appearance: none; outline: none;
             border: 1px solid var(--tg-theme-border-color, #e1e6eb); 
             border-radius: 20px;
             background: var(--tg-theme-bg-color, #fff); 
             color: var(--tg-theme-text-color, #333); 
-            /* Уменьшили padding с 8px 16px до 6px 11px */
-            padding: 6px 11px !important; 
-            /* Уменьшили шрифт с 13px до 11.5px */
-            font-size: 11.5px !important; 
+            
+            /* Ужимаем паддинги до минимума, чтобы текст не обрезался */
+            padding: 6px 2px !important; 
+            font-size: 10.5px !important; /* Тонкий аккуратный шрифт для узких экранов */
             font-weight: 700;
-            white-space: nowrap; cursor: pointer; transition: all 0.15s ease;
+            text-align: center !important;
+            white-space: nowrap; 
+            cursor: pointer; 
+            transition: all 0.15s ease;
             -webkit-tap-highlight-color: transparent;
+            width: 100% !important; /* Занимает всю свою колонку сетки */
+            box-sizing: border-box !important;
         }
 
         /* Активное состояние кнопки */
         .tab-btn.active {
-            border: 2px solid #ff1e00 !important;     
+            border: 1px solid #ff1e00 !important; /* Тонкий кант, чтобы не распирало сетку */    
             background-color: #ff6600 !important; 
             color: #ffffff !important;            
             box-shadow: 0 4px 12px rgba(255, 30, 0, 0.2) !important; 
-            padding: 5px 10px !important; /* Небольшая компенсация под border 2px */
         }
 
-        /* ⬅️ УМЕНЬШЕННАЯ КРУГЛАЯ ОРАНЖЕВАЯ СТРЕЛКА НАЗАД */
+        /* ⬅️ ИДЕАЛЬНО ПОДГНАННАЯ СТРЕЛКА НАЗАД */
         .back-tab-btn {
             -webkit-appearance: none; appearance: none; outline: none;
             display: inline-flex;
@@ -390,30 +382,28 @@
             justify-content: center;
             position: relative; 
             
-            border: 2px solid #ff1e00 !important;
+            border: 1px solid #ff1e00 !important;
             background-color: #ff6600 !important;
             box-shadow: 0 4px 12px rgba(255, 30, 0, 0.2) !important;
             
             border-radius: 50% !important; 
-            /* Ужали диаметр круга с 36px до 28px, чтобы освободить место */
-            width: 28px !important;
-            height: 28px !important;
-            min-width: 28px !important; 
+            width: 30px !important;
+            height: 30px !important;
             padding: 0 !important;
             cursor: pointer;
             transition: all 0.15s ease !important;
             -webkit-tap-highlight-color: transparent !important;
+            box-sizing: border-box !important;
         }
 
-        /* Корректируем размер самого шеврона-стрелочки внутри уменьшенного круга */
         .back-tab-btn::before {
             content: "";
             position: absolute;
-            width: 6px; /* Уменьшили с 8px до 6px */
-            height: 6px; /* Уменьшили с 8px до 6px */
+            width: 6px; 
+            height: 6px; 
             border-left: 2px solid #ffffff;  
             border-bottom: 2px solid #ffffff; 
-            transform: translate(1.5px, 0) rotate(45deg); 
+            transform: translate(1px, 0) rotate(45deg); 
         }
 
         .back-tab-btn:active {
@@ -514,7 +504,7 @@
                 <img src="https://i.postimg.cc/cHRZDY1c/sai-t.jpg" alt="In the centre">
                 <div class="card-overlay">In the centre</div>
             </div>
-            <div class="phone-template-card" data-category="common" onclick="selectTextImageStyle('Family Vibe', 'https://i.postimg.cc/FH5y1J8S/5844728862795828808.jpg')">
+            <div class="phone-template-card" data-category="common" onclick="selectTextImageStyle('Group Style', 'https://i.postimg.cc/FH5y1J8S/5844728862795828808.jpg')">
                 <img src="https://i.postimg.cc/FH5y1J8S/5844728862795828808.jpg" alt="Group Style">
                 <div class="card-overlay">Family Vibe</div>
             </div>

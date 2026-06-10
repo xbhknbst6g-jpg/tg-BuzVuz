@@ -973,7 +973,7 @@ function handleSwapBackClick() {
                 document.getElementById('text_image_settings_block').style.display = "none";
                 document.getElementById('text_image_gallery').style.display = "grid";
                 
-                // 🔥 Скрываем блок Face Swap при выходе в меню
+                // Прячем блок Face Swap при возврате в хаб
                 const swapSettings = document.getElementById('face_swap_settings_block');
                 if (swapSettings) swapSettings.style.display = "none";
             }
@@ -985,10 +985,13 @@ function handleSwapBackClick() {
                 activeScreenEl.classList.add('active');
                 updateFotoMainButton(); 
                 
-                // 🔥 МГНОВЕННОЕ ВКЛЮЧЕНИЕ СИНХРОННО С ЭКРАНОМ (Как вкладка "Свой")
+                // 🔥 ИСПРАВИЛИ ТУТ: Включаем блок Face Swap через микротаймер!
+                // Это полностью скроет от глаз фазу отрисовки кнопок вверху.
                 if (screenName === 'face_swap') {
-                    const swapSettings = document.getElementById('face_swap_settings_block');
-                    if (swapSettings) swapSettings.style.display = "block";
+                    setTimeout(() => {
+                        const swapSettings = document.getElementById('face_swap_settings_block');
+                        if (swapSettings) swapSettings.style.display = "block";
+                    }, 30); // 30 миллисекунд — пользователь не заметит задержки, а прыжок исчезнет
                 }
             }
         }

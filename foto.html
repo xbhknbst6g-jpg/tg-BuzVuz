@@ -615,8 +615,8 @@
             </div>
         </div>
 
-                <!-- 🔥 ПАНЕЛЬ КНОПОК ДЛЯ ЭКРАНА FACE SWAP С ПРИНУДИТЕЛЬНЫМ CSS -->
-        <div class="single-row-controls" style="position: fixed !important; bottom: calc(env(safe-area-inset-bottom) + 16px) !important; left: 15px !important; right: 15px !important; width: calc(100% - 30px) !important; display: flex !important; gap: 8px !important; z-index: 999 !important; box-sizing: border-box !important;">
+                        <!-- 🔥 ПАНЕЛЬ КНОПОК FACE SWAP С ЗАЩИТОЙ ОТ ПРЫЖКОВ (ДОБАВИЛИ OPACITY И TRANSITION) -->
+        <div class="single-row-controls" style="position: fixed !important; bottom: calc(env(safe-area-inset-bottom) + 16px) !important; left: 15px !important; right: 15px !important; width: calc(100% - 30px) !important; display: flex !important; gap: 8px !important; z-index: 999 !important; box-sizing: border-box !important; opacity: 0; transition: opacity 0.2s ease;" id="swap_controls_panel">
             <div class="control-col">
                 <button id="btn_swap_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
             </div>
@@ -980,7 +980,7 @@ function handleSwapBackClick() {
         // 5. РОУТЕР ЭКРАНОВ И УМНЫЙ СЧЕТЧИК МОНЕТ НА КНОПКАХ START
         // ====================================================================================
 
-        // Безопасное переключение подэкранов внутри foto.html
+        // Безопасное переключение sub-экранов внутри foto.html
         function openScreen(screenName) {
             currentActiveMode = screenName;
             const screens = ['foto', 'face_swap', 'tryon', 'text_image', 'bg_change'];
@@ -1009,6 +1009,18 @@ function handleSwapBackClick() {
             if (activeScreenEl) {
                 activeScreenEl.classList.add('active');
                 updateFotoMainButton(); 
+            }
+
+            // 🔥 ДОБАВЛЕНО: Полностью убирает прыжки кнопок в Face Swap
+            if (screenName === 'face_swap') {
+                setTimeout(() => {
+                    const swapPanel = document.getElementById('swap_controls_panel');
+                    if (swapPanel) swapPanel.style.opacity = '1'; // Плавно проявляем сразу внизу
+                }, 50); // Задержка в 50 миллисекунд скроет прыжок от глаз
+            } else {
+                // Если уходим с экрана Face Swap — сбрасываем видимость кнопок обратно в 0 для следующего захода
+                const swapPanel = document.getElementById('swap_controls_panel');
+                if (swapPanel) swapPanel.style.opacity = '0';
             }
         }
 

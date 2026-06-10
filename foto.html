@@ -699,7 +699,7 @@
 
 
     <!-- ========================================== -->
-    <!-- ПОДРЕЖИМ 3: ПРИМЕРКА ОДЕЖДЫ (ДВА СЦЕНАРИЯ) -->
+    <!-- ПОДРЕЖИМ 3: ПРИМЕРКА ОДЕЖДЫ (TRYON)        -->
     <!-- ========================================== -->
     <div id="tryon" class="screen">
         
@@ -710,39 +710,39 @@
             <button class="tab-btn" id="tab_tryon_clothes" onclick="switchTryOnTab('clothes_swap_mode', this)">Одежду на себя</button>
         </div>
 
-        <!-- СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (Изначально полностью скрыт, уберет прыжки кнопок) -->
+        <!-- 🔥 СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (Изначально скрыт, ID совпадает с логикой роутера JS) -->
         <div id="tryon_settings_block" style="display: none;">
             
-            <!-- ЦЕНТРАЛЬНЫЙ БЛОК ДЛЯ КАРТИНОК И ИНСТРУКЦИИ -->
-            <div class="custom-prompt-container" style="margin-top: 15px;">
-                <div style="font-size: 14px; font-weight: bold; margin-bottom: 12px; color: var(--tg-theme-text-color, #000); text-align: center;">💡 Как это работает (Пример):</div>
+            <!-- КОНТЕЙНЕР-ОРИЕНТИР: Взяли твою минимальную высоту и свойства дисплея -->
+            <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 190px); box-sizing: border-box; display: flex; flex-direction: column;">
                 
-                <!-- ОРАНЖЕВАЯ СЕТКА ШАГОВ -->
+                <div style="font-size: 14px; font-weight: bold; margin-bottom: 12px; color: var(--tg-theme-text-color, #000); text-align: center;">📍 Как это работает (Пример):</div>
+                
+                <!-- ОРАНЖЕВАЯ СЕТКА С КАРТИНКАМИ-ШАГАМИ (Вставь сюда свои ссылки на фото примерки) -->
                 <div class="swap-steps-grid">
                     <div style="text-align: center;">
-                        <img id="tryon_img_step1" src="https://placeholder.com" alt="Шаг 1">
-                        <!-- 🔥 Шаг 1 теперь всегда твое селфи -->
+                        <img id="tryon_img_step1" src="https://i.postimg.cc/1tDhc1zH/selfi.jpg" alt="1. Селфи">
                         <div id="tryon_lbl_step1" style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 4px;">1. Ваше Селфи</div>
                     </div>
                     <div style="text-align: center;">
-                        <img id="tryon_img_step2" src="https://placeholder.com" alt="Шаг 2">
-                        <!-- ID для динамической смены текста подписи (Модель или Одежда) -->
+                        <img id="tryon_img_step2" src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg" alt="2. Шаблон">
                         <div id="tryon_lbl_step2" style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 4px;">2. Фото модели</div>
                     </div>
                     <div style="text-align: center;">
-                        <img id="tryon_img_step3" src="https://placeholder.com" alt="Шаг 3">
+                        <img id="tryon_img_step3" src="https://i.postimg.cc/pLrwcFTt/itog.jpg" alt="3. Итог">
                         <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 4px;">3. Итог 🔥</div>
                     </div>
                 </div>
 
-                <!-- 🔥 ДИНАМИЧЕСКИЙ ТЕКСТ ИНСТРУКЦИИ (Свое фото на 1 месте) -->
-                <div id="tryon_instruction_text" style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 4px !important; padding: 0 5px;">
+                <!-- 🔥 ТВОЙ УВЕЛИЧЕННЫЙ ОТСТУП 40px И ДИНАМИЧЕСКИЙ ТЕКСТ ИНСТРУКЦИИ -->
+                <div id="tryon_instruction_text" style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
                     Шаг 1: Настройте параметры кадра внизу и нажмите START.<br>
                     Шаг 2: Бот в Telegram попросит вас отправить сначала ваше Селфи, а затем Фото Модели, чтобы перенести ваше лицо на её тело и одежду!
                 </div>
+
             </div>
 
-            <!-- ТВОИ ОГНЕННЫЕ КНОПКИ УПРАВЛЕНИЯ СНИЗУ -->
+            <!-- 🔥 ТВОЙ УВЕЛИЧЕННЫЙ ОТСТУП 55px (Кнопки без fixed идеально встанут на пол) -->
             <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px;">
                 <div class="control-col">
                     <button id="btn_tryon_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
@@ -758,7 +758,7 @@
             </div>
 
         </div> <!-- Конец служебного блока -->
-    </div> <!-- Конец экрана tryon -->
+    </div>
 
 
     <!-- ========================================== -->
@@ -1107,9 +1107,9 @@ function handleTryOnBackClick() {
             const activeScreenEl = document.getElementById(screenName);
             if (activeScreenEl) {
                 activeScreenEl.classList.add('active');
-                updateFotoMainButton(); 
+                if (typeof updateFotoMainButton === 'function') updateFotoMainButton(); 
                 
-                // МГНОВЕННОЕ ВКЛЮЧЕНИЕ: переводим из display: none в block сразу при активации экрана!
+                // МГНОВЕННОЕ ВКЛЮЧЕНИЕ: только для Face Swap (так как у него скрыт внутренний блок)
                 if (screenName === 'face_swap') {
                     const swapSettings = document.getElementById('face_swap_settings_block');
                     if (swapSettings) swapSettings.style.display = "block";
@@ -1278,10 +1278,11 @@ function handleTryOnBackClick() {
                 quality: selectedSwapQuality 
             }); 
         }
-        
+        // 3. ФУНКЦИЯ СБОРА И ОТПРАВКИ ДАННЫХ ДЛЯ ПРИМЕРКИ
         function sendTryOnData() { 
             sendToTelegram({ 
                 mode_trigger: 'tryon', 
+                sub_mode: currentTryOnMode, // 🔥 ОБЯЗАТЕЛЬНО ДОБАВИЛИ: отправит 'face_swap_mode' или 'clothes_swap_mode'
                 aspect_ratio: selectedTryOnRatio, 
                 quality: selectedTryOnQuality 
             }); 

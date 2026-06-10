@@ -785,6 +785,7 @@
             document.getElementById('text_image_gallery').style.display = "none"; 
             document.getElementById('text_image_settings_block').style.display = "block"; // Открываем пульт управления
             
+            if (document.getElementById('text_image_spacer')) document.getElementById('text_image_spacer').style.display = 'none'
             // Показываем черную рамку с картинкой превью (только для шаблонов!)
             if (document.getElementById('preset_preview_block')) document.getElementById('preset_preview_block').style.display = 'block';
             if (document.getElementById('custom_instruction_text')) document.getElementById('custom_instruction_text').style.display = 'none';

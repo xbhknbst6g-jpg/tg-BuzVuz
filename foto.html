@@ -615,8 +615,8 @@
             </div>
         </div>
 
-        <!-- НИЖНЯЯ ПАНЕЛЬ С КНОПКАМИ (ЖЕСТКО ПРИЖАТА К ПОЛУ НАШИМ CSS) -->
-        <div class="single-row-controls">
+                <!-- 🔥 ПАНЕЛЬ КНОПОК ДЛЯ ЭКРАНА FACE SWAP С ПРИНУДИТЕЛЬНЫМ CSS -->
+        <div class="single-row-controls" style="position: fixed !important; bottom: calc(env(safe-area-inset-bottom) + 16px) !important; left: 15px !important; right: 15px !important; width: calc(100% - 30px) !important; display: flex !important; gap: 8px !important; z-index: 999 !important; box-sizing: border-box !important;">
             <div class="control-col">
                 <button id="btn_swap_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
             </div>

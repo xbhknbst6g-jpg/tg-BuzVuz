@@ -334,7 +334,7 @@
 /* 💊 ВЕРХНИЕ ВКЛАДКИ-КАПСУЛЫ В ОГНЕННОМ СТИЛЕ */
         .tabs-container {
             display: flex;
-            gap: 8px;
+            gap: 5px;
             overflow-x: auto;
             padding: 4px 2px 14px 2px;
             margin-top: 5px;
@@ -349,95 +349,76 @@
         .tab-btn {
             -webkit-appearance: none; appearance: none; outline: none;
             border: 1px solid var(--tg-theme-border-color, #e1e6eb); 
-            border-radius: 30px; 
+            border-radius: 20px; 
             background: var(--tg-theme-bg-color, #fff); 
             color: var(--tg-theme-text-color, #333); 
-            padding: 8px 16px; font-size: 13px; font-weight: 700;
+            padding: 6px 11px !important; 
             white-space: nowrap; cursor: pointer; transition: all 0.15s ease;
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* 🔥 Активное состояние вкладки (Один в один как capsule-btn!) */
-        .tab-btn.active {
-            border: 2px solid #ff1e00 !important;     /* Насыщенный алый кант */
-            background-color: #ff6600 !important; /* Горячий оранжевый фон */
-            color: #ffffff !important;            /* Белоснежный сочный текст */
-            box-shadow: 0 4px 12px rgba(255, 30, 0, 0.2) !important; /* Неоновое свечение */
-            padding: 7px 15px; /* Коррекция из-за border 2px, чтобы размер не прыгал */
-        }
-        
-        /* 📱 ОФОРМЛЕНИЕ ДЛЯ ПОЛЯ ВВОДА ВКЛАДКИ "СВОЙ" */
-        .custom-prompt-container {
-            background: var(--tg-theme-bg-color, #fff);
-            border: 1px solid var(--tg-theme-border-color, #e1e6eb);
-            border-radius: 12px; padding: 15px; margin: 15px 0;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.01);
-        }
-        .custom-prompt-container textarea {
-            width: 100%; box-sizing: border-box; border-radius: 8px;
-            border: 1px solid var(--tg-theme-border-color, #e1e6eb);
-            background: var(--tg-theme-secondary-bg-color, #f4f6f9);
-            color: var(--tg-theme-text-color, #333);
-            padding: 12px; font-size: 14px; font-family: inherit;
-            resize: none; outline: none; margin-bottom: 12px;
+        /* 💊 УЛЬТРАКОМПАКТНЫЕ КНОПКИ-ВКЛАДКИ */
+        .tab-btn {
+            -webkit-appearance: none; appearance: none; outline: none;
+            border: 1px solid var(--tg-theme-border-color, #e1e6eb); 
+            border-radius: 20px;
+            background: var(--tg-theme-bg-color, #fff); 
+            color: var(--tg-theme-text-color, #333); 
+            /* Уменьшили padding с 8px 16px до 6px 11px */
+            padding: 6px 11px !important; 
+            /* Уменьшили шрифт с 13px до 11.5px */
+            font-size: 11.5px !important; 
+            font-weight: 700;
+            white-space: nowrap; cursor: pointer; transition: all 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
         }
 
-/* 💊 КРУГЛАЯ ОРАНЖЕВАЯ КНОПКА С МИНИМАЛИСТИЧНЫМ ШЕВРОНОМ НАЗАД */
+        /* Активное состояние кнопки */
+        .tab-btn.active {
+            border: 2px solid #ff1e00 !important;     
+            background-color: #ff6600 !important; 
+            color: #ffffff !important;            
+            box-shadow: 0 4px 12px rgba(255, 30, 0, 0.2) !important; 
+            padding: 5px 10px !important; /* Небольшая компенсация под border 2px */
+        }
+
+        /* ⬅️ УМЕНЬШЕННАЯ КРУГЛАЯ ОРАНЖЕВАЯ СТРЕЛКА НАЗАД */
         .back-tab-btn {
             -webkit-appearance: none; appearance: none; outline: none;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            position: relative; /* Нужно для позиционирования стрелки внутри */
+            position: relative; 
             
             border: 2px solid #ff1e00 !important;
             background-color: #ff6600 !important;
             box-shadow: 0 4px 12px rgba(255, 30, 0, 0.2) !important;
             
-            border-radius: 50% !important; /* Идеальный круг */
-            width: 36px !important;
-            height: 36px !important;
-            min-width: 36px !important;
+            border-radius: 50% !important; 
+            /* Ужали диаметр круга с 36px до 28px, чтобы освободить место */
+            width: 28px !important;
+            height: 28px !important;
+            min-width: 28px !important; 
             padding: 0 !important;
             cursor: pointer;
             transition: all 0.15s ease !important;
             -webkit-tap-highlight-color: transparent !important;
         }
 
-        /* Рисуем белую угловую стрелку (как на скрине Magnific, только влево) */
+        /* Корректируем размер самого шеврона-стрелочки внутри уменьшенного круга */
         .back-tab-btn::before {
             content: "";
             position: absolute;
-            width: 8px;
-            height: 8px;
-            border-left: 2.5px solid #ffffff;  /* Толщина стрелки */
-            border-bottom: 2.5px solid #ffffff; /* Толщина стрелки */
-            transform: translate(2px, 0) rotate(45deg); /* Поворачиваем углом влево */
+            width: 6px; /* Уменьшили с 8px до 6px */
+            height: 6px; /* Уменьшили с 8px до 6px */
+            border-left: 2px solid #ffffff;  
+            border-bottom: 2px solid #ffffff; 
+            transform: translate(1.5px, 0) rotate(45deg); 
         }
 
         .back-tab-btn:active {
             transform: scale(0.92) !important;
             background-color: #e65c00 !important;
-        }
-
-
-/* 📱 ПРИЖИМАЕМ КНОПКИ НАСТРОЕК К САМОМУ ПОЛУ ЭКРАНА СМАРТФОНА */
-        .single-row-controls {
-            position: fixed !important;
-            bottom: calc(env(safe-area-inset-bottom) + 16px) !important; /* Учитываем челки и отступы iOS/Android */
-            left: 15px !important;
-            right: 15px !important;
-            width: calc(100% - 30px) !important;
-            display: flex !important;
-            gap: 8px !important;
-            z-index: 999 !important; /* Чтобы кнопки всегда были поверх прокрутки текста */
-            background: transparent !important;
-            box-sizing: border-box !important;
-        }
-
-        /* Добавим небольшой отступ снизу для блоков контента, чтобы они не залезали под фиксированные кнопки */
-        .custom-prompt-container, .text-image-compact-preview {
-            margin-bottom: 85px !important; 
         }
 
 
@@ -511,7 +492,7 @@
             <button class="tab-btn" onclick="switchTextTab('men', this)">Муж</button>
             <button class="tab-btn" onclick="switchTextTab('women', this)">Жен</button>
             <button class="tab-btn" onclick="switchTextTab('kids', this)">Дети</button>
-            <button class="tab-btn" onclick="switchTextTab('family', this)">Семья</button>
+            <button class="tab-btn" onclick="switchTextTab('common', this)">Общие</button>
             <button class="tab-btn" onclick="switchTextTab('custom', this)">Свой</button>
         </div>
 
@@ -533,8 +514,8 @@
                 <img src="https://i.postimg.cc/cHRZDY1c/sai-t.jpg" alt="In the centre">
                 <div class="card-overlay">In the centre</div>
             </div>
-            <div class="phone-template-card" data-category="family" onclick="selectTextImageStyle('Family Vibe', 'https://i.postimg.cc/FH5y1J8S/5844728862795828808.jpg')">
-                <img src="https://i.postimg.cc/FH5y1J8S/5844728862795828808.jpg" alt="Family Vibe">
+            <div class="phone-template-card" data-category="common" onclick="selectTextImageStyle('Family Vibe', 'https://i.postimg.cc/FH5y1J8S/5844728862795828808.jpg')">
+                <img src="https://i.postimg.cc/FH5y1J8S/5844728862795828808.jpg" alt="Group Style">
                 <div class="card-overlay">Family Vibe</div>
             </div>
             <div class="phone-template-card" data-category="kids" onclick="selectTextImageStyle('Evening vibe', 'https://i.postimg.cc/L8D378Qf/GEM3Nqu-I43e3gq-Wz5j-Ol-E-L2YT0AJ8.png')">

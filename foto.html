@@ -576,22 +576,36 @@
 
 
     <!-- ========================================== -->
-    <!-- ПОДРЕЖИМ 2: FACE SWAP (ИНФОРМАЦИОННЫЙ)     -->
+    <!-- ПОДРЕЖИМ 2: FACE SWAP                      -->
     <!-- ========================================== -->
     <div id="face_swap" class="screen">
         
         <!-- ЛЕНТА ВЕРХУШКИ С НАШЕЙ КРУГЛОЙ КНОПКОЙ НАЗАД -->
         <div class="tabs-container" id="swap_tabs">
-            <!-- Кнопка назад автоматически нарисуется оранжевым кругом с белым шевроном влево -->
             <button class="back-tab-btn" onclick="handleSwapBackClick()"></button>
             <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); margin-left: 5px; white-space: nowrap;">Настройка Face Swap</div>
         </div>
 
-        <!-- ЦЕНТРАЛЬНЫЙ БЛОК: ИНСТРУКЦИЯ + ТВОЙ ОРИГИНАЛЬНЫЙ СКРИНШОТ ПРИМЕРА -->
-        <div class="custom-prompt-container" style="margin-top: 15px;">
+        <!-- 🔥 ПЕРЕНЕСЛИ КНОПКИ НАВЕРХ В КОДЕ (Но на экране они сразу встанут на пол!) -->
+        <!-- Сохраняем твои оригинальные ID и функцию запуска sendCustomFaceSwapData -->
+        <div class="single-row-controls" style="position: fixed !important; bottom: calc(env(safe-area-inset-bottom) + 16px) !important; left: 15px !important; right: 15px !important; width: calc(100% - 30px) !important; display: flex !important; gap: 8px !important; z-index: 999 !important; box-sizing: border-box !important;">
+            <div class="control-col">
+                <button id="btn_swap_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
+            </div>
+            <div class="control-col">
+                <button id="btn_swap_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">9:16</button>
+            </div>
+            <div class="control-col control-col-btn">
+                <button id="neo_swap_submit_btn" class="neo-start-btn" onclick="sendCustomFaceSwapData()">
+                    Start 1 🪙
+                </button>
+            </div>
+        </div>
+
+        <!-- ЦЕНТРАЛЬНЫЙ БЛОК ДЛЯ КАРТИНОК И ИНСТРУКЦИИ (Спустили вниз в коде, кнопки его не перекроют) -->
+        <div class="custom-prompt-container" style="margin-top: 15px; margin-bottom: 85px !important;">
             <div style="font-size: 14px; font-weight: bold; margin-bottom: 12px; color: var(--tg-theme-text-color, #000); text-align: center;">📍 Как это работает (Пример):</div>
             
-            <!-- ТВОЯ ОРИГИНАЛЬНАЯ СЕТКА ПРИМЕРА ИЗ 3 КАРТИНОК (ПОЛНОСТЬЮ СОХРАНЕНА) -->
             <div class="swap-steps-grid">
                 <div style="text-align: center;">
                     <img src="https://placeholder.com" alt="1. Селфи">
@@ -607,26 +621,10 @@
                 </div>
             </div>
 
-            <!-- ТЕКСТОВОЕ ОПИСАНИЕ С ШАГАМИ ДЛЯ БОТА -->
             <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 20px; padding: 0 5px;">
                 Шаг 1: Настройте формат кадра и качество генерации на кнопках внизу.<br>
                 Шаг 2: Нажмите огненную кнопку START.<br>
                 Шаг 3: Веб-сайт закроется, и бот в чате Telegram по очереди попросит вас отправить сначала ваше Селфи, а затем Шаблон для замены лица!
-            </div>
-        </div>
-
-                        <!-- 🔥 ПАНЕЛЬ КНОПОК FACE SWAP С ЗАЩИТОЙ ОТ ПРЫЖКОВ (ДОБАВИЛИ OPACITY И TRANSITION) -->
-        <div class="single-row-controls" style="position: fixed !important; bottom: calc(env(safe-area-inset-bottom) + 16px) !important; left: 15px !important; right: 15px !important; width: calc(100% - 30px) !important; display: flex !important; gap: 8px !important; z-index: 999 !important; box-sizing: border-box !important; opacity: 0; transition: opacity 0.2s ease;" id="swap_controls_panel">
-            <div class="control-col">
-                <button id="btn_swap_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
-            </div>
-            <div class="control-col">
-                <button id="btn_swap_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">9:16</button>
-            </div>
-            <div class="control-col control-col-btn">
-                <button id="neo_swap_submit_btn" class="neo-start-btn" onclick="sendCustomFaceSwapData()">
-                    Start 1 🪙
-                </button>
             </div>
         </div>
     </div>
@@ -980,7 +978,7 @@ function handleSwapBackClick() {
         // 5. РОУТЕР ЭКРАНОВ И УМНЫЙ СЧЕТЧИК МОНЕТ НА КНОПКАХ START
         // ====================================================================================
 
-        // Безопасное переключение sub-экранов внутри foto.html
+        // Безопасное переключение подэкранов внутри foto.html
         function openScreen(screenName) {
             currentActiveMode = screenName;
             const screens = ['foto', 'face_swap', 'tryon', 'text_image', 'bg_change'];
@@ -1009,18 +1007,6 @@ function handleSwapBackClick() {
             if (activeScreenEl) {
                 activeScreenEl.classList.add('active');
                 updateFotoMainButton(); 
-            }
-
-            // 🔥 ДОБАВЛЕНО: Полностью убирает прыжки кнопок в Face Swap
-            if (screenName === 'face_swap') {
-                setTimeout(() => {
-                    const swapPanel = document.getElementById('swap_controls_panel');
-                    if (swapPanel) swapPanel.style.opacity = '1'; // Плавно проявляем сразу внизу
-                }, 50); // Задержка в 50 миллисекунд скроет прыжок от глаз
-            } else {
-                // Если уходим с экрана Face Swap — сбрасываем видимость кнопок обратно в 0 для следующего захода
-                const swapPanel = document.getElementById('swap_controls_panel');
-                if (swapPanel) swapPanel.style.opacity = '0';
             }
         }
 

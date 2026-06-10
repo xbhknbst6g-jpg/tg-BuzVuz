@@ -445,6 +445,31 @@
             border-color: #e61b00 !important;
         }
 
+        /* 🔥 СТИЛЬНЫЕ ОРАНЖЕВЫЕ НЕОНОВЫЕ КАРТОЧКИ ДЛЯ ВСЕЙ ГАЛЕРЕИ ШАБЛОНОВ */
+        .phone-template-card {
+            border: 2px solid #ff6600 !important; /* Наш фирменный оранжевый бордюр */
+            border-radius: 12px !important; /* Идеальное закругление углов */
+            box-shadow: 0 4px 10px rgba(255, 102, 0, 0.2) !important; /* Мягкое оранжевое неоновое свечение */
+            overflow: hidden !important;
+            transition: all 0.2s ease-in-out !important;
+            background-color: #111 !important;
+        }
+
+        /* Эффект при легком нажатии на карточку пальцем */
+        .phone-template-card:active {
+            transform: scale(0.96) !important; /* Карточка приятно сжимается при тапе */
+            box-shadow: 0 2px 15px rgba(255, 102, 0, 0.5) !important; /* Свечение становится ярче */
+        }
+
+        /* Перекрашиваем плашку с текстом внизу карточек в глубокий оранжевый неон */
+        .card-overlay {
+            background: linear-gradient(to top, rgba(230, 92, 0, 0.95), rgba(255, 102, 0, 0.6)) !important;
+            color: #ffffff !important;
+            font-weight: 800 !important;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6) !important;
+            font-size: 12px !important;
+        }
+
 
 
     </style>

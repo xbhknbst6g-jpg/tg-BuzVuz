@@ -123,18 +123,14 @@
     }
 
         
-    /* НАСТРОЕНО: Горизонтальная ультракомпактная панель, зафиксированная на полу */
+    /* НАСТРОЙКА КНОПОК НЕОНОВЫХ  */
+    /* Горизонтальная ультракомпактная панель */
     .single-row-controls {
-        position: fixed !important;
-        bottom: calc(env(safe-area-inset-bottom) + 5px) !important; /* Прижали к полу с отступом 5px */
-        left: 15px !important;
-        right: 15px !important;
-        width: calc(100% - 30px) !important;
-        display: flex !important;
-        gap: 8px !important;
-        z-index: 999 !important; /* Кнопки всегда будут поверх прокрутки текста */
-        background: transparent !important;
-        box-sizing: border-box !important;
+        display: flex;
+        gap: 8px;
+        align-items: flex-end; /* Выравниваем элементы по нижней линии кнопок */
+        margin-top: 15px;
+        width: 100%;
     }
 
     .control-col {

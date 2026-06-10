@@ -123,14 +123,18 @@
     }
 
         
-    /* НАСТРОЙКА КНОПОК НЕОНОВЫХ  */
-    /* Горизонтальная ультракомпактная панель */
+    /* НАСТРОЕНО: Горизонтальная ультракомпактная панель, зафиксированная на полу */
     .single-row-controls {
-        display: flex;
-        gap: 8px;
-        align-items: flex-end; /* Выравниваем элементы по нижней линии кнопок */
-        margin-top: 15px;
-        width: 100%;
+        position: fixed !important;
+        bottom: calc(env(safe-area-inset-bottom) + 5px) !important; /* Прижали к полу с отступом 5px */
+        left: 15px !important;
+        right: 15px !important;
+        width: calc(100% - 30px) !important;
+        display: flex !important;
+        gap: 8px !important;
+        z-index: 999 !important; /* Кнопки всегда будут поверх прокрутки текста */
+        background: transparent !important;
+        box-sizing: border-box !important;
     }
 
     .control-col {
@@ -619,8 +623,7 @@
             </div>
 
             <!-- ТВОИ ОГНЕННЫЕ КНОПКИ УПРАВЛЕНИЯ СНИЗУ -->
-            <div class="single-row-controls" style="position: fixed !important; bottom: calc(env(safe-area-inset-bottom) + 5px) !important; left: 15px !important; right: 15px !important; width: calc(100% - 30px) !important; display: flex !important; gap: 8px !important; z-index: 999 !important; box-sizing: border-box !important; background: transparent !important;">
-
+            <div class="single-row-controls">
                 <div class="control-col">
                     <button id="btn_swap_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
                 </div>

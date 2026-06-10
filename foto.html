@@ -611,15 +611,16 @@
                     </div>
                 </div>
 
-                <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 20px; padding: 0 5px;">
+                <!-- Блок текста с безопасным отступом снизу под фиксированные кнопки -->
+                <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 20px !important; padding: 0 5px 85px 5px !important; box-sizing: border-box;">
                     Шаг 1: Настройте формат кадра и качество генерации на кнопках внизу.<br>
                     Шаг 2: Нажмите огненную кнопку START.<br>
                     Шаг 3: Веб-сайт закроется, и бот в чате Telegram по очереди попросит вас отправить сначала ваше Селфи, а затем Шаблон для замены лица!
                 </div>
             </div>
 
-            <!-- ТВОИ ОГНЕННЫЕ КНОПКИ УПРАВЛЕНИЯ СНИЗУ -->
-            <div class="single-row-controls">
+                    <!-- 🔥 ПАНЕЛЬ КНОПОК FACE SWAP (НАМЕРТВО ПРИКЛЕЕНА К ПОЛУ И НЕ ЗАВИСИТ ОТ ДЛИНЫ ТЕКСТА) -->
+            <div class="single-row-controls" style="position: fixed !important; bottom: calc(env(safe-area-inset-bottom) + 16px) !important; left: 15px !important; right: 15px !important; width: calc(100% - 30px) !important; display: flex !important; gap: 8px !important; z-index: 999 !important; box-sizing: border-box !important; background: transparent !important;">
                 <div class="control-col">
                     <button id="btn_swap_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
                 </div>

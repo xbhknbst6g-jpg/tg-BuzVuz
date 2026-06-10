@@ -89,7 +89,20 @@
 
         /* СПЕЦИАЛЬНАЯ СЕТКА ДЛЯ 3 ШАГОВ (FACE SWAP, ПРИМЕРКА, СМЕНА ФОНА) */
         .swap-steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 10px; }
-        .swap-steps-grid img { width: 100%; height: auto; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 6px; display: block; }
+        /* 🖼 КРУПНЫЕ ОКНА С ОРАНЖЕВЫМИ НЕОНОВЫМИ РАМКАМИ ДЛЯ ВСЕХ КАРТИНОК */
+        .swap-steps-grid img {
+            width: 100% !important; 
+            aspect-ratio: 3 / 4 !important; 
+            height: auto !important; 
+            object-fit: cover !important; 
+            border-radius: 12px !important; 
+            /* 🔥 Заменили стандартный бордюр на твою фирменную оранжевую неоновую рамку */
+            border: 2px solid #ff6600 !important; 
+            box-shadow: 0 4px 12px rgba(255, 102, 0, 0.3) !important; /* Легкое оранжевое свечение вокруг */
+            box-sizing: border-box !important;
+            background-color: #111 !important; 
+        }
+
 
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(4px); }
@@ -600,11 +613,11 @@
                 <div class="swap-steps-grid">
                     <div style="text-align: center;">
                         <img src="https://i.postimg.cc/1tDhc1zH/selfi.jpg" alt="1. Селфи">
-                        <div style="font-size: 11px; font-weight: bold; color: var(--tg-theme-hint-color, #777); margin-top: 4px;">1. Селфи</div>
+                        <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 4px;">1. Селфи</div>
                     </div>
                     <div style="text-align: center;">
                         <img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg" alt="2. Шаблон">
-                        <div style="font-size: 11px; font-weight: bold; color: var(--tg-theme-hint-color, #777); margin-top: 4px;">2. Шаблон</div>
+                        <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 4px;">2. Шаблон</div>
                     </div>
                     <div style="text-align: center;">
                         <img src="https://i.postimg.cc/pLrwcFTt/itog.jpg" alt="3. Итог" style="border: 2px solid #ff6600;">

@@ -589,7 +589,7 @@
             <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); margin-left: 5px; white-space: nowrap;">Настройка Face Swap</div>
         </div>
 
-        <!-- 🔥 СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (Изначально полностью скрыт, как в Фото+Текст!) -->
+        <!-- 🔥 СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (Изначально полностью скрыт, как text_image_settings_block) -->
         <div id="face_swap_settings_block" style="display: none;">
             
             <!-- ЦЕНТРАЛЬНЫЙ БЛОК ДЛЯ КАРТИНОК И ИНСТРУКЦИИ -->
@@ -611,7 +611,6 @@
                     </div>
                 </div>
 
-                <!-- Блок текста с безопасным отступом снизу под фиксированные кнопки -->
                 <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 20px !important; padding: 0 5px 85px 5px !important; box-sizing: border-box;">
                     Шаг 1: Настройте формат кадра и качество генерации на кнопках внизу.<br>
                     Шаг 2: Нажмите огненную кнопку START.<br>
@@ -620,7 +619,7 @@
             </div>
 
             <!-- ТВОИ ОГНЕННЫЕ КНОПКИ УПРАВЛЕНИЯ СНИЗУ -->
-            <div class="single-row-controls" style="position: fixed !important; bottom: calc(env(safe-area-inset-bottom) + 16px) !important; left: 15px !important; right: 15px !important; width: calc(100% - 30px) !important; display: flex !important; gap: 8px !important; z-index: 999 !important; box-sizing: border-box !important; background: transparent !important;">
+            <div class="single-row-controls">
                 <div class="control-col">
                     <button id="btn_swap_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
                 </div>
@@ -633,6 +632,7 @@
                     </button>
                 </div>
             </div>
+
         </div> <!-- Конец служебного блока -->
     </div>
 
@@ -973,7 +973,7 @@ function handleSwapBackClick() {
                 document.getElementById('text_image_settings_block').style.display = "none";
                 document.getElementById('text_image_gallery').style.display = "grid";
                 
-                // Прячем блок Face Swap при возврате в хаб
+                // Скрываем блок Face Swap при выходе в меню
                 const swapSettings = document.getElementById('face_swap_settings_block');
                 if (swapSettings) swapSettings.style.display = "none";
             }
@@ -985,13 +985,10 @@ function handleSwapBackClick() {
                 activeScreenEl.classList.add('active');
                 updateFotoMainButton(); 
                 
-                // 🔥 ИСПРАВИЛИ ТУТ: Включаем блок Face Swap через микротаймер!
-                // Это полностью скроет от глаз фазу отрисовки кнопок вверху.
+                // МГНОВЕННОЕ ВКЛЮЧЕНИЕ: переводим из display: none в block сразу при активации экрана!
                 if (screenName === 'face_swap') {
-                    setTimeout(() => {
-                        const swapSettings = document.getElementById('face_swap_settings_block');
-                        if (swapSettings) swapSettings.style.display = "block";
-                    }, 30); // 30 миллисекунд — пользователь не заметит задержки, а прыжок исчезнет
+                    const swapSettings = document.getElementById('face_swap_settings_block');
+                    if (swapSettings) swapSettings.style.display = "block";
                 }
             }
         }

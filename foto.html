@@ -576,41 +576,52 @@
 
 
     <!-- ========================================== -->
-    <!-- ПОДРЕЖИМ 2: FACE SWAP                      -->
+    <!-- ПОДРЕЖИМ 2: FACE SWAP (ИНФОРМАЦИОННЫЙ)     -->
     <!-- ========================================== -->
     <div id="face_swap" class="screen">
-        <button class="back-btn" onclick="openScreen('foto')">⬅️ В меню</button>
         
-        <div class="header" style="margin-bottom: 10px; text-align: center;">
-            <h1>Настройка Face Swap</h1>
+        <!-- ЛЕНТА ВЕРХУШКИ С НАШЕЙ КРУГЛОЙ КНОПКОЙ НАЗАД -->
+        <div class="tabs-container" id="swap_tabs">
+            <!-- Кнопка назад автоматически нарисуется оранжевым кругом с белым шевроном влево -->
+            <button class="back-tab-btn" onclick="handleSwapBackClick()"></button>
+            <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); margin-left: 5px; white-space: nowrap;">Настройка Face Swap</div>
         </div>
 
-        <!-- КАРТОЧКА-ОБРАЗЕЦ ИЗ 3 ШАГОВ НАВЕРХУ -->
-        <div class="tryon-card" style="margin-bottom: 20px;">
-            <div class="tryon-card-title">💡 Как это работает (Пример):</div>
+        <!-- ЦЕНТРАЛЬНЫЙ БЛОК: ИНСТРУКЦИЯ + ТВОЙ ОРИГИНАЛЬНЫЙ СКРИНШОТ ПРИМЕРА -->
+        <div class="custom-prompt-container" style="margin-top: 15px;">
+            <div style="font-size: 14px; font-weight: bold; margin-bottom: 12px; color: var(--tg-theme-text-color, #000); text-align: center;">📍 Как это работает (Пример):</div>
+            
+            <!-- ТВОЯ ОРИГИНАЛЬНАЯ СЕТКА ПРИМЕРА ИЗ 3 КАРТИНОК (ПОЛНОСТЬЮ СОХРАНЕНА) -->
             <div class="swap-steps-grid">
-                <div style="position: relative;">
-                    <img src="https://postimg.cc" alt="Селфи">
-                    <div style="position: absolute; bottom: 4px; left: 4px; background: rgba(0,0,0,0.7); color: #fff; font-size: 9px; padding: 2px 4px; border-radius: 4px; font-weight: bold;">1. Селфи</div>
+                <div style="text-align: center;">
+                    <img src="https://placeholder.com" alt="1. Селфи">
+                    <div style="font-size: 11px; font-weight: bold; color: var(--tg-theme-hint-color, #777); margin-top: 4px;">1. Селфи</div>
                 </div>
-                <div style="position: relative;">
-                    <img src="https://postimg.cc" alt="Шаблон">
-                    <div style="position: absolute; bottom: 4px; left: 4px; background: rgba(0,0,0,0.7); color: #fff; font-size: 9px; padding: 2px 4px; border-radius: 4px; font-weight: bold;">2. Шаблон</div>
+                <div style="text-align: center;">
+                    <img src="https://placeholder.com" alt="2. Шаблон">
+                    <div style="font-size: 11px; font-weight: bold; color: var(--tg-theme-hint-color, #777); margin-top: 4px;">2. Шаблон</div>
                 </div>
-                <div style="position: relative;">
-                    <img src="https://postimg.cc" alt="Итог">
-                    <div style="position: absolute; bottom: 4px; left: 4px; background: #28a745; color: #fff; font-size: 9px; padding: 2px 4px; border-radius: 4px; font-weight: bold;">3. Итог 🔥</div>
+                <div style="text-align: center;">
+                    <img src="https://placeholder.com" alt="3. Итог" style="border: 2px solid #ff6600;">
+                    <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 4px;">3. Итог 🔥</div>
                 </div>
+            </div>
+
+            <!-- ТЕКСТОВОЕ ОПИСАНИЕ С ШАГАМИ ДЛЯ БОТА -->
+            <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 20px; padding: 0 5px;">
+                Шаг 1: Настройте формат кадра и качество генерации на кнопках внизу.<br>
+                Шаг 2: Нажмите огненную кнопку START.<br>
+                Шаг 3: Веб-сайт закроется, и бот в чате Telegram по очереди попросит вас отправить сначала ваше Селфи, а затем Шаблон для замены лица!
             </div>
         </div>
 
-        <!-- ВСЕ НАСТРОЙКИ В ОДНУ СТРОКУ КНОПКАМИ-КАПСУЛАМИ (ДОБАВЛЕНО ДЛЯ FACE SWAP) -->
+        <!-- НИЖНЯЯ ПАНЕЛЬ С КНОПКАМИ (ЖЕСТКО ПРИЖАТА К ПОЛУ НАШИМ CSS) -->
         <div class="single-row-controls">
             <div class="control-col">
-                <button id="btn_swap_quality" class="capsule-btn">⚡ Standard</button>
+                <button id="btn_swap_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
             </div>
             <div class="control-col">
-                <button id="btn_swap_ratio" class="capsule-btn">9:16</button>
+                <button id="btn_swap_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">9:16</button>
             </div>
             <div class="control-col control-col-btn">
                 <button id="neo_swap_submit_btn" class="neo-start-btn" onclick="sendCustomFaceSwapData()">
@@ -618,21 +629,7 @@
                 </button>
             </div>
         </div>
-
-
-        <!-- Готовые пресеты для клика -->
-        <p style="font-size: 14px; text-align: center; color: var(--tg-theme-hint-color, #666); margin-bottom: 10px; font-weight: bold;">🎯 Или выберите готовый шаблон ниже:</p>
-        <div class="phone-templates-grid">
-            <div class="phone-template-card" onclick="selectReadyTemplate('girl_face', '3:4')">
-                <img src="https://postimg.cc">
-                <div class="card-overlay">👩 Девушка (3:4)</div>
-            </div>
-            <div class="phone-template-card full-width" onclick="selectReadyTemplate('Lying_down_phone', '16:9')">
-                <img src="https://postimg.cc">
-                <div class="card-overlay">📱 С телефоном (16:9)</div>
-            </div>
-        </div>
-    </div> <!-- Конец экрана face_swap -->
+    </div>
 
     <!-- ========================================== -->
     <!-- ПОДРЕЖИМ 3: ПРИМЕРКА ОДЕЖДЫ                -->
@@ -884,6 +881,13 @@
             
             if (tg && tg.MainButton) tg.MainButton.hide();
         }
+
+// ====================================================================================
+// 2.5 ФУНКЦИЯ ВОЗВРАТА НАЗАД ИЗ РЕЖИМА FACE SWAP
+// ====================================================================================
+function handleSwapBackClick() {
+    openScreen('foto'); // Возврат в главное меню студии к 4 режимам
+}
 
 
 // ====================================================================================

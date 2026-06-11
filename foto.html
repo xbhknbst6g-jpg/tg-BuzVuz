@@ -593,9 +593,9 @@
                 <img src="https://i.postimg.cc/cHRZDY1c/sai-t.jpg" alt="In the centre">
                 <div class="card-overlay">In the centre</div>
             </div>
-            <div class="phone-template-card" data-category="common" onclick="selectTextImageStyle('Group Style', 'https://i.postimg.cc/FH5y1J8S/5844728862795828808.jpg')">
+            <div class="phone-template-card" data-category="common" onclick="selectTextImageStyle('Group Style', 'https://i.postimg.cc/FH5y1J8S/5844728862795828808.jpg', 2)">
                 <img src="https://i.postimg.cc/FH5y1J8S/5844728862795828808.jpg" alt="Group Style">
-                <div class="card-overlay">Family Vibe</div>
+                <div class="card-overlay">Family Vibe (2 чел.)</div>
             </div>
             <div class="phone-template-card" data-category="kids" onclick="selectTextImageStyle('Evening vibe', 'https://i.postimg.cc/L8D378Qf/GEM3Nqu-I43e3gq-Wz5j-Ol-E-L2YT0AJ8.png')">
                 <img src="https://i.postimg.cc/L8D378Qf/GEM3Nqu-I43e3gq-Wz5j-Ol-E-L2YT0AJ8.png" alt="Evening vibe">
@@ -614,6 +614,16 @@
                     Шаг 1: Настройте формат и качество кадра внизу.<br>
                     Шаг 2: Нажмите кнопку START.<br>
                     Шаг 3: Бот в чате Telegram попросит вас отправить селфи и написать ваш текст задумки!
+                </div>
+            </div>
+                    <!-- 🔥 СЮДА ВСТАВЛЯЕМ ВЫБОР КОЛИЧЕСТВА ЛЮДЕЙ 🔥 -->
+            <!-- Ряд выбора количества людей (Показывается только для режима "Свой") -->
+            <div id="faces_count_selector_row" style="margin-bottom: 15px; display: none;">
+                <div style="font-size: 13px; margin-bottom: 6px; color: var(--tg-theme-hint-color, #666); text-align: center;">Количество персонажей на фото:</div>
+                <div style="display: flex; background: rgba(255,255,255,0.06); padding: 4px; border-radius: 14px; gap: 4px; max-width: 280px; margin: 0 auto;">
+                    <button id="btn_faces_1" class="tab-btn active" style="flex: 1; font-size: 12px; padding: 6px 0;" onclick="selectFacesCount(1, this)">👥 1 чел.</button>
+                    <button id="btn_faces_2" class="tab-btn" style="flex: 1; font-size: 12px; padding: 6px 0;" onclick="selectFacesCount(2, this)">👥 2 чел.</button>
+                    <button id="btn_faces_3" class="tab-btn" style="flex: 1; font-size: 12px; padding: 6px 0;" onclick="selectFacesCount(3, this)">👥 3 чел.</button>
                 </div>
             </div>
 
@@ -883,18 +893,26 @@
 // ====================================================================================
 // 2. ФУНКЦИЯ КЛИКА ПО КАРТОЧКЕ (Сброс кнопок-капсул в дефолт и показ пульта)
 // ====================================================================================
-        
-        function selectTextImageStyle(styleName, imageUrl) {
+        function selectTextImageStyle(styleName, imageUrl, facesCount = 1) {
             isTextImageStyleSelected = true;
             selectedStyleName = styleName;
+            
+            // 🔥 СОХРАНЯЕМ: количество лиц для этой карточки в глобальную переменную
+            selectedStyleFacesCount = facesCount;
 
             document.getElementById('text_image_title').innerText = styleName;
-            document.getElementById('text_image_subtitle').innerText = "Настройте параметры кадра и запустите генерацию:";
+            
+            // 🔥 ДИНАМИЧЕСКИЙ ТЕКСТ ПОДСКАЗКИ: информируем юзера, сколько селфи попросит бот
+            if (facesCount > 1) {
+                document.getElementById('text_image_subtitle').innerText = `Групповой стиль на ${facesCount} чел. Настройте параметры и нажмите START:`;
+            } else {
+                document.getElementById('text_image_subtitle').innerText = "Настройте параметры кадра и запустите генерацию:";
+            }
 
             document.getElementById('text_image_gallery').style.display = "none"; 
             document.getElementById('text_image_settings_block').style.display = "block"; // Открываем пульт управления
             
-            if (document.getElementById('text_image_spacer')) document.getElementById('text_image_spacer').style.display = 'none'
+            if (document.getElementById('text_image_spacer')) document.getElementById('text_image_spacer').style.display = 'none';
             // Показываем черную рамку с картинкой превью (только для шаблонов!)
             if (document.getElementById('preset_preview_block')) document.getElementById('preset_preview_block').style.display = 'block';
             if (document.getElementById('custom_instruction_text')) document.getElementById('custom_instruction_text').style.display = 'none';
@@ -925,30 +943,45 @@
             const settingsBlock = document.getElementById('text_image_settings_block');
             const presetPreviewBlock = document.getElementById('preset_preview_block');
             const instructionText = document.getElementById('custom_instruction_text');
-
-            document.getElementById('text_image_title').innerText = "Примеры генераций Фото + Текст";
-            document.getElementById('text_image_subtitle').innerText = "Выберите желаемый стиль для настройки:";
+            const facesRow = document.getElementById('faces_count_selector_row');
 
             if (category === 'custom') {
                 currentGenerationMode = 'custom'; 
                 isTextImageStyleSelected = true;  
                 selectedStyleName = "Свой промпт";
 
+                // 🔥 МЕНЯЕМ ЗАГОЛОВКИ СТРОГО ДЛЯ ВКЛАДКИ "СВОЙ"
+                document.getElementById('text_image_title').innerText = "Свой сюжет (Фото + Текст)";
+                document.getElementById('text_image_subtitle').innerText = "Настройте параметры вашей персональной генерации:";
+
                 gallery.style.display = 'none';            // Прячем сетку шаблонов
                 settingsBlock.style.display = 'block';      // Открываем блок с кнопками
                 if (presetPreviewBlock) presetPreviewBlock.style.display = 'none'; // НАГЛУХО ПРЯЧЕМ ЧЕРНЫЙ ПРЯМОУГОЛЬНИК
                 if (instructionText) instructionText.style.display = 'block';      // Показываем инструкцию
-                // 🔥 ВКЛЮЧАЕМ РАСПОРКУ ВО ВКЛАДКЕ "СВОЙ"
+                
+                // Включаем выбор людей для вкладки "Свой"
+                if (facesRow) facesRow.style.display = 'block';
+                selectFacesCount(1, document.getElementById('btn_faces_1')); // Ставим 1 чел. по дефолту
+
+                // ВКЛЮЧАЕМ РАСПОРКУ ВО ВКЛАДКЕ "СВОЙ"
                 if (document.getElementById('text_image_spacer')) document.getElementById('text_image_spacer').style.display = 'block';
             } else {
                 currentGenerationMode = 'preset'; 
                 isTextImageStyleSelected = false; 
 
+                // 🔥 ВОЗВРАЩАЕМ СТАНДАРТНЫЕ ЗАГОЛОВКИ ДЛЯ ОСТАЛЬНЫХ ТАБОВ С ГАЛЕРЕЕЙ
+                document.getElementById('text_image_title').innerText = "Примеры генераций Фото + Текст";
+                document.getElementById('text_image_subtitle').innerText = "Выберите желаемый стиль для настройки:";
+
                 gallery.style.display = 'grid';            // Показываем сетку шаблонов обратно
-                settingsBlock.style.display = 'none';      // Скрываем нижний блок
+                settingsBlock.style.display = 'none';      // Скрываем нижний block
                 if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';
                 if (instructionText) instructionText.style.display = 'none';
-                // 🔥 ВЫКЛЮЧАЕМ РАСПОРКУ В ОСТАЛЬНЫХ ТАБАХ
+                
+                // Наглухо прячем выбор людей, когда юзер вернулся в галерею карточек
+                if (facesRow) facesRow.style.display = 'none';
+
+                // ВЫКЛЮЧАЕМ РАСПОРКУ В ОСТАЛЬНЫХ ТАБАХ
                 if (document.getElementById('text_image_spacer')) document.getElementById('text_image_spacer').style.display = 'none';
 
                 const cards = document.querySelectorAll('.phone-template-card');
@@ -969,34 +1002,34 @@
 // Микро-функция в JavaScript для переключения тумблера нана банана и флюкс плуид
 // ====================================================================================
 
-function switchGlobalAiModel(modelMode, element) {
-    document.getElementById('btn_global_model_banana').classList.remove('active');
-    document.getElementById('btn_global_model_pulid').classList.remove('active');
-    element.classList.add('active');
+        function switchGlobalAiModel(modelMode, element) {
+            document.getElementById('btn_global_model_banana').classList.remove('active');
+            document.getElementById('btn_global_model_pulid').classList.remove('active');
+            element.classList.add('active');
 
-    selectedAiModelEngine = modelMode; // 'preset' или 'custom'
-    console.log("Глобальный тумблер ИИ переключен на движок:", selectedAiModelEngine);
-    
-    // 🔥 ДОБАВИЛИ: принудительно пересчитываем стоимость на нижней кнопке при клике на тумблер!
-    updateNeoStartButtonText();
-}
+            selectedAiModelEngine = modelMode; // 'preset' или 'custom'
+            console.log("Глобальный тумблер ИИ переключен на движок:", selectedAiModelEngine);
+            
+            // 🔥 ДОБАВИЛИ: принудительно пересчитываем стоимость на нижней кнопке при клике на тумблер!
+            updateNeoStartButtonText();
+        }
 
 
 // ====================================================================================
 // 2.5 ФУНКЦИИ ВОЗВРАТА НАЗАД 
 // ====================================================================================
-// для фейс свапа
-function handleSwapBackClick() {
-    openScreen('foto'); // Возврат в главное меню студии к 4 режимам
-}
-// для примерки
-function handleTryOnBackClick() {
-    openScreen('foto'); // С первого клика возвращает в главное меню хаба
-}
-// 🔥 ДОБАВИЛИ: Функция назад для Смены фона
-function handleBgBackClick() {
-    openScreen('foto'); // Возвращает обратно в главное меню хаба
-}
+        // для фейс свапа
+        function handleSwapBackClick() {
+            openScreen('foto'); // Возврат в главное меню студии к 4 режимам
+        }
+        // для примерки
+        function handleTryOnBackClick() {
+            openScreen('foto'); // С первого клика возвращает в главное меню хаба
+        }
+        // 🔥 ДОБАВИЛИ: Функция назад для Смены фона
+        function handleBgBackClick() {
+            openScreen('foto'); // Возвращает обратно в главное меню хаба
+        }
 
 // ====================================================================================
 // 3. УМНАЯ ФУНКЦИЯ ВОЗВРАТА НАЗАД К ГАЛЕРЕЕ КАРТОЧЕК
@@ -1319,6 +1352,11 @@ function handleBgBackClick() {
             // Определяем ИИ-движок: если selectedAiModelEngine равен 'preset', это Банана, иначе Flux
             let currentModel = (selectedAiModelEngine === 'preset') ? 'banana' : 'pulid';
 
+            // 🔥 АВТОМАТИКА МУЛЬТИ-ЛИЦ: 
+            // Если выбран режим "Свой", то по умолчанию ждем 1 человека. 
+            // Если выбрана карточка пресета — берем точное количество лиц, сохраненное при клике на нее!
+            let facesCountToSend = isCustomText ? 1 : selectedStyleFacesCount;
+
             sendToTelegram({ 
                 mode_trigger: 'text_image', 
                 chosen_style: selectedStyleName, 
@@ -1327,7 +1365,8 @@ function handleBgBackClick() {
                 ai_model_engine: currentModel,         // Передаст 'banana' или 'pulid'
                 is_custom_text_mode: isCustomText,     // Передаст true (если «Свой») или false (если карточка)
                 template_id: selectedStyleName,        // ID/Имя выбранного стиля для логов
-                template_prompt: selectedStyleName     // Передаем имя карточки как готовый промпт стиля
+                template_prompt: selectedStyleName,    // Передаем имя карточки как готовый промпт стиля
+                faces_count: facesCountToSend          // 🔥 ОТПРАВЛЯЕМ КОЛИЧЕСТВО ЛИЦ В БОТА!
             }); 
         }
 

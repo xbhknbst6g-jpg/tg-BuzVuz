@@ -780,18 +780,21 @@
                 
                 <div style="font-size: 14px; font-weight: bold; margin-bottom: 12px; color: var(--tg-theme-text-color, #000); text-align: center;">📍 Как это работает (Пример):</div>
                 
-                <!-- Сетка шагов в твоем фирменном оранжевом неоновом стиле -->
-                <div class="swap-steps-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-                    <!-- Шаг 1: Объект -->
-                    <div class="phone-template-card" style="text-align: center;">
-                        <img src="https://i.postimg.cc/t7GbBDxL/itog-smeny-odezdy.jpg" alt="1. Объект" style="width: 100%; display: block;">
-                        <div class="card-overlay" style="position: relative !important; font-size: 11px !important; color: #ff6600 !important; background: transparent !important; text-shadow: none !important; padding: 4px 0 !important;">1. Объект</div>
+                <!-- 🔥 ОБНОВЛЕННЫЙ КОНТЕЙНЕР: Выравнивает обе карточки строго по центру экрана с одинаковыми отступами -->
+                <div class="swap-steps-grid" style="display: flex !important; justify-content: center !important; gap: 20px !important; width: 100%; box-sizing: border-box; padding: 0 10px;">
+                    
+                    <!-- Карточка 1: Исходное фото -->
+                    <div class="phone-template-card" style="flex: 1; max-width: 130px; text-align: center;">
+                        <img src="https://i.postimg.cc/t7GbBDxL/itog-smeny-odezdy.jpg" alt="1. Исходное фото" style="width: 100%; display: block;">
+                        <div class="card-overlay" style="position: relative !important; font-size: 11px !important; color: #ff6600 !important; background: transparent !important; text-shadow: none !important; padding: 4px 0 !important;">1. Исходное фото</div>
                     </div>
-                    <!-- Шаг 2: Итог генерации -->
-                    <div class="phone-template-card" style="text-align: center; border: 2px solid #ff1e00 !important;">
-                        <img src="https://i.postimg.cc/x1j67KTC/5860519473268330113.jpg" alt="3. Итог" style="width: 100%; display: block;">
-                        <div class="card-overlay" style="position: relative !important; font-size: 11px !important; color: #ff6600 !important; background: transparent !important; text-shadow: none !important; padding: 4px 0 !important;">2. Итог 🔥</div>
+                    
+                    <!-- Карточка 2: Результат -->
+                    <div class="phone-template-card" style="flex: 1; max-width: 130px; text-align: center; border: 2px solid #ff1e00 !important;">
+                        <img src="https://i.postimg.cc/x1j67KTC/5860519473268330113.jpg" alt="2. Результат" style="width: 100%; display: block;">
+                        <div class="card-overlay" style="position: relative !important; font-size: 11px !important; color: #ff6600 !important; background: transparent !important; text-shadow: none !important; padding: 4px 0 !important;">2. Результат 🔥</div>
                     </div>
+
                 </div>
 
                 <!-- 🔥 ИНСТРУКЦИЯ (Увеличен отступ сверху до 40px) -->

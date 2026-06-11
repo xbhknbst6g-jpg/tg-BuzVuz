@@ -698,118 +698,66 @@
     </div>
 
 
-<!-- ========================================== -->
-<!-- РЕЖИМ 3: ПРИМЕРКА ОДЕЖДЫ (TRY-ON)          -->
-<!-- ========================================== -->
-<div id="tryon" class="screen">
-    
-    <!-- ЛЕНТА ВЕРХУШКИ С НАШЕЙ КРУГЛОЙ КНОПКОЙ НАЗАД И ШИРОКИМИ ТАБАМИ -->
-    <div class="tabs-container" id="tryon_tabs" style="display: flex; align-items: center; justify-content: space-between; width: 100%; box-sizing: border-box;">
-        <!-- Наша круглая кнопка назад -->
-        <button class="back-tab-btn" onclick="handleTryOnBackClick()"></button>
+    <!-- ========================================== -->
+    <!-- РЕЖИМ 3: ПРИМЕРКА ОДЕЖДЫ (TRY-ON)          -->
+    <!-- ========================================== -->
+    <div id="tryon" class="screen">
         
-        <!-- Две широкие кнопки одинакового размера на весь экран -->
-        <button class="tab-btn active" style="flex: 1; margin-left: 6px; margin-right: 3px; font-size: 11px !important; padding: 7px 2px !important;" onclick="switchTryOnTab('face_swap_mode', this)">Лицо на модель</button>
-        <button class="tab-btn" style="flex: 1; margin-left: 3px; font-size: 11px !important; padding: 7px 2px !important;" onclick="switchTryOnTab('clothes_swap_mode', this)">Одежду на себя</button>
+        <!-- ЛЕНТА ВЕРХУШКИ С НАШЕЙ КРУГЛОЙ КНОПКОЙ НАЗАД -->
+        <div class="tabs-container" id="tryon_tabs" style="display: flex; align-items: center; padding: 5px 0;">
+            <button class="back-tab-btn" onclick="handleTryOnBackClick()"></button>
+            <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); margin-left: 5px; white-space: nowrap;">Примерка одежды</div>
+        </div>
+
+        <!-- СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (Управляется твоим роутером openScreen) -->
+        <div id="tryon_settings_block" style="display: none;">
+            
+            <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 190px); box-sizing: border-box; display: flex; flex-direction: column;">
+                
+                <div style="font-size: 14px; font-weight: bold; margin-bottom: 12px; color: var(--tg-theme-text-color, #000); text-align: center;">📍 Как это работает (Пример):</div>
+                
+                <!-- Сетка шагов (Фото в полный рост -> Вещь -> Итог) -->
+                <div class="swap-steps-grid">
+                    <div style="text-align: center;">
+                        <img src="https://postimg.cc" alt="1. Ваше фото">
+                        <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 4px;">1. Фото во весь рост</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <img src="https://postimg.cc" alt="2. Фото вещи">
+                        <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 4px;">2. Фото вещи</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <img src="https://postimg.cc" alt="3. Итог" style="border: 2px solid #ff6600;">
+                        <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 4px;">3. Итог 🔥</div>
+                    </div>
+                </div>
+
+                <!-- ИНСТРУКЦИЯ (Увеличен отступ до 40px) -->
+                <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
+                    Шаг 1: Настройте формат кадра и качество генерации на кнопках внизу.<br>
+                    Шаг 2: Нажмите огненную кнопку START.<br>
+                    Шаг 3: Веб-сайт закроется, и бот в чате Telegram по очереди попросит вас отправить сначала ваше фото (в полный рост), а затем картинку Одежды или человека в ней, чтобы примерить вещь на себя!
+                </div>
+
+            </div>
+
+            <!-- РЯД КНОПОК УПРАВЛЕНИЯ (Возвращаем стандартные лаконичные ID под твою шторку) -->
+            <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px;">
+                <div class="control-col">
+                    <button id="btn_tryon_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
+                </div>
+                <div class="control-col">
+                    <button id="btn_tryon_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">9:16</button>
+                </div>
+                <div class="control-col control-col-btn">
+                    <button id="neo_tryon_submit_btn" class="neo-start-btn" onclick="sendTryOnData()">
+                        Start 1 🪙
+                    </button>
+                </div>
+            </div>
+
+        </div> <!-- Конец служебного блока -->
     </div>
-
-    <!-- ========================================== -->
-    <!-- ПОДБЛОК ДЛЯ РЕЖИМА 1: ЛИЦО НА МОДЕЛЬ       -->
-    <!-- ========================================== -->
-    <div id="tryon_face_swap_block" style="display: block;">
-        
-        <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 190px); box-sizing: border-box; display: flex; flex-direction: column;">
-            
-            <div style="font-size: 14px; font-weight: bold; margin-bottom: 12px; color: var(--tg-theme-text-color, #000); text-align: center;">📍 Лицо на модель (Пример):</div>
-            
-            <div class="swap-steps-grid">
-                <div style="text-align: center;">
-                    <img src="https://i.postimg.cc/1tDhc1zH/selfi.jpg" alt="1. Ваше Селфи">
-                    <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 4px;">1. Ваше Селфи</div>
-                </div>
-                <div style="text-align: center;">
-                    <img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg" alt="2. Фото модели">
-                    <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 4px;">2. Фото модели</div>
-                </div>
-                <div style="text-align: center;">
-                    <img src="https://i.postimg.cc/pLrwcFTt/itog.jpg" alt="3. Итог" style="border: 2px solid #ff6600;">
-                    <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 4px;">3. Итог 🔥</div>
-                </div>
-            </div>
-
-            <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
-                Шаг 1: Настройте формат кадра и качество генерации на кнопках внизу.<br>
-                Шаг 2: Нажмите огненную кнопку START.<br>
-                Шаг 3: Веб-сайт закроется, и бот в чате Telegram по очереди попросит вас отправить сначала ваше Селфи, а затем Фото Модели, чтобы перенести ваше лицо на неё!
-            </div>
-
-        </div>
-
-        <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px;">
-            <div class="control-col">
-                <button id="btn_tryon_quality_face" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
-            </div>
-            <div class="control-col">
-                <button id="btn_tryon_ratio_face" class="capsule-btn" onclick="openUniversalRatioSheet()">9:16</button>
-            </div>
-            <div class="control-col control-col-btn">
-                <button id="neo_tryon_submit_btn_face" class="neo-start-btn" onclick="sendTryOnData()">
-                    Start 1 🪙
-                </button>
-            </div>
-        </div>
-
-    </div> <!-- Конец подблока 1 -->
-
-
-    <!-- ========================================== -->
-    <!-- ПОДБЛОК ДЛЯ РЕЖИМА 2: ОДЕЖДУ НА СЕБЯ        -->
-    <!-- ========================================== -->
-    <div id="tryon_clothes_swap_block" style="display: none;">
-        
-        <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 190px); box-sizing: border-box; display: flex; flex-direction: column;">
-            
-            <div style="font-size: 14px; font-weight: bold; margin-bottom: 12px; color: var(--tg-theme-text-color, #000); text-align: center;">📍 Одежду на себя (Пример):</div>
-            
-            <div class="swap-steps-grid">
-                <div style="text-align: center;">
-                    <img src="https://i.postimg.cc/1tDhc1zH/selfi.jpg" alt="1. Ваше фото">
-                    <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 4px;">1. Ваше фото</div>
-                </div>
-                <div style="text-align: center;">
-                    <img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg" alt="2. Фото вещи">
-                    <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 4px;">2. Фото вещи</div>
-                </div>
-                <div style="text-align: center;">
-                    <img src="https://i.postimg.cc/pLrwcFTt/itog.jpg" alt="3. Итог" style="border: 2px solid #ff6600;">
-                    <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 4px;">3. Итог 🔥</div>
-                </div>
-            </div>
-
-            <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
-                Шаг 1: Настройте формат кадра и качество генерации на кнопках внизу.<br>
-                Шаг 2: Нажмите огненную кнопку START.<br>
-                Шаг 3: Веб-сайт закроется, и бот в чате Telegram по очереди попросит вас отправить сначала ваше фото (в полный рост), а затем картинку Одежды, чтобы примерить вещь на себя!
-            </div>
-
-        </div>
-
-        <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px;">
-            <div class="control-col">
-                <!-- Для второго подблока используем те же id кнопок, чтобы твоя шторка 'tryon' меняла их без багов -->
-                <button id="btn_tryon_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
-            </div>
-            <div class="control-col">
-                <button id="btn_tryon_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">9:16</button>
-            </div>
-            <div class="control-col control-col-btn">
-                <button id="neo_tryon_submit_btn" class="neo-start-btn" onclick="sendTryOnData()">
-                    Start 1 🪙
-                </button>
-            </div>
-        </div>
-
-    </div> <!-- Конец подблока 2 -->
 
 
     <!-- ========================================== -->
@@ -933,30 +881,6 @@
             if (tg && tg.MainButton) tg.MainButton.hide();
         }
 
-
-// ====================================================================================
-// 2. ФУНКЦИЯ переключения вкладкок (примерка одежды)
-// ====================================================================================
-
-        function switchTryOnTab(mode, element) {
-            // Снимаем класс active со всех вкладок внутри tryon_tabs
-            const tabs = document.querySelectorAll('#tryon_tabs .tab-btn');
-            tabs.forEach(tab => tab.classList.remove('active'));
-            element.classList.add('active');
-
-            currentTryOnMode = mode; // Запоминаем выбранный сценарий для Python-бота
-
-            const blockFace = document.getElementById('tryon_face_swap_block');
-            const blockClothes = document.getElementById('tryon_clothes_swap_block');
-
-            if (mode === 'face_swap_mode') {
-                if (blockFace) blockFace.style.display = 'block';
-                if (blockClothes) blockClothes.style.display = 'none';
-            } else if (mode === 'clothes_swap_mode') {
-                if (blockFace) blockFace.style.display = 'none';
-                if (blockClothes) blockClothes.style.display = 'block';
-            }
-        }
 
 
 // ====================================================================================
@@ -1137,11 +1061,9 @@ function handleTryOnBackClick() {
                 const swapSettings = document.getElementById('face_swap_settings_block');
                 if (swapSettings) swapSettings.style.display = "none";
 
-                // 🔥 ДОБАВИЛИ СБРОС ДЛЯ ПРИМЕРКИ: Скрываем оба подблока при выходе в главное меню
-                const blockFace = document.getElementById('tryon_face_swap_block');
-                const blockClothes = document.getElementById('tryon_clothes_swap_block');
-                if (blockFace) blockFace.style.display = "none";
-                if (blockClothes) blockClothes.style.display = "none";
+                // 🔥 СБРОС ДЛЯ ПРИМЕРКИ: Скрываем единый служебный блок настроек при выходе в главное меню
+                const tryonSettings = document.getElementById('tryon_settings_block');
+                if (tryonSettings) tryonSettings.style.display = "none";
             }
 
             if (tg && tg.MainButton) tg.MainButton.hide();
@@ -1157,21 +1079,13 @@ function handleTryOnBackClick() {
                     if (swapSettings) swapSettings.style.display = "block";
                 }
 
-                // 🔥 МГНОВЕННОЕ ВКЛЮЧЕНИЕ ДЛЯ ПРИМЕРКИ ОДЕЖДЫ (Вставляем твой выделенный кусок)
+                // 🔥 МГНОВЕННОЕ ВКЛЮЧЕНИЕ ДЛЯ ПРИМЕРКИ ОДЕЖДЫ: Чисто, без каши и дубликатов скобок
                 if (screenName === 'tryon') {
-                    const blockFace = document.getElementById('tryon_face_swap_block');
-                    const blockClothes = document.getElementById('tryon_clothes_swap_block');
-                    if (blockFace) blockFace.style.display = "block";
-                    if (blockClothes) blockClothes.style.display = "none";
+                    const tryonSettings = document.getElementById('tryon_settings_block');
+                    if (tryonSettings) tryonSettings.style.display = "block";
                     
-                    // Сбрасываем вкладки на первую по умолчанию ("Лицо на модель")
-                    const firstTab = document.querySelector('#tryon_tabs .tab-btn');
-                    if (firstTab) {
-                        const tabs = document.querySelectorAll('#tryon_tabs .tab-btn');
-                        tabs.forEach(tab => tab.classList.remove('active'));
-                        firstTab.classList.add('active');
-                        currentTryOnMode = 'face_swap_mode';
-                    }
+                    // Жестко фиксируем режим примерки вещей на фигуру для Python-бота
+                    currentTryOnMode = 'clothes_swap_mode'; 
                 }
             }
         }

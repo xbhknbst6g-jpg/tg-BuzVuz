@@ -607,7 +607,7 @@
         <!-- ШАГ 2: БЛОК НАСТРОЕК (Полностью разделенный) -->
         <div id="text_image_settings_block" style="display: none;">
             
-            <!-- 1. ИНСТРУКЦИЯ ДЛЯ ВКЛАДКИ "СВОЙ" (Чистый текст, никакой черной рамки рядом нет!) -->
+            <!-- 1. ИНСТРУКЦИЯ ДЛЯ ВКЛАДКИ "СВОЙ" (Остается вверху) -->
             <div id="custom_instruction_text" class="custom-prompt-container" style="display: none; margin-bottom: 15px;">
                 <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Как работает режим:</div>
                 <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.4;">
@@ -616,28 +616,29 @@
                     Шаг 3: Бот в чате Telegram попросит вас отправить селфи и написать ваш текст задумки!
                 </div>
             </div>
-                    <!-- 🔥 СЮДА ВСТАВЛЯЕМ ВЫБОР КОЛИЧЕСТВА ЛЮДЕЙ 🔥 -->
-            <!-- Ряд выбора количества людей (Показывается только для режима "Свой") -->
-            <div id="faces_count_selector_row" style="margin-bottom: 15px; display: none;">
-                <div style="font-size: 13px; margin-bottom: 6px; color: var(--tg-theme-hint-color, #666); text-align: center;">Количество персонажей на фото:</div>
-                <div style="display: flex; background: rgba(255,255,255,0.06); padding: 4px; border-radius: 14px; gap: 4px; max-width: 280px; margin: 0 auto;">
-                    <button id="btn_faces_1" class="tab-btn active" style="flex: 1; font-size: 12px; padding: 6px 0;" onclick="selectFacesCount(1, this)">👥 1 чел.</button>
-                    <button id="btn_faces_2" class="tab-btn" style="flex: 1; font-size: 12px; padding: 6px 0;" onclick="selectFacesCount(2, this)">👥 2 чел.</button>
-                    <button id="btn_faces_3" class="tab-btn" style="flex: 1; font-size: 12px; padding: 6px 0;" onclick="selectFacesCount(3, this)">👥 3 чел.</button>
-                </div>
-            </div>
 
-            <!-- 2. СЛУЖЕБНЫЙ КОНТЕЙНЕР ДЛЯ ШАБЛОНОВ (Включается только когда кликают по готовой картинке) -->
+            <!-- 2. СЛУЖЕБНЫЙ КОНТЕЙНЕР ДЛЯ ШАБЛОНОВ -->
             <div id="preset_preview_block" style="display: none;">
                 <div class="text-image-compact-preview">
                     <img id="text_image_large_preview" src="" alt="Выбранный стиль">
                 </div>
             </div>
 
-            <!-- 🔥 ЭТОТ БЛОК-РАСПОРКУ ТУТ (Он выдавит кнопки вниз экрана в режиме "Свой") -->
-            <div class="mode-spacer" style="height: calc(100vh - 340px); display: none;" id="text_image_spacer"></div>
+            <!-- 🔥 ЭТА РАСПОРКА ВЫДАВИТ ВСЕ НАСТРОЙКИ ВНИЗ ЭКРАНА 🔥 -->
+            <div class="mode-spacer" style="height: calc(100vh - 420px); display: none;" id="text_image_spacer"></div>
 
-            <!-- 3. ТВОИ ОГНЕННЫЕ КНОПКИ УПРАВЛЕНИЯ СНИЗУ (Горят всегда) -->
+            <!-- 3. ТВОИ ОГНЕННЫЕ КНОПКИ УПРАВЛЕНИЯ СНИЗУ (Теперь и с выбором людей) -->
+            <!-- 🔥 ПЕРЕНЕСЛИ СЮДА: Блок встанет ровно над кнопками Standard / 9:16 / Start -->
+            <div id="faces_count_selector_row" style="margin-bottom: 12px; display: none;">
+                <div style="font-size: 12px; margin-bottom: 6px; color: var(--tg-theme-hint-color, #666); text-align: center;">Количество персонажей на фото:</div>
+                <div style="display: flex; background: rgba(255,255,255,0.06); padding: 4px; border-radius: 14px; gap: 4px; max-width: 280px; margin: 0 auto;">
+                    <button id="btn_faces_1" class="tab-btn active" style="flex: 1; font-size: 12px; padding: 6px 0;" onclick="selectFacesCount(1, this)"> 1 чел.</button>
+                    <button id="btn_faces_2" class="tab-btn" style="flex: 1; font-size: 12px; padding: 6px 0;" onclick="selectFacesCount(2, this)"> 2 чел.</button>
+                    <button id="btn_faces_3" class="tab-btn" style="flex: 1; font-size: 12px; padding: 6px 0;" onclick="selectFacesCount(3, this)"> 3 чел.</button>
+                </div>
+            </div>
+
+            <!-- Твоя оригинальная нижняя плашка с кнопками -->
             <div class="single-row-controls">
                 <div class="control-col">
                     <button id="btn_text_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
@@ -647,7 +648,7 @@
                 </div>
                 <div class="control-col control-col-btn">
                     <button id="neo_text_submit_btn" class="neo-start-btn" onclick="sendPhotoTextData()">
-                        Start 1 🪙
+                        Start 2 🪙
                     </button>
                 </div>
             </div>
@@ -886,6 +887,8 @@
         // 🔥 ДОБАВИЛИ: Системная переменная для отслеживания сценария примерки одежды
         let currentTryOnMode = 'face_swap_mode'; 
         let selectedAiModelEngine = 'preset'; // По умолчанию стартует Nano Banana
+        let selectedStyleFacesCount = 1; // По умолчанию всегда 1 человек
+
 
 
 
@@ -904,7 +907,7 @@
             
             // 🔥 ДИНАМИЧЕСКИЙ ТЕКСТ ПОДСКАЗКИ: информируем юзера, сколько селфи попросит бот
             if (facesCount > 1) {
-                document.getElementById('text_image_subtitle').innerText = `Групповой стиль на ${facesCount} чел. Настройте параметры и нажмите START:`;
+                document.getElementById('text_image_subtitle').innerText = `Настройте параметры кадра и запустите генерацию::`;
             } else {
                 document.getElementById('text_image_subtitle').innerText = "Настройте параметры кадра и запустите генерацию:";
             }
@@ -996,6 +999,32 @@
             }
         }
 
+
+// ====================================================================================
+// 2. ФУНКЦИЯ выбора количества людей на вкладке "Свой"
+// ====================================================================================
+
+        function selectFacesCount(count, element) {
+            // 1. Записываем выбранное число в глобальную переменную для отправки боту
+            selectedStyleFacesCount = count;
+
+            // 2. Ищем кнопки по их ID
+            const btn1 = document.getElementById('btn_faces_1');
+            const btn2 = document.getElementById('btn_faces_2');
+            const btn3 = document.getElementById('btn_faces_3');
+
+            // Снимаем класс подсветки 'active' со всех кнопок этого ряда
+            if (btn1 && btn2 && btn3) {
+                btn1.classList.remove('active');
+                btn2.classList.remove('active');
+                btn3.classList.remove('active');
+            }
+
+            // 3. Подсвечиваем только ту кнопку, на которую кликнули
+            if (element) {
+                element.classList.add('active');
+            }
+        }
 
 
 // ====================================================================================

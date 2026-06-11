@@ -1,4 +1,4 @@
-ё<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -1376,15 +1376,36 @@
         // 8. ПЕРЕДАТЧИКИ JSON БОТУ И СИНХРОНИЗАЦИЯ С ПРЕСЕТАМИ ШАБЛОНОВ
         // ====================================================================================
 
-        // Главный системный передатчик пакетов JSON обратно в чат бота
         function sendToTelegram(payload) {
             try {
-                if (tg && tg.sendData) {
-                    tg.sendData(JSON.stringify(payload));
-                    tg.close();
+                // 1. ВПИШИТЕ СЮДА ЮЗЕРНЕЙМ ВАШЕГО БОТА ИЗ BOTFAHER (БЕЗ знака @)
+                const botUsername = "ChatGPT_BuzVuz_bot"; 
+
+                // 2. Компактно пакуем все настройки в одну строчку параметров для команды /start
+                let mode = payload.ai_model_engine || 'pulid';
+                let quality = payload.quality || 'schnell';
+                // Заменяем двоеточие на дефис в пропорциях кадра, так как Telegram режет ":" в ссылках
+                let ratio = payload.aspect_ratio ? payload.aspect_ratio.replace(':', '-') : '1-1';
+                let faces = payload.faces_count || 1;
+                let isCustom = payload.is_custom_text_mode ? '1' : '0';
+
+                // Получится строчка вида: mode_banana_q_schnell_r_9-16_f_1_c_0
+                let startParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}`;
+
+                // 3. Формируем официальную ссылку перехода обратно в чат бота
+                let telegramLink = `https://t.me{botUsername}?start=${startParam}`;
+
+                // 4. Используем официальный и безопасный метод перехода WebApp, который работает НА ЛЮБЫХ ТЕЛЕФОНАХ
+                if (window.Telegram && window.Telegram.WebApp) {
+                    window.Telegram.WebApp.openTelegramLink(telegramLink);
+                    window.Telegram.WebApp.close();
+                } else {
+                    // Заглушка на случай, если вы тестируете сайт просто в обычном браузере на ПК
+                    window.location.href = telegramLink;
                 }
+
             } catch (e) {
-                console.error("Ошибка WebApp при отправке данных:", e);
+                console.error("Ошибка WebApp при отправке данных через диплинк:", e);
             }
         }
 

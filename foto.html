@@ -867,14 +867,17 @@
 // ====================================================================================
 
         (function() {
+            // Читаем параметр старта напрямую из системного объекта Telegram WebApp
             if (tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param) {
-                const page = tg.initDataUnsafe.start_param; // Получаем 'video' или 'image'
+                const page = tg.initDataUnsafe.start_param; 
                 
-                // Если бот попросил открыть видео, мгновенно уходим на video.html
+                console.log("Роутер поймал параметр:", page);
+                
+                // Если бот попросил открыть видео, мгновенно переходим на video.html
                 if (page === 'video') {
                     window.location.replace('video.html');
                 } 
-                // Если бот попросил открыть картинки, мгновенно уходим на image.html
+                // Если бот попросил открыть картинки, мгновенно переходим на image.html
                 else if (page === 'image') {
                     window.location.replace('image.html');
                 }

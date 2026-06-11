@@ -1376,67 +1376,77 @@
         // 8. ПЕРЕДАТЧИКИ JSON БОТУ И СИНХРОНИЗАЦИЯ С ПРЕСЕТАМИ ШАБЛОНОВ
         // ====================================================================================
 
+// 2. ИСПРАВЛЕННАЯ И СТАБИЛЬНАЯ ФУНКЦИЯ ФОРМИРОВАНИЯ ССЫЛКИ
         function sendToTelegram(payload) {
             try {
-                // 1. ВПИШИТЕ СЮДА ЮЗЕРНЕЙМ ВАШЕГО БОТА ИЗ BOTFAHER (БЕЗ знака @)
-                const botUsername = "ChatGPT_BuzVuz_bot"; 
+                const botUsername = "ChatGPT_BuzVuz_bot"; // Твой точный юзернейм бота
 
-                // 2. Компактно пакуем все настройки в одну строчку параметров для команды /start
                 let mode = payload.ai_model_engine || 'pulid';
                 let quality = payload.quality || 'schnell';
-                // Заменяем двоеточие на дефис в пропорциях кадра, так как Telegram режет ":" в ссылках
                 let ratio = payload.aspect_ratio ? payload.aspect_ratio.replace(':', '-') : '1-1';
                 let faces = payload.faces_count || 1;
                 let isCustom = payload.is_custom_text_mode ? '1' : '0';
 
-                // Получится строчка вида: mode_banana_q_schnell_r_9-16_f_1_c_0
+                // 🔥 СЛЭШ И ЗНАК ДОЛЛАРА НА МЕСТЕ: Ссылка соберется идеально правильно!
                 let startParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}`;
+                let telegramLink = `https://t.me/${botUsername}?start=${startParam}`;
 
-                // 3. Формируем официальную ссылку перехода обратно в чат бота
-                let telegramLink = `https://t.me{botUsername}?start=${startParam}`;
+                console.log("[WebApp Link] Перенаправление по ссылке:", telegramLink);
 
-                // 4. Используем официальный и безопасный метод перехода WebApp, который работает НА ЛЮБЫХ ТЕЛЕФОНАХ
-                if (window.Telegram && window.Telegram.WebApp) {
+                // Вызываем официальный переход Телеграма, который разблокирован на всех смартфонах
+                if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openTelegramLink === 'function') {
                     window.Telegram.WebApp.openTelegramLink(telegramLink);
                     window.Telegram.WebApp.close();
                 } else {
-                    // Заглушка на случай, если вы тестируете сайт просто в обычном браузере на ПК
+                    // Если окружение WebApp на айфоне залагало, принудительно открываем ссылку через браузер
                     window.location.href = telegramLink;
                 }
 
             } catch (e) {
-                console.error("Ошибка WebApp при отправке данных через диплинк:", e);
+                console.error("Ошибка генерации диплинка внутри sendToTelegram:", e);
+                window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
             }
         }
-
-        // Функции сборки JSON-пакетов для отправки боту
-        // Код берет точные значения напрямую из сохраненных переменных, которые обновляются при кликах на кнопки-капсулы!
-        function sendPhotoTextData() { 
-            // Определяем сценарий: если currentGenerationMode равен 'custom', значит это вкладка «Свой» (нужен ручной ввод текста)
-            let isCustomText = (currentGenerationMode === 'custom');
-
-            // Определяем ИИ-движок: если selectedAiModelEngine равен 'preset', это Банана, иначе Flux
-            let currentModel = (selectedAiModelEngine === 'preset') ? 'banana' : 'pulid';
-
-            // 🔥 АВТОМАТИКА МУЛЬТИ-ЛИЦ: 
-            // Если выбран режим "Свой", то по умолчанию ждем 1 человека. 
-            // Если выбрана карточка пресета — берем точное количество лиц, сохраненное при клике на нее!
-            let facesCountToSend = isCustomText ? 1 : selectedStyleFacesCount;
-
-            sendToTelegram({ 
-                mode_trigger: 'text_image', 
-                chosen_style: selectedStyleName, 
-                aspect_ratio: selectedTextRatio, 
-                quality: selectedTextQuality,
-                ai_model_engine: currentModel,         // Передаст 'banana' или 'pulid'
-                is_custom_text_mode: isCustomText,     // Передаст true (если «Свой») или false (если карточка)
-                template_id: selectedStyleName,        // ID/Имя выбранного стиля для логов
-                template_prompt: selectedStyleName,    // Передаем имя карточки как готовый промпт стиля
-                faces_count: facesCountToSend          // 🔥 ОТПРАВЛЯЕМ КОЛИЧЕСТВО ЛИЦ В БОТА!
-            }); 
+        // Глобальная переменная для количества лиц (если еще не была объявлена выше)
+        if (typeof selectedStyleFacesCount === 'undefined') {
+            window.selectedStyleFacesCount = 1;
         }
 
-        
+        // 1. ИСПРАВЛЕННАЯ ФУНКЦИЯ СБОРКИ И ОТПРАВКИ (START)
+        function sendPhotoTextData() { 
+            try {
+                // Определяем вкладку "Свой"
+                let isCustomText = (typeof currentGenerationMode !== 'undefined' && currentGenerationMode === 'custom');
+
+                // Определяем движок ИИ
+                let currentModel = (typeof selectedAiModelEngine !== 'undefined' && selectedAiModelEngine === 'preset') ? 'banana' : 'pulid';
+
+                // Определяем количество лиц
+                let facesCountToSend = isCustomText ? 1 : (window.selectedStyleFacesCount || 1);
+
+                // Безопасно считываем пропорции и качество кадра
+                let ratio = (typeof selectedTextRatio !== 'undefined') ? selectedTextRatio : '9:16';
+                let quality = (typeof selectedTextQuality !== 'undefined') ? selectedTextQuality : 'schnell';
+
+                console.log("[WebApp] Сборка пакета. Модель:", currentModel, "Кастом:", isCustomText, "Лиц:", facesCountToSend);
+
+                // Передаем управление в функцию генерации ссылки
+                sendToTelegram({ 
+                    mode_trigger: 'text_image', 
+                    aspect_ratio: ratio, 
+                    quality: quality,
+                    ai_model_engine: currentModel,         
+                    is_custom_text_mode: isCustomText,     
+                    faces_count: facesCountToSend          
+                }); 
+
+            } catch (err) {
+                console.error("Критический сбой внутри функции sendPhotoTextData:", err);
+                // Жесткая страховка: если что-то сломалось, этот блок всё равно насильно откроет вашего бота в Telegram
+                window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
+            }
+        }  
+              
         function sendCustomFaceSwapData() { 
             sendToTelegram({ 
                 mode_trigger: 'face_swap', 

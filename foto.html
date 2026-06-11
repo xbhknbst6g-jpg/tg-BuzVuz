@@ -604,31 +604,39 @@
         </div>
 
 
-        <!-- ШАГ 2: БЛОК НАСТРОЕК (Полностью разделенный) -->
+        <!-- ШАГ 2: БЛОК НАСТРОЕК (Полностью оптимизирован по высоте, чтобы убрать скролл) -->
         <div id="text_image_settings_block" style="display: none;">
             
-            <!-- 1. ИНСТРУКЦИЯ ДЛЯ ВКЛАДКИ "СВОЙ" (Чистый текст, никакой черной рамки рядом нет!) -->
-            <div id="custom_instruction_text" class="custom-prompt-container" style="display: none; margin-bottom: 15px;">
-                <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Как работает режим:</div>
-                <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.4;">
+            <!-- 1. Динамический блок заголовков (Зажали margin-top и margin-bottom до минимума) -->
+            <div id="preset_title_block" style="margin-top: 5px !important; margin-bottom: 5px !important; text-align: center;">
+                <h2 id="text_image_style_title_display" style="font-size: 14px; font-weight: bold; margin: 0; color: var(--tg-theme-text-color, #fff);">Outside the citye</h2>
+                <p style="font-size: 11px; margin: 2px 0 0 0; color: var(--tg-theme-hint-color, #666);">Настройте параметры кадра и запустите генерацию:</p>
+            </div>
+
+            <!-- 2. СЛУЖЕБНЫЙ КОНТЕЙНЕР ДЛЯ ШАБЛОНОВ -->
+            <!-- 🔥 СУПЕР-ФИКС: Ограничили максимальную высоту превью до 42vh (42% от высоты экрана), чтобы оно не выталкивало пульт -->
+            <div id="preset_preview_block" style="display: none; display: flex; justify-content: center; margin-bottom: 10px;">
+                <div class="text-image-compact-preview" style="max-height: 42vh !important; width: auto; aspect-ratio: 9/16; overflow: hidden; border-radius: 12px;">
+                    <img id="text_image_large_preview" src="" alt="Выбранный стиль" style="height: 100% !important; width: 100% !important; object-fit: cover !important;">
+                </div>
+            </div>
+
+            <!-- 3. ИНСТРУКЦИЯ ДЛЯ ВКЛАДКИ "СВОЙ" (Тоже поджали отступы) -->
+            <div id="custom_instruction_text" class="custom-prompt-container" style="display: none; margin-top: 5px; margin-bottom: 10px; padding: 10px !important;">
+                <div style="font-size: 13px; font-weight: bold; margin-bottom: 4px; color: var(--tg-theme-text-color, #000);">Как работает режим:</div>
+                <div id="dynamic_ai_instruction" style="font-size: 12px; color: var(--tg-theme-hint-color, #777); line-height: 1.3;">
                     Шаг 1: Настройте формат и качество кадра внизу.<br>
                     Шаг 2: Нажмите кнопку START.<br>
-                    Шаг 3: Бот в чате Telegram попросит вас отправить селфи и написать ваш текст задумки!
+                    Шаг 3: Бот в чате Telegram попросит вас написать ваш текст задумки для создания арта Nano Banana!
                 </div>
             </div>
 
-            <!-- 2. СЛУЖЕБНЫЙ КОНТЕЙНЕР ДЛЯ ШАБЛОНОВ (Включается только когда кликают по готовой картинке) -->
-            <div id="preset_preview_block" style="display: none;">
-                <div class="text-image-compact-preview">
-                    <img id="text_image_large_preview" src="" alt="Выбранный стиль">
-                </div>
-            </div>
+            <!-- ТВОЙ БЛОК-РАСПОРКА (Для режима "Свой" уменьшили высоту) -->
+            <div class="mode-spacer" style="height: calc(100vh - 360px); display: none;" id="text_image_spacer"></div>
 
-            <!-- 🔥 ЭТОТ БЛОК-РАСПОРКУ ТУТ (Он выдавит кнопки вниз экрана в режиме "Свой") -->
-            <div class="mode-spacer" style="height: calc(100vh - 340px); display: none;" id="text_image_spacer"></div>
-
-            <!-- 3. ТВОИ ОГНЕННЫЕ КНОПКИ УПРАВЛЕНИЯ СНИЗУ (Горят всегда) -->
-            <div class="single-row-controls">
+            <!-- 4. ТВОИ ОГНЕННЫЕ КНОПКИ УПРАВЛЕНИЯ СНИЗУ -->
+            <!-- 🔥 СУПЕР-ФИКС: Уменьшили верхний маргин с 55px до 10px, кнопки встанут впритык и полезут на экран -->
+            <div class="single-row-controls" style="margin-top: 10px !important; margin-bottom: 10px;">
                 <div class="control-col">
                     <button id="btn_text_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
                 </div>
@@ -643,6 +651,7 @@
             </div>
         </div>
     </div>
+
 
 
 

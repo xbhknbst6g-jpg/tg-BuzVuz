@@ -871,22 +871,24 @@
 // 🔥 НАШ АВТО-РОУТЕР ДЛЯ ПЕРЕНАПРАВЛЕНИЯ ИЗ КНОПОК БОТА
 // ====================================================================================
 
+        // 🔥 НАДЁЖНЫЙ ВЕБ-РОУТЕР ДЛЯ ЧТЕНИЯ ХВОСТИКОВ ?mode= БЕЗ ОШИБОК 404
         (function() {
-            // Читаем параметр старта напрямую из системного объекта Telegram WebApp
-            if (tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param) {
-                const page = tg.initDataUnsafe.start_param; 
+            // Создаем объект для чтения параметров из адресной строки браузера
+            const urlParams = new URLSearchParams(window.location.search);
+            const mode = urlParams.get('mode'); // Вытащит слово 'video', 'image' или 'foto'
+            
+            if (mode) {
+                console.log("Роутер поймал веб-параметр режима:", mode);
                 
-                console.log("Роутер поймал параметр:", page);
-                
-                // Если бот попросил открыть видео, мгновенно переходим на video.html
-                if (page === 'video') {
+                // Если кнопка просила видео, бесшовно уходим на video.html
+                if (mode === 'video') {
                     window.location.replace('video.html');
                 } 
-                // Если бот попросил открыть картинки, мгновенно переходим на image.html
-                else if (page === 'image') {
+                // Если кнопка просила картинки, бесшовно уходим на image.html
+                else if (mode === 'image') {
                     window.location.replace('image.html');
                 }
-                // Если параметр равен 'foto', то ничего не делаем и остаемся в foto.html
+                // Если mode === 'foto', то ничего не делаем и остаемся тут
             }
         })();
 

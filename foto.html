@@ -544,7 +544,7 @@
 
 
     <!-- ========================================== -->
-    <!-- ПОДРЕЖИМ 1: ФОТО + ТЕКСТ (ИНТЕРАКТИВНЫЙ)   -->
+    <!-- РЕЖИМ 1: ФОТО + ТЕКСТ (TEXT_IMAGE)        -->
     <!-- ========================================== -->
     <div id="text_image" class="screen">
         <!-- Новая компактная огненная стрелка назад -->
@@ -555,7 +555,7 @@
             <p id="text_image_subtitle" style="font-size: 14px; color: var(--tg-theme-hint-color, #666);">Выберите желаемый стиль для настройки:</p>
         </div>
 
-        <!-- ОГНЕННЫЕ ВКЛАДКИ ФИЛЬТРАЦИИ СВЕРХУ -->
+        <!-- ТВОИ ОГНЕННЫЕ ВКЛАДКИ ФИЛЬТРАЦИИ СВЕРХУ (Остаются без изменений) -->
         <div class="tabs-container" id="text_image_tabs">
             <button class="tab-btn active" onclick="switchTextTab('all', this)">Все</button>
             <button class="tab-btn" onclick="switchTextTab('men', this)">Муж</button>
@@ -565,7 +565,15 @@
             <button class="tab-btn" onclick="switchTextTab('custom', this)">Свой</button>
         </div>
 
-        <!-- ШАГ 1: ГАЛЕРЕЯ ДЛЯ КЛИКА (Изначально видна) -->
+        <!-- 🔥 ГЛОБАЛЬНЫЙ ПУЛЬТ МОДЕЛЕЙ ИИ (Установлен намертво, ничего не скрывает) -->
+        <div id="global_ai_model_switcher" style="margin-top: 12px; margin-bottom: 12px; width: 100%; box-sizing: border-box; padding: 0 5px;">
+            <div style="display: flex; background: rgba(255,255,255,0.06); padding: 4px; border-radius: 14px; gap: 4px;">
+                <button id="btn_global_model_banana" class="tab-btn active" style="flex: 1; font-size: 11px !important; padding: 7px 2px !important; margin: 0 !important; width: auto !important; min-width: 0 !important;" onclick="switchGlobalAiModel('preset', this)">Фотореализм</button>
+                <button id="btn_global_model_pulid" class="tab-btn" style="flex: 1; font-size: 11px !important; padding: 7px 2px !important; margin: 0 !important; width: auto !important; min-width: 0 !important;" onclick="switchGlobalAiModel('custom', this)">Обработка</button>
+            </div>
+        </div>
+
+        <!-- ДАЛЬШЕ ТВОЙ ШАГ 1 (ГАЛЕРЕЯ КАРТОЧЕК) И ТВОЙ ШАГ 2 БЕЗ ИЗМЕНЕНИЙ! -->
         <div class="phone-templates-grid" id="text_image_gallery">
             <div class="phone-template-card" data-category="women" onclick="selectTextImageStyle('Outside the cityе', 'https://i.postimg.cc/cHRZDY1c/sai-t.jpg')">
                 <img src="https://i.postimg.cc/cHRZDY1c/sai-t.jpg" alt="Outside the cityе">
@@ -866,6 +874,8 @@
         let currentGenerationMode = 'preset';
         // 🔥 ДОБАВИЛИ: Системная переменная для отслеживания сценария примерки одежды
         let currentTryOnMode = 'face_swap_mode'; 
+        let selectedAiModelEngine = 'preset'; // По умолчанию стартует Nano Banana
+
 
 
         
@@ -953,6 +963,24 @@
         }
 
 
+
+// ====================================================================================
+// Микро-функция в JavaScript для переключения тумблера нана банана и флюкс плуид
+// ====================================================================================
+
+function switchGlobalAiModel(modelMode, element) {
+    document.getElementById('btn_global_model_banana').classList.remove('active');
+    document.getElementById('btn_global_model_pulid').classList.remove('active');
+    element.classList.add('active');
+
+    selectedAiModelEngine = modelMode; // 'preset' или 'custom'
+    console.log("Глобальный тумблер ИИ переключен на движок:", selectedAiModelEngine);
+    
+    // 🔥 ДОБАВИЛИ: принудительно пересчитываем стоимость на нижней кнопке при клике на тумблер!
+    updateNeoStartButtonText();
+}
+
+
 // ====================================================================================
 // 2.5 ФУНКЦИИ ВОЗВРАТА НАЗАД 
 // ====================================================================================
@@ -963,6 +991,10 @@ function handleSwapBackClick() {
 // для примерки
 function handleTryOnBackClick() {
     openScreen('foto'); // С первого клика возвращает в главное меню хаба
+}
+// 🔥 ДОБАВИЛИ: Функция назад для Смены фона
+function handleBgBackClick() {
+    openScreen('foto'); // Возвращает обратно в главное меню хаба
 }
 
 // ====================================================================================
@@ -1083,7 +1115,7 @@ function handleTryOnBackClick() {
                 const tryonSettings = document.getElementById('tryon_settings_block');
                 if (tryonSettings) tryonSettings.style.display = "none";
 
-                // 🔥 ДОБАВИЛИ: Скрываем блок настроек смены фона при возврате в меню хаба
+                // Скрываем блок настроек смены фона при возврате в меню хаба
                 const bgSettings = document.getElementById('bg_change_settings_block');
                 if (bgSettings) bgSettings.style.display = "none";
             }
@@ -1110,16 +1142,23 @@ function handleTryOnBackClick() {
                     currentTryOnMode = 'clothes_swap_mode'; 
                 }
 
-                // 🔥 ДОБАВИЛИ: Мгновенное включение служебного блока для смены фона
+                // МГНОВЕННОЕ ВКЛЮЧЕНИЕ ДЛЯ СМЕНЫ ФОНА
                 if (screenName === 'bg_change') {
                     const bgSettings = document.getElementById('bg_change_settings_block');
                     if (bgSettings) bgSettings.style.display = "block";
+                }
+
+                // 🔥 ДОБАВИЛИ: Сброс тумблера ИИ на "Фотореализм" при каждом входе в Фото + Текст
+                if (screenName === 'text_image') {
+                    const defaultModelBtn = document.getElementById('btn_global_model_banana');
+                    if (defaultModelBtn) {
+                        switchGlobalAiModel('preset', defaultModelBtn);
+                    }
                 }
             }
         }
 
 
-        
         // ====================================================================================
         // 6. КРАТКИЙ И ЛАКОНИЧНЫЙ ОБНОВЛЯТОР ТЕКСТА ГЛАВНОЙ КНОПКИ ТЕЛЕГРАМ
         // ====================================================================================
@@ -1132,20 +1171,27 @@ function handleTryOnBackClick() {
             tg.MainButton.hide();
         }
 
-        // УМНЫЙ ОБНОВЛЯТОР СТОИМОСТИ НА ВСТРОЕННЫХ НЕОНОВЫХ КНОПКАХ (ИСПРАВЛЕНО!)
+        // УМНЫЙ ОБНОВЛЯТОР СТОИМОСТИ НА ВСТРОЕННЫХ НЕОНОВЫХ КНОПКАХ (СИНХРОНИЗИРОВАНО!)
         function updateNeoStartButtonText() {
-            // Ищем кнопки на всех экранах по очереди. Обновится только та, которая сейчас есть на экране!
             const btnText = document.getElementById('neo_text_submit_btn');
             const btnSwap = document.getElementById('neo_swap_submit_btn');
-            const btnTryonFace = document.getElementById('neo_tryon_submit_btn_face');
+            const btnTryon = document.getElementById('neo_tryon_submit_btn');
             const btnBg = document.getElementById('neo_bg_submit_btn');
             
-            if (btnText) btnText.innerHTML = `Start 1 🪙`;
+            // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ ФОТО + ТЕКСТ
+            if (btnText) {
+                if (selectedAiModelEngine === 'custom') {
+                    btnText.innerHTML = `Start 2 🪙`; // Цена за премиум-обработку Flux PuLID
+                } else {
+                    btnText.innerHTML = `Start 1 🪙`; // Стандартная цена за Nano Banana
+                }
+            }
+            
+            // Остальные кнопки твоей студии остаются без изменений
             if (btnSwap) btnSwap.innerHTML = `Start 1 🪙`;
-            if (btnTryonFace) btnTryonFace.innerHTML = `Start 1 🪙`;
+            if (btnTryon) btnTryon.innerHTML = `Start 1 🪙`;
             if (btnBg) btnBg.innerHTML = `Start 1 🪙`;
         }
-
 
 
         // ====================================================================================
@@ -1270,7 +1316,9 @@ function handleTryOnBackClick() {
                 mode_trigger: 'text_image', 
                 chosen_style: selectedStyleName, 
                 aspect_ratio: selectedTextRatio, 
-                quality: selectedTextQuality 
+                quality: selectedTextQuality,
+                // 🔥 ДОБАВИЛИ: передаем выбранный движок ИИ ('preset' = Nano Banana, 'custom' = Flux PuLID)
+                ai_model_engine: selectedAiModelEngine 
             }); 
         }
         

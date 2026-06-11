@@ -602,18 +602,17 @@
                 <div class="card-overlay">Evening vibe</div>
             </div>
         </div>
-
-
+        <!-- ==================================================================== -->
         <!-- ШАГ 2: БЛОК НАСТРОЕК (Исправлен наплыв кнопок и задвоение) -->
+        <!-- ==================================================================== -->
         <div id="text_image_settings_block" style="display: none;">
             
-            <!-- 1. Динамический блок заголовков (Полностью УДАЛИЛИ лишний текст, оставили только подпись) -->
+            <!-- 1. Динамический блок заголовков (Здесь мы убрали h2, чтобы он не дублировал текст, который вставляет твой JS) -->
             <div id="preset_title_block" style="margin-top: 5px !important; margin-bottom: 5px !important; text-align: center;">
                 <p style="font-size: 11px; margin: 0; color: var(--tg-theme-hint-color, #666);">Настройте параметры кадра и запустите генерацию:</p>
             </div>
 
             <!-- 2. СЛУЖЕБНЫЙ КОНТЕЙНЕР ДЛЯ ШАБЛОНОВ -->
-            <!-- 🔥 Ограничили высоту картинки до 40vh, чтобы она занимала меньше места по вертикали -->
             <div id="preset_preview_block" style="display: none; display: flex; justify-content: center; margin-bottom: 10px;">
                 <div class="text-image-compact-preview" style="max-height: 40vh !important; width: auto; aspect-ratio: 9/16; overflow: hidden; border-radius: 12px;">
                     <img id="text_image_large_preview" src="" alt="Выбранный стиль" style="height: 100% !important; width: 100% !important; object-fit: cover !important;">
@@ -630,11 +629,10 @@
                 </div>
             </div>
 
-            <!-- 🔥 ТВОЙ СИСТЕМНЫЙ БЛОК-РАСПОРКА (Возвращаем его, он выдавит кнопки вниз и не даст им налезть на фото) -->
+            <!-- 🔥 ТВОЙ СИСТЕМНЫЙ БЛОК-РАСПОРКА (Он встанет на место и не даст кнопкам улетать) -->
             <div class="mode-spacer" style="height: calc(100vh - 350px); display: none;" id="text_image_spacer"></div>
 
             <!-- 4. ТВОИ ОГНЕННЫЕ КНОПКИ УПРАВЛЕНИЯ СНИЗУ -->
-            <!-- 🔥 Увеличили маргин до 25px, чтобы кнопки стояли ровно под картинкой, красиво и свободно -->
             <div class="single-row-controls" style="margin-top: 25px !important; margin-bottom: 10px;">
                 <div class="control-col">
                     <button id="btn_text_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
@@ -648,7 +646,7 @@
                     </button>
                 </div>
             </div>
-        </div>
+        </div> <!-- Конец блока настроек -->
     </div>
 
 

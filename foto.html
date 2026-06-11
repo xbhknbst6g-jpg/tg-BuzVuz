@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ё<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -141,9 +141,25 @@
     .single-row-controls {
         display: flex;
         gap: 8px;
-        align-items: flex-end; /* Выравниваем элементы по нижней линии кнопок */
-        margin-top: 15px;
+        align-items: center; /* Выравниваем кнопки по центру горизонтали */
         width: 100%;
+        
+        /* 🔥 ДЕЛАЕМ ПАНЕЛЬ ФИКСИРОВАННОЙ И ПРИПОДНИМАЕМ НАД НИЗОМ ЭКРАНА */
+        position: fixed !important;
+        bottom: 25px !important; /* Увеличьте до 30px или 35px, если нужно поднять еще выше */
+        left: 0;
+        right: 0;
+        
+        /* Добавляем боковые отступы, чтобы кнопки не прилипали к краям экрана смартфона */
+        padding: 0 16px !important; 
+        box-sizing: border-box !important;
+        z-index: 9999; /* Чтобы кнопки всегда были поверх картинок */
+    }
+
+    /* Создаем невидимый отступ внизу каждого экрана для плавной прокрутки */
+    .screen {
+        padding-bottom: 110px !important; 
+        box-sizing: border-box !important;
     }
 
     .control-col {

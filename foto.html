@@ -764,50 +764,67 @@
     <!-- ПОДРЕЖИМ 4: СМЕНА ФОНА                     -->
     <!-- ========================================== -->
     <div id="bg_change" class="screen">
-        <button class="back-btn" onclick="openScreen('foto')">⬅️ В меню</button>
         
-        <div class="header" style="margin-bottom: 10px; text-align: center;">
-            <h1>Настройка смены фона</h1>
+        <!-- 🔥 ЛЕНТА ВЕРХУШКИ С НАШЕЙ КРУГЛОЙ КНОПКОЙ НАЗАД -->
+        <div class="tabs-container" id="bg_change_tabs" style="display: flex; align-items: center; padding: 5px 0;">
+            <!-- Фиксированная круглая стрелка назад -->
+            <button class="back-tab-btn" onclick="openScreen('foto')"></button>
+            <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); margin-left: 5px; white-space: nowrap;">Настройка смены фона</div>
         </div>
 
-        <!-- КАРТОЧКА-ОБРАЗЕЦ ИЗ 3 ШАГОВ НАВЕРХУ -->
-        <div class="tryon-card" style="margin-bottom: 20px;">
-            <div class="tryon-card-title">💡 Как это работает (Пример):</div>
-            <div class="swap-steps-grid">
-                <!-- Шаг 1: Исходный объект -->
-                <div style="position: relative;">
-                    <img src="https://postimg.cc" alt="Объект">
-                    <div style="position: absolute; bottom: 4px; left: 4px; background: rgba(0,0,0,0.7); color: #fff; font-size: 9px; padding: 2px 4px; border-radius: 4px; font-weight: bold;">1. Объект</div>
+        <!-- СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (Изначально полностью скрыт под логику твоего роутера) -->
+        <div id="bg_change_settings_block" style="display: none;">
+            
+            <!-- 🔥 КОНТЕЙНЕР-ОРИЕНТИР С МИНИМАЛЬНОЙ ВЫСОТОЙ -->
+            <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 190px); box-sizing: border-box; display: flex; flex-direction: column;">
+                
+                <div style="font-size: 14px; font-weight: bold; margin-bottom: 12px; color: var(--tg-theme-text-color, #000); text-align: center;">📍 Как это работает (Пример):</div>
+                
+                <!-- Сетка шагов в твоем фирменном оранжевом неоновом стиле -->
+                <div class="swap-steps-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                    <!-- Шаг 1: Объект -->
+                    <div class="phone-template-card" style="text-align: center;">
+                        <img src="https://postimg.cc" alt="1. Объект" style="width: 100%; display: block;">
+                        <div class="card-overlay" style="position: relative !important; font-size: 11px !important; color: #ff6600 !important; background: transparent !important; text-shadow: none !important; padding: 4px 0 !important;">1. Объект</div>
+                    </div>
+                    <!-- Шаг 2: Текст-описание -->
+                    <div class="phone-template-card" style="text-align: center;">
+                        <img src="https://postimg.cc" alt="2. Текст" style="width: 100%; display: block;">
+                        <div class="card-overlay" style="position: relative !important; font-size: 11px !important; color: #ff6600 !important; background: transparent !important; text-shadow: none !important; padding: 4px 0 !important;">2. Текст</div>
+                    </div>
+                    <!-- Шаг 3: Итог генерации -->
+                    <div class="phone-template-card" style="text-align: center; border: 2px solid #ff1e00 !important;">
+                        <img src="https://postimg.cc" alt="3. Итог" style="width: 100%; display: block;">
+                        <div class="card-overlay" style="position: relative !important; font-size: 11px !important; color: #ff6600 !important; background: transparent !important; text-shadow: none !important; padding: 4px 0 !important;">3. Итог 🔥</div>
+                    </div>
                 </div>
-                <!-- Шаг 2: Описание нового фона текстом -->
-                <div style="position: relative;">
-                    <img src="https://postimg.cc" alt="Текст">
-                    <div style="position: absolute; bottom: 4px; left: 4px; background: rgba(0,0,0,0.7); color: #fff; font-size: 9px; padding: 2px 4px; border-radius: 4px; font-weight: bold;">2. Текст</div>
-                </div>
-                <!-- Шаг 3: Итог генерации -->
-                <div style="position: relative;">
-                    <img src="https://postimg.cc" alt="Итог">
-                    <div style="position: absolute; bottom: 4px; left: 4px; background: #28a745; color: #fff; font-size: 9px; padding: 2px 4px; border-radius: 4px; font-weight: bold;">3. Итог 🔥</div>
-                </div>
-            </div>
-        </div>
 
-        <!-- ВСЕ НАСТРОЙКИ В ОДНУ СТРОКУ КНОПКАМИ-КАПСУЛАМИ (УНИВЕРСАЛЬНЫЙ НАДЁЖНЫЙ ВАРИАНТ) -->
-        <div class="single-row-controls">
-            <div class="control-col">
-                <button id="btn_bg_quality" class="capsule-btn">⚡ Standard</button>
-            </div>
-            <div class="control-col">
-                <button id="btn_bg_ratio" class="capsule-btn">9:16</button>
-            </div>
-            <div class="control-col control-col-btn">
-                <button id="neo_bg_submit_btn" class="neo-start-btn" onclick="sendBgChangeData()">
-                    Start 1 🪙
-                </button>
-            </div>
-        </div>
+                <!-- 🔥 ИНСТРУКЦИЯ (Увеличен отступ сверху до 40px) -->
+                <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
+                    Шаг 1: Настройте формат кадра и качество генерации на кнопках внизу.<br>
+                    Шаг 2: Нажмите огненную кнопку START.<br>
+                    Шаг 3: Веб-сайт закроется, и бот в чате Telegram попросит вас сначала отправить фото, а затем написать текстом, какой фон вы хотите получить!
+                </div>
 
-    </div> <!-- Конец экрана bg_change -->
+            </div>
+
+            <!-- 🔥 ВСЕ НАСТРОЕНО В ОДНУ СТРОКУ КНОПКАМИ-КАПСУЛАМИ (Отступ 55px строго соблюден) -->
+            <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px;">
+                <div class="control-col">
+                    <button id="btn_bg_quality" class="capsule-btn">⚡ Standard</button>
+                </div>
+                <div class="control-col">
+                    <button id="btn_bg_ratio" class="capsule-btn">9:16</button>
+                </div>
+                <div class="control-col control-col-btn">
+                    <button id="neo_bg_submit_btn" class="neo-start-btn" onclick="sendBgChangeData()">
+                        Start 1 🪙
+                    </button>
+                </div>
+            </div>
+
+        </div> <!-- Конец служебного блока настроек -->
+    </div>
 
     <!-- ========================================== -->
     <!-- УНИВЕРСАЛЬНАЯ КАСТОМНАЯ ШТОРКА (HTML ПОДЛОЖКА) -->
@@ -1061,9 +1078,13 @@ function handleTryOnBackClick() {
                 const swapSettings = document.getElementById('face_swap_settings_block');
                 if (swapSettings) swapSettings.style.display = "none";
 
-                // 🔥 СБРОС ДЛЯ ПРИМЕРКИ: Скрываем единый служебный блок настроек при выходе в главное меню
+                // СБРОС ДЛЯ ПРИМЕРКИ: Скрываем единый служебный блок настроек при выходе в главное меню
                 const tryonSettings = document.getElementById('tryon_settings_block');
                 if (tryonSettings) tryonSettings.style.display = "none";
+
+                // 🔥 ДОБАВИЛИ: Скрываем блок настроек смены фона при возврате в меню хаба
+                const bgSettings = document.getElementById('bg_change_settings_block');
+                if (bgSettings) bgSettings.style.display = "none";
             }
 
             if (tg && tg.MainButton) tg.MainButton.hide();
@@ -1079,13 +1100,19 @@ function handleTryOnBackClick() {
                     if (swapSettings) swapSettings.style.display = "block";
                 }
 
-                // 🔥 МГНОВЕННОЕ ВКЛЮЧЕНИЕ ДЛЯ ПРИМЕРКИ ОДЕЖДЫ: Чисто, без каши и дубликатов скобок
+                // МГНОВЕННОЕ ВКЛЮЧЕНИЕ ДЛЯ ПРИМЕРКИ ОДЕЖДЫ
                 if (screenName === 'tryon') {
                     const tryonSettings = document.getElementById('tryon_settings_block');
                     if (tryonSettings) tryonSettings.style.display = "block";
                     
                     // Жестко фиксируем режим примерки вещей на фигуру для Python-бота
                     currentTryOnMode = 'clothes_swap_mode'; 
+                }
+
+                // 🔥 ДОБАВИЛИ: Мгновенное включение служебного блока для смены фона
+                if (screenName === 'bg_change') {
+                    const bgSettings = document.getElementById('bg_change_settings_block');
+                    if (bgSettings) bgSettings.style.display = "block";
                 }
             }
         }

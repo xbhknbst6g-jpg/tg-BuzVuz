@@ -779,23 +779,30 @@
             <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 190px); box-sizing: border-box; display: flex; flex-direction: column;">
                 
                 <div style="font-size: 14px; font-weight: bold; margin-bottom: 12px; color: var(--tg-theme-text-color, #000); text-align: center;">📍 Как это работает (Пример):</div>
-                
-                <!-- 🔥 ОБНОВЛЕННЫЙ КОНТЕЙНЕР: Выравнивает обе карточки строго по центру экрана с одинаковыми отступами -->
-                <div class="swap-steps-grid" style="display: flex !important; justify-content: center !important; gap: 20px !important; width: 100%; box-sizing: border-box; padding: 0 10px;">
+
+                <!-- 🔥 ИДЕАЛЬНО СИММЕТРИЧНЫЙ КОНТЕЙНЕР -->
+                <div class="swap-steps-grid" style="display: flex !important; justify-content: center !important; gap: 24px !important; width: 100%; box-sizing: border-box; padding: 0 10px;">
                     
                     <!-- Карточка 1: Исходное фото -->
-                    <div class="phone-template-card" style="flex: 1; max-width: 130px; text-align: center;">
-                        <img src="https://i.postimg.cc/t7GbBDxL/itog-smeny-odezdy.jpg" alt="1. Исходное фото" style="width: 100%; display: block;">
-                        <div class="card-overlay" style="position: relative !important; font-size: 11px !important; color: #ff6600 !important; background: transparent !important; text-shadow: none !important; padding: 4px 0 !important;">1. Исходное фото</div>
+                    <div style="flex: 1; max-width: 125px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                        <div class="phone-template-card" style="width: 100%;">
+                            <img src="https://i.postimg.cc/t7GbBDxL/itog-smeny-odezdy.jpg" alt="1. Исходное фото" style="width: 100%; display: block;">
+                        </div>
+                        <!-- Вынесли подпись под карточку: теперь она никогда не скроется! -->
+                        <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 6px; white-space: nowrap;">1. Исходное фото</div>
                     </div>
                     
                     <!-- Карточка 2: Результат -->
-                    <div class="phone-template-card" style="flex: 1; max-width: 130px; text-align: center; border: 2px solid #ff1e00 !important;">
-                        <img src="https://i.postimg.cc/x1j67KTC/5860519473268330113.jpg" alt="2. Результат" style="width: 100%; display: block;">
-                        <div class="card-overlay" style="position: relative !important; font-size: 11px !important; color: #ff6600 !important; background: transparent !important; text-shadow: none !important; padding: 4px 0 !important;">2. Результат 🔥</div>
+                    <div style="flex: 1; max-width: 125px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                        <div class="phone-template-card" style="width: 100%; border: 2px solid #ff1e00 !important;">
+                            <img src="https://i.postimg.cc/x1j67KTC/5860519473268330113.jpg" alt="2. Результат" style="width: 100%; display: block;">
+                        </div>
+                        <!-- Вынесли подпись под карточку: теперь она никогда не скроется! -->
+                        <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 6px; white-space: nowrap;">2. Результат 🔥</div>
                     </div>
 
                 </div>
+
 
                 <!-- 🔥 ИНСТРУКЦИЯ (Увеличен отступ сверху до 40px) -->
                 <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">

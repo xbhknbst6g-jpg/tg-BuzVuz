@@ -645,7 +645,6 @@
     </div>
 
 
-
     <!-- ========================================== -->
     <!-- ПОДРЕЖИМ 2: FACE SWAP                      -->
     <!-- ========================================== -->
@@ -1314,15 +1313,24 @@ function handleBgBackClick() {
         // Функции сборки JSON-пакетов для отправки боту
         // Код берет точные значения напрямую из сохраненных переменных, которые обновляются при кликах на кнопки-капсулы!
         function sendPhotoTextData() { 
+            // Определяем сценарий: если currentGenerationMode равен 'custom', значит это вкладка «Свой» (нужен ручной ввод текста)
+            let isCustomText = (currentGenerationMode === 'custom');
+
+            // Определяем ИИ-движок: если selectedAiModelEngine равен 'preset', это Банана, иначе Flux
+            let currentModel = (selectedAiModelEngine === 'preset') ? 'banana' : 'pulid';
+
             sendToTelegram({ 
                 mode_trigger: 'text_image', 
                 chosen_style: selectedStyleName, 
                 aspect_ratio: selectedTextRatio, 
                 quality: selectedTextQuality,
-                // 🔥 ДОБАВИЛИ: передаем выбранный движок ИИ ('preset' = Nano Banana, 'custom' = Flux PuLID)
-                ai_model_engine: selectedAiModelEngine 
+                ai_model_engine: currentModel,         // Передаст 'banana' или 'pulid'
+                is_custom_text_mode: isCustomText,     // Передаст true (если «Свой») или false (если карточка)
+                template_id: selectedStyleName,        // ID/Имя выбранного стиля для логов
+                template_prompt: selectedStyleName     // Передаем имя карточки как готовый промпт стиля
             }); 
         }
+
         
         function sendCustomFaceSwapData() { 
             sendToTelegram({ 

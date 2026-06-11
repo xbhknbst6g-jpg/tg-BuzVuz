@@ -808,13 +808,10 @@
 
             </div>
 
-            <!-- 🔥 ВСЕ НАСТРОЕНО В ОДНУ СТРОКУ КНОПКАМИ-КАПСУЛАМИ (Отступ 55px строго соблюден) -->
+            <!-- 🔥 ОБНОВЛЕННЫЙ РЯД КНОПОК: Формат убран, сетка автоматически подстроится -->
             <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px;">
                 <div class="control-col">
                     <button id="btn_bg_quality" class="capsule-btn">⚡ Standard</button>
-                </div>
-                <div class="control-col">
-                    <button id="btn_bg_ratio" class="capsule-btn">9:16</button>
                 </div>
                 <div class="control-col control-col-btn">
                     <button id="neo_bg_submit_btn" class="neo-start-btn" onclick="sendBgChangeData()">
@@ -822,7 +819,6 @@
                     </button>
                 </div>
             </div>
-
         </div> <!-- Конец служебного блока настроек -->
     </div>
 
@@ -1293,8 +1289,7 @@ function handleTryOnBackClick() {
         
         function sendBgChangeData() { 
             sendToTelegram({ 
-                mode_trigger: 'bg_change', 
-                aspect_ratio: selectedBgRatio, 
+                mode_trigger: 'bg_change',  
                 quality: selectedBgQuality 
             }); 
         }

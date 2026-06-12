@@ -84,6 +84,7 @@
         }
         
         /* ИСПРАВЛЕННАЯ СЕТКА СТРОГО 2Х2 */
+                /* 1. СЕТКА СТРОГО 2Х2 */
         .main-menu-grid { 
             display: grid !important; 
             grid-template-columns: repeat(2, 1fr) !important; 
@@ -94,28 +95,17 @@
             box-sizing: border-box;
         }
 
-                /* КАРТОЧКИ С ПОЛНОЦЕННОЙ КИБЕРПАНК ТЕКСТУРОЙ ИЗ РЕФЕРЕНСА */
-                /* 1. СЕТКА СТРОГО 2Х2 */
-        .main-menu-grid { 
-            display: grid !important; 
-            grid-template-columns: repeat(2, 1fr) !important; 
-            gap: 14px !important; 
-            margin: 20px auto !important; 
-            width: 100% !important;
-            max-width: 440px !important;
-            box-sizing: border-box;
-        }
-
-        /* 2. ЧИСТЫЙ CSS КИБЕРПАНК С ОТРЕЗАННЫМИ УГЛАМИ */
+        /* 2. НАДЕЖНЫЕ НЕОНОВЫЕ КАРТОЧКИ С УГОЛКАМИ */
         .menu-card { 
             background: #070913 !important;
             padding: 22px 10px !important; 
             
-            /* 🔥 Трюк года: срезаем углы (верхний левый и нижний правый) прямо кодом */
-            clip-path: polygon(12px 0%, 100% 0%, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0% 100%, 0% 12px) !important;
-            
-            /* Пропорции как на референсе */
+            /* Делаем прямоугольную форму */
             aspect-ratio: 4 / 3 !important;
+            border-radius: 8px !important;
+            
+            /* Основная тонкая неоновая рамка */
+            border: 1px solid currentColor !important;
             
             cursor: pointer !important; 
             display: flex !important; 
@@ -125,38 +115,31 @@
             text-align: center !important;
             position: relative !important;
             box-sizing: border-box !important;
-            transition: transform 0.1s ease !important;
+            transition: transform 0.1s ease, filter 0.2s ease !important;
             -webkit-tap-highlight-color: transparent; 
         }
 
         .menu-card:active { 
-            transform: scale(0.96) !important; 
+            transform: scale(0.96) !important;
+            filter: brightness(1.3) !important;
         }
 
-        /* Декоративные неоновые полоски в углах (уголки как на скрине) */
+        /* Рисуем жирные футуристичные уголки поверх рамки (как на референсе) */
         .menu-card::before {
             content: '' !important;
             position: absolute !important;
-            top: 0; left: 0; right: 0; bottom: 0;
-            /* Создаем рамку */
-            border: 1px solid currentColor !important;
-            opacity: 0.25 !important;
-            pointer-events: none !important;
-            clip-path: polygon(12px 0%, 100% 0%, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0% 100%, 0% 12px) !important;
-        }
-
-        /* Акцентные толстые неоновые уголки */
-        .menu-card::after {
-            content: '' !important;
-            position: absolute !important;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
             border: 3px solid currentColor !important;
+            border-radius: 10px !important;
             pointer-events: none !important;
-            /* Оставляем видимыми только углы (насечки) */
-            clip-path: polygon(0 0, 25px 0, 25px 3px, 3px 25px, 0 25px,
-                               100% 0, 100% 25px, calc(100% - 3px) 25px, calc(100% - 25px) 3px, calc(100% - 25px) 0,
-                               0 100%, 0 calc(100% - 25px), 3px calc(100% - 25px), 25px calc(100% - 3px), 25px 100%,
-                               100% 100%, calc(100% - 25px) 100%, calc(100% - 25px) calc(100% - 3px), calc(100% - 3px) calc(100% - 25px), 100% calc(100% - 25px)) !important;
+            
+            /* Магия: оставляем видимыми только насечки по углам */
+            clip-path: polygon(
+                0 0, 18px 0, 18px 100%, 0 100%, 
+                0 0, 100% 0, 100% 18px, 0 18px,
+                100% 0, 100% 100%, calc(100% - 18px) 100%, calc(100% - 18px) 0,
+                0 100%, 100% 100%, 100% calc(100% - 18px), 0 calc(100% - 18px)
+            ) !important;
         }
         
         .menu-icon-img { 
@@ -189,35 +172,36 @@
             opacity: 0.8 !important;
         }
 
-        /* --- НАСТРОЙКА ЦВЕТА СВЕЧЕНИЯ ДЛЯ КАЖДОЙ КАРТОЧКИ --- */
+        /* --- НАСТРОЙКА ЦВЕТА И СВЕЧЕНИЯ ДЛЯ КАЖДОЙ КАРТОЧКИ --- */
         
         /* 1. Оранжевая */
         .menu-card.orange {
             color: #ff7700 !important;
-            filter: drop-shadow(0 0 8px rgba(255, 119, 0, 0.4)) !important;
+            box-shadow: inset 0 0 15px rgba(255, 119, 0, 0.25), 0 0 15px rgba(255, 119, 0, 0.3) !important;
         }
         .menu-card.orange .menu-title { color: #ff9d42 !important; text-shadow: 0 0 8px rgba(255, 157, 66, 0.6); }
 
         /* 2. Фиолетовая */
         .menu-card.purple {
             color: #a124ff !important;
-            filter: drop-shadow(0 0 8px rgba(161, 36, 255, 0.4)) !important;
+            box-shadow: inset 0 0 15px rgba(161, 36, 255, 0.25), 0 0 15px rgba(161, 36, 255, 0.3) !important;
         }
         .menu-card.purple .menu-title { color: #c577ff !important; text-shadow: 0 0 8px rgba(197, 119, 255, 0.6); }
 
         /* 3. Синяя */
         .menu-card.blue {
             color: #0077ff !important;
-            filter: drop-shadow(0 0 8px rgba(0, 119, 255, 0.4)) !important;
+            box-shadow: inset 0 0 15px rgba(0, 119, 255, 0.25), 0 0 15px rgba(0, 119, 255, 0.3) !important;
         }
         .menu-card.blue .menu-title { color: #52a3ff !important; text-shadow: 0 0 8px rgba(82, 163, 255, 0.6); }
 
         /* 4. Бирюзовая */
         .menu-card.cyan {
             color: #00e5ff !important;
-            filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.4)) !important;
+            box-shadow: inset 0 0 15px rgba(0, 229, 255, 0.25), 0 0 15px rgba(0, 229, 255, 0.3) !important;
         }
         .menu-card.cyan .menu-title { color: #63f1ff !important; text-shadow: 0 0 8px rgba(99, 241, 255, 0.5); }
+
 
 
 

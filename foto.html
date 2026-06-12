@@ -83,103 +83,97 @@
             z-index: 2;
         }
         
-               /* КАРТОЧКИ С СУПЕР-НЕОНОВЫМИ КИБЕРПАНК РАМКАМИ */
+        /* ИСПРАВЛЕННАЯ СЕТКА СТРОГО 2Х2 */
+        .main-menu-grid { 
+            display: grid !important; 
+            grid-template-columns: repeat(2, 1fr) !important; 
+            gap: 16px !important; 
+            margin: 20px auto !important; 
+            width: 100% !important;
+            max-width: 440px !important;
+            box-sizing: border-box;
+        }
+
+        /* НЕОНОВЫЕ КАРТОЧКИ НА ЧИСТОМ CSS */
         .menu-card { 
-            background-color: rgba(6, 9, 22, 0.4); 
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: 100% 100%; /* Растягивает рамку идеально по форме */
-            padding: 24px 12px; 
-            border-radius: 0; /* Убираем стандартное скругление, форма задается фоном */
-            border: none; 
-            cursor: pointer; 
-            display: flex; 
-            flex-direction: column;
-            align-items: center; 
-            justify-content: center;
-            text-align: center;
-            position: relative;
-            transition: transform 0.1s ease, filter 0.2s ease; 
+            background: #070913 !important;
+            padding: 25px 10px !important; 
+            border-radius: 12px !important; 
+            cursor: pointer !important; 
+            display: flex !important; 
+            flex-direction: column !important;
+            align-items: center !important; 
+            justify-content: center !important;
+            text-align: center !important;
+            position: relative !important;
+            transition: transform 0.1s ease, box-shadow 0.2s ease !important; 
             -webkit-tap-highlight-color: transparent; 
+            box-sizing: border-box !important;
         }
 
         .menu-card:active { 
-            transform: scale(0.96); 
-            filter: brightness(1.3); /* Делает рамку ярче при нажатии */
+            transform: scale(0.96) !important; 
         }
         
-        /* Фирменные неоновые иконки */
+        /* Стилизация иконок */
         .menu-icon-img { 
-            width: 46px; 
-            height: 46px; 
-            margin-bottom: 12px;
-            object-fit: contain;
+            width: 44px !important; 
+            height: 44px !important; 
+            margin-bottom: 12px !important;
+            display: block !important;
         }
 
         .menu-info { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center;
-            width: 100%;
+            display: flex !important; 
+            flex-direction: column !important; 
+            align-items: center !important;
+            width: 100% !important;
         }
 
         .menu-title { 
-            font-weight: 800; 
-            font-size: 13px; 
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-bottom: 6px; 
-            line-height: 1.3;
+            font-weight: 800 !important; 
+            font-size: 13px !important; 
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+            margin-bottom: 6px !important; 
+            line-height: 1.3 !important;
         }
 
         .menu-desc { 
-            font-size: 10.5px; 
-            color: #7d8fa9; 
-            line-height: 1.3; 
-            opacity: 0.8;
+            font-size: 11px !important; 
+            color: #7d8fa9 !important; 
+            line-height: 1.3 !important; 
         }
 
-        /* --- ПОДКЛЮЧЕНИЕ СЛОЖНЫХ СКАЙ-ФАЙ РАМОК И ИКОНОК --- */
+        /* --- ЧИСТЫЕ СТИЛИ СВЕЧЕНИЯ И РАМОК БЕЗ КАРТИНОК --- */
         
-        /* 1. Оранжевая карточка (Генерация) */
+        /* 1. Оранжевая */
         .menu-card.orange {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://w3.org' width='200' height='150' viewBox='0 0 200 150' fill='none'%3E%3Crect x='1.5' y='1.5' width='197' height='147' rx='14' stroke='%23ff7700' stroke-width='2' stroke-opacity='0.3'/%3E%3Cpath d='M15 1.5H35M165 1.5H185M1.5 35V55M198.5 35V55M1.5 95V115M198.5 95V115M15 148.5H35M165 148.5H185' stroke='%23ff7700' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M12 6L6 12V22' stroke='%23ff7700' stroke-width='2'/%3E%3Cpath d='M188 6L194 12V22' stroke='%23ff7700' stroke-width='2'/%3E%3Cpath d='M12 144L6 138V128' stroke='%23ff7700' stroke-width='2'/%3E%3Cpath d='M188 144L194 138V128' stroke='%23ff7700' stroke-width='2'/%3E%3C/svg%3E");
-            filter: drop-shadow(0 0 10px rgba(255, 119, 0, 0.25));
+            border: 2px solid #ff7700 !important;
+            box-shadow: inset 0 0 15px rgba(255, 119, 0, 0.3), 0 0 15px rgba(255, 119, 0, 0.3) !important;
         }
-        .menu-card.orange .menu-title {
-            color: #ff9d42;
-            text-shadow: 0 0 8px rgba(255, 157, 66, 0.5);
-        }
+        .menu-card.orange .menu-title { color: #ff9d42 !important; text-shadow: 0 0 8px rgba(255, 157, 66, 0.6); }
 
-        /* 2. Фиолетовая карточка (Замена лица) */
+        /* 2. Фиолетовая */
         .menu-card.purple {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://w3.org' width='200' height='150' viewBox='0 0 200 150' fill='none'%3E%3Crect x='1.5' y='1.5' width='197' height='147' rx='14' stroke='%23a124ff' stroke-width='2' stroke-opacity='0.3'/%3E%3Cpath d='M15 1.5H35M165 1.5H185M1.5 35V55M198.5 35V55M1.5 95V115M198.5 95V115M15 148.5H35M165 148.5H185' stroke='%23a124ff' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M12 6L6 12V22' stroke='%23a124ff' stroke-width='2'/%3E%3Cpath d='M188 6L194 12V22' stroke='%23a124ff' stroke-width='2'/%3E%3Cpath d='M12 144L6 138V128' stroke='%23a124ff' stroke-width='2'/%3E%3Cpath d='M188 144L194 138V128' stroke='%23a124ff' stroke-width='2'/%3E%3C/svg%3E");
-            filter: drop-shadow(0 0 10px rgba(161, 36, 255, 0.25));
+            border: 2px solid #a124ff !important;
+            box-shadow: inset 0 0 15px rgba(161, 36, 255, 0.3), 0 0 15px rgba(161, 36, 255, 0.3) !important;
         }
-        .menu-card.purple .menu-title {
-            color: #c577ff;
-            text-shadow: 0 0 8px rgba(197, 119, 255, 0.5);
-        }
+        .menu-card.purple .menu-title { color: #c577ff !important; text-shadow: 0 0 8px rgba(197, 119, 255, 0.6); }
 
-        /* 3. Синяя карточка (Виртуальная примерка) */
+        /* 3. Синяя */
         .menu-card.blue {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://w3.org' width='200' height='150' viewBox='0 0 200 150' fill='none'%3E%3Crect x='1.5' y='1.5' width='197' height='147' rx='14' stroke='%230077ff' stroke-width='2' stroke-opacity='0.3'/%3E%3Cpath d='M15 1.5H35M165 1.5H185M1.5 35V55M198.5 35V55M1.5 95V115M198.5 95V115M15 148.5H35M165 148.5H185' stroke='%230077ff' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M12 6L6 12V22' stroke='%230077ff' stroke-width='2'/%3E%3Cpath d='M188 6L194 12V22' stroke='%230077ff' stroke-width='2'/%3E%3Cpath d='M12 144L6 138V128' stroke='%230077ff' stroke-width='2'/%3E%3Cpath d='M188 144L194 138V128' stroke='%230077ff' stroke-width='2'/%3E%3C/svg%3E");
-            filter: drop-shadow(0 0 10px rgba(0, 119, 255, 0.25));
+            border: 2px solid #0077ff !important;
+            box-shadow: inset 0 0 15px rgba(0, 119, 255, 0.3), 0 0 15px rgba(0, 119, 255, 0.3) !important;
         }
-        .menu-card.blue .menu-title {
-            color: #52a3ff;
-            text-shadow: 0 0 8px rgba(82, 163, 255, 0.5);
-        }
+        .menu-card.blue .menu-title { color: #52a3ff !important; text-shadow: 0 0 8px rgba(82, 163, 255, 0.6); }
 
-        /* 4. Бирюзовая карточка (Замена фона) */
+        /* 4. Бирюзовая */
         .menu-card.cyan {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://w3.org' width='200' height='150' viewBox='0 0 200 150' fill='none'%3E%3Crect x='1.5' y='1.5' width='197' height='147' rx='14' stroke='%2300e5ff' stroke-width='2' stroke-opacity='0.3'/%3E%3Cpath d='M15 1.5H35M165 1.5H185M1.5 35V55M198.5 35V55M1.5 95V115M198.5 95V115M15 148.5H35M165 148.5H185' stroke='%2300e5ff' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M12 6L6 12V22' stroke='%2300e5ff' stroke-width='2'/%3E%3Cpath d='M188 6L194 12V22' stroke='%2300e5ff' stroke-width='2'/%3E%3Cpath d='M12 144L6 138V128' stroke='%2300e5ff' stroke-width='2'/%3E%3Cpath d='M188 144L194 138V128' stroke='%2300e5ff' stroke-width='2'/%3E%3C/svg%3E");
-            filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.25));
+            border: 2px solid #00e5ff !important;
+            box-shadow: inset 0 0 15px rgba(0, 229, 255, 0.3), 0 0 15px rgba(0, 229, 255, 0.3) !important;
         }
-        .menu-card.cyan .menu-title {
-            color: #63f1ff;
-            text-shadow: 0 0 8px rgba(99, 241, 255, 0.4);
-        }
+        .menu-card.cyan .menu-title { color: #63f1ff !important; text-shadow: 0 0 8px rgba(99, 241, 255, 0.5); }
 
 /* конец стилей главного меню
 
@@ -685,14 +679,13 @@
             <p>Инструменты будущего</p>
         </div>
         
-               <div class="main-menu-grid">
+        <div class="main-menu-grid">
             <!-- 1. Оранжевая карточка -->
             <div class="menu-card orange" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('text_image');">
-                <!-- Векторная иконка генерации (Картинка + Искры) -->
                 <svg class="menu-icon-img" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org">
-                    <path d="M19 3H5C3.89543 3 3 3.89543 3 4V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V4C21 3.89543 20.1046 3 19 3Z" stroke="%23ff9d42" stroke-width="2" stroke-linejoin="round"/>
-                    <path d="M8.5 10C9.32843 10 10 9.32843 10 8.5C10 7.67157 9.32843 7 8.5 7C7.67157 7 7 7.67157 7 8.5C7 9.32843 7.67157 10 8.5 10Z" fill="%23ff9d42"/>
-                    <path d="M3 16.5L8 11.5L13 16.5M11 14.5L15 10.5L21 16.5" stroke="%23ff9d42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <rect x="3" y="3" width="18" height="18" rx="2" stroke="#ff9d42" stroke-width="2"/>
+                    <circle cx="8.5" cy="8.5" r="1.5" fill="#ff9d42"/>
+                    <path d="M3 16.5L8 11.5L13 16.5M11 14.5L15 10.5L21 16.5" stroke="#ff9d42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 <div class="menu-info">
                     <div class="menu-title">Генерация<br>изображений</div>
@@ -702,10 +695,11 @@
             
             <!-- 2. Фиолетовая карточка -->
             <div class="menu-card purple" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('face_swap');">
-                <!-- Векторная иконка масок театра -->
                 <svg class="menu-icon-img" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org">
-                    <path d="M14.5 4.5C12 3 9 4 8 6C7 8 8 11 10.5 12.5C13 14 16 13 17 11C18 9 17 6 14.5 4.5Z" stroke="%23c577ff" stroke-width="2"/>
-                    <path d="M9.5 11.5C7 10 4 11 3 13C2 15 3 18 5.5 19.5C8 21 11 20 12 18C13 16 12 13.5 9.5 11.5Z" stroke="%23c577ff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#c577ff" stroke-width="2"/>
+                    <path d="M8 14C8 14 9.5 16 12 16C14.5 16 16 14 16 14" stroke="#c577ff" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="9" y1="9" x2="9.01" y2="9" stroke="#c577ff" stroke-width="3" stroke-linecap="round"/>
+                    <line x1="15" y1="9" x2="15.01" y2="9" stroke="#c577ff" stroke-width="3" stroke-linecap="round"/>
                 </svg>
                 <div class="menu-info">
                     <div class="menu-title">Замена лица</div>
@@ -715,9 +709,8 @@
             
             <!-- 3. Синяя карточка -->
             <div class="menu-card blue" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('tryon');">
-                <!-- Векторная иконка футболки -->
                 <svg class="menu-icon-img" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org">
-                    <path d="M9 4L12 6L15 4L21 6V9L18 10V20H6V10L3 9V6L9 4Z" stroke="%2352a3ff" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M9 4L12 6L15 4L21 6V9L18 10V20H6V10L3 9V6L9 4Z" stroke="#52a3ff" stroke-width="2" stroke-linejoin="round"/>
                 </svg>
                 <div class="menu-info">
                     <div class="menu-title">Виртуальная<br>примерка</div>
@@ -727,10 +720,9 @@
             
             <!-- 4. Бирюзовая карточка -->
             <div class="menu-card cyan" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('bg_change');">
-                <!-- Векторная иконка смены фона -->
                 <svg class="menu-icon-img" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org">
-                    <path d="M4 4H20V20H4V4Z" stroke="%2363f1ff" stroke-width="2" stroke-dasharray="3 2"/>
-                    <path d="M12 8L15 13H9L12 8Z" stroke="%2363f1ff" stroke-width="2" stroke-linejoin="round"/>
+                    <rect x="4" y="4" width="16" height="16" rx="2" stroke="#63f1ff" stroke-width="2"/>
+                    <path d="M12 8L16 14H8L12 8Z" stroke="#63f1ff" stroke-width="2" stroke-linejoin="round"/>
                 </svg>
                 <div class="menu-info">
                     <div class="menu-title">Замена фона</div>

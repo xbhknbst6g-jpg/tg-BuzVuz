@@ -10,183 +10,240 @@
     
     <style>
          /* ПОДКЛЮЧАЕМ НЕОНОВЫЙ ШРИФТ ДЛЯ ЗАГОЛОВКА */
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap');
-        /* ГЛОБАЛЬНЫЕ НАСТРОЙКИ ТЕМЫ В СТИЛЕ КИБЕРПАНК */
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            background: radial-gradient(circle at center, #0a0d1a 0%, #030408 100%);
-            margin: 0; padding: 15px; 
-            padding-top: calc(env(safe-area-inset-top) + 15px);
-            padding-bottom: calc(env(safe-area-inset-bottom) + 15px);
-            color: #ffffff; 
-            -webkit-user-select: none; user-select: none;
-            min-height: 100vh;
-            box-sizing: border-box;
-        }
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&display=swap');
 
-        /* НЕОНОВЫЙ ЗАГОЛОВОК С ИКОНКОЙ ЗВЕЗДЫ */
-        .header { 
-            text-align: center; 
-            margin-bottom: 25px; 
-            padding-top: 10px; 
-            position: relative;
-        }
-        
-        .logo-container {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 14px;
-            position: relative;
-            z-index: 2;
-        }
+body{
+    margin:0;
+    min-height:100vh;
 
-        .star-icon {
-            width: 34px;
-            height: 34px;
-            filter: drop-shadow(0 0 10px rgba(255, 157, 66, 0.6));
-        }
+    background:
+        radial-gradient(circle at center,
+        #10182d 0%,
+        #070b15 40%,
+        #020306 100%);
 
-        .header h1 { 
-            font-family: 'Orbitron', 'Rajdhani', sans-serif;
-            font-size: 32px; 
-            font-weight: 800;
-            letter-spacing: 3px;
-            margin: 0; 
-            background: linear-gradient(to right, #ffffff 0%, #ffffff 25%, #bd7eff 60%, #ff3b69 100%);
-            background-clip: text; 
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 8px rgba(189, 126, 255, 0.3));
-        }
-        
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 320px; height: 50px;
-            background: linear-gradient(to right, rgba(255, 119, 0, 0.3), rgba(0, 75, 255, 0.3), rgba(255, 0, 85, 0.4));
-            filter: blur(30px);
-            border-radius: 50%;
-            z-index: 1;
-            pointer-events: none;
-        }
+    font-family:'Orbitron',sans-serif;
+    color:white;
+}
 
-        .header p { 
-            font-size: 11px; 
-            margin: 8px 0 0 0; 
-            color: #616f8a; 
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            position: relative;
-            z-index: 2;
-        }
-        
-        /* ИСПРАВЛЕННАЯ СЕТКА СТРОГО 2Х2 */
-        /* 1. СЕТКА ДЛЯ КАРТОЧЕК */
-        .main-menu-grid { 
-            display: grid !important; 
-            grid-template-columns: repeat(2, 1fr) !important; 
-            gap: 16px !important; 
-            margin: 20px auto !important; 
-            width: 100% !important;
-            max-width: 440px !important;
-            box-sizing: border-box;
-        }
+body::before{
+    content:'';
+    position:fixed;
+    inset:0;
 
-        /* 2. КАРТОЧКИ С ФИКСИРОВАННОЙ ВЫСОТОЙ */
-        .menu-card { 
-            background: rgba(7, 9, 19, 0.4) !important;
-            padding: 22px 10px !important; 
-            
-            /* Намертво ровняем высоту всех 4 карточек */
-            height: 140px !important; 
-            
-            border-radius: 0 !important; 
-            border: none !important; /* Убираем стандартные CSS рамки */
-            cursor: pointer !important; 
-            display: flex !important; 
-            flex-direction: column !important;
-            align-items: center !important; 
-            justify-content: center !important;
-            text-align: center !important;
-            position: relative !important; 
-            box-sizing: border-box !important;
-            transition: transform 0.1s ease, filter 0.15s ease !important;
-            -webkit-tap-highlight-color: transparent; 
-        }
+    background-image:
+        linear-gradient(
+            rgba(0,180,255,.04) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(0,180,255,.04) 1px,
+            transparent 1px
+        );
 
-        .menu-card:active { 
-            transform: scale(0.96) !important; 
-            filter: brightness(1.3) !important;
-        }
+    background-size:40px 40px;
+    pointer-events:none;
+}
 
-        /* 3. РАСТЯГИВАЕМ СТИЛЬНУЮ SVG-РАМКУ НА ВСЮ КНОПКУ */
-        .cyber-border-frame {
-            position: absolute !important;
-            top: 0 !important; 
-            left: 0 !important;
-            width: 100% !important; 
-            height: 100% !important;
-            pointer-events: none !important;
-            z-index: 1 !important;
-        }
-        
-        /* 4. КРУПНЫЕ ИКОНКИ */
-        .menu-icon-img { 
-            width: 46px !important; 
-            height: 46px !important; 
-            margin-bottom: 6px !important;
-            display: block !important;
-            position: relative !important;
-            z-index: 2 !important;
-        }
+.main-menu-grid{
+    max-width:460px;
+    margin:40px auto;
 
-        /* 5. ТЕКСТОВЫЕ БЛОКИ */
-        .menu-info { 
-            display: flex !important; 
-            flex-direction: column !important; 
-            align-items: center !important;
-            width: 100% !important;
-            position: relative !important;
-            z-index: 2 !important;
-        }
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
 
-        .menu-title { 
-            font-weight: 800 !important; 
-            font-size: 12.5px !important; 
-            text-transform: uppercase !important;
-            letter-spacing: 0.5px !important;
-            margin-bottom: 4px !important; 
-            line-height: 1.2 !important;
-        }
+.menu-card{
+    position:relative;
 
-        .menu-desc { 
-            font-size: 10.5px !important; 
-            color: #7d8fa9 !important; 
-            line-height: 1.2 !important; 
-            opacity: 0.8 !important;
-        }
+    height:165px;
 
-        /* 6. НАСТРОЙКА НЕОНОВОГО МЯГКОГО СВЕЧЕНИЯ */
-        .menu-card.orange { filter: drop-shadow(0 0 8px rgba(255, 119, 0, 0.35)) !important; }
-        .menu-card.orange .menu-title { color: #ff9d42 !important; text-shadow: 0 0 8px rgba(255, 157, 66, 0.6); }
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
 
-        .menu-card.purple { filter: drop-shadow(0 0 8px rgba(161, 36, 255, 0.35)) !important; }
-        .menu-card.purple .menu-title { color: #c577ff !important; text-shadow: 0 0 8px rgba(197, 119, 255, 0.6); }
+    overflow:hidden;
+    cursor:pointer;
 
-        .menu-card.blue { filter: drop-shadow(0 0 8px rgba(0, 119, 255, 0.35)) !important; }
-        .menu-card.blue .menu-title { color: #52a3ff !important; text-shadow: 0 0 8px rgba(82, 163, 255, 0.6); }
+    background:
+        linear-gradient(
+            180deg,
+            rgba(20,25,45,.7),
+            rgba(5,8,18,.9)
+        );
 
-        .menu-card.cyan { filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.35)) !important; }
-        .menu-card.cyan .menu-title { color: #63f1ff !important; text-shadow: 0 0 8px rgba(99, 241, 255, 0.5); }
+    transition:.25s;
+}
 
+.menu-card:hover{
+    transform:translateY(-4px);
+}
 
+.menu-card::before{
+    content:'';
 
+    position:absolute;
+    inset:0;
 
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(255,255,255,.06),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 80% 70%,
+            rgba(255,255,255,.03),
+            transparent 35%
+        );
 
+    pointer-events:none;
+}
 
+.cyber-border-frame{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+}
+
+.main-border{
+    fill:rgba(255,255,255,.01);
+    stroke-width:.8;
+}
+
+.corner{
+    fill:none;
+    stroke-width:2.5;
+    stroke-linecap:round;
+}
+
+.icon{
+    font-size:44px;
+    z-index:2;
+    margin-bottom:10px;
+}
+
+.menu-title{
+    z-index:2;
+
+    font-size:13px;
+    font-weight:800;
+    line-height:1.25;
+    text-align:center;
+    letter-spacing:.8px;
+
+    margin-bottom:6px;
+}
+
+.menu-desc{
+    z-index:2;
+
+    font-size:10px;
+    color:#91a0c0;
+    text-align:center;
+}
+
+/* ORANGE */
+
+.orange{
+    box-shadow:
+        inset 0 0 30px rgba(255,136,0,.10),
+        0 0 25px rgba(255,136,0,.15);
+}
+
+.orange .main-border{
+    stroke:rgba(255,136,0,.4);
+}
+
+.orange .corner{
+    stroke:#ff9d42;
+}
+
+.orange .menu-title{
+    color:#ffae5d;
+    text-shadow:0 0 10px rgba(255,157,66,.7);
+}
+
+/* PURPLE */
+
+.purple{
+    box-shadow:
+        inset 0 0 30px rgba(173,75,255,.12),
+        0 0 25px rgba(173,75,255,.15);
+}
+
+.purple .main-border{
+    stroke:rgba(173,75,255,.4);
+}
+
+.purple .corner{
+    stroke:#cf8cff;
+}
+
+.purple .menu-title{
+    color:#d89cff;
+    text-shadow:0 0 10px rgba(207,140,255,.7);
+}
+
+/* BLUE */
+
+.blue{
+    box-shadow:
+        inset 0 0 30px rgba(0,120,255,.12),
+        0 0 25px rgba(0,120,255,.15);
+}
+
+.blue .main-border{
+    stroke:rgba(0,120,255,.4);
+}
+
+.blue .corner{
+    stroke:#52a3ff;
+}
+
+.blue .menu-title{
+    color:#7ebeff;
+    text-shadow:0 0 10px rgba(82,163,255,.7);
+}
+
+/* CYAN */
+
+.cyan{
+    box-shadow:
+        inset 0 0 30px rgba(0,229,255,.12),
+        0 0 25px rgba(0,229,255,.15);
+}
+
+.cyan .main-border{
+    stroke:rgba(0,229,255,.4);
+}
+
+.cyan .corner{
+    stroke:#63f1ff;
+}
+
+.cyan .menu-title{
+    color:#8af6ff;
+    text-shadow:0 0 10px rgba(99,241,255,.7);
+}
+
+@keyframes pulse{
+    0%,100%{
+        opacity:1;
+    }
+
+    50%{
+        opacity:.7;
+    }
+}
+
+.corner{
+    animation:pulse 3s ease-in-out infinite;
+}
 
 /* конец стилей главного меню
 
@@ -693,87 +750,47 @@
         </div>
         
         <div class="main-menu-grid">
-            
-            <!-- 1. Оранжевая карточка (Генерация изображений) -->
-            <div class="menu-card orange" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('text_image');">
-                <!-- 🔥 Исправленный тег xmlns — теперь рамка гарантированно отобразится! -->
-                <svg class="cyber-border-frame" viewBox="0 0 100 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10 2 H90 L98 10 V70 L90 78 H10 L2 70 V10 Z" fill="rgba(255,119,0,0.02)" stroke="#ff7700" stroke-width="1"/>
-                    <path d="M8 2 H22 M78 2 H92 M2 12 V24 M98 12 V24 M2 56 V68 M98 56 V68 M8 78 H22 M78 78 H92" stroke="#ffaa00" stroke-width="2.5" stroke-linecap="round"/>
-                    <circle cx="6" cy="6" r="1" fill="#ff7700"/><circle cx="94" cy="6" r="1" fill="#ff7700"/>
-                    <circle cx="6" cy="74" r="1" fill="#ff7700"/><circle cx="94" cy="74" r="1" fill="#ff7700"/>
-                </svg>
-                
-                <svg class="menu-icon-img" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="2" y="3" width="20" height="18" rx="3" stroke="#ff9d42" stroke-width="2"/>
-                    <circle cx="7.5" cy="8.5" r="1.5" fill="#ff9d42"/>
-                    <path d="M2 16.5L7 11.5L12 16.5M10 14.5L14 10.5L22 16.5" stroke="#ff9d42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <div class="menu-info">
-                    <div class="menu-title">Генерация<br>изображений</div>
-                    <div class="menu-desc">По фото или описанию</div>
-                </div>
-            </div>
-            
-            <!-- 2. Фиолетовая карточка (Замена лица) -->
-            <div class="menu-card purple" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('face_swap');">
-                <svg class="cyber-border-frame" viewBox="0 0 100 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10 2 H90 L98 10 V70 L90 78 H10 L2 70 V10 Z" fill="rgba(161,36,255,0.02)" stroke="#a124ff" stroke-width="1"/>
-                    <path d="M8 2 H22 M78 2 H92 M2 12 V24 M98 12 V24 M2 56 V68 M98 56 V68 M8 78 H22 M78 78 H92" stroke="#d080ff" stroke-width="2.5" stroke-linecap="round"/>
-                    <circle cx="6" cy="6" r="1" fill="#a124ff"/><circle cx="94" cy="6" r="1" fill="#a124ff"/>
-                    <circle cx="6" cy="74" r="1" fill="#a124ff"/><circle cx="94" cy="74" r="1" fill="#a124ff"/>
-                </svg>
-                
-                <svg class="menu-icon-img" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#c577ff" stroke-width="2"/>
-                    <path d="M8 14C8 14 9.5 16 12 16C14.5 16 16 14 16 14" stroke="#c577ff" stroke-width="2" stroke-linecap="round"/>
-                    <circle cx="9" cy="10" r="1.5" fill="#c577ff"/>
-                    <circle cx="15" cy="10" r="1.5" fill="#c577ff"/>
-                </svg>
-                <div class="menu-info">
-                    <div class="menu-title">Замена лица</div>
-                    <div class="menu-desc">Face Swap по шаблонам</div>
-                </div>
-            </div>
-            
-            <!-- 3. Синяя карточка (Виртуальная примерка) -->
-            <div class="menu-card blue" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('tryon');">
-                <svg class="cyber-border-frame" viewBox="0 0 100 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10 2 H90 L98 10 V70 L90 78 H10 L2 70 V10 Z" fill="rgba(0,119,255,0.02)" stroke="#0077ff" stroke-width="1"/>
-                    <path d="M8 2 H22 M78 2 H92 M2 12 V24 M98 12 V24 M2 56 V68 M98 56 V68 M8 78 H22 M78 78 H92" stroke="#52a3ff" stroke-width="2.5" stroke-linecap="round"/>
-                    <circle cx="6" cy="6" r="1" fill="#0077ff"/><circle cx="94" cy="6" r="1" fill="#0077ff"/>
-                    <circle cx="6" cy="74" r="1" fill="#0077ff"/><circle cx="94" cy="74" r="1" fill="#0077ff"/>
-                </svg>
-                
-                <svg class="menu-icon-img" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9 4L12 6L15 4L21 6V9L18 10V20H6V10L3 9V6L9 4Z" stroke="#52a3ff" stroke-width="2" stroke-linejoin="round"/>
-                </svg>
-                <div class="menu-info">
-                    <div class="menu-title">Виртуальная<br>примерка</div>
-                    <div class="menu-desc">Одежда на фото</div>
-                </div>
-            </div>
-            
-            <!-- 4. Бирюзовая карточка (Замена фонда) -->
-            <div class="menu-card cyan" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('bg_change');">
-                <svg class="cyber-border-frame" viewBox="0 0 100 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10 2 H90 L98 10 V70 L90 78 H10 L2 70 V10 Z" fill="rgba(0,229,255,0.02)" stroke="#00e5ff" stroke-width="1"/>
-                    <path d="M8 2 H22 M78 2 H92 M2 12 V24 M98 12 V24 M2 56 V68 M98 56 V68 M8 78 H22 M78 78 H92" stroke="#63f1ff" stroke-width="2.5" stroke-linecap="round"/>
-                    <circle cx="6" cy="6" r="1" fill="#00e5ff"/><circle cx="94" cy="6" r="1" fill="#00e5ff"/>
-                    <circle cx="6" cy="74" r="1" fill="#00e5ff"/><circle cx="94" cy="74" r="1" fill="#00e5ff"/>
-                </svg>
-                
-                <svg class="menu-icon-img" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="4" y="4" width="16" height="16" rx="2" stroke="#63f1ff" stroke-width="2"/>
-                    <path d="M12 8L16 14H8L12 8Z" stroke="#63f1ff" stroke-width="2" stroke-linejoin="round"/>
-                </svg>
-                <div class="menu-info">
-                    <div class="menu-title">Замена фонда</div>
-                    <div class="menu-desc">Новый фон за секунду</div>
-                </div>
-            </div>
-            
+
+        <!-- 1. Оранжевая карточка -->
+        <div class="menu-card orange" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('text_image');">
+            <svg class="cyber-border-frame" viewBox="0 0 100 80" preserveAspectRatio="none" xmlns="http://w3.org">
+                <path class="main-border" d="M12 3 H84 L97 16 V64 L84 77 H12 L3 68 V12 Z"/>
+            </svg>
+            <div class="icon">🖼️</div>
+            <div class="menu-title">ГЕНЕРАЦИЯ<br>ИЗОБРАЖЕНИЙ</div>
+            <div class="menu-desc">По фото или тексту</div>
         </div>
+
+        <!-- 2. Фиолетовая карточка -->
+        <div class="menu-card purple" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('face_swap');">
+            <svg class="cyber-border-frame" viewBox="0 0 100 80" preserveAspectRatio="none" xmlns="http://w3.org">
+                <path class="main-border" d="M12 3 H84 L97 16 V64 L84 77 H12 L3 68 V12 Z"/>
+            </svg>
+            <div class="icon">🎭</div>
+            <div class="menu-title">ЗАМЕНА ЛИЦА</div>
+            <div class="menu-desc">Face Swap по шаблонам</div>
+        </div>
+
+        <!-- 3. Синяя карточка -->
+        <div class="menu-card blue" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('tryon');">
+            <svg class="cyber-border-frame" viewBox="0 0 100 80" preserveAspectRatio="none" xmlns="http://w3.org">
+                <path class="main-border" d="M12 3 H84 L97 16 V64 L84 77 H12 L3 68 V12 Z"/>
+            </svg>
+            <div class="icon">👕</div>
+            <div class="menu-title">ВИРТУАЛЬНАЯ<br>ПРИМЕРКА</div>
+            <div class="menu-desc">Одежда на фото</div>
+        </div>
+
+        <!-- 4. Бирюзовая карточка -->
+        <div class="menu-card cyan" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('bg_change');">
+            <svg class="cyber-border-frame" viewBox="0 0 100 80" preserveAspectRatio="none" xmlns="http://w3.org">
+                <path class="main-border" d="M12 3 H84 L97 16 V64 L84 77 H12 L3 68 V12 Z"/>
+            </svg>
+            <div class="icon">🌄</div>
+            <div class="menu-title">ЗАМЕНА ФОНА</div>
+            <div class="menu-desc">Новый фон за секунду</div>
+        </div>
+    </div>
 
 
     <!-- ========================================== -->

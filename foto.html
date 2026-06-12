@@ -9,34 +9,188 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
     <style>
-        /* ГЛОБАЛЬНЫЕ НАСТРОЙКИ ТЕМЫ TELEGRAM */
+         /* ПОДКЛЮЧАЕМ НЕОНОВЫЙ ШРИФТ ДЛЯ ЗАГОЛОВКА */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap');
+        /* ГЛОБАЛЬНЫЕ НАСТРОЙКИ ТЕМЫ В СТИЛЕ КИБЕРПАНК */
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            background-color: var(--tg-theme-secondary-bg-color, #f4f6f9); 
+            background: radial-gradient(circle at center, #0a0d1a 0%, #030408 100%);
             margin: 0; padding: 15px; 
             padding-top: calc(env(safe-area-inset-top) + 15px);
             padding-bottom: calc(env(safe-area-inset-bottom) + 15px);
-            color: var(--tg-theme-text-color, #333); 
+            color: #ffffff; 
             -webkit-user-select: none; user-select: none;
+            min-height: 100vh;
+            box-sizing: border-box;
         }
 
-        .header { text-align: center; margin-bottom: 25px; padding-top: 10px; }
-        .header h1 { font-size: 22px; margin: 0 0 5px 0; color: var(--tg-theme-text-color, #111); }
-        .header p { font-size: 14px; margin: 0; color: var(--tg-theme-hint-color, #666); }
-        
-        /* КАРТОЧКИ ГЛАВНОГО МЕНЮ */
-        .main-menu-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 20px; }
-        .menu-card { 
-            background: var(--tg-theme-bg-color, #fff); padding: 20px; border-radius: 12px; 
-            border: 1px solid var(--tg-theme-border-color, #e1e6eb); box-shadow: 0 4px 6px rgba(0,0,0,0.02); 
-            cursor: pointer; display: flex; align-items: center; gap: 15px; 
-            transition: transform 0.1s ease, background-color 0.1s ease; -webkit-tap-highlight-color: transparent; 
+        /* НЕОНОВЫЙ ЗАГОЛОВОК С ИКОНКОЙ ЗВЕЗДЫ */
+        .header { 
+            text-align: center; 
+            margin-bottom: 25px; 
+            padding-top: 10px; 
+            position: relative;
         }
-        .menu-card:active { transform: scale(0.97); background-color: var(--tg-theme-secondary-bg-color, #fafafa); }
-        .menu-icon { font-size: 32px; width: 45px; text-align: center; }
-        .menu-info { display: flex; flex-direction: column; }
-        .menu-title { font-weight: bold; font-size: 16px; color: var(--tg-theme-text-color, #000); margin-bottom: 2px; }
-        .menu-desc { font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.3; }
+        
+        .logo-container {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .star-icon {
+            width: 34px;
+            height: 34px;
+            filter: drop-shadow(0 0 10px rgba(255, 157, 66, 0.6));
+        }
+
+        .header h1 { 
+            font-family: 'Orbitron', 'Rajdhani', sans-serif;
+            font-size: 32px; 
+            font-weight: 800;
+            letter-spacing: 3px;
+            margin: 0; 
+            background: linear-gradient(to right, #ffffff 0%, #ffffff 25%, #bd7eff 60%, #ff3b69 100%);
+            background-clip: text; 
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 8px rgba(189, 126, 255, 0.3));
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 320px; height: 50px;
+            background: linear-gradient(to right, rgba(255, 119, 0, 0.3), rgba(0, 75, 255, 0.3), rgba(255, 0, 85, 0.4));
+            filter: blur(30px);
+            border-radius: 50%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .header p { 
+            font-size: 11px; 
+            margin: 8px 0 0 0; 
+            color: #616f8a; 
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* ОБНОВЛЕННАЯ СЕТКА КАРТОЧЕК ГЛАВНОГО МЕНЮ (2х2) */
+        .main-menu-grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 16px; 
+            margin-bottom: 20px; 
+            width: 100%;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .menu-card { 
+            background: rgba(6, 9, 22, 0.7); 
+            padding: 20px 10px; 
+            border-radius: 16px; 
+            border: 2px solid transparent; 
+            cursor: pointer; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.1s ease, box-shadow 0.2s ease; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+
+        .menu-card::before {
+            content: '';
+            position: absolute;
+            top: 4px; left: 4px; right: 4px; bottom: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            pointer-events: none;
+        }
+
+        .menu-card:active { transform: scale(0.97); }
+        
+        .menu-icon { 
+            font-size: 32px; 
+            margin-bottom: 12px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-info { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+        }
+
+        .menu-title { 
+            font-weight: 700; 
+            font-size: 14px; 
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px; 
+            line-height: 1.2;
+        }
+
+        .menu-desc { 
+            font-size: 11px; 
+            color: #808aa0; 
+            line-height: 1.3; 
+        }
+        
+        /* СТИЛИ СВЕЧЕНИЯ ДЛЯ КАЖДОГО ЦВЕТА КАРТОЧЕК */
+        .menu-card.orange {
+            border-color: #ff7700;
+            box-shadow: inset 0 0 12px rgba(255, 119, 0, 0.15), 0 0 15px rgba(255, 119, 0, 0.2);
+        }
+        .menu-card.orange .menu-title, .menu-card.orange .menu-icon {
+            color: #ff9d42;
+            text-shadow: 0 0 10px rgba(255, 157, 66, 0.4);
+        }
+
+        .menu-card.purple {
+            border-color: #a124ff;
+            box-shadow: inset 0 0 12px rgba(161, 36, 255, 0.15), 0 0 15px rgba(161, 36, 255, 0.2);
+        }
+        .menu-card.purple .menu-title, .menu-card.purple .menu-icon {
+            color: #c577ff;
+            text-shadow: 0 0 10px rgba(197, 119, 255, 0.4);
+        }
+
+        .menu-card.blue {
+            border-color: #0077ff;
+            box-shadow: inset 0 0 12px rgba(0, 119, 255, 0.15), 0 0 15px rgba(0, 119, 255, 0.2);
+        }
+        .menu-card.blue .menu-title, .menu-card.blue .menu-icon {
+            color: #52a3ff;
+            text-shadow: 0 0 10px rgba(82, 163, 255, 0.4);
+        }
+
+        .menu-card.cyan {
+            border-color: #00e5ff;
+            box-shadow: inset 0 0 12px rgba(0, 229, 255, 0.15), 0 0 15px rgba(0, 229, 255, 0.2);
+        }
+        .menu-card.cyan .menu-title, .menu-card.cyan .menu-icon {
+            color: #63f1ff;
+            text-shadow: 0 0 10px rgba(99, 241, 255, 0.4);
+        }
+/* конец стилей главного меню
+
+
 
         /* СКРЫТИЕ / ПОКАЗ ЭКРАНОВ */
         .screen { display: none; }
@@ -519,40 +673,59 @@
     <!-- ========================================== -->
     <div id="foto" class="screen active">
         <div class="header">
-            <h1>Интеллектуальная AI Студия</h1>
-            <p>Выберите нужный инструмент генерации ниже</p>
+            <div class="logo-container">
+                <!-- Отрендеренная SVG иконка четырехконечной звезды со спутниками -->
+                <svg class="star-icon" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org">
+                    <path d="M12 2C12 7.5 16.5 12 22 12C16.5 12 12 16.5 12 22C12 16.5 7.5 12 2 12C7.5 12 12 7.5 12 2Z" fill="url(#star-gradient)"/>
+                    <path d="M5 4C5 5.3 4 6.3 2.7 6.3C4 6.3 5 7.3 5 8.6C5 7.3 6 6.3 7.3 6.3C6 6.3 5 5.3 5 4Z" fill="#ff9d42"/>
+                    <path d="M19 3C19 4 18.2 4.8 17.2 4.8C18.2 4.8 19 5.6 19 6.6C19 5.6 19.8 4.8 20.8 4.8C19.8 4.8 19 4 19 3Z" fill="#ff9d42"/>
+                    <defs>
+                        <linearGradient id="star-gradient" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stop-color="#fff1be" />
+                            <stop offset="50%" stop-color="#ff9d42" />
+                            <stop offset="100%" stop-color="#ff6a00" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <h1>AI STUDIO</h1>
+            </div>
+            <p>Инструменты будущего</p>
         </div>
         
         <div class="main-menu-grid">
-            <div class="menu-card" onclick="openScreen('text_image')">
-                <div class="menu-icon">📝</div>
+            <!-- 1. Оранжевая карточка -->
+            <div class="menu-card orange" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('text_image');">
+                <div class="menu-icon"></div>
                 <div class="menu-info">
-                    <div class="menu-title">1. Фото + Текст</div>
-                    <div class="menu-desc">Создание по вашему фото и описанию</div>
+                    <div class="menu-title">Генерация<br>изображений</div>
+                    <div class="menu-desc">Выбери готовые шаблоны или создай свой стиль</div>
                 </div>
             </div>
             
-            <div class="menu-card" onclick="openScreen('face_swap')">
-                <div class="menu-icon">🎭</div>
+            <!-- 2. Фиолетовая карточка -->
+            <div class="menu-card purple" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('face_swap');">
+                <div class="menu-icon"></div>
                 <div class="menu-info">
-                    <div class="menu-title">2. Face Swap</div>
-                    <div class="menu-desc">Замена лиц (выберите интересующий вас шаблон)</div>
+                    <div class="menu-title">Замена лица</div>
+                    <div class="menu-desc">Face Swap по вашим шаблонам</div>
                 </div>
             </div>
             
-            <div class="menu-card" onclick="openScreen('tryon')">
-                <div class="menu-icon">👕</div>
+            <!-- 3. Синяя карточка -->
+            <div class="menu-card blue" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('tryon');">
+                <div class="menu-icon"></div>
                 <div class="menu-info">
-                    <div class="menu-title">3. Примерка одежды</div>
-                    <div class="menu-desc">Примерка любых вещей по вашей фигуре До / После</div>
+                    <div class="menu-title">Виртуальная<br>примерка</div>
+                    <div class="menu-desc">Одежда по вашей фигуре</div>
                 </div>
             </div>
             
-            <div class="menu-card" onclick="openScreen('bg_change')">
-                <div class="menu-icon">🖼</div>
+            <!-- 4. Бирюзовая карточка -->
+            <div class="menu-card cyan" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('bg_change');">
+                <div class="menu-icon"></div>
                 <div class="menu-info">
-                    <div class="menu-title">4. Смена фона</div>
-                    <div class="menu-desc">Умный перенос объекта на новый задний план</div>
+                    <div class="menu-title">Замена фона</div>
+                    <div class="menu-desc">Новый фон за секунду</div>
                 </div>
             </div>
         </div>

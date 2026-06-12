@@ -96,17 +96,12 @@
         }
 
         /* 2. НАДЕЖНЫЕ НЕОНОВЫЕ КАРТОЧКИ С УГОЛКАМИ */
-        .menu-card { 
+                .menu-card { 
             background: #070913 !important;
-            padding: 22px 10px !important; 
-            
-            /* Делаем прямоугольную форму */
+            padding: 16px 10px !important; 
             aspect-ratio: 4 / 3 !important;
             border-radius: 8px !important;
-            
-            /* Основная тонкая неоновая рамка */
             border: 1px solid currentColor !important;
-            
             cursor: pointer !important; 
             display: flex !important; 
             flex-direction: column !important;
@@ -115,14 +110,11 @@
             text-align: center !important;
             position: relative !important;
             box-sizing: border-box !important;
-            transition: transform 0.1s ease, filter 0.2s ease !important;
+            transition: transform 0.1s ease !important;
             -webkit-tap-highlight-color: transparent; 
         }
+        .menu-card:active { transform: scale(0.96) !important; }
 
-        .menu-card:active { 
-            transform: scale(0.96) !important;
-            filter: brightness(1.3) !important;
-        }
 
         /* Рисуем жирные футуристичные уголки поверх рамки (как на референсе) */
         .menu-card::before {
@@ -710,12 +702,19 @@
         </div>
         
         <div class="main-menu-grid">
-            <!-- 1. Оранжевая карточка -->
+            
+            <!-- 1. Оранжевая карточка (Генерация изображений) -->
             <div class="menu-card orange" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('text_image');">
-                <svg class="menu-icon-img" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org">
-                    <rect x="3" y="3" width="18" height="18" rx="2" stroke="#ff9d42" stroke-width="2"/>
-                    <circle cx="8.5" cy="8.5" r="1.5" fill="#ff9d42"/>
-                    <path d="M3 16.5L8 11.5L13 16.5M11 14.5L15 10.5L21 16.5" stroke="#ff9d42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Векторный контейнер: рисует уголки макета + иконку -->
+                <svg class="menu-icon-img" viewBox="0 0 100 80" fill="none" xmlns="http://w3.org" style="width: 100%; height: auto; max-height: 55px; margin-bottom: 8px;">
+                    <!-- Фирменные скошенные насечки по углам (как на референсе) -->
+                    <path d="M5 2H20M5 2V12M80 2H95M95 2V12M5 78H20M5 78V68M80 78H95M95 78V68" stroke="#ff7700" stroke-width="3.5" stroke-linecap="round"/>
+                    <!-- Сама неоновая линейная иконка картинки по центру -->
+                    <g transform="translate(38, 26)">
+                        <rect x="1" y="1" width="22" height="18" rx="2" stroke="#ff9d42" stroke-width="2"/>
+                        <circle cx="6.5" cy="5.5" r="1.5" fill="#ff9d42"/>
+                        <path d="M1 14L6 9L11 14M9 12L13 8L23 14" stroke="#ff9d42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </g>
                 </svg>
                 <div class="menu-info">
                     <div class="menu-title">Генерация<br>изображений</div>
@@ -723,13 +722,18 @@
                 </div>
             </div>
             
-            <!-- 2. Фиолетовая карточка -->
+            <!-- 2. Фиолетовая карточка (Замена лица) -->
             <div class="menu-card purple" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('face_swap');">
-                <svg class="menu-icon-img" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org">
-                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#c577ff" stroke-width="2"/>
-                    <path d="M8 14C8 14 9.5 16 12 16C14.5 16 16 14 16 14" stroke="#c577ff" stroke-width="2" stroke-linecap="round"/>
-                    <line x1="9" y1="9" x2="9.01" y2="9" stroke="#c577ff" stroke-width="3" stroke-linecap="round"/>
-                    <line x1="15" y1="9" x2="15.01" y2="9" stroke="#c577ff" stroke-width="3" stroke-linecap="round"/>
+                <svg class="menu-icon-img" viewBox="0 0 100 80" fill="none" xmlns="http://w3.org" style="width: 100%; height: auto; max-height: 55px; margin-bottom: 8px;">
+                    <!-- Уголки -->
+                    <path d="M5 2H20M5 2V12M80 2H95M95 2V12M5 78H20M5 78V68M80 78H95M95 78V68" stroke="#a124ff" stroke-width="3.5" stroke-linecap="round"/>
+                    <!-- Иконка масок лица по центру -->
+                    <g transform="translate(38, 25)">
+                        <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#c577ff" stroke-width="2"/>
+                        <path d="M8 14C8 14 9.5 16 12 16C14.5 16 16 14 16 14" stroke="#c577ff" stroke-width="2" stroke-linecap="round"/>
+                        <circle cx="9" cy="9" r="1" fill="#c577ff"/>
+                        <circle cx="15" cy="9" r="1" fill="#c577ff"/>
+                    </g>
                 </svg>
                 <div class="menu-info">
                     <div class="menu-title">Замена лица</div>
@@ -737,10 +741,15 @@
                 </div>
             </div>
             
-            <!-- 3. Синяя карточка -->
+            <!-- 3. Синяя карточка (Виртуальная примерка) -->
             <div class="menu-card blue" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('tryon');">
-                <svg class="menu-icon-img" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org">
-                    <path d="M9 4L12 6L15 4L21 6V9L18 10V20H6V10L3 9V6L9 4Z" stroke="#52a3ff" stroke-width="2" stroke-linejoin="round"/>
+                <svg class="menu-icon-img" viewBox="0 0 100 80" fill="none" xmlns="http://w3.org" style="width: 100%; height: auto; max-height: 55px; margin-bottom: 8px;">
+                    <!-- Уголки -->
+                    <path d="M5 2H20M5 2V12M80 2H95M95 2V12M5 78H20M5 78V68M80 78H95M95 78V68" stroke="#0077ff" stroke-width="3.5" stroke-linecap="round"/>
+                    <!-- Иконка футболки по центру -->
+                    <g transform="translate(38, 25)">
+                        <path d="M9 4L12 6L15 4L21 6V9L18 10V20H6V10L3 9V6L9 4Z" stroke="#52a3ff" stroke-width="2" stroke-linejoin="round"/>
+                    </g>
                 </svg>
                 <div class="menu-info">
                     <div class="menu-title">Виртуальная<br>примерка</div>
@@ -748,11 +757,16 @@
                 </div>
             </div>
             
-            <!-- 4. Бирюзовая карточка -->
+            <!-- 4. Бирюзовая карточка (Замена фона) -->
             <div class="menu-card cyan" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('bg_change');">
-                <svg class="menu-icon-img" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org">
-                    <rect x="4" y="4" width="16" height="16" rx="2" stroke="#63f1ff" stroke-width="2"/>
-                    <path d="M12 8L16 14H8L12 8Z" stroke="#63f1ff" stroke-width="2" stroke-linejoin="round"/>
+                <svg class="menu-icon-img" viewBox="0 0 100 80" fill="none" xmlns="http://w3.org" style="width: 100%; height: auto; max-height: 55px; margin-bottom: 8px;">
+                    <!-- Уголки -->
+                    <path d="M5 2H20M5 2V12M80 2H95M95 2V12M5 78H20M5 78V68M80 78H95M95 78V68" stroke="#00e5ff" stroke-width="3.5" stroke-linecap="round"/>
+                    <!-- Иконка смены фона по центру -->
+                    <g transform="translate(38, 25)">
+                        <rect x="4" y="4" width="16" height="16" rx="2" stroke="#63f1ff" stroke-width="2" stroke-dasharray="3 2"/>
+                        <path d="M12 8L16 14H8L12 8Z" stroke="#63f1ff" stroke-width="2" stroke-linejoin="round"/>
+                    </g>
                 </svg>
                 <div class="menu-info">
                     <div class="menu-title">Замена фона</div>

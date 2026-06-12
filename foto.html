@@ -83,23 +83,15 @@
             z-index: 2;
         }
         
-        /* ОБНОВЛЕННАЯ СЕТКА КАРТОЧЕК ГЛАВНОГО МЕНЮ (2х2) */
-        .main-menu-grid { 
-            display: grid; 
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 16px; 
-            margin-bottom: 20px; 
-            width: 100%;
-            max-width: 480px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
+               /* КАРТОЧКИ С СУПЕР-НЕОНОВЫМИ КИБЕРПАНК РАМКАМИ */
         .menu-card { 
-            background: rgba(6, 9, 22, 0.7); 
-            padding: 20px 10px; 
-            border-radius: 16px; 
-            border: 2px solid transparent; 
+            background-color: rgba(6, 9, 22, 0.4); 
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 100% 100%; /* Растягивает рамку идеально по форме */
+            padding: 24px 12px; 
+            border-radius: 0; /* Убираем стандартное скругление, форма задается фоном */
+            border: none; 
             cursor: pointer; 
             display: flex; 
             flex-direction: column;
@@ -107,87 +99,88 @@
             justify-content: center;
             text-align: center;
             position: relative;
-            overflow: hidden;
-            transition: transform 0.1s ease, box-shadow 0.2s ease; 
+            transition: transform 0.1s ease, filter 0.2s ease; 
             -webkit-tap-highlight-color: transparent; 
         }
 
-        .menu-card::before {
-            content: '';
-            position: absolute;
-            top: 4px; left: 4px; right: 4px; bottom: 4px;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
-            pointer-events: none;
+        .menu-card:active { 
+            transform: scale(0.96); 
+            filter: brightness(1.3); /* Делает рамку ярче при нажатии */
         }
-
-        .menu-card:active { transform: scale(0.97); }
         
-        .menu-icon { 
-            font-size: 32px; 
-            margin-bottom: 12px; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* Фирменные неоновые иконки */
+        .menu-icon-img { 
+            width: 46px; 
+            height: 46px; 
+            margin-bottom: 12px;
+            object-fit: contain;
         }
 
         .menu-info { 
             display: flex; 
             flex-direction: column; 
             align-items: center;
+            width: 100%;
         }
 
         .menu-title { 
-            font-weight: 700; 
-            font-size: 14px; 
+            font-weight: 800; 
+            font-size: 13px; 
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
             margin-bottom: 6px; 
-            line-height: 1.2;
+            line-height: 1.3;
         }
 
         .menu-desc { 
-            font-size: 11px; 
-            color: #808aa0; 
+            font-size: 10.5px; 
+            color: #7d8fa9; 
             line-height: 1.3; 
+            opacity: 0.8;
         }
+
+        /* --- ПОДКЛЮЧЕНИЕ СЛОЖНЫХ СКАЙ-ФАЙ РАМОК И ИКОНОК --- */
         
-        /* СТИЛИ СВЕЧЕНИЯ ДЛЯ КАЖДОГО ЦВЕТА КАРТОЧЕК */
+        /* 1. Оранжевая карточка (Генерация) */
         .menu-card.orange {
-            border-color: #ff7700;
-            box-shadow: inset 0 0 12px rgba(255, 119, 0, 0.15), 0 0 15px rgba(255, 119, 0, 0.2);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://w3.org' width='200' height='150' viewBox='0 0 200 150' fill='none'%3E%3Crect x='1.5' y='1.5' width='197' height='147' rx='14' stroke='%23ff7700' stroke-width='2' stroke-opacity='0.3'/%3E%3Cpath d='M15 1.5H35M165 1.5H185M1.5 35V55M198.5 35V55M1.5 95V115M198.5 95V115M15 148.5H35M165 148.5H185' stroke='%23ff7700' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M12 6L6 12V22' stroke='%23ff7700' stroke-width='2'/%3E%3Cpath d='M188 6L194 12V22' stroke='%23ff7700' stroke-width='2'/%3E%3Cpath d='M12 144L6 138V128' stroke='%23ff7700' stroke-width='2'/%3E%3Cpath d='M188 144L194 138V128' stroke='%23ff7700' stroke-width='2'/%3E%3C/svg%3E");
+            filter: drop-shadow(0 0 10px rgba(255, 119, 0, 0.25));
         }
-        .menu-card.orange .menu-title, .menu-card.orange .menu-icon {
+        .menu-card.orange .menu-title {
             color: #ff9d42;
-            text-shadow: 0 0 10px rgba(255, 157, 66, 0.4);
+            text-shadow: 0 0 8px rgba(255, 157, 66, 0.5);
         }
 
+        /* 2. Фиолетовая карточка (Замена лица) */
         .menu-card.purple {
-            border-color: #a124ff;
-            box-shadow: inset 0 0 12px rgba(161, 36, 255, 0.15), 0 0 15px rgba(161, 36, 255, 0.2);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://w3.org' width='200' height='150' viewBox='0 0 200 150' fill='none'%3E%3Crect x='1.5' y='1.5' width='197' height='147' rx='14' stroke='%23a124ff' stroke-width='2' stroke-opacity='0.3'/%3E%3Cpath d='M15 1.5H35M165 1.5H185M1.5 35V55M198.5 35V55M1.5 95V115M198.5 95V115M15 148.5H35M165 148.5H185' stroke='%23a124ff' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M12 6L6 12V22' stroke='%23a124ff' stroke-width='2'/%3E%3Cpath d='M188 6L194 12V22' stroke='%23a124ff' stroke-width='2'/%3E%3Cpath d='M12 144L6 138V128' stroke='%23a124ff' stroke-width='2'/%3E%3Cpath d='M188 144L194 138V128' stroke='%23a124ff' stroke-width='2'/%3E%3C/svg%3E");
+            filter: drop-shadow(0 0 10px rgba(161, 36, 255, 0.25));
         }
-        .menu-card.purple .menu-title, .menu-card.purple .menu-icon {
+        .menu-card.purple .menu-title {
             color: #c577ff;
-            text-shadow: 0 0 10px rgba(197, 119, 255, 0.4);
+            text-shadow: 0 0 8px rgba(197, 119, 255, 0.5);
         }
 
+        /* 3. Синяя карточка (Виртуальная примерка) */
         .menu-card.blue {
-            border-color: #0077ff;
-            box-shadow: inset 0 0 12px rgba(0, 119, 255, 0.15), 0 0 15px rgba(0, 119, 255, 0.2);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://w3.org' width='200' height='150' viewBox='0 0 200 150' fill='none'%3E%3Crect x='1.5' y='1.5' width='197' height='147' rx='14' stroke='%230077ff' stroke-width='2' stroke-opacity='0.3'/%3E%3Cpath d='M15 1.5H35M165 1.5H185M1.5 35V55M198.5 35V55M1.5 95V115M198.5 95V115M15 148.5H35M165 148.5H185' stroke='%230077ff' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M12 6L6 12V22' stroke='%230077ff' stroke-width='2'/%3E%3Cpath d='M188 6L194 12V22' stroke='%230077ff' stroke-width='2'/%3E%3Cpath d='M12 144L6 138V128' stroke='%230077ff' stroke-width='2'/%3E%3Cpath d='M188 144L194 138V128' stroke='%230077ff' stroke-width='2'/%3E%3C/svg%3E");
+            filter: drop-shadow(0 0 10px rgba(0, 119, 255, 0.25));
         }
-        .menu-card.blue .menu-title, .menu-card.blue .menu-icon {
+        .menu-card.blue .menu-title {
             color: #52a3ff;
-            text-shadow: 0 0 10px rgba(82, 163, 255, 0.4);
+            text-shadow: 0 0 8px rgba(82, 163, 255, 0.5);
         }
 
+        /* 4. Бирюзовая карточка (Замена фона) */
         .menu-card.cyan {
-            border-color: #00e5ff;
-            box-shadow: inset 0 0 12px rgba(0, 229, 255, 0.15), 0 0 15px rgba(0, 229, 255, 0.2);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://w3.org' width='200' height='150' viewBox='0 0 200 150' fill='none'%3E%3Crect x='1.5' y='1.5' width='197' height='147' rx='14' stroke='%2300e5ff' stroke-width='2' stroke-opacity='0.3'/%3E%3Cpath d='M15 1.5H35M165 1.5H185M1.5 35V55M198.5 35V55M1.5 95V115M198.5 95V115M15 148.5H35M165 148.5H185' stroke='%2300e5ff' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M12 6L6 12V22' stroke='%2300e5ff' stroke-width='2'/%3E%3Cpath d='M188 6L194 12V22' stroke='%2300e5ff' stroke-width='2'/%3E%3Cpath d='M12 144L6 138V128' stroke='%2300e5ff' stroke-width='2'/%3E%3Cpath d='M188 144L194 138V128' stroke='%2300e5ff' stroke-width='2'/%3E%3C/svg%3E");
+            filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.25));
         }
-        .menu-card.cyan .menu-title, .menu-card.cyan .menu-icon {
+        .menu-card.cyan .menu-title {
             color: #63f1ff;
-            text-shadow: 0 0 10px rgba(99, 241, 255, 0.4);
+            text-shadow: 0 0 8px rgba(99, 241, 255, 0.4);
         }
+
 /* конец стилей главного меню
 
 
@@ -692,37 +685,53 @@
             <p>Инструменты будущего</p>
         </div>
         
-        <div class="main-menu-grid">
+               <div class="main-menu-grid">
             <!-- 1. Оранжевая карточка -->
-              <div class="menu-card orange" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('text_image');">
-                <div class="menu-icon">🎨</div>
+            <div class="menu-card orange" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('text_image');">
+                <!-- Векторная иконка генерации (Картинка + Искры) -->
+                <svg class="menu-icon-img" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org">
+                    <path d="M19 3H5C3.89543 3 3 3.89543 3 4V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V4C21 3.89543 20.1046 3 19 3Z" stroke="%23ff9d42" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M8.5 10C9.32843 10 10 9.32843 10 8.5C10 7.67157 9.32843 7 8.5 7C7.67157 7 7 7.67157 7 8.5C7 9.32843 7.67157 10 8.5 10Z" fill="%23ff9d42"/>
+                    <path d="M3 16.5L8 11.5L13 16.5M11 14.5L15 10.5L21 16.5" stroke="%23ff9d42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
                 <div class="menu-info">
                     <div class="menu-title">Генерация<br>изображений</div>
-                    <div class="menu-desc">Выбери готовые шаблоны или создай свой стиль</div>
+                    <div class="menu-desc">По фото или тексту</div>
                 </div>
             </div>
             
             <!-- 2. Фиолетовая карточка -->
             <div class="menu-card purple" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('face_swap');">
-                <div class="menu-icon">🎭</div>
+                <!-- Векторная иконка масок театра -->
+                <svg class="menu-icon-img" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org">
+                    <path d="M14.5 4.5C12 3 9 4 8 6C7 8 8 11 10.5 12.5C13 14 16 13 17 11C18 9 17 6 14.5 4.5Z" stroke="%23c577ff" stroke-width="2"/>
+                    <path d="M9.5 11.5C7 10 4 11 3 13C2 15 3 18 5.5 19.5C8 21 11 20 12 18C13 16 12 13.5 9.5 11.5Z" stroke="%23c577ff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                </svg>
                 <div class="menu-info">
                     <div class="menu-title">Замена лица</div>
-                    <div class="menu-desc">Face Swap по вашим шаблонам</div>
+                    <div class="menu-desc">Face Swap по шаблонам</div>
                 </div>
             </div>
             
             <!-- 3. Синяя карточка -->
             <div class="menu-card blue" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('tryon');">
-                <div class="menu-icon">👕</div>
+                <!-- Векторная иконка футболки -->
+                <svg class="menu-icon-img" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org">
+                    <path d="M9 4L12 6L15 4L21 6V9L18 10V20H6V10L3 9V6L9 4Z" stroke="%2352a3ff" stroke-width="2" stroke-linejoin="round"/>
+                </svg>
                 <div class="menu-info">
                     <div class="menu-title">Виртуальная<br>примерка</div>
-                    <div class="menu-desc">Одежда по вашей фигуре</div>
+                    <div class="menu-desc">Одежда на фото</div>
                 </div>
             </div>
             
             <!-- 4. Бирюзовая карточка -->
             <div class="menu-card cyan" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('bg_change');">
-                <div class="menu-icon">🖼️</div>
+                <!-- Векторная иконка смены фона -->
+                <svg class="menu-icon-img" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org">
+                    <path d="M4 4H20V20H4V4Z" stroke="%2363f1ff" stroke-width="2" stroke-dasharray="3 2"/>
+                    <path d="M12 8L15 13H9L12 8Z" stroke="%2363f1ff" stroke-width="2" stroke-linejoin="round"/>
+                </svg>
                 <div class="menu-info">
                     <div class="menu-title">Замена фона</div>
                     <div class="menu-desc">Новый фон за секунду</div>

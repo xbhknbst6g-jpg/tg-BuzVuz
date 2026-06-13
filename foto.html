@@ -94,13 +94,18 @@
         .menu-title { 
             font-weight: 800; 
             font-size: 15px; 
-            color: #ffffff; 
+            
+            /* ИЗМЕНЕНО: Теперь текст берет цвет рамки своей карточки */
+            color: var(--neon-color); 
+            
             text-transform: uppercase; 
             letter-spacing: 1.5px; 
             margin-bottom: 5px; 
-            /* Текст слегка подсвечивается цветом темы */
+            
+            /* Текст будет сочно светиться в тон */
             text-shadow: 0 0 10px var(--neon-glow);
         }
+
         
         .menu-desc { 
             font-size: 12px; 

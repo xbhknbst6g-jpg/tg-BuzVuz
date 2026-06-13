@@ -1402,8 +1402,17 @@
             if (bgQualityBtn) bgQualityBtn.addEventListener('click', showNativeBgQualityPopup);
             if (bgRatioBtn) bgRatioBtn.addEventListener('click', showNativeBgRatioPopup);
 
-// И ТОЛЬКО ТУТ ОДИН РАЗ ВКЛЮЧАЕМ СТАРТОВЫЙ ЭКРАН!
-            openScreen('foto'); 
+// ИСПРАВЛЕНО: Умный стартовый роутер, который спасет от кэширования Telegram!
+            const urlParams = new URLSearchParams(window.location.search);
+            const targetScreen = urlParams.get('screen');
+
+            if (targetScreen) {
+                // Если бот явно передал экран (например, ?screen=foto или ?screen=face_swap)
+                openScreen(targetScreen);
+            } else {
+                // Если зашли просто так — включаем стандартный стартовый экран фотостудии
+                openScreen('foto'); 
+            }
         });
 
 

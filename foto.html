@@ -154,6 +154,17 @@
     letter-spacing: 0.3px;
 }
 
+/* СВЕТЯЩАЯСЯ ЛАЗЕРНАЯ ЛИНИЯ */
+        .neon-divider {
+            height: 2px;
+            width: 80%; /* Не на весь экран, а аккуратная полоска по центру */
+            margin: 15px auto 25px auto;
+            background: linear-gradient(90deg, transparent, #0066ff, #b624ff, #ff7300, transparent);
+            background-size: 200% auto;
+            box-shadow: 0 0 10px rgba(182, 36, 255, 0.7);
+            animation: textShimmer 3s linear infinite; /* Использует ту же анимацию переливания */
+        }
+
 
         /* 🎨 КАНАЛЫ ЦВЕТОВ (Используем CSS переменные) */
         
@@ -720,6 +731,7 @@
         <div class="header">
         </div>
         <h1 class="ai-studio-title">AI Studio</h1>
+        <div class="neon-divider"></div>
         <p>Выберите нужный инструмент генерации ниже</p>
 
        <div class="main-menu-grid">

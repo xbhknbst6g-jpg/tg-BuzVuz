@@ -31,26 +31,36 @@
             100% { opacity: 0.93; filter: drop-shadow(0 0 2px rgba(255,255,255,0.1)); }
         }
 
-        /* КАРТОЧКИ ГЛАВНОГО МЕНЮ ИЗ БУДУЩЕГО */
-        .main-menu-grid { display: grid; grid-template-columns: 1fr; gap: 20px; margin-bottom: 20px; }
+        /* СЕТКА ГЛАВНОГО МЕНЮ (Возвращаем в одну колонку, как на скрине) */
+        .main-menu-grid { 
+            display: grid; 
+            grid-template-columns: 1fr; /* Карточки снова широкие */
+            gap: 15px; 
+            margin-bottom: 20px; 
+        }
         
         .menu-card { 
-            position: relative;
+            position: relative; /* Критически важно для фиксации уголков */
             background: rgba(10, 15, 30, 0.7); 
-            padding: 20px 15px; 
+            padding: 20px; 
             border-radius: 8px; 
             cursor: pointer; 
             
+            /* Выстраиваем элементы сверху вниз по центру */
             display: flex; 
             flex-direction: column; 
             align-items: center; 
+            justify-content: center;
             text-align: center; 
             gap: 12px; 
+            
+            /* Защита: контент не будет расплываться и выходить за рамки */
+            box-sizing: border-box; 
+            width: 100%;
             
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             
-            /* НАСТРОЕНО: Средний плавный отклик (0.2 секунды) с физическим эффектом затухания */
             transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), 
                         background-color 0.2s ease, 
                         box-shadow 0.2s ease; 
@@ -58,56 +68,48 @@
             -webkit-tap-highlight-color: transparent;
             animation: neonPulse 4s infinite ease-in-out;
         }
-        
-        /* СРЕДНИЙ ЭФФЕКТ НАЖАТИЯ */
-        .menu-card:active { 
-            /* Карточка плавно уходит вниз на 2 пикселя и слегка уменьшается */
-            transform: scale(0.95) translateY(2px); 
-            background: rgba(5, 8, 20, 0.85);
-        }
 
-
-        /* СОЗДАЕМ ДЕКОРАТИВНЫЕ КИБЕРПАНК-УГОЛКИ ЧЕРЕЗ ПСЕВДОЭЛЕМЕНТЫ */
+        /* ИСПРАВЛЕНИЕ: Фиксируем уголки ровно по границам рамки карточки */
         .menu-card::before, .menu-card::after {
             content: "";
             position: absolute;
             width: 12px;
             height: 12px;
-            transition: all 0.25s ease;
+            box-sizing: border-box;
         }
-        /* Верхний левый угол */
+        /* Точно в верхний левый угол */
         .menu-card::before {
-            top: -2px; left: -2px;
+            top: 0; 
+            left: 0;
             border-top: 3px solid var(--neon-color);
             border-left: 3px solid var(--neon-color);
         }
-        /* Нижний правый угол */
+        /* Точно в нижний правый угол */
         .menu-card::after {
-            bottom: -2px; right: -2px;
+            bottom: 0; 
+            right: 0;
             border-bottom: 3px solid var(--neon-color);
             border-right: 3px solid var(--neon-color);
         }
 
-        /* СТИЛИЗАЦИЯ ВНУТРЕННИХ ЭЛЕМЕНТОВ */
+        /* ИСПРАВЛЕНИЕ ДЛЯ БЛОКА ИКОНОК */
         .menu-icon { 
             width: 40px; 
             height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            
-            /* Иконка красится в цвет неоновой темы карточки */
             color: var(--neon-color); 
-            
-            /* Мощное неоновое свечение самой иконки */
             filter: drop-shadow(0 0 8px var(--neon-glow));
-            transition: transform 0.25s ease;
         }
-        
-        /* Чтобы SVG масштабировался правильно внутри блока */
-        .menu-icon svg {
-            width: 100%;
-            height: 100%;
+
+        /* Чтобы и SVG, и новые картинки с Icons8 не съезжали и были по центру */
+        .menu-icon svg, .menu-icon img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: contain !important;
+            display: block;
+            margin: 0 auto;
         }
 
         .menu-card:active .menu-icon {

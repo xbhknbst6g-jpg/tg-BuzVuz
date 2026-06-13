@@ -711,19 +711,35 @@
             </div>
 
             
-                <!-- 2. Face Swap с иконкой маски от Icons8 -->
+               <!-- 2. Face Swap с оригинальной иконкой масок от Icons8 -->
             <div class="menu-card purple" onclick="openScreen('face_swap')">
                 <div class="menu-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
-                        <!-- Контур маски -->
-                        <path d="M12 40c0 14 11 25 25 25s25-11 25-25H12Z"/>
-                        <path d="M18 38c0-10 8-18 19-18s19 8 19 18"/>
-                        <!-- Прорези для глаз -->
-                        <circle cx="28" cy="33" r="3" fill="currentColor"/>
-                        <circle cx="46" cy="33" r="3" fill="currentColor"/>
-                        <!-- Элемент открытой книги / страниц снизу -->
-                        <path d="M37 65c-4 4-11 6-17 6H10V55c0-4 3-7 7-7h10M37 65c4 4 11 6 17 6h10V55c0-4-3-7-7-7H47"/>
-                        <path d="M37 45v20"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <!-- ПЕРВАЯ МАСКА (ЛЕВАЯ НИЖНЯЯ) -->
+                        <!-- Сплошной контур левой половины -->
+                        <path d="M43.5 35.5 C43.5 24 33 24 33 24 L33 58 C33 58 43.5 58 43.5 46.5 Z" />
+                        <!-- Пунктирный/точечный контур правой половины -->
+                        <path d="M33 24 C33 24 22.5 24 22.5 35.5 C22.5 46.5 33 58 33 58" stroke-dasharray="1 3" />
+                        <!-- Детали лица (глаза, брови, рот, нос) -->
+                        <path d="M35.5 31.5 Q38 31 39.5 32.5" /><path d="M26.5 32.5 Q28 31 30.5 31.5" stroke-dasharray="1 2" />
+                        <path d="M36 34.5 Q38.5 35 39 36" /><path d="M27 36 Q27.5 35 30 34.5" stroke-dasharray="1 2" />
+                        <path d="M33 34 L34.5 40 L33 42" />
+                        <path d="M29 49 Q33 52 37 49" />
+                        <!-- Завязка маски -->
+                        <path d="M43.5 41 C48 41 49 32 46 25" />
+
+                        <!-- ВТОРАЯ МАСКА (ПРАВАЯ ВЕРХНЯЯ) -->
+                        <!-- Сплошной контур левой половины -->
+                        <path d="M47 46 C47 57.5 57.5 57.5 57.5 57.5 L57.5 23.5 C57.5 23.5 47 23.5 47 35 Z" />
+                        <!-- Пунктирный/точечный контур правой половины -->
+                        <path d="M57.5 57.5 C57.5 57.5 68 57.5 68 46 C68 35 57.5 23.5 57.5 23.5" stroke-dasharray="1 3" />
+                        <!-- Детали лица (глаза, брови, рот, нос) -->
+                        <path d="M55 50 Q52.5 50.5 51 49" /><path d="M64 49 Q62.5 50.5 60 50" stroke-dasharray="1 2" />
+                        <path d="M54.5 47 Q52 46.5 51.5 45.5" /><path d="M63.5 45.5 Q63 46.5 60.5 47" stroke-dasharray="1 2" />
+                        <path d="M57.5 47.5 L56 41.5 L57.5 39.5" />
+                        <path d="M53.5 32.5 Q57.5 29.5 61.5 32.5" />
+                        <!-- Завязка маски -->
+                        <path d="M47 40 C42.5 40 41.5 49 44.5 56" />
                     </svg>
                 </div>
                 <div class="menu-info">

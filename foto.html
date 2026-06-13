@@ -24,15 +24,19 @@
         .header h1 { font-size: 22px; margin: 0 0 5px 0; color: var(--tg-theme-text-color, #111); }
         .header p { font-size: 14px; margin: 0; color: var(--tg-theme-hint-color, #666); }
         
-        /* КАРТОЧКИ ГЛАВНОГО МЕНЮ */
+                /* КАРТОЧКИ ГЛАВНОГО МЕНЮ */
         .main-menu-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 20px; }
         .menu-card { 
             background: var(--tg-theme-bg-color, #fff); padding: 20px; border-radius: 12px; 
-            border: 1px solid var(--tg-theme-border-color, #e1e6eb); box-shadow: 0 4px 6px rgba(0,0,0,0.02); 
+            border: 2px solid #ff9800; 
+            /* ДОБАВЛЕНО: Мягкое оранжевое свечение вокруг карточки */
+            box-shadow: 0 0 15px rgba(255, 152, 0, 0.35); 
             cursor: pointer; display: flex; align-items: center; gap: 15px; 
-            transition: transform 0.1s ease, background-color 0.1s ease; -webkit-tap-highlight-color: transparent; 
+            transition: transform 0.1s ease, background-color 0.1s ease, box-shadow 0.1s ease; -webkit-tap-highlight-color: transparent; 
         }
-        .menu-card:active { transform: scale(0.97); background-color: var(--tg-theme-secondary-bg-color, #fafafa); }
+        /* ИЗМЕНЕНО: При нажатии свечение становится чуть слабее из-за прижатия карточки */
+        .menu-card:active { transform: scale(0.97); background-color: var(--tg-theme-secondary-bg-color, #fafafa); box-shadow: 0 0 8px rgba(255, 152, 0, 0.2); }
+
         .menu-icon { font-size: 32px; width: 45px; text-align: center; }
         .menu-info { display: flex; flex-direction: column; }
         .menu-title { font-weight: bold; font-size: 16px; color: var(--tg-theme-text-color, #000); margin-bottom: 2px; }

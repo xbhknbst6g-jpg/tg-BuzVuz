@@ -78,13 +78,19 @@
         }
 
         /* СТИЛИЗАЦИЯ ВНУТРЕННИХ ЭЛЕМЕНТОВ */
-        /* Этот блок должен быть у вас в CSS */
-        .menu-icon img.icons8-neon {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            /* Магия фильтра: делает черную иконку ярко-светящейся в цвет карточки */
-            filter: drop-shadow(0 0 12px var(--neon-color)) drop-shadow(0 0 2px var(--neon-color));
+        .menu-icon { 
+            width: 40px; 
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+            /* Иконка красится в цвет неоновой темы карточки */
+            color: var(--neon-color); 
+            
+            /* Мощное неоновое свечение самой иконки */
+            filter: drop-shadow(0 0 8px var(--neon-glow));
+            transition: transform 0.25s ease;
         }
         
         /* Чтобы SVG масштабировался правильно внутри блока */
@@ -705,17 +711,22 @@
             </div>
 
             
-                    <!-- 2. Face Swap с оригинальной маской от Icons8 -->
+                <!-- 2. Face Swap с вашей новой иконкой стрелок обмена -->
             <div class="menu-card purple" onclick="openScreen('face_swap')">
                 <div class="menu-icon">
-                    <!-- Правильный тег картинки, который загрузит маску прямо в меню -->
-                    <img src="https://icons8.com" alt="off-book" class="icons8-neon"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-repeat">
+                        <path d="m17 2 4 4-4 4"/>
+                        <path d="M3 11v-1a4 4 0 0 1 4-4h14"/>
+                        <path d="m7 22-4-4 4-4"/>
+                        <path d="M21 13v1a4 4 0 0 1-4 4H3"/>
+                    </svg>
                 </div>
                 <div class="menu-info">
-                    <div class="menu-title">2. Face Swap</div>
-                    <div class="menu-desc">Замена лиц (выберите интересующий вас шаблон)</div>
+                    <div class="menu-title">Face Swap</div>
+                    <div class="menu-desc">Замена лиц по шаблонам</div>
                 </div>
             </div>
+
 
             
             <!-- 3. Примерка одежды (Иконка: Вешалка / Футболка) -->

@@ -24,65 +24,137 @@
         .header h1 { font-size: 22px; margin: 0 0 5px 0; color: var(--tg-theme-text-color, #111); }
         .header p { font-size: 14px; margin: 0; color: var(--tg-theme-hint-color, #666); }
         
-                /* КАРТОЧКИ ГЛАВНОГО МЕНЮ ИЗ БУДУЩЕГО */
-        .main-menu-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 20px; }
+                /* АНИМАЦИЯ ПУЛЬСАЦИИ НЕОНА */
+        @keyframes neonPulse {
+            0% { opacity: 0.93; filter: drop-shadow(0 0 2px rgba(255,255,255,0.1)); }
+            50% { opacity: 1; filter: drop-shadow(0 0 5px rgba(255,255,255,0.3)); }
+            100% { opacity: 0.93; filter: drop-shadow(0 0 2px rgba(255,255,255,0.1)); }
+        }
+
+        /* КАРТОЧКИ ГЛАВНОГО МЕНЮ ИЗ БУДУЩЕГО */
+        .main-menu-grid { display: grid; grid-template-columns: 1fr; gap: 20px; margin-bottom: 20px; }
+        
         .menu-card { 
-            /* Темный полупрозрачный фон карточки */
-            background: rgba(15, 23, 42, 0.6); 
-            padding: 20px; 
-            border-radius: 12px; 
-            backdrop-filter: blur(10px); /* Эффект размытия матового стекла */
-            -webkit-backdrop-filter: blur(10px);
-            
-            /* Яркая неоновая рамка */
-            border: 2px solid #ff7300; 
-            
-            /* Множественные тени: внешнее неоновое свечение + внутреннее для объема */
-            box-shadow: 
-                0 0 15px rgba(255, 115, 0, 0.4), 
-                inset 0 0 15px rgba(255, 115, 0, 0.2); 
-            
-            cursor: pointer; display: flex; align-items: center; gap: 15px; 
-            transition: all 0.2s ease; -webkit-tap-highlight-color: transparent; 
+            position: relative; /* Нужно для позиционирования декоративных уголков */
+            background: rgba(10, 15, 30, 0.7); /* Глубокий темный футуристичный фон */
+            padding: 24px 20px; 
+            border-radius: 8px; /* Чуть острее углы для киберпанк-стиля */
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
+            -webkit-tap-highlight-color: transparent;
+            animation: neonPulse 4s infinite ease-in-out;
         }
         
         /* ЭФФЕКТ ПРИ НАЖАТИИ */
         .menu-card:active { 
-            transform: scale(0.97); 
-            /* Неон вспыхивает ярче при тапе */
-            box-shadow: 
-                0 0 25px rgba(255, 115, 0, 0.6), 
-                inset 0 0 20px rgba(255, 115, 0, 0.4); 
-            background: rgba(15, 23, 42, 0.8);
+            transform: scale(0.96) translateY(1px); 
+            background: rgba(10, 15, 30, 0.9);
         }
-        
+
+        /* СОЗДАЕМ ДЕКОРАТИВНЫЕ КИБЕРПАНК-УГОЛКИ ЧЕРЕЗ ПСЕВДОЭЛЕМЕНТЫ */
+        .menu-card::before, .menu-card::after {
+            content: "";
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            transition: all 0.25s ease;
+        }
+        /* Верхний левый угол */
+        .menu-card::before {
+            top: -2px; left: -2px;
+            border-top: 3px solid var(--neon-color);
+            border-left: 3px solid var(--neon-color);
+        }
+        /* Нижний правый угол */
+        .menu-card::after {
+            bottom: -2px; right: -2px;
+            border-bottom: 3px solid var(--neon-color);
+            border-right: 3px solid var(--neon-color);
+        }
+
+        /* СТИЛИЗАЦИЯ ВНУТРЕННИХ ЭЛЕМЕНТОВ */
         .menu-icon { 
             font-size: 32px; 
             width: 45px; 
             text-align: center;
-            /* Легкое свечение для эмодзи/иконки */
-            filter: drop-shadow(0 0 8px rgba(255, 115, 0, 0.6));
+            filter: drop-shadow(0 0 8px var(--neon-color));
+            transition: transform 0.25s ease;
+        }
+        .menu-card:active .menu-icon {
+            transform: scale(1.1); /* Иконка слегка увеличивается при тапе */
         }
         
         .menu-info { display: flex; flex-direction: column; }
         
-        /* СТИЛИЗАЦИЯ ТЕКСТА ПОД НЕОН */
         .menu-title { 
-            font-weight: bold; 
-            font-size: 16px; 
-            color: #ff9800; /* Оранжевый заголовок */
-            text-transform: uppercase; /* Все буквы заглавные, как в Sci-Fi */
-            letter-spacing: 1px; /* Небольшой отступ между буквами */
-            margin-bottom: 4px; 
-            /* Свечение букв */
-            text-shadow: 0 0 8px rgba(255, 152, 0, 0.5);
+            font-weight: 800; 
+            font-size: 15px; 
+            color: #ffffff; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px; 
+            margin-bottom: 5px; 
+            /* Текст слегка подсвечивается цветом темы */
+            text-shadow: 0 0 10px var(--neon-glow);
         }
         
         .menu-desc { 
-            font-size: 13px; 
-            color: #ffe0b2; /* Светло-кремовый цвет для хорошей читаемости */
-            line-height: 1.3; 
+            font-size: 12px; 
+            color: rgba(255, 255, 255, 0.65); 
+            line-height: 1.4; 
+            letter-spacing: 0.3px;
         }
+
+        /* 🎨 КАНАЛЫ ЦВЕТОВ (Используем CSS переменные) */
+        
+        /* 1. Оранжевая тема */
+        .menu-card.orange {
+            --neon-color: #ff7300;
+            --neon-glow: rgba(255, 115, 0, 0.5);
+            border: 1px solid rgba(255, 115, 0, 0.25);
+            box-shadow: 0 0 15px rgba(255, 115, 0, 0.15), inset 0 0 15px rgba(255, 115, 0, 0.1);
+        }
+        .menu-card.orange:active {
+            box-shadow: 0 0 25px rgba(255, 115, 0, 0.4), inset 0 0 20px rgba(255, 115, 0, 0.25);
+        }
+
+        /* 2. Фиолетовая тема */
+        .menu-card.purple {
+            --neon-color: #b624ff;
+            --neon-glow: rgba(182, 36, 255, 0.5);
+            border: 1px solid rgba(182, 36, 255, 0.25);
+            box-shadow: 0 0 15px rgba(182, 36, 255, 0.15), inset 0 0 15px rgba(182, 36, 255, 0.1);
+        }
+        .menu-card.purple:active {
+            box-shadow: 0 0 25px rgba(182, 36, 255, 0.4), inset 0 0 20px rgba(182, 36, 255, 0.25);
+        }
+
+        /* 3. Синяя тема */
+        .menu-card.blue {
+            --neon-color: #0066ff;
+            --neon-glow: rgba(0, 102, 255, 0.5);
+            border: 1px solid rgba(0, 102, 255, 0.25);
+            box-shadow: 0 0 15px rgba(0, 102, 255, 0.15), inset 0 0 15px rgba(0, 102, 255, 0.1);
+        }
+        .menu-card.blue:active {
+            box-shadow: 0 0 25px rgba(0, 102, 255, 0.4), inset 0 0 20px rgba(0, 102, 255, 0.25);
+        }
+
+        /* 4. Бирюзовая (Циан) тема */
+        .menu-card.cyan {
+            --neon-color: #00f2fe;
+            --neon-glow: rgba(0, 242, 254, 0.5);
+            border: 1px solid rgba(0, 242, 254, 0.25);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.15), inset 0 0 15px rgba(0, 242, 254, 0.1);
+        }
+        .menu-card.cyan:active {
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.4), inset 0 0 20px rgba(0, 242, 254, 0.25);
+        }
+
 
 
 
@@ -571,8 +643,9 @@
             <p>Выберите нужный инструмент генерации ниже</p>
         </div>
         
-        <div class="main-menu-grid">
-            <div class="menu-card" onclick="openScreen('text_image')">
+       <div class="main-menu-grid">
+            <!-- 1. Фото + Текст (Оранжевая тема) -->
+            <div class="menu-card orange" onclick="openScreen('text_image')">
                 <div class="menu-icon">📝</div>
                 <div class="menu-info">
                     <div class="menu-title">1. Фото + Текст</div>
@@ -580,7 +653,8 @@
                 </div>
             </div>
             
-            <div class="menu-card" onclick="openScreen('face_swap')">
+            <!-- 2. Face Swap (Фиолетовая тема) -->
+            <div class="menu-card purple" onclick="openScreen('face_swap')">
                 <div class="menu-icon">🎭</div>
                 <div class="menu-info">
                     <div class="menu-title">2. Face Swap</div>
@@ -588,7 +662,8 @@
                 </div>
             </div>
             
-            <div class="menu-card" onclick="openScreen('tryon')">
+            <!-- 3. Примерка одежды (Синяя тема) -->
+            <div class="menu-card blue" onclick="openScreen('tryon')">
                 <div class="menu-icon">👕</div>
                 <div class="menu-info">
                     <div class="menu-title">3. Примерка одежды</div>
@@ -596,7 +671,8 @@
                 </div>
             </div>
             
-            <div class="menu-card" onclick="openScreen('bg_change')">
+            <!-- 4. Смена фона (Бирюзовая тема) -->
+            <div class="menu-card cyan" onclick="openScreen('bg_change')">
                 <div class="menu-icon">🖼</div>
                 <div class="menu-info">
                     <div class="menu-title">4. Смена фона</div>
@@ -605,6 +681,7 @@
             </div>
         </div>
     </div>
+
 
 
     <!-- ========================================== -->

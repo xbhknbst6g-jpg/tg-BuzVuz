@@ -9,21 +9,21 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
 <style>
-    /* 1. ПОДКЛЮЧАЕМ НЕОНОВЫЙ ШРИФТ ДЛЯ ЗАГОЛОВКА */
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&display=swap');
 
     /* ГЛОБАЛЬНЫЕ НАСТРОЙКИ ТЕМЫ И ФОНА */
     body { 
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-        background: radial-gradient(circle at center, #0a0d1a 0%, #030408 100%) !important;
-        margin: 0; padding: 15px; 
-        padding-top: calc(env(safe-area-inset-top) + 15px);
-        padding-bottom: calc(env(safe-area-inset-bottom) + 15px);
-        color: #ffffff; 
-        -webkit-user-select: none; user-select: none;
-        min-height: 100vh;
-        box-sizing: border-box;
+    /* Быстрые системные шрифты вместо тяжелых из интернета */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+    background: radial-gradient(circle at center, #0a0d1a 0%, #030408 100%) !important;
+    margin: 0; padding: 15px; 
+    padding-top: calc(env(safe-area-inset-top) + 15px);
+    padding-bottom: calc(env(safe-area-inset-bottom) + 15px);
+    color: #ffffff; 
+    -webkit-user-select: none; user-select: none;
+    min-height: 100vh;
+    box-sizing: border-box;
     }
+
 
     /* НЕОНОВЫЙ ЗАГОЛОВОК С ИКОНКОЙ ЗВЕЗДЫ */
     .header { 
@@ -49,17 +49,18 @@
     }
 
     .header h1 { 
-        font-family: 'Orbitron', 'Rajdhani', sans-serif;
-        font-size: 32px; 
-        font-weight: 800;
-        letter-spacing: 3px;
-        margin: 0; 
-        background: linear-gradient(to right, #ffffff 0%, #ffffff 25%, #bd7eff 60%, #ff3b69 100%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        filter: drop-shadow(0 0 8px rgba(189, 126, 255, 0.3));
+    font-family: "Impact", "Arial Black", -apple-system, sans-serif;
+    font-size: 34px; 
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin: 0; 
+    background: linear-gradient(to right, #ffffff 0%, #ffffff 25%, #bd7eff 60%, #ff3b69 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 8px rgba(189, 126, 255, 0.3));
     }
+
     
     .header::before {
         content: '';

@@ -31,125 +31,129 @@
             100% { opacity: 0.93; filter: drop-shadow(0 0 2px rgba(255,255,255,0.1)); }
         }
 
-                /* КАРТОЧКИ ГЛАВНОГО МЕНЮ */
-        .main-menu-grid { 
-            display: grid; 
-            grid-template-columns: 1fr; 
-            gap: 15px; 
-            margin-bottom: 20px; 
-        }
-        
-        .menu-card { 
-            position: relative !important; /* КРИТИЧЕСКИ ВАЖНО: привязывает уголки строго к границам карточки */
-            background: rgba(10, 15, 30, 0.7); 
-            padding: 24px 20px; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center;
-            text-align: center; 
-            gap: 12px; 
-            
-            box-sizing: border-box !important; 
-            width: 100% !important;
-            
-            border: none !important; /* Удаляем старые конфликтующие рамки */
-            outline: none !important;
+        /* КАРТОЧКИ ГЛАВНОГО МЕНЮ */
+.main-menu-grid { 
+    display: grid; 
+    grid-template-columns: 1fr; 
+    gap: 15px; 
+    margin-bottom: 20px; 
+}
 
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            
-            transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), 
-                        background-color 0.2s ease, 
-                        box-shadow 0.2s ease; 
-                        
-            -webkit-tap-highlight-color: transparent;
-            animation: neonPulse 4s infinite ease-in-out;
-        }
+.menu-card { 
+    position: relative !important; /* Уголки привязываются строго к краям карточки */
+    background: rgba(10, 15, 30, 0.7); 
+    padding: 20px; 
+    border-radius: 12px; 
+    cursor: pointer; 
+    
+    /* ИСПРАВЛЕНО: Иконка снова слева, текст справа, как было изначально */
+    display: flex !important; 
+    flex-direction: row !important; 
+    align-items: center !important; 
+    justify-content: flex-start !important;
+    gap: 15px; 
+    
+    box-sizing: border-box !important; 
+    width: 100% !important;
+    
+    border: none !important; 
+    outline: none !important;
 
-        /* ИСПРАВЛЕНИЕ УГОЛКОВ: Жестко фиксируем их размеры, чтобы они не растягивались */
-        .menu-card::before, .menu-card::after {
-            content: "" !important;
-            position: absolute !important;
-            width: 14px !important;  /* Фиксированная ширина уголка */
-            height: 14px !important; /* Фиксированная высота уголка */
-            box-sizing: border-box !important;
-            pointer-events: none !important;
-        }
-        
-        /* Верхний левый угол сажаем четко в левую верхнюю точку */
-        .menu-card::before {
-            top: 0 !important; 
-            left: 0 !important;
-            border-top: 3px solid var(--neon-color) !important;
-            border-left: 3px solid var(--neon-color) !important;
-            border-bottom: none !important;
-            border-right: none !important;
-        }
-        
-        /* Нижний правый угол сажаем четко в правую нижнюю точку */
-        .menu-card::after {
-            bottom: 0 !important; 
-            right: 0 !important;
-            border-bottom: 3px solid var(--neon-color) !important;
-            border-right: 3px solid var(--neon-color) !important;
-            border-top: none !important;
-            border-left: none !important;
-        }
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    
+    /* ВАШ СРЕДНИЙ ОТКЛИК: Мягкое нажатие 0.2s */
+    transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), 
+                background-color 0.2s ease, 
+                box-shadow 0.2s ease; 
+                
+    -webkit-tap-highlight-color: transparent;
+    animation: neonPulse 4s infinite ease-in-out;
+}
 
+/* СРЕДНИЙ ЭФФЕКТ НАЖАТИЯ */
+.menu-card:active { 
+    transform: scale(0.97) translateY(1px); 
+    background: rgba(5, 8, 20, 0.85);
+}
 
+/* ИСПРАВЛЕНИЕ УГОЛКОВ: Маленькие, аккуратные и сидят строго по углам */
+.menu-card::before, .menu-card::after {
+    content: "" !important;
+    position: absolute !important;
+    width: 14px !important;  
+    height: 14px !important; 
+    box-sizing: border-box !important;
+    pointer-events: none !important;
+}
 
-        /* ИСПРАВЛЕНИЕ ДЛЯ БЛОКА ИКОНОК */
-        .menu-icon { 
-            width: 40px; 
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--neon-color); 
-            filter: drop-shadow(0 0 8px var(--neon-glow));
-        }
+/* Левый верхний угол */
+.menu-card::before {
+    top: 0 !important; 
+    left: 0 !important;
+    border-top: 3px solid var(--neon-color) !important;
+    border-left: 3px solid var(--neon-color) !important;
+    border-bottom: none !important;
+    border-right: none !important;
+}
 
-        /* Чтобы и SVG, и новые картинки с Icons8 не съезжали и были по центру */
-        .menu-icon svg, .menu-icon img {
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: contain !important;
-            display: block;
-            margin: 0 auto;
-        }
+/* Правый нижний угол */
+.menu-card::after {
+    bottom: 0 !important; 
+    right: 0 !important;
+    border-bottom: 3px solid var(--neon-color) !important;
+    border-right: 3px solid var(--neon-color) !important;
+    border-top: none !important;
+    border-left: none !important;
+}
 
-        .menu-card:active .menu-icon {
-            transform: scale(1.1); /* Иконка слегка увеличивается при тапе */
-        }
-        
-        .menu-info { display: flex; flex-direction: column; }
-        
-        .menu-title { 
-            font-weight: 800; 
-            font-size: 15px; 
-            
-            /* ИЗМЕНЕНО: Теперь текст берет цвет рамки своей карточки */
-            color: var(--neon-color); 
-            
-            text-transform: uppercase; 
-            letter-spacing: 1.5px; 
-            margin-bottom: 5px; 
-            
-            /* Текст будет сочно светиться в тон */
-            text-shadow: 0 0 10px var(--neon-glow);
-        }
+/* БЛОК ИКОНОК */
+.menu-icon { 
+    width: 40px; 
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--neon-color); 
+    filter: drop-shadow(0 0 8px var(--neon-glow));
+    transition: transform 0.2s ease;
+}
 
-        
-        .menu-desc { 
-            font-size: 12px; 
-            color: rgba(255, 255, 255, 0.65); 
-            line-height: 1.4; 
-            letter-spacing: 0.3px;
-        }
+.menu-icon svg, .menu-icon img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    display: block;
+}
+
+.menu-card:active .menu-icon {
+    transform: scale(1.1); 
+}
+
+/* ТЕКСТОВЫЙ БЛОК (Выравнивание влево, чтобы не съезжал) */
+.menu-info { 
+    display: flex !important; 
+    flex-direction: column !important; 
+    text-align: left !important; 
+}
+
+.menu-title { 
+    font-weight: 800; 
+    font-size: 15px; 
+    color: var(--neon-color); 
+    text-transform: uppercase; 
+    letter-spacing: 1.5px; 
+    margin-bottom: 5px; 
+    text-shadow: 0 0 10px var(--neon-glow);
+}
+
+.menu-desc { 
+    font-size: 12px; 
+    color: rgba(255, 255, 255, 0.65); 
+    line-height: 1.4; 
+    letter-spacing: 0.3px;
+}
+
 
         /* 🎨 КАНАЛЫ ЦВЕТОВ (Используем CSS переменные) */
         

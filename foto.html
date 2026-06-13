@@ -158,6 +158,39 @@
 
 
 
+                /* НЕОНОВЫЙ ГРАДИЕНТНЫЙ ЗАГОЛОВОК */
+        .ai-studio-title {
+            font-size: 32px;
+            font-weight: 900;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 20px 0 5px 0;
+            font-family: 'Orbitron', 'Montserrat', sans-serif; /* Футуристичный шрифт */
+            
+            /* Создаем градиентную заливку текста */
+            background: linear-gradient(90deg, #0066ff, #b624ff, #ff245d, #ff7300, #0066ff);
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            
+            /* Мягкое неоновое свечение букв */
+            filter: drop-shadow(0 0 8px rgba(182, 36, 255, 0.4));
+            
+            /* Запуск бесконечного переливания */
+            animation: textShimmer 4s linear infinite;
+        }
+
+        /* АНИМАЦИЯ ПЕРЕЛИВАНИЯ ЦВЕТА */
+        @keyframes textShimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+
+
+
         /* СКРЫТИЕ / ПОКАЗ ЭКРАНОВ */
         .screen { display: none; }
         .screen.active { display: block; animation: fadeIn 0.2s ease-in-out; }
@@ -642,7 +675,8 @@
             <h1>Интеллектуальная AI Студия</h1>
             <p>Выберите нужный инструмент генерации ниже</p>
         </div>
-        
+        <h1 class="ai-studio-title">AI Studio</h1>
+
        <div class="main-menu-grid">
             <!-- 1. Фото + Текст (Оранжевая тема) -->
             <div class="menu-card orange" onclick="openScreen('text_image')">

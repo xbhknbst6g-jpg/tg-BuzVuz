@@ -8,245 +8,188 @@
     <!-- Официальный скрипт Telegram Web App -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
-    <style>
-         /* ПОДКЛЮЧАЕМ НЕОНОВЫЙ ШРИФТ ДЛЯ ЗАГОЛОВКА */
+<style>
+    /* 1. ПОДКЛЮЧАЕМ НЕОНОВЫЙ ШРИФТ ДЛЯ ЗАГОЛОВКА */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&display=swap');
 
-body{
-    margin:0;
-    min-height:100vh;
-
-    background:
-        radial-gradient(circle at center,
-        #10182d 0%,
-        #070b15 40%,
-        #020306 100%);
-
-    font-family:'Orbitron',sans-serif;
-    color:white;
-}
-
-body::before{
-    content:'';
-    position:fixed;
-    inset:0;
-
-    background-image:
-        linear-gradient(
-            rgba(0,180,255,.04) 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            90deg,
-            rgba(0,180,255,.04) 1px,
-            transparent 1px
-        );
-
-    background-size:40px 40px;
-    pointer-events:none;
-}
-
-.main-menu-grid{
-    max-width:460px;
-    margin:40px auto;
-
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:18px;
-}
-
-.menu-card{
-    position:relative;
-
-    height:165px;
-
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-
-    overflow:hidden;
-    cursor:pointer;
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(20,25,45,.7),
-            rgba(5,8,18,.9)
-        );
-
-    transition:.25s;
-}
-
-.menu-card:hover{
-    transform:translateY(-4px);
-}
-
-.menu-card::before{
-    content:'';
-
-    position:absolute;
-    inset:0;
-
-    background:
-        radial-gradient(
-            circle at 20% 20%,
-            rgba(255,255,255,.06),
-            transparent 25%
-        ),
-        radial-gradient(
-            circle at 80% 70%,
-            rgba(255,255,255,.03),
-            transparent 35%
-        );
-
-    pointer-events:none;
-}
-
-.cyber-border-frame{
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-}
-
-.main-border{
-    fill:rgba(255,255,255,.01);
-    stroke-width:.8;
-}
-
-.corner{
-    fill:none;
-    stroke-width:2.5;
-    stroke-linecap:round;
-}
-
-.icon{
-    font-size:44px;
-    z-index:2;
-    margin-bottom:10px;
-}
-
-.menu-title{
-    z-index:2;
-
-    font-size:13px;
-    font-weight:800;
-    line-height:1.25;
-    text-align:center;
-    letter-spacing:.8px;
-
-    margin-bottom:6px;
-}
-
-.menu-desc{
-    z-index:2;
-
-    font-size:10px;
-    color:#91a0c0;
-    text-align:center;
-}
-
-/* ORANGE */
-
-.orange{
-    box-shadow:
-        inset 0 0 30px rgba(255,136,0,.10),
-        0 0 25px rgba(255,136,0,.15);
-}
-
-.orange .main-border{
-    stroke:rgba(255,136,0,.4);
-}
-
-.orange .corner{
-    stroke:#ff9d42;
-}
-
-.orange .menu-title{
-    color:#ffae5d;
-    text-shadow:0 0 10px rgba(255,157,66,.7);
-}
-
-/* PURPLE */
-
-.purple{
-    box-shadow:
-        inset 0 0 30px rgba(173,75,255,.12),
-        0 0 25px rgba(173,75,255,.15);
-}
-
-.purple .main-border{
-    stroke:rgba(173,75,255,.4);
-}
-
-.purple .corner{
-    stroke:#cf8cff;
-}
-
-.purple .menu-title{
-    color:#d89cff;
-    text-shadow:0 0 10px rgba(207,140,255,.7);
-}
-
-/* BLUE */
-
-.blue{
-    box-shadow:
-        inset 0 0 30px rgba(0,120,255,.12),
-        0 0 25px rgba(0,120,255,.15);
-}
-
-.blue .main-border{
-    stroke:rgba(0,120,255,.4);
-}
-
-.blue .corner{
-    stroke:#52a3ff;
-}
-
-.blue .menu-title{
-    color:#7ebeff;
-    text-shadow:0 0 10px rgba(82,163,255,.7);
-}
-
-/* CYAN */
-
-.cyan{
-    box-shadow:
-        inset 0 0 30px rgba(0,229,255,.12),
-        0 0 25px rgba(0,229,255,.15);
-}
-
-.cyan .main-border{
-    stroke:rgba(0,229,255,.4);
-}
-
-.cyan .corner{
-    stroke:#63f1ff;
-}
-
-.cyan .menu-title{
-    color:#8af6ff;
-    text-shadow:0 0 10px rgba(99,241,255,.7);
-}
-
-@keyframes pulse{
-    0%,100%{
-        opacity:1;
+    /* 2. ГЛОБАЛЬНЫЕ НАСТРОЙКИ ТЕМЫ И ФОНА */
+    body { 
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+        /* Твой фирменный глубокий темный радиальный фон */
+        background: radial-gradient(circle at center, #0a0d1a 0%, #030408 100%) !important;
+        margin: 0; 
+        padding: 15px; 
+        padding-top: calc(env(safe-area-inset-top) + 15px);
+        padding-bottom: calc(env(safe-area-inset-bottom) + 15px);
+        color: #ffffff; 
+        -webkit-user-select: none; 
+        user-select: none;
+        min-height: 100vh;
+        box-sizing: border-box;
     }
 
-    50%{
-        opacity:.7;
+    /* 3. НЕОНОВЫЙ ЗАГОЛОВОК С ИКОНКОЙ ЗВЕЗДЫ */
+    .header { 
+        text-align: center; 
+        margin-bottom: 25px; 
+        padding-top: 10px; 
+        position: relative;
     }
-}
+    
+    .logo-container {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        position: relative;
+        z-index: 2;
+    }
 
-.corner{
-    animation:pulse 3s ease-in-out infinite;
-}
+    .star-icon {
+        width: 34px;
+        height: 34px;
+        filter: drop-shadow(0 0 10px rgba(255, 157, 66, 0.6));
+    }
 
-/* конец стилей главного меню
+    .header h1 { 
+        font-family: 'Orbitron', 'Rajdhani', sans-serif;
+        font-size: 32px; 
+        font-weight: 800;
+        letter-spacing: 3px;
+        margin: 0; 
+        background: linear-gradient(to right, #ffffff 0%, #ffffff 25%, #bd7eff 60%, #ff3b69 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(0 0 8px rgba(189, 126, 255, 0.3));
+    }
+    
+    .header::before {
+        content: '';
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        width: 320px; height: 50px;
+        background: linear-gradient(to right, rgba(255, 119, 0, 0.3), rgba(0, 75, 255, 0.3), rgba(255, 0, 85, 0.3));
+        filter: blur(30px);
+        border-radius: 50%;
+        z-index: 1;
+        pointer-events: none;
+    }
 
+    .header p { 
+        font-size: 11px; 
+        margin: 8px 0 0 0; 
+        color: #616f8a; 
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* 4. СЕТКА ДЛЯ КАРТОЧЕК СТРОГО 2Х2 */
+    .main-menu-grid { 
+        display: grid !important; 
+        grid-template-columns: repeat(2, 1fr) !important; 
+        gap: 16px !important; 
+        margin: 20px auto !important; 
+        width: 100% !important;
+        max-width: 440px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 5. БАЗОВЫЙ СТИЛЬ КАРТОЧЕК ИЗ ВАРИАНТА №7 */
+    .menu-card { 
+        background: rgba(10, 14, 30, 0.7) !important; 
+        padding: 20px 10px !important; 
+        
+        /* Идеальные пропорции прямоугольника */
+        aspect-ratio: 4 / 3 !important;
+        height: 140px !important; 
+        
+        border-radius: 14px !important; /* Мягкое скругление углов из примера 7 */
+        border: 2px solid transparent; 
+        
+        cursor: pointer !important; 
+        display: flex !important; 
+        flex-direction: column !important;
+        align-items: center !important; 
+        justify-content: center !important;
+        text-align: center !important;
+        position: relative !important; 
+        box-sizing: border-box !important;
+        transition: transform 0.1s ease, filter 0.15s ease !important;
+        -webkit-tap-highlight-color: transparent; 
+    }
+
+    /* Анимация клика (сжатие кнопки) */
+    .menu-card:active { 
+        transform: scale(0.96) !important; 
+        filter: brightness(1.2) !important;
+    }
+    
+    /* 6. НАСТРОЙКА ВЕКТОРНЫХ НЕОНОВЫХ ИКОНОК */
+    .menu-icon-svg { 
+        width: 38px !important; 
+        height: 38px !important; 
+        margin-bottom: 10px !important;
+        display: block !important;
+        /* Иконка светится в цвет своей рамки */
+        filter: drop-shadow(0 0 5px currentColor) !important;
+    }
+
+    .menu-info {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+    }
+
+    /* Стили текста внутри кнопок */
+    .menu-title { 
+        font-size: 11.5px !important; 
+        font-weight: 800 !important; 
+        color: #ffffff !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.8px !important;
+        margin-bottom: 5px !important; 
+        line-height: 1.3 !important;
+    }
+
+    .menu-desc { 
+        font-size: 11px !important; 
+        color: rgba(255, 255, 255, 0.5) !important; 
+        line-height: 1.2 !important; 
+    }
+
+    /* 7. ТОЧНЫЕ НЕОНОВЫЕ ЦВЕТА И СВЕЧЕНИЯ С КАРТИНКИ */
+    
+    /* Розово-красный неон */
+    .menu-card.orange {
+        color: #ff3b69 !important; 
+        border-color: #ff3b69 !important;
+        box-shadow: 0 0 14px rgba(255, 59, 105, 0.35), inset 0 0 10px rgba(255, 59, 105, 0.15) !important;
+    }
+
+    /* Фиолетовый неон */
+    .menu-card.purple {
+        color: #a124ff !important;
+        border-color: #a124ff !important;
+        box-shadow: 0 0 14px rgba(161, 36, 255, 0.35), inset 0 0 10px rgba(161, 36, 255, 0.15) !important;
+    }
+
+    /* Синий электрик неон */
+    .menu-card.blue {
+        color: #0077ff !important;
+        border-color: #0077ff !important;
+        box-shadow: 0 0 14px rgba(0, 119, 255, 0.35), inset 0 0 10px rgba(0, 119, 255, 0.15) !important;
+    }
+
+    /* Зелено-бирюзовый неон */
+    .menu-card.cyan {
+        color: #00e5ff !important;
+        border-color: #00e5ff !important;
+        box-shadow: 0 0 14px rgba(0, 229, 255, 0.35), inset 0 0 10px rgba(0, 229, 255, 0.15) !important;
+    }
 
 
         /* СКРЫТИЕ / ПОКАЗ ЭКРАНОВ */
@@ -730,66 +673,65 @@ body::before{
     <!-- ========================================== -->
     <div id="foto" class="screen active">
         <div class="header">
-            <div class="logo-container">
-                <!-- Отрендеренная SVG иконка четырехконечной звезды со спутниками -->
-                <svg class="star-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2C12 7.5 16.5 12 22 12C16.5 12 12 16.5 12 22C12 16.5 7.5 12 2 12C7.5 12 12 7.5 12 2Z" fill="url(#star-gradient)"/>
-                    <path d="M5 4C5 5.3 4 6.3 2.7 6.3C4 6.3 5 7.3 5 8.6C5 7.3 6 6.3 7.3 6.3C6 6.3 5 5.3 5 4Z" fill="#ff9d42"/>
-                    <path d="M19 3C19 4 18.2 4.8 17.2 4.8C18.2 4.8 19 5.6 19 6.6C19 5.6 19.8 4.8 20.8 4.8C19.8 4.8 19 4 19 3Z" fill="#ff9d42"/>
-                    <defs>
-                        <linearGradient id="star-gradient" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
-                            <stop offset="0%" stop-color="#fff1be" />
-                            <stop offset="50%" stop-color="#ff9d42" />
-                            <stop offset="100%" stop-color="#ff6a00" />
-                        </linearGradient>
-                    </defs>
-                </svg>
-                <h1>AI STUDIO</h1>
-            </div>
-            <p>Инструменты будущего</p>
+            <h1>Интеллектуальная AI Студия</h1>
+            <p>Выберите нужный инструмент генерации ниже</p>
         </div>
         
         <div class="main-menu-grid">
 
-        <!-- 1. Оранжевая карточка -->
-        <div class="menu-card orange" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('text_image');">
-            <svg class="cyber-border-frame" viewBox="0 0 100 80" preserveAspectRatio="none" xmlns="http://w3.org">
-                <path class="main-border" d="M12 3 H84 L97 16 V64 L84 77 H12 L3 68 V12 Z"/>
-            </svg>
-            <div class="icon">🖼️</div>
-            <div class="menu-title">ГЕНЕРАЦИЯ<br>ИЗОБРАЖЕНИЙ</div>
-            <div class="menu-desc">По фото или тексту</div>
+            <!-- 1. ГЕНЕРАЦИЯ ИЗОБРАЖЕНИЙ (Оранжево-красный неон) -->
+            <div class="menu-card orange" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('text_image');">
+                <svg class="menu-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="4" width="18" height="16" rx="3" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="8" cy="9" r="1.5" fill="currentColor"/>
+                    <path d="M3 16L9 11L15 16M13 14L17 11L21 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="menu-info">
+                    <div class="menu-title">ГЕНЕРАЦИЯ<br>ИЗОБРАЖЕНИЙ</div>
+                    <div class="menu-desc">Фото или текст</div>
+                </div>
+            </div>
+
+            <!-- 2. ЗАМЕНА ЛИЦА (Фиолетовый неон) -->
+            <div class="menu-card purple" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('face_swap');">
+                <svg class="menu-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2"/>
+                    <path d="M8 14.5C8 14.5 9.5 16.5 12 16.5C14.5 16.5 16 14.5 16 14.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="9" cy="10" r="1.5" fill="currentColor"/>
+                    <circle cx="15" cy="10" r="1.5" fill="currentColor"/>
+                </svg>
+                <div class="menu-info">
+                    <div class="menu-title">ЗАМЕНА ЛИЦА</div>
+                    <div class="menu-desc">Face Swap<br>по шаблонам</div>
+                </div>
+            </div>
+
+            <!-- 3. ВИРТУАЛЬНАЯ ПРИМЕРКА (Синий неон) -->
+            <div class="menu-card blue" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('tryon');">
+                <svg class="menu-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 4L12 6L15 4L21 6V9L18 10V20H6V10L3 9V6L9 4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                </svg>
+                <div class="menu-info">
+                    <div class="menu-title">ВИРТУАЛЬНАЯ<br>ПРИМЕРКА</div>
+                    <div class="menu-desc">Одежда на фото</div>
+                </div>
+            </div>
+
+            <!-- 4. ЗАМЕНА ФОНА (Зелено-бирюзовый неон) -->
+            <div class="menu-card cyan" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('bg_change');">
+                <svg class="menu-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="4" y="4" width="16" height="16" rx="3" stroke="currentColor" stroke-width="2" stroke-dasharray="3 2"/>
+                    <path d="M9 14L12 10L15 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 10V16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <div class="menu-info">
+                    <div class="menu-title">ЗАМЕНА ФОНА</div>
+                    <div class="menu-desc">Новый фон<br>за секунду</div>
+                </div>
+            </div>
+
         </div>
 
-        <!-- 2. Фиолетовая карточка -->
-        <div class="menu-card purple" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('face_swap');">
-            <svg class="cyber-border-frame" viewBox="0 0 100 80" preserveAspectRatio="none" xmlns="http://w3.org">
-                <path class="main-border" d="M12 3 H84 L97 16 V64 L84 77 H12 L3 68 V12 Z"/>
-            </svg>
-            <div class="icon">🎭</div>
-            <div class="menu-title">ЗАМЕНА ЛИЦА</div>
-            <div class="menu-desc">Face Swap по шаблонам</div>
-        </div>
-
-        <!-- 3. Синяя карточка -->
-        <div class="menu-card blue" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('tryon');">
-            <svg class="cyber-border-frame" viewBox="0 0 100 80" preserveAspectRatio="none" xmlns="http://w3.org">
-                <path class="main-border" d="M12 3 H84 L97 16 V64 L84 77 H12 L3 68 V12 Z"/>
-            </svg>
-            <div class="icon">👕</div>
-            <div class="menu-title">ВИРТУАЛЬНАЯ<br>ПРИМЕРКА</div>
-            <div class="menu-desc">Одежда на фото</div>
-        </div>
-
-        <!-- 4. Бирюзовая карточка -->
-        <div class="menu-card cyan" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('bg_change');">
-            <svg class="cyber-border-frame" viewBox="0 0 100 80" preserveAspectRatio="none" xmlns="http://w3.org">
-                <path class="main-border" d="M12 3 H84 L97 16 V64 L84 77 H12 L3 68 V12 Z"/>
-            </svg>
-            <div class="icon">🌄</div>
-            <div class="menu-title">ЗАМЕНА ФОНА</div>
-            <div class="menu-desc">Новый фон за секунду</div>
-        </div>
     </div>
 
 

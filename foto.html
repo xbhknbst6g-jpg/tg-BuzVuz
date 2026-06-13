@@ -9,23 +9,26 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
 <style>
+    /* 1. ПОДКЛЮЧАЕМ НЕОНОВЫЙ ШРИФТ ДЛЯ ЗАГОЛОВКА */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&display=swap');
 
-    /* ГЛОБАЛЬНЫЕ НАСТРОЙКИ ТЕМЫ И ФОНА */
+    /* 2. ГЛОБАЛЬНЫЕ НАСТРОЙКИ ТЕМЫ И ФОНА */
     body { 
-    /* Быстрые системные шрифты вместо тяжелых из интернета */
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-    background: radial-gradient(circle at center, #0a0d1a 0%, #030408 100%) !important;
-    margin: 0; padding: 15px; 
-    padding-top: calc(env(safe-area-inset-top) + 15px);
-    padding-bottom: calc(env(safe-area-inset-bottom) + 15px);
-    color: #ffffff; 
-    -webkit-user-select: none; user-select: none;
-    min-height: 100vh;
-    box-sizing: border-box;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+        /* Твой фирменный глубокий темный радиальный фон */
+        background: radial-gradient(circle at center, #0a0d1a 0%, #030408 100%) !important;
+        margin: 0; 
+        padding: 15px; 
+        padding-top: calc(env(safe-area-inset-top) + 15px);
+        padding-bottom: calc(env(safe-area-inset-bottom) + 15px);
+        color: #ffffff; 
+        -webkit-user-select: none; 
+        user-select: none;
+        min-height: 100vh;
+        box-sizing: border-box;
     }
 
-
-    /* НЕОНОВЫЙ ЗАГОЛОВОК С ИКОНКОЙ ЗВЕЗДЫ */
+    /* 3. НЕОНОВЫЙ ЗАГОЛОВОК С ИКОНКОЙ ЗВЕЗДЫ */
     .header { 
         text-align: center; 
         margin-bottom: 25px; 
@@ -49,18 +52,17 @@
     }
 
     .header h1 { 
-    font-family: "Impact", "Arial Black", -apple-system, sans-serif;
-    font-size: 34px; 
-    font-weight: 900;
-    letter-spacing: 2px;
-    margin: 0; 
-    background: linear-gradient(to right, #ffffff 0%, #ffffff 25%, #bd7eff 60%, #ff3b69 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 8px rgba(189, 126, 255, 0.3));
+        font-family: 'Orbitron', 'Rajdhani', sans-serif;
+        font-size: 32px; 
+        font-weight: 800;
+        letter-spacing: 3px;
+        margin: 0; 
+        background: linear-gradient(to right, #ffffff 0%, #ffffff 25%, #bd7eff 60%, #ff3b69 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(0 0 8px rgba(189, 126, 255, 0.3));
     }
-
     
     .header::before {
         content: '';
@@ -85,7 +87,7 @@
         z-index: 2;
     }
 
-    /* СЕТКА ДЛЯ КАРТОЧЕК СТРОГО 2Х2 */
+    /* 4. СЕТКА ДЛЯ КАРТОЧЕК СТРОГО 2Х2 */
     .main-menu-grid { 
         display: grid !important; 
         grid-template-columns: repeat(2, 1fr) !important; 
@@ -96,14 +98,18 @@
         box-sizing: border-box !important;
     }
 
-    /* БАЗОВЫЙ СТИЛЬ КАРТОЧЕК ИЗ ВАРИАНТА №7 */
+    /* 5. БАЗОВЫЙ СТИЛЬ КАРТОЧЕК ИЗ ВАРИАНТА №7 */
     .menu-card { 
         background: rgba(10, 14, 30, 0.7) !important; 
         padding: 20px 10px !important; 
+        
+        /* Идеальные пропорции прямоугольника */
         aspect-ratio: 4 / 3 !important;
         height: 140px !important; 
-        border-radius: 14px !important; 
-        border: none !important; 
+        
+        border-radius: 14px !important; /* Мягкое скругление углов из примера 7 */
+        border: 2px solid transparent; 
+        
         cursor: pointer !important; 
         display: flex !important; 
         flex-direction: column !important;
@@ -112,69 +118,78 @@
         text-align: center !important;
         position: relative !important; 
         box-sizing: border-box !important;
-        transition: transform 0.1s ease !important;
+        transition: transform 0.1s ease, filter 0.15s ease !important;
         -webkit-tap-highlight-color: transparent; 
     }
 
-    .menu-card:active { transform: scale(0.96) !important; }
-
-    /* Растягиваем встроенную рамку на всю карточку */
-    .cyber-border-frame {
-        position: absolute !important;
-        top: 0 !important; left: 0 !important;
-        width: 100% !important; height: 100% !important;
-        pointer-events: none !important;
-        z-index: 1 !important;
+    /* Анимация клика (сжатие кнопки) */
+    .menu-card:active { 
+        transform: scale(0.96) !important; 
+        filter: brightness(1.2) !important;
     }
     
-    /* Тот самый новый класс для правильного размера векторных иконок */
-    .menu-icon-img { 
-        width: 44px !important; 
-        height: 44px !important; 
-        margin-bottom: 6px !important;
+    /* 6. НАСТРОЙКА ВЕКТОРНЫХ НЕОНОВЫХ ИКОНОК */
+    .menu-icon-svg { 
+        width: 38px !important; 
+        height: 38px !important; 
+        margin-bottom: 10px !important;
         display: block !important;
-        position: relative !important;
-        z-index: 2 !important;
+        /* Иконка светится в цвет своей рамки */
         filter: drop-shadow(0 0 5px currentColor) !important;
     }
 
-    .menu-info { 
-        display: flex !important; 
-        flex-direction: column !important; 
+    .menu-info {
+        display: flex !important;
+        flex-direction: column !important;
         align-items: center !important;
-        width: 100% !important;
-        position: relative !important;
-        z-index: 2 !important;
     }
 
+    /* Стили текста внутри кнопок */
     .menu-title { 
+        font-size: 11.5px !important; 
         font-weight: 800 !important; 
-        font-size: 12.5px !important; 
+        color: #ffffff !important;
         text-transform: uppercase !important;
-        letter-spacing: 0.5px !important;
-        margin-bottom: 4px !important; 
-        line-height: 1.2 !important;
+        letter-spacing: 0.8px !important;
+        margin-bottom: 5px !important; 
+        line-height: 1.3 !important;
     }
 
     .menu-desc { 
-        font-size: 10.5px !important; 
-        color: #7d8fa9 !important; 
+        font-size: 11px !important; 
+        color: rgba(255, 255, 255, 0.5) !important; 
         line-height: 1.2 !important; 
-        opacity: 0.8 !important;
     }
 
-    /* НАСТРОЙКА ЦВЕТОВЫХ КЛАССОВ И НЕОНОВОГО СВЕЧЕНИЯ */
-    .menu-card.orange { filter: drop-shadow(0 0 8px rgba(255, 59, 105, 0.35)) !important; }
-    .menu-card.orange .menu-title, .menu-card.orange .menu-icon-img { color: #ff3b69 !important; text-shadow: 0 0 8px rgba(255, 59, 105, 0.6); }
+    /* 7. ТОЧНЫЕ НЕОНОВЫЕ ЦВЕТА И СВЕЧЕНИЯ С КАРТИНКИ */
+    
+    /* Розово-красный неон */
+    .menu-card.orange {
+        color: #ff3b69 !important; 
+        border-color: #ff3b69 !important;
+        box-shadow: 0 0 14px rgba(255, 59, 105, 0.35), inset 0 0 10px rgba(255, 59, 105, 0.15) !important;
+    }
 
-    .menu-card.purple { filter: drop-shadow(0 0 8px rgba(161, 36, 255, 0.35)) !important; }
-    .menu-card.purple .menu-title, .menu-card.purple .menu-icon-img { color: #a124ff !important; text-shadow: 0 0 8px rgba(161, 36, 255, 0.6); }
+    /* Фиолетовый неон */
+    .menu-card.purple {
+        color: #a124ff !important;
+        border-color: #a124ff !important;
+        box-shadow: 0 0 14px rgba(161, 36, 255, 0.35), inset 0 0 10px rgba(161, 36, 255, 0.15) !important;
+    }
 
-    .menu-card.blue { filter: drop-shadow(0 0 8px rgba(0, 119, 255, 0.35)) !important; }
-    .menu-card.blue .menu-title, .menu-card.blue .menu-icon-img { color: #0077ff !important; text-shadow: 0 0 8px rgba(0, 119, 255, 0.6); }
+    /* Синий электрик неон */
+    .menu-card.blue {
+        color: #0077ff !important;
+        border-color: #0077ff !important;
+        box-shadow: 0 0 14px rgba(0, 119, 255, 0.35), inset 0 0 10px rgba(0, 119, 255, 0.15) !important;
+    }
 
-    .menu-card.cyan { filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.35)) !important; }
-    .menu-card.cyan .menu-title, .menu-card.cyan .menu-icon-img { color: #00e5ff !important; text-shadow: 0 0 8px rgba(0, 229, 255, 0.5); }
+    /* Зелено-бирюзовый неон */
+    .menu-card.cyan {
+        color: #00e5ff !important;
+        border-color: #00e5ff !important;
+        box-shadow: 0 0 14px rgba(0, 229, 255, 0.35), inset 0 0 10px rgba(0, 229, 255, 0.15) !important;
+    }
 
 
         /* СКРЫТИЕ / ПОКАЗ ЭКРАНОВ */

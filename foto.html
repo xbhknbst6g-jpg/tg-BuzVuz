@@ -78,19 +78,13 @@
         }
 
         /* СТИЛИЗАЦИЯ ВНУТРЕННИХ ЭЛЕМЕНТОВ */
-        .menu-icon { 
-            width: 40px; 
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            
-            /* Иконка красится в цвет неоновой темы карточки */
-            color: var(--neon-color); 
-            
-            /* Мощное неоновое свечение самой иконки */
-            filter: drop-shadow(0 0 8px var(--neon-glow));
-            transition: transform 0.25s ease;
+        /* Этот блок должен быть у вас в CSS */
+        .menu-icon img.icons8-neon {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            /* Магия фильтра: делает черную иконку ярко-светящейся в цвет карточки */
+            filter: drop-shadow(0 0 12px var(--neon-color)) drop-shadow(0 0 2px var(--neon-color));
         }
         
         /* Чтобы SVG масштабировался правильно внутри блока */
@@ -711,36 +705,11 @@
             </div>
 
             
-               <!-- 2. Face Swap с оригинальной иконкой масок от Icons8 -->
+                    <!-- 2. Face Swap с оригинальной маской от Icons8 -->
             <div class="menu-card purple" onclick="openScreen('face_swap')">
                 <div class="menu-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <!-- ПЕРВАЯ МАСКА (ЛЕВАЯ НИЖНЯЯ) -->
-                        <!-- Сплошной контур левой половины -->
-                        <path d="M43.5 35.5 C43.5 24 33 24 33 24 L33 58 C33 58 43.5 58 43.5 46.5 Z" />
-                        <!-- Пунктирный/точечный контур правой половины -->
-                        <path d="M33 24 C33 24 22.5 24 22.5 35.5 C22.5 46.5 33 58 33 58" stroke-dasharray="1 3" />
-                        <!-- Детали лица (глаза, брови, рот, нос) -->
-                        <path d="M35.5 31.5 Q38 31 39.5 32.5" /><path d="M26.5 32.5 Q28 31 30.5 31.5" stroke-dasharray="1 2" />
-                        <path d="M36 34.5 Q38.5 35 39 36" /><path d="M27 36 Q27.5 35 30 34.5" stroke-dasharray="1 2" />
-                        <path d="M33 34 L34.5 40 L33 42" />
-                        <path d="M29 49 Q33 52 37 49" />
-                        <!-- Завязка маски -->
-                        <path d="M43.5 41 C48 41 49 32 46 25" />
-
-                        <!-- ВТОРАЯ МАСКА (ПРАВАЯ ВЕРХНЯЯ) -->
-                        <!-- Сплошной контур левой половины -->
-                        <path d="M47 46 C47 57.5 57.5 57.5 57.5 57.5 L57.5 23.5 C57.5 23.5 47 23.5 47 35 Z" />
-                        <!-- Пунктирный/точечный контур правой половины -->
-                        <path d="M57.5 57.5 C57.5 57.5 68 57.5 68 46 C68 35 57.5 23.5 57.5 23.5" stroke-dasharray="1 3" />
-                        <!-- Детали лица (глаза, брови, рот, нос) -->
-                        <path d="M55 50 Q52.5 50.5 51 49" /><path d="M64 49 Q62.5 50.5 60 50" stroke-dasharray="1 2" />
-                        <path d="M54.5 47 Q52 46.5 51.5 45.5" /><path d="M63.5 45.5 Q63 46.5 60.5 47" stroke-dasharray="1 2" />
-                        <path d="M57.5 47.5 L56 41.5 L57.5 39.5" />
-                        <path d="M53.5 32.5 Q57.5 29.5 61.5 32.5" />
-                        <!-- Завязка маски -->
-                        <path d="M47 40 C42.5 40 41.5 49 44.5 56" />
-                    </svg>
+                    <!-- Правильный тег картинки, который загрузит маску прямо в меню -->
+                    <img src="https://icons8.com" alt="off-book" class="icons8-neon"/>
                 </div>
                 <div class="menu-info">
                     <div class="menu-title">2. Face Swap</div>

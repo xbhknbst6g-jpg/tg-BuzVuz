@@ -31,9 +31,16 @@
             100% { opacity: 0.93; filter: drop-shadow(0 0 2px rgba(255,255,255,0.1)); }
         }
 
-                /* КАРТОЧКА С АВТО-УГОЛКАМИ ЧЕРЕЗ ГРАДИЕНТЫ */
+                /* КАРТОЧКИ ГЛАВНОГО МЕНЮ */
+        .main-menu-grid { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 15px; 
+            margin-bottom: 20px; 
+        }
+        
         .menu-card { 
-            position: relative;
+            position: relative !important; /* КРИТИЧЕСКИ ВАЖНО: привязывает уголки строго к границам карточки */
             background: rgba(10, 15, 30, 0.7); 
             padding: 24px 20px; 
             border-radius: 8px; 
@@ -46,11 +53,10 @@
             text-align: center; 
             gap: 12px; 
             
-            box-sizing: border-box; 
-            width: 100%;
+            box-sizing: border-box !important; 
+            width: 100% !important;
             
-            /* Полностью убираем старые рамки, чтобы они не ломали верстку */
-            border: none !important;
+            border: none !important; /* Удаляем старые конфликтующие рамки */
             outline: none !important;
 
             backdrop-filter: blur(12px);
@@ -64,35 +70,36 @@
             animation: neonPulse 4s infinite ease-in-out;
         }
 
-        /* НАДЕЖНЫЕ УГОЛКИ: Привязываем намертво через координаты top, left, bottom, right */
+        /* ИСПРАВЛЕНИЕ УГОЛКОВ: Жестко фиксируем их размеры, чтобы они не растягивались */
         .menu-card::before, .menu-card::after {
-            content: "";
-            position: absolute;
-            width: 14px;
-            height: 14px;
-            box-sizing: border-box;
-            pointer-events: none; /* Чтобы уголки не мешали кликам */
+            content: "" !important;
+            position: absolute !important;
+            width: 14px !important;  /* Фиксированная ширина уголка */
+            height: 14px !important; /* Фиксированная высота уголка */
+            box-sizing: border-box !important;
+            pointer-events: none !important;
         }
         
-        /* Верхний левый угол сажаем четко на позицию 0, 0 */
+        /* Верхний левый угол сажаем четко в левую верхнюю точку */
         .menu-card::before {
-            top: 0; 
-            left: 0;
+            top: 0 !important; 
+            left: 0 !important;
             border-top: 3px solid var(--neon-color) !important;
             border-left: 3px solid var(--neon-color) !important;
             border-bottom: none !important;
             border-right: none !important;
         }
         
-        /* Нижний правый угол сажаем четко на позицию 0, 0 снизу справа */
+        /* Нижний правый угол сажаем четко в правую нижнюю точку */
         .menu-card::after {
-            bottom: 0; 
-            right: 0;
+            bottom: 0 !important; 
+            right: 0 !important;
             border-bottom: 3px solid var(--neon-color) !important;
             border-right: 3px solid var(--neon-color) !important;
             border-top: none !important;
             border-left: none !important;
         }
+
 
 
         /* ИСПРАВЛЕНИЕ ДЛЯ БЛОКА ИКОНОК */

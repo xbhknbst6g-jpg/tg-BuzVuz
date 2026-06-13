@@ -27,20 +27,33 @@
                 /* КАРТОЧКИ ГЛАВНОГО МЕНЮ */
         .main-menu-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 20px; }
         .menu-card { 
-            background: var(--tg-theme-bg-color, #fff); padding: 20px; border-radius: 12px; 
-            border: 2px solid #ff9800; 
-            /* ДОБАВЛЕНО: Мягкое оранжевое свечение вокруг карточки */
-            box-shadow: 0 0 15px rgba(255, 152, 0, 0.35); 
+            /* ИЗМЕНЕНО: Полная оранжевая заливка вместо белого фона */
+            background: #ff9800; 
+            padding: 20px; 
+            border-radius: 12px; 
+            border: none; /* Убираем старую рамку */
+            
+            /* ДОБАВЛЕНО: Плотное и сочное оранжевое свечение */
+            box-shadow: 0 6px 20px rgba(255, 152, 0, 0.4); 
+            
             cursor: pointer; display: flex; align-items: center; gap: 15px; 
             transition: transform 0.1s ease, background-color 0.1s ease, box-shadow 0.1s ease; -webkit-tap-highlight-color: transparent; 
         }
-        /* ИЗМЕНЕНО: При нажатии свечение становится чуть слабее из-за прижатия карточки */
-        .menu-card:active { transform: scale(0.97); background-color: var(--tg-theme-secondary-bg-color, #fafafa); box-shadow: 0 0 8px rgba(255, 152, 0, 0.2); }
-
+        
+        /* ИЗМЕНЕНО: При нажатии карточка становится чуть темнее, а свечение прижимается */
+        .menu-card:active { 
+            transform: scale(0.97); 
+            background-color: #e65100; 
+            box-shadow: 0 3px 10px rgba(255, 152, 0, 0.3); 
+        }
+        
         .menu-icon { font-size: 32px; width: 45px; text-align: center; }
         .menu-info { display: flex; flex-direction: column; }
-        .menu-title { font-weight: bold; font-size: 16px; color: var(--tg-theme-text-color, #000); margin-bottom: 2px; }
-        .menu-desc { font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.3; }
+        
+        /* ИЗМЕНЕНО: Перекрашиваем текст в белый, чтобы он отлично читался на оранжевом фоне */
+        .menu-title { font-weight: bold; font-size: 16px; color: #ffffff; margin-bottom: 2px; }
+        .menu-desc { font-size: 13px; color: rgba(255, 255, 255, 0.85); line-height: 1.3; }
+
 
         /* СКРЫТИЕ / ПОКАЗ ЭКРАНОВ */
         .screen { display: none; }

@@ -290,21 +290,21 @@
     </style>
 </head>
 <body>
-        <!-- ЛЕНТА ВЕРХУШКИ С НАШИМ ФИРМЕННЫМ ЗАГЛОВКОМ (БЕЗ КНОПКИ НАЗАД, ТАК КАК ЭКРАН ОДИН) -->
+           <!-- ЛЕНТА ВЕРХУШКИ С НАШИМ ФИРМЕННЫМ ЗАГЛОВКОМ (БЕЗ КНОПКИ НАЗАД, ТАК КАК ЭКРАН ОДИН) -->
     <div class="tabs-container" id="direct_gen_tabs" style="justify-content: center; padding: 10px 0 14px 0 !important;">
         <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); white-space: nowrap; text-align: center;">Генерация картинок по тексту</div>
     </div>
 
-    <!-- ЕДИНЫЙ СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (ОТКРЫТ ПО ДЕФОЛТУ) -->
-    <div id="direct_gen_settings_block" style="display: none;">
+    <!-- 🔥 ИСПРАВЛЕНО: Убрали display: none. Блок открыт сразу по умолчанию, контент появится на экране! -->
+    <div id="direct_gen_settings_block">
         
-        <!-- 🔥 КОНТЕЙНЕР-ОРИЕНТИР С ВАШИМИ РАЗМЕРАМИ И ОТСТУПАМИ -->
+        <!-- КОНТЕЙНЕР-ОРИЕНТИР С ВАШИМИ РАЗМЕРАМИ И ОТСТУПАМИ -->
         <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 190px); box-sizing: border-box; display: flex; flex-direction: column;">
             
             <div class="menu-title" style="text-align: center;">📍 Примеры генерации:</div>
             <div class="menu-desc" style="text-align: center; margin-bottom: 12px;">Что можно получить по простому текстовому запросу</div>
             
-            <!-- 🔥 ВАША РОДНАЯ СЕТКА ШАБЛОНОВ С ВЕРТИКАЛЬНЫМИ КАРТОЧКАМИ 9:16 -->
+            <!-- ВАША РОДНАЯ СЕТКА ШАБЛОНОВ С ВЕРТИКАЛЬНЫМИ КАРТОЧКАМИ 9:16 -->
             <div class="swap-steps-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
                 <!-- Пример 1 (Вытянутый 9:16) -->
                 <div class="phone-template-card" style="height: 150px !important;">
@@ -323,7 +323,7 @@
                 </div>
             </div>
 
-            <!-- 🔥 УВЕЛИЧИЛИ ОТСТУП СВЕРХУ ДО 40px -->
+            <!-- УВЕЛИЧИЛИ ОТСТУП СВЕРХУ ДО 40px -->
             <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
                 Шаг 1: Настройте формат кадра и качество генерации на кнопках внизу.<br>
                 Шаг 2: Нажмите огненную кнопку START.<br>
@@ -332,7 +332,7 @@
 
         </div>
 
-        <!-- 🔥 УВЕЛИЧИЛИ ОТСТУП МЕЖДУ ТЕКСТОМ И КНОПКАМИ ДО 55px (СТРОГО КАК В ОРИГИНАЛЕ) -->
+        <!-- УВЕЛИЧИЛИ ОТСТУП МЕЖДУ ТЕКСТОМ И КНОПКАМИ ДО 55px (СТРОГО КАК В ОРИГИНАЛЕ) -->
         <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px; display: flex; gap: 8px;">
             <div class="control-col" style="flex: 1;">
                 <button id="btn_direct_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
@@ -359,6 +359,7 @@
         </div>
     </div>
 
+
     <script>
         // ====================================================================================
         // 1. СИСТЕМНАЯ ИНИЦИАЛИЗАЦИЯ И ПЕРЕМЕННЫЕ (ТОЛЬКО КАРТИНКИ)
@@ -371,25 +372,17 @@
         // ====================================================================================
         // 4. СТАРТ WEBAPP И ПРИВЯЗКА СОБЫТИЙ КНОПОК
         // ====================================================================================
-        window.addEventListener('DOMContentLoaded', () => {
-            if (tg) {
-                tg.ready();  
-                tg.expand(); 
-                if (tg.MainButton) tg.MainButton.hide(); 
-            }
-            
-            const qualityBtn = document.getElementById('btn_direct_quality');
-            const ratioBtn = document.getElementById('btn_direct_ratio');
-            
-            if (qualityBtn) qualityBtn.addEventListener('click', showNativeDirectQualityPopup);
-            if (ratioBtn) ratioBtn.addEventListener('click', showNativeDirectRatioPopup);
-
-            setDirectRatio(directGenRatio);
-            updateNeoStartButtonText();
-        });
-
-        function showNativeDirectQualityPopup() { openUniversalQualitySheet(); }
-        function showNativeDirectRatioPopup() { openUniversalRatioSheet(); }
+window.addEventListener('DOMContentLoaded', () => {
+    if (tg) {
+        tg.ready();  
+        tg.expand(); 
+        if (tg.MainButton) tg.MainButton.hide(); 
+    }
+    
+    // Просто выставляем начальный текст на капсулах, так как контент уже на экране
+    setDirectRatio(directGenRatio);
+    updateNeoStartButtonText();
+});
 
         // ====================================================================================
         // 6. ОБНОВЛЯТОР СТОИМОСТИ НА ВСТРОЕННОЙ КНОПКЕ START

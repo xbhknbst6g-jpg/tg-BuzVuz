@@ -397,20 +397,46 @@
         function showNativeDirectQualityPopup() { openUniversalQualitySheet(); }
         function showNativeDirectRatioPopup() { openUniversalRatioSheet(); }
 
-        
+
         // ====================================================================================
         // 6. ОБНОВЛЯТОР СТОИМОСТИ НА ВСТРОЕННОЙ КНОПКЕ START
         // ====================================================================================
-        function updateNeoStartButtonText() {
-            const btnDirect = document.getElementById('neo_direct_submit_btn');
-            if (btnDirect) {
-                if (directGenQuality === 'ultra_4k') {
-                    btnDirect.innerHTML = `Start 2 🪙`;
-                } else {
-                    btnDirect.innerHTML = `Start 1 🪙`;
-                }
+        window.addEventListener('DOMContentLoaded', () => {
+            // 🔥 ШАГ 1: СРАЗУ ВКЛЮЧАЕМ ЭКРАН ИЗ ТЕМНОТЫ НА ПЕРВОЙ СТРОЧКЕ
+            try {
+                const settingsBlock = document.getElementById('direct_gen_settings_block');
+                if (settingsBlock) settingsBlock.style.display = "block";
+                console.log("[WebApp Direct] Служебный блок успешно открыт!");
+            } catch (e) {
+                console.error("Ошибка принудительного открытия блока:", e);
             }
-        }
+
+            if (tg) {
+                try {
+                    tg.ready();  
+                    tg.expand(); 
+                    if (tg.MainButton) tg.MainButton.hide(); 
+                } catch (e) {}
+            }
+            
+            // 🔥 ШАГ 2: БЕЗОПАСНАЯ ПРИВЯЗКА КЛИКОВ
+            try {
+                const qualityBtn = document.getElementById('btn_direct_quality');
+                const ratioBtn = document.getElementById('btn_direct_ratio');
+                
+                if (qualityBtn) qualityBtn.addEventListener('click', showNativeDirectQualityPopup);
+                if (ratioBtn) ratioBtn.addEventListener('click', showNativeDirectRatioPopup);
+            } catch (e) {
+                console.error("Ошибка привязки кликов:", e);
+            }
+
+            // 🔥 ШАГ 3: ИЗОЛИРОВАННЫЙ БЕЗОПАСНЫЙ ВЫЗОВ СИНХРОНИЗАТОРОВ
+            try { setDirectRatio(directGenRatio); } catch (e) { console.error("Ошибка setDirectRatio:", e); }
+            try { updateNeoStartButtonText(); } catch (e) { console.error("Ошибка updateNeoStartButtonText:", e); }
+        });
+
+        function showNativeDirectQualityPopup() { openUniversalQualitySheet(); }
+        function showNativeDirectRatioPopup() { openUniversalRatioSheet(); }
 
 // ====================================================================================
 // 7. УПРАВЛЕНИЕ УНИВЕРСАЛЬНОЙ КАСТОМНОЙ ШТОРКОЙ (СТРОГО ПО ВАШЕМУ ШАБЛОНУ СО SPAN)

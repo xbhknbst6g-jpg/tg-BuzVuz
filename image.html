@@ -365,7 +365,6 @@
         // ====================================================================================
         const tg = window.Telegram.WebApp;
 
-        // Переменные настроек для нашего единственного экрана
         let directGenRatio = '1:1';
         let directGenQuality = 'schnell';
 
@@ -376,7 +375,7 @@
             if (tg) {
                 tg.ready();  
                 tg.expand(); 
-                if (tg.MainButton) tg.MainButton.hide(); // Полностью выключаем синюю кнопку ТГ
+                if (tg.MainButton) tg.MainButton.hide(); 
             }
             
             const qualityBtn = document.getElementById('btn_direct_quality');
@@ -385,12 +384,10 @@
             if (qualityBtn) qualityBtn.addEventListener('click', showNativeDirectQualityPopup);
             if (ratioBtn) ratioBtn.addEventListener('click', showNativeDirectRatioPopup);
 
-            // Принудительно выставляем дефолт при загрузке страницы
             setDirectRatio(directGenRatio);
             updateNeoStartButtonText();
         });
 
-        // Перенаправляем функции вызова из DOMContentLoaded на наш единый пульт управления шторкой
         function showNativeDirectQualityPopup() { openUniversalQualitySheet(); }
         function showNativeDirectRatioPopup() { openUniversalRatioSheet(); }
 
@@ -399,7 +396,6 @@
         // ====================================================================================
         function updateNeoStartButtonText() {
             const btnDirect = document.getElementById('neo_direct_submit_btn');
-            
             if (btnDirect) {
                 if (directGenQuality === 'ultra_4k') {
                     btnDirect.innerHTML = `Start 2 🪙`;
@@ -410,7 +406,7 @@
         }
 
         // ====================================================================================
-        // 7. УПРАВЛЕНИЕ УНИВЕРСАЛЬНОЙ КАСТОМНОЙ ШТОРКОЙ (ТОЛЬКО ДЛЯ НАШЕГО ЭКРАНА)
+        // 7. УПРАВЛЕНИЕ УНИВЕРСАЛЬНОЙ КАСТОМНОЙ ШТОРКОЙ (БЕЗ ВЛОЖЕННЫХ ТЕГОВ SPAN)
         // ====================================================================================
         function openUniversalQualitySheet() {
             const titleEl = document.getElementById('custom_sheet_title');
@@ -419,16 +415,16 @@
 
             titleEl.innerText = "КАЧЕСТВО ГЕНЕРАЦИИ";
             
+            // 🔥 УБРАЛИ ВСЕ ВНУТРЕННИЕ SPAN! Кнопка содержит только чистый плоский текст
             listEl.innerHTML = `
-                <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('schnell', '⚡ Standard')"><span>Standard</span><span class="coin-price">  1 🪙</span></button></li>
-                <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('dev', '💎 Pro')"><span>Pro</span><span class="coin-price">  1 🪙</span></button></li>
-                <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('ultra_4k', '🔥 Ultra')"><span>Ultra</span><span class="coin-price">  1 🪙</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('schnell', '⚡ Standard')">Standard  1 🪙</button></li>
+                <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('dev', '💎 Pro')">Pro  1 🪙</button></li>
+                <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('ultra_4k', '🔥 Ultra')">Ultra  1 🪙</button></li>
             `;
 
             document.getElementById('custom_action_sheet').classList.add('active');
         }
 
-        // Обработчик качества: меняет кнопку и переменную нашего режима
         function selectQualityFromSheet(id, text) {
             setDirectQuality(id, text);
             updateNeoStartButtonText();
@@ -442,18 +438,18 @@
 
             titleEl.innerText = "СООТНОШЕНИЕ СТОРОН";
             
+            // 🔥 УБРАЛИ ВСЕ ВНУТРЕННИЕ SPAN! Кнопка содержит только чистое текстовое значение формата
             listEl.innerHTML = `
-                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('9:16')"><span style="width: 100%; text-align: center;">9:16</span></button></li>
-                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('3:4')"><span style="width: 100%; text-align: center;">3:4</span></button></li>
-                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('1:1')"><span style="width: 100%; text-align: center;">1:1</span></button></li>
-                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('4:3')"><span style="width: 100%; text-align: center;">4:3</span></button></li>
-                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('16:9')"><span style="width: 100%; text-align: center;">16:9</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('9:16')">9:16</button></li>
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('3:4')">3:4</button></li>
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('1:1')">1:1</button></li>
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('4:3')">4:3</button></li>
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('16:9')">16:9</button></li>
             `;
 
             document.getElementById('custom_action_sheet').classList.add('active');
         }
 
-        // Обработчик формата: вызывает родную функцию синхронизации кнопки
         function selectRatioFromSheet(id) {
             setDirectRatio(id);
             updateNeoStartButtonText();
@@ -466,7 +462,7 @@
         }
 
         // ====================================================================================
-        // СИНХРОНИЗАТОРЫ КАЧЕСТВА И ФОРМАТА (ЧИСТЫЕ ЦИФРЫ И ТЕКСТ)
+        // СИНХРОНИЗАТОРЫ КАЧЕСТВА И ФОРМАТА
         // ====================================================================================
         function setDirectQuality(quality, text) { 
             directGenQuality = quality; 
@@ -489,11 +485,8 @@
                 let quality = payload.quality || 'schnell';
                 let ratio = payload.aspect_ratio ? payload.aspect_ratio.replace(':', '-') : '1-1';
 
-                // Собираем твой кастомный короткий старт-параметр для прямой генерации
                 let startParam = `mode_puretext_q_${quality}_r_${ratio}`;
                 let telegramLink = `https://t.me{botUsername}?start=${startParam}`;
-
-                console.log("[WebApp Link] Перенаправление по ссылке:", telegramLink);
 
                 if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openTelegramLink === 'function') {
                     window.Telegram.WebApp.openTelegramLink(telegramLink);
@@ -501,14 +494,12 @@
                 } else {
                     window.location.href = telegramLink;
                 }
-
             } catch (e) {
-                console.error("Ошибка генерации диплинка внутри sendToTelegram:", e);
+                console.error("Ошибка генерации диплинка:", e);
                 window.location.href = "https://t.me";
             }
         }
 
-        // Кнопка START для нашего одиночного экрана
         function sendDirectGenData() { 
             try {
                 let ratio = (typeof directGenRatio !== 'undefined') ? directGenRatio : '1:1';
@@ -519,9 +510,8 @@
                     aspect_ratio: ratio, 
                     quality: quality
                 }); 
-
             } catch (err) {
-                console.error("Критический сбой внутри функции sendDirectGenData:", err);
+                console.error("Критический сбой отправки:", err);
                 window.location.href = "https://t.me";
             }
         }  

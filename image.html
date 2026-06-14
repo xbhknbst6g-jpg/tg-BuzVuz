@@ -290,64 +290,65 @@
     </style>
 </head>
 <body>
-           <!-- ЛЕНТА ВЕРХУШКИ С НАШИМ ФИРМЕННЫМ ЗАГЛОВКОМ (БЕЗ КНОПКИ НАЗАД, ТАК КАК ЭКРАН ОДИН) -->
-    <div class="tabs-container" id="direct_gen_tabs" style="justify-content: center; padding: 10px 0 14px 0 !important;">
-        <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); white-space: nowrap; text-align: center;">Генерация картинок по тексту</div>
+    <div id="image_generation_direct" class="screen">
+    
+    <!-- СТРОГО КАК В ТВОЕМ РАБОЧЕМ ПРИМЕРЕ СВАПА: ЧИСТЫЙ КОНТЕЙНЕР БЕЗ ЛИШНЕЙ ДИЧИ -->
+    <div class="tabs-container" id="direct_gen_tabs">
+        <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); margin-left: 5px; white-space: nowrap;">Генерация картинок по тексту</div>
     </div>
 
-    <!-- 🔥 ИСПРАВЛЕНО: Убрали display: none. Блок открыт сразу по умолчанию, контент появится на экране! -->
-    <div id="direct_gen_settings_block">
+    <!-- СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (Изначально полностью скрыт, как в твоих других режимах) -->
+    <div id="direct_gen_settings_block" style="display: none;">
+
+            
+    <!-- КОНТЕЙНЕР-ОРИЕНТИР С ВАШИМИ РАЗМЕРАМИ И ОТСТУПАМИ -->
+    <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 190px); box-sizing: border-box; display: flex; flex-direction: column;">
         
-        <!-- КОНТЕЙНЕР-ОРИЕНТИР С ВАШИМИ РАЗМЕРАМИ И ОТСТУПАМИ -->
-        <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 190px); box-sizing: border-box; display: flex; flex-direction: column;">
-            
-            <div class="menu-title" style="text-align: center;">📍 Примеры генерации:</div>
-            <div class="menu-desc" style="text-align: center; margin-bottom: 12px;">Что можно получить по простому текстовому запросу</div>
-            
-            <!-- ВАША РОДНАЯ СЕТКА ШАБЛОНОВ С ВЕРТИКАЛЬНЫМИ КАРТОЧКАМИ 9:16 -->
-            <div class="swap-steps-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-                <!-- Пример 1 (Вытянутый 9:16) -->
-                <div class="phone-template-card" style="height: 150px !important;">
-                    <img src="https://postimg.cc" alt="Пример 1" style="width: 100%; height: 100%; object-fit: cover;">
-                    <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Кот 🐱</div>
-                </div>
-                <!-- Пример 2 (Вытянутый 9:16) -->
-                <div class="phone-template-card" style="height: 150px !important;">
-                    <img src="https://postimg.cc" alt="Пример 2" style="width: 100%; height: 100%; object-fit: cover;">
-                    <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Неон ⚡</div>
-                </div>
-                <!-- Пример 3 (Вытянутый 9:16) -->
-                <div class="phone-template-card" style="height: 150px !important;">
-                    <img src="https://postimg.cc" alt="Пример 3" style="width: 100%; height: 100%; object-fit: cover;">
-                    <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Космос 🌌</div>
-                </div>
+        <div class="menu-title" style="text-align: center;">📍 Примеры генерации:</div>
+        <div class="menu-desc" style="text-align: center; margin-bottom: 12px;">Что можно получить по простому текстовому запросу</div>
+        
+        <!-- ВАША РОДНАЯ СЕТКА ШАБЛОНОВ С ВЕРТИКАЛЬНЫМИ КАРТОЧКАМИ 9:16 -->
+        <div class="swap-steps-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+            <!-- Пример 1 (Вытянутый 9:16) -->
+            <div class="phone-template-card" style="height: 150px !important;">
+                <img src="https://postimg.cc" alt="Пример 1" style="width: 100%; height: 100%; object-fit: cover;">
+                <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Кот 🐱</div>
             </div>
-
-            <!-- УВЕЛИЧИЛИ ОТСТУП СВЕРХУ ДО 40px -->
-            <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
-                Шаг 1: Настройте формат кадра и качество генерации на кнопках внизу.<br>
-                Шаг 2: Нажмите огненную кнопку START.<br>
-                Шаг 3: Веб-сайт закроется, и бот в чате Telegram попросит вас написать текст (промпт) для создания изображения!
+            <!-- Пример 2 (Вытянутый 9:16) -->
+            <div class="phone-template-card" style="height: 150px !important;">
+                <img src="https://postimg.cc" alt="Пример 2" style="width: 100%; height: 100%; object-fit: cover;">
+                <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Неон ⚡</div>
             </div>
-
-        </div>
-
-        <!-- УВЕЛИЧИЛИ ОТСТУП МЕЖДУ ТЕКСТОМ И КНОПКАМИ ДО 55px (СТРОГО КАК В ОРИГИНАЛЕ) -->
-        <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px; display: flex; gap: 8px;">
-            <div class="control-col" style="flex: 1;">
-                <button id="btn_direct_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
-            </div>
-            <div class="control-col" style="flex: 1;">
-                <button id="btn_direct_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">1:1</button>
-            </div>
-            <div class="control-col control-col-btn" style="flex: 1.2;">
-                <button id="neo_direct_submit_btn" class="neo-start-btn" onclick="sendDirectGenData()">
-                    Start 1 🪙
-                </button>
+            <!-- Пример 3 (Вытянутый 9:16) -->
+            <div class="phone-template-card" style="height: 150px !important;">
+                <img src="https://postimg.cc" alt="Пример 3" style="width: 100%; height: 100%; object-fit: cover;">
+                <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Космос 🌌</div>
             </div>
         </div>
 
-    </div> <!-- Конец служебного блока -->
+        <!-- 🔥 УВЕЛИЧИЛИ ОТСТУП СВЕРХУ ДО 40px -->
+        <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
+            Шаг 1: Настройте формат кадра и качество генерации на кнопках внизу.<br>
+            Шаг 2: Нажмите огненную кнопку START.<br>
+            Шаг 3: Веб-сайт закроется, и бот в чате Telegram попросит вас написать текст (промпт) для создания изображения!
+        </div>
+
+    </div>
+
+    <!-- 🔥 УВЕЛИЧИЛИ ОТСТУП МЕЖДУ ТЕКСТОМ И КНОПКАМИ ДО 55px (СТРОГО КАК В ОРИГИНАЛЕ) -->
+    <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px; display: flex; gap: 8px;">
+        <div class="control-col" style="flex: 1;">
+            <button id="btn_direct_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
+        </div>
+        <div class="control-col" style="flex: 1;">
+            <button id="btn_direct_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">1:1</button>
+        </div>
+        <div class="control-col control-col-btn" style="flex: 1.2;">
+            <button id="neo_direct_submit_btn" class="neo-start-btn" onclick="sendDirectGenData()">
+                Start 1 🪙
+            </button>
+        </div>
+    </div>
 
     <!-- УНИВЕРСАЛЬНАЯ КАСТОМНАЯ ШТОРКА -->
     <div id="custom_action_sheet" class="custom-sheet-overlay" onclick="closeCustomSheet()">
@@ -372,22 +373,25 @@
         // ====================================================================================
         // 4. СТАРТ WEBAPP И ПРИВЯЗКА СОБЫТИЙ КНОПОК
         // ====================================================================================
-window.addEventListener('DOMContentLoaded', () => {
-    if (tg) {
-        tg.ready();  
-        tg.expand(); 
-        if (tg.MainButton) tg.MainButton.hide();
-    }
-    
-    // 🔥 ОРИГИНАЛЬНОЕ МГНОВЕННОЕ ВКЛЮЧЕНИЕ ИЗ ТВОЕГО РОУТЕРА FACE SWAP
-    const settingsBlock = document.getElementById('direct_gen_settings_block');
-    if (settingsBlock) {
-        settingsBlock.style.display = "block";
-    }
+        window.addEventListener('DOMContentLoaded', () => {
+            if (tg) {
+                tg.ready();  
+                tg.expand(); 
+                if (tg.MainButton) tg.MainButton.hide(); 
+            }
+            
+            const qualityBtn = document.getElementById('btn_direct_quality');
+            const ratioBtn = document.getElementById('btn_direct_ratio');
+            
+            if (qualityBtn) qualityBtn.addEventListener('click', showNativeDirectQualityPopup);
+            if (ratioBtn) ratioBtn.addEventListener('click', showNativeDirectRatioPopup);
 
-    setDirectRatio(directGenRatio);
-    updateNeoStartButtonText();
-});
+            setDirectRatio(directGenRatio);
+            updateNeoStartButtonText();
+        });
+
+        function showNativeDirectQualityPopup() { openUniversalQualitySheet(); }
+        function showNativeDirectRatioPopup() { openUniversalRatioSheet(); }
 
         // ====================================================================================
         // 6. ОБНОВЛЯТОР СТОИМОСТИ НА ВСТРОЕННОЙ КНОПКЕ START

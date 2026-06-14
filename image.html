@@ -57,126 +57,218 @@
 </head>
 <body>
     <!-- ЭКРАН: ПРЯМАЯ ГЕНЕРАЦИЯ КАРТИНОК ИЗ БОТА -->
-    <div id="image_generation_direct">
-        <button class="back-btn" onclick="closeWebApp()">❌ Закрыть</button>
+<div id="image_generation_direct" class="screen active">
         
-        <div class="instruction-box" style="background: var(--tg-theme-secondary-bg-color, #fff3cd); border:1px solid var(--tg-theme-border-color, #ffeeba); border-radius:8px; padding:12px; font-size:13px; line-height:1.4; color: var(--tg-theme-text-color, #856404); margin-bottom:15px;">
-            <b>🎨 Generation картинок по тексту (Шаг 1/2):</b><br>
-            1. Выберите желаемый формат будущей картинки кнопками ниже.<br>
-            2. Выберите необходимое качество генерации.<br>
-            3. Нажмите появившуюся внизу кнопку запуска.<br>
-            4. После этого бот попросит вас <b>написать текст (промпт)</b> для создания изображения!
-        </div>
+    <!-- ЛЕНТА ВЕРХУШКИ (Только заголовок, без кнопок назад и табов) -->
+    <div class="tabs-container" style="justify-content: center; padding: 10px 0 14px 0 !important;">
+        <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); text-align: center;">Генерация картинок по тексту</div>
+    </div>
 
-        <div class="header" style="margin-bottom: 10px; text-align: center;">
-            <h1>Генерация картинок по тексту</h1>
-            <p style="font-size:14px; color: var(--tg-theme-hint-color, #666);">Выберите формат изображения:</p>
-        </div>
-
-        <!-- Кнопки выбора формата -->
-        <div class="ratio-selector">
-            <div class="ratio-btn active" onclick="setDirectGenRatio('9:16')">📱 9:16</div>
-            <div class="ratio-btn" onclick="setDirectGenRatio('3:4')">📸 3:4</div>
-            <div class="ratio-btn" onclick="setDirectGenRatio('1:1')">🔲 1:1</div>
-            <div class="ratio-btn" onclick="setDirectGenRatio('4:3')">🖼 4:3</div>
-            <div class="ratio-btn" onclick="setDirectGenRatio('16:9')">💻 16:9</div>
-        </div>
-
-        <p style="margin-top: 15px; margin-bottom: 5px; font-weight: bold; text-align: center; color: var(--tg-theme-text-color, #000);">Выходное качество:</p>
-        <div class="quality-selector">
-            <div class="quality-btn active" onclick="setDirectGenQuality('schnell')">⚡ Standard</div>
-            <div class="quality-btn" onclick="setDirectGenQuality('dev')">💎 Pro /💎 2K</div>
-            <div class="quality-btn" onclick="setDirectGenQuality('ultra_4k')">🔥 Ultra 4K</div>
-        </div>
-
-        <div class="header" style="margin-top: 20px; margin-bottom: 5px; text-align: center;">
-            <h2>🔥 Примеры генерации:</h2>
-            <p style="font-size:14px; color: var(--tg-theme-hint-color, #666);">Что можно получить по простому текстовому запросу</p>
-        </div>
-
-        <div class="tryon-grid">
-            <div class="tryon-card">
-                <div class="tryon-card-title">Запрос: «Киберпанк кот в неоновом городе»</div>
-                <div style="position:relative;">
-                    <img src="https://postimg.cc" style="width:100%; height:150px; object-fit:cover; border-radius:8px;">
-                </div>
+    <!-- КОНТЕЙНЕР-ОРИЕНТИР С ИНСТРУКЦИЕЙ И 3 ПРИМЕРАМИ -->
+    <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 190px); box-sizing: border-box; display: flex; flex-direction: column;">
+        
+        <div style="font-size: 14px; font-weight: bold; margin-bottom: 12px; color: var(--tg-theme-text-color, #000); text-align: center;">📍 Примеры генерации:</div>
+        
+        <!-- СЕТКА ИЗ 3-Х ФИРМЕННЫХ НЕОНОВЫХ КАРТОЧЕК -->
+        <div class="swap-steps-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+            <!-- Пример 1 -->
+            <div class="phone-template-card" style="height: 110px;">
+                <img src="https://postimg.cc" alt="Пример 1" style="width: 100%; height: 100%; object-fit: cover;">
+                <div class="card-overlay" style="font-size: 10px !important; padding: 4px 2px !important;">Кот 🐱</div>
+            </div>
+            <!-- Пример 2 -->
+            <div class="phone-template-card" style="height: 110px;">
+                <img src="https://postimg.cc" alt="Пример 2" style="width: 100%; height: 100%; object-fit: cover;">
+                <div class="card-overlay" style="font-size: 10px !important; padding: 4px 2px !important;">Неон ⚡</div>
+            </div>
+            <!-- Пример 3 -->
+            <div class="phone-template-card" style="height: 110px;">
+                <img src="https://postimg.cc" alt="Пример 3" style="width: 100%; height: 100%; object-fit: cover;">
+                <div class="card-overlay" style="font-size: 10px !important; padding: 4px 2px !important;">Космос 🌌</div>
             </div>
         </div>
+
+        <!-- ИНСТРУКЦИЯ С ОТСТУПОМ 40px -->
+        <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
+            Шаг 1: Настройте формат кадра и качество генерации на кнопках внизу.<br>
+            Шаг 2: Нажмите огненную кнопку START.<br>
+            Шаг 3: Веб-сайт закроется, и бот в чате Telegram попросит вас написать текст (промпт) для создания изображения!
+        </div>
+
     </div>
-    <script>
-        const tg = window.Telegram.WebApp;
 
-        // Переменные настроек экрана Flux
-        let directGenRatio = '9:16';
-        let directGenQuality = 'schnell';
+    <!-- ПАНЕЛЬ УПРАВЛЕНИЯ В ОДНУ СТРОКУ (ОТСТУП 55px) -->
+    <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px; display: flex; gap: 8px; align-items: flex-end;">
+        
+        <div class="control-col" style="flex: 1;">
+            <div class="control-label">Качество</div>
+            <button id="btn_direct_quality" class="capsule-btn">⚡ Standard</button>
+        </div>
+        
+        <div class="control-col" style="flex: 1;">
+            <div class="control-label">Соотношение</div>
+            <button id="btn_direct_ratio" class="capsule-btn">1:1</button>
+        </div>
+        
+        <div class="control-col control-col-btn" style="flex: 1.2;">
+            <button id="neo_direct_submit_btn" class="neo-start-btn" onclick="sendDirectGenData()">
+                Start 1 🪙
+            </button>
+        </div>
+        
+    </div>
+</div>
 
-        // Инициализация WebApp при загрузке
-        window.addEventListener('DOMContentLoaded', () => {
-            if (tg) {
-                tg.ready();  
-                tg.expand(); 
-            }
-            updateDirectMainButton(); // Сразу включаем Главную кнопку Telegram внизу шторки
-        });
+<!-- УНИВЕРСАЛЬНАЯ КАСТОМНАЯ ШТОРКА (HTML ПОДЛОЖКА) -->
+<div id="custom_action_sheet" class="custom-sheet-overlay" onclick="closeCustomSheet()">
+    <div class="custom-sheet-panel" onclick="event.stopPropagation()">
+        <div id="custom_sheet_title" class="custom-sheet-title">ЗАГОЛОВОК</div>
+        <ul id="custom_sheet_list" class="custom-sheet-list">
+            <!-- Сюда JS подставит элементы -->
+        </ul>
+    </div>
+</div>
 
-        function closeWebApp() { if (tg) tg.close(); }
 
-        function setDirectGenRatio(ratio) {
-            // Переключаем класс active по тексту внутри кнопок формата
-            document.querySelectorAll('.ratio-selector .ratio-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.innerText.includes(ratio)) btn.classList.add('active');
-            });
-            directGenRatio = ratio;
-            updateDirectMainButton();
+<script>
+
+
+const tg = window.Telegram.WebApp;
+
+// Локальные настройки единственного экрана
+let directGenRatio = '1:1';
+let directGenQuality = 'schnell';
+
+// Старт WebApp и привязка кнопок к шторкам
+window.addEventListener('DOMContentLoaded', () => {
+    if (tg) {
+        tg.ready();  
+        tg.expand(); 
+        if (tg.MainButton) tg.MainButton.hide(); // Наглухо скрываем синюю кнопку ТГ, у нас свой пульт
+    }
+    
+    // Привязываем клики капсул напрямую к открытию шторок
+    const directQualityBtn = document.getElementById('btn_direct_quality');
+    const directRatioBtn = document.getElementById('btn_direct_ratio');
+    
+    if (directQualityBtn) directQualityBtn.addEventListener('click', openUniversalQualitySheet);
+    if (directRatioBtn) directRatioBtn.addEventListener('click', openUniversalRatioSheet);
+
+    // Выставляем начальные значения текстов на капсулах и кнопке Start
+    setDirectRatio(directGenRatio);
+    updateNeoStartButtonText();
+});
+
+// ====================================================================================
+// ЛОГИКА УНИВЕРСАЛЬНОЙ ШТОРКИ ВЫБОРА
+// ====================================================================================
+function openUniversalQualitySheet() {
+    const titleEl = document.getElementById('custom_sheet_title');
+    const listEl = document.getElementById('custom_sheet_list');
+    if (!titleEl || !listEl) return;
+
+    titleEl.innerText = "КАЧЕСТВО ГЕНЕРАЦИИ";
+    listEl.innerHTML = `
+        <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('schnell', '⚡ Standard')"><span>Standard</span><span class="coin-price">  1 🪙</span></button></li>
+        <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('dev', '💎 Pro')"><span>Pro</span><span class="coin-price">  1 🪙</span></button></li>
+        <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('ultra_4k', '🔥 Ultra')"><span>Ultra</span><span class="coin-price">  1 🪙</span></button></li>
+    `;
+    document.getElementById('custom_action_sheet').classList.add('active');
+}
+
+function selectQualityFromSheet(id, text) {
+    directGenQuality = id;
+    const dBtn = document.getElementById('btn_direct_quality');
+    if (dBtn) dBtn.innerHTML = text;
+
+    updateNeoStartButtonText();
+    closeCustomSheet();
+}
+
+function openUniversalRatioSheet() {
+    const titleEl = document.getElementById('custom_sheet_title');
+    const listEl = document.getElementById('custom_sheet_list');
+    if (!titleEl || !listEl) return;
+
+    titleEl.innerText = "СООТНОШЕНИЕ СТОРОН";
+    listEl.innerHTML = `
+        <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('9:16')"><span style="width: 100%; text-align: center;">9:16</span></button></li>
+        <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('3:4')"><span style="width: 100%; text-align: center;">3:4</span></button></li>
+        <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('1:1')"><span style="width: 100%; text-align: center;">1:1</span></button></li>
+        <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('4:3')"><span style="width: 100%; text-align: center;">4:3</span></button></li>
+        <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('16:9')"><span style="width: 100%; text-align: center;">16:9</span></button></li>
+    `;
+    document.getElementById('custom_action_sheet').classList.add('active');
+}
+
+function selectRatioFromSheet(id) {
+    setDirectRatio(id);
+    updateNeoStartButtonText();
+    closeCustomSheet();
+}
+
+function setDirectRatio(ratio) { 
+    directGenRatio = ratio; 
+    const el = document.getElementById('btn_direct_ratio');
+    if (el) el.innerHTML = ratio;
+}
+
+function closeCustomSheet() {
+    const sheet = document.getElementById('custom_action_sheet');
+    if (sheet) sheet.classList.remove('active');
+}
+
+// Обновлятор цены на кнопке Start (привязано к качеству)
+function updateNeoStartButtonText() {
+    const btnDirect = document.getElementById('neo_direct_submit_btn');
+    if (btnDirect) {
+        btnDirect.innerHTML = directGenQuality === 'ultra_4k' ? `Start 2 🪙` : `Start 1 🪙`;
+    }
+}
+
+// ====================================================================================
+// СБОРКА И ОТПРАВКА ДИПЛИНКА В БОТА
+// ====================================================================================
+function sendToTelegram(payload) {
+    try {
+        const botUsername = "ChatGPT_BuzVuz_bot"; 
+        let quality = payload.quality || 'schnell';
+        let ratio = payload.aspect_ratio ? payload.aspect_ratio.replace(':', '-') : '1-1';
+
+        // Формируем чистый старт-параметр строго для вашего текстового режима
+        let startParam = `mode_puretext_q_${quality}_r_${ratio}`;
+        let telegramLink = `https://t.me{botUsername}?start=${startParam}`;
+
+        console.log("[WebApp Link] Перенаправление по ссылке:", telegramLink);
+
+        if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openTelegramLink === 'function') {
+            window.Telegram.WebApp.openTelegramLink(telegramLink);
+            window.Telegram.WebApp.close();
+        } else {
+            window.location.href = telegramLink;
         }
+    } catch (e) {
+        console.error("Ошибка генерации диплинка:", e);
+        window.location.href = "https://t.me";
+    }
+}
 
-        function setDirectGenQuality(quality) {
-            // Переключаем класс active по тексту внутри кнопок качества
-            document.querySelectorAll('.quality-selector .quality-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (quality === 'schnell' && btn.innerText.includes('Standard')) btn.classList.add('active');
-                if (quality === 'dev' && btn.innerText.includes('Pro')) btn.classList.add('active');
-                if (quality === 'ultra_4k' && btn.innerText.includes('Ultra')) btn.classList.add('active');
-            });
-            directGenQuality = quality;
-            updateDirectMainButton();
-        }
+function sendDirectGenData() { 
+    try {
+        let ratio = (typeof directGenRatio !== 'undefined') ? directGenRatio : '1:1';
+        let quality = (typeof directGenQuality !== 'undefined') ? directGenQuality : 'schnell';
 
-        // Именованная функция для чистой отправки JSON в бот
-        function sendFluxData() {
-            try {
-                if (tg && tg.sendData) {
-                    const dataToSend = {
-                        mode_trigger: "pure_text_image", 
-                        aspect_ratio: directGenRatio,
-                        quality: directGenQuality
-                    };
-                    tg.sendData(JSON.stringify(dataToSend));
-                    tg.close();
-                }
-            } catch(e) {
-                console.error("Ошибка отправки Telegram:", e);
-            }
-        }
+        sendToTelegram({ 
+            mode_trigger: 'pure_text_image', 
+            aspect_ratio: ratio, 
+            quality: quality
+        }); 
+    } catch (err) {
+        console.error("Критический сбой отправки:", err);
+        window.location.href = "https://t.me";
+    }
+}
 
-                // ====================================================================================
-        // КРАТКИЙ И ЛАКОНИЧНЫЙ ОБНОВЛЯТОР ТЕКСТА ГЛАВНОЙ КНОПКИ ТЕЛЕГРАМ ДЛЯ FLUX
-        // ====================================================================================
-        function updateDirectMainButton() {
-            if (!tg || !tg.MainButton) return;
-            
-            // Превращаем системное качество в красивый короткий текст
-            const readableQual = directGenQuality === 'schnell' ? 'Standard' : directGenQuality === 'dev' ? 'Pro' : 'Ultra 4K';
-            
-            // Выводим лаконичный текст строго в формате "9:16 (Pro) Start ✨"
-            tg.MainButton.setText(`${directGenRatio} (${readableQual}) Start ✨`);
-            tg.MainButton.show();
-            
-            tg.MainButton.offClick(); // Безопасно очищаем память ТГ от прошлых кликов
-            tg.MainButton.onClick(sendFluxData); // Привязываем чистый колбэк отправки
-        }
-
-    </script>
+</script>
 </body>
 </html>

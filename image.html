@@ -460,9 +460,9 @@
         function showNativeDirectQualityPopup() { openUniversalQualitySheet(); }
         function showNativeDirectRatioPopup() { openUniversalRatioSheet(); }
 
-        // ====================================================================================
-        // 7. УПРАВЛЕНИЕ УНИВЕРСАЛЬНОЙ КАСТОМНОЙ ШТОРКОЙ (МГНОВЕННОЕ ПРЯМОЕ ОБНОВЛЕНИЕ КНОПОК)
-        // ====================================================================================
+// ====================================================================================
+// 7. УПРАВЛЕНИЕ УНИВЕРСАЛЬНОЙ КАСТОМНОЙ ШТОРКОЙ (РАСПРЕДЕЛЕНИЕ ПО СТОРОНАМ И ЦЕНЫ)
+// ====================================================================================
 
         function openUniversalQualitySheet() {
             const titleEl = document.getElementById('custom_sheet_title');
@@ -471,11 +471,11 @@
 
             titleEl.innerText = "КАЧЕСТВО ГЕНЕРАЦИИ";
             
-            // 🔥 ИСПРАВЛЕНО НАМЕРТВО: При клике на пункт шторки мы СРАЗУ меняем текст на кнопке и переменную!
+            // 🔥 ВОЗВРАЩЕНЫ СПАНЫ И ЦЕНЫ СПРАВА: Строго как в твоем правильном рабочем коде!
             listEl.innerHTML = `
-                <li><button class="custom-sheet-item" onclick="directGenQuality='schnell'; document.getElementById('btn_direct_quality').innerHTML='⚡ Standard'; updateNeoStartButtonText(); closeCustomSheet();"><span style="width: 100%; text-align: center;">Standard</span></button></li>
-                <li><button class="custom-sheet-item" onclick="directGenQuality='dev'; document.getElementById('btn_direct_quality').innerHTML='💎 Pro'; updateNeoStartButtonText(); closeCustomSheet();"><span style="width: 100%; text-align: center;">Pro</span></button></li>
-                <li><button class="custom-sheet-item" onclick="directGenQuality='ultra_4k'; document.getElementById('btn_direct_quality').innerHTML='🔥 Ultra'; updateNeoStartButtonText(); closeCustomSheet();"><span style="width: 100%; text-align: center;">Ultra</span></button></li>
+                <li><button class="custom-sheet-item" onclick="directGenQuality='schnell'; document.getElementById('btn_direct_quality').innerHTML='⚡ Standard'; updateNeoStartButtonText(); closeCustomSheet();"><span>Standard</span><span class="coin-price">1 🪙</span></button></li>
+                <li><button class="custom-sheet-item" onclick="directGenQuality='dev'; document.getElementById('btn_direct_quality').innerHTML='💎 Pro'; updateNeoStartButtonText(); closeCustomSheet();"><span>Pro</span><span class="coin-price">1 🪙</span></button></li>
+                <li><button class="custom-sheet-item" onclick="directGenQuality='ultra_4k'; document.getElementById('btn_direct_quality').innerHTML='🔥 Ultra'; updateNeoStartButtonText(); closeCustomSheet();"><span>Ultra</span><span class="coin-price">1 🪙</span></button></li>
             `;
 
             document.getElementById('custom_action_sheet').classList.add('active');
@@ -488,7 +488,7 @@
 
             titleEl.innerText = "СООТНОШЕНИЕ СТОРОН";
             
-            // 🔥 ИСПРАВЛЕНО НАМЕРТВО: При клике на формат мы СРАЗУ меняем текст на кнопке и переменную!
+            // 🔥 ВОЗВРАЩЕНЫ СПАНЫ И ЦЕНТРАЛЬНОЕ ВЫРАВНИВАНИЕ ФОРМАТА ДЛЯ ЕДИНСТВА СТИЛЯ
             listEl.innerHTML = `
                 <li><button class="custom-sheet-item" onclick="directGenRatio='9:16'; document.getElementById('btn_direct_ratio').innerHTML='9:16'; updateNeoStartButtonText(); closeCustomSheet();"><span style="width: 100%; text-align: center;">9:16</span></button></li>
                 <li><button class="custom-sheet-item" onclick="directGenRatio='3:4'; document.getElementById('btn_direct_ratio').innerHTML='3:4'; updateNeoStartButtonText(); closeCustomSheet();"><span style="width: 100%; text-align: center;">3:4</span></button></li>

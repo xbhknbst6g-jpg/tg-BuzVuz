@@ -9,26 +9,26 @@
     <script src="https://telegram.org"></script>
     
     <style>
-        /* ГЛОБАЛЬНЫЕ НАСТРОЙКИ ТЕМЫ TELEGRAM */
+        /* 🔥 ЖЕСТКО ФИКСИРУЕМ ТЕМНУЮ ТЕМУ, ИГНОРИРУЯ СВЕТЛУЮ ТЕМУ СМАРТФОНА */
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            background-color: var(--tg-theme-secondary-bg-color, #f4f6f9); 
+            background-color: #0d0f1d !important; /* Глубокий благородный темно-синий фон */
             margin: 0; padding: 15px; 
             padding-top: calc(env(safe-area-inset-top) + 15px);
             padding-bottom: calc(env(safe-area-inset-bottom) + 15px);
-            color: var(--tg-theme-text-color, #333); 
+            color: #ffffff !important; /* Текст ВСЕГДА белый */
             -webkit-user-select: none; user-select: none;
         }
 
         .header { text-align: center; margin-bottom: 25px; padding-top: 10px; }
-        .header h1 { font-size: 22px; margin: 0 0 5px 0; color: var(--tg-theme-text-color, #111); }
-        .header p { font-size: 14px; margin: 0; color: var(--tg-theme-hint-color, #666); }
+        .header h1 { font-size: 22px; margin: 0 0 5px 0; color: #ffffff !important; }
+        .header p { font-size: 14px; margin: 0; color: rgba(255, 255, 255, 0.6) !important; }
         
         /* АНИМАЦИЯ ПУЛЬСАЦИИ НЕОНА */
         @keyframes neonPulse {
-            0% { opacity: 0.93; filter: drop-shadow(0 0 2px rgba(255,255,255,0.1)); }
-            50% { opacity: 1; filter: drop-shadow(0 0 5px rgba(255,255,255,0.3)); }
-            100% { opacity: 0.93; filter: drop-shadow(0 0 2px rgba(255,255,255,0.1)); }
+            0% { opacity: 0.93; filter: drop-shadow(0 0 2px rgba(255,102,0,0.2)); }
+            50% { opacity: 1; filter: drop-shadow(0 0 8px rgba(255,102,0,0.4)); }
+            100% { opacity: 0.93; filter: drop-shadow(0 0 2px rgba(255,102,0,0.2)); }
         }
 
         /* ЛЕНТА ВЕРХУШКИ */
@@ -44,21 +44,21 @@
         .menu-title { 
             font-weight: 800; 
             font-size: 15px; 
-            color: #ff6600; 
+            color: #ff6600 !important; 
             text-transform: uppercase; 
             letter-spacing: 1.5px; 
             margin-bottom: 5px; 
-            text-shadow: 0 0 10px rgba(255, 102, 0, 0.5);
+            text-shadow: 0 0 10px rgba(255, 102, 0, 0.6);
         }
 
         .menu-desc { 
             font-size: 12px; 
-            color: rgba(255, 255, 255, 0.65); 
+            color: rgba(255, 255, 255, 0.65) !important; 
             line-height: 1.4; 
             letter-spacing: 0.3px;
         }
 
-        /* 🔥 СТИЛЬНЫЕ ОРАНЖЕВЫЕ НЕОНОВЫЕ КАРТОЧКИ ДЛЯ ГАЛЕРЕИ */
+        /* СТИЛЬНЫЕ ОРАНЖЕВЫЕ НЕОНОВЫЕ КАРТОЧКИ С ТЕМНЫМ ПОДТЕМНЕНИЕМ */
         .phone-template-card {
             position: relative !important;
             border: 2px solid #ff6600 !important; 
@@ -66,7 +66,7 @@
             box-shadow: 0 4px 10px rgba(255, 102, 0, 0.2) !important; 
             overflow: hidden !important;
             transition: all 0.2s ease-in-out !important;
-            background-color: #111 !important;
+            background-color: #111424 !important; /* Фон карточки, если картинка грузится */
             animation: neonPulse 4s infinite ease-in-out;
         }
 
@@ -82,7 +82,7 @@
             left: 0 !important;
             right: 0 !important;
             height: 40px !important; 
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent) !important; 
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent) !important; 
             pointer-events: none !important; 
             z-index: 1 !important;
         }
@@ -102,17 +102,18 @@
             box-sizing: border-box !important;
         }
 
-        /* 🔥 Создаем невидимый отступ внизу экрана для плавной прокрутки */
+        /* Создаем невидимый отступ внизу экрана */
         .screen {
-            padding-bottom: 110px !important; 
+            padding-bottom: 120px !important; 
             box-sizing: border-box !important;
         }
 
-        /* 🔥 НАСТРОЕК НЕОНОВЫХ КНОПОК: ФИКСИРОВАННАЯ ПАНЕЛЬ */
+        /* ПАНЕЛЬ КНОПОК: ИСПРАВЛЕНО ВЫРАВНИВАНИЕ START */
         .single-row-controls {
             display: flex !important;
             gap: 8px !important;
-            align-items: center !important; 
+            /* Изменили на flex-end, чтобы нижние срезы кнопок и капсул стояли строго на одной линии */
+            align-items: flex-end !important; 
             width: 100% !important;
             position: fixed !important;
             bottom: 25px !important; 
@@ -121,6 +122,8 @@
             padding: 0 16px !important; 
             box-sizing: border-box !important;
             z-index: 9999 !important; 
+            background: linear-gradient(to top, #0d0f1d 80%, transparent) !important; /* Мягкое затемнение под пультом, чтобы кнопки не сливались с текстом */
+            padding-top: 15px !important;
         }
 
         .control-col {
@@ -141,21 +144,22 @@
         .control-label {
             font-size: 11px !important;
             font-weight: bold !important;
-            color: var(--tg-theme-hint-color, #777) !important;
-            margin-bottom: 4px !important;
+            color: rgba(255, 255, 255, 0.4) !important; /* Фиксированный цвет подписи */
+            margin-bottom: 6px !important;
             text-transform: uppercase !important;
             letter-spacing: 0.5px !important;
             white-space: nowrap !important;
             overflow: hidden !important;
             text-overflow: ellipsis !important;
+            text-align: center !important;
         }
 
-        /* 💊 КРУГЛЫЕ КНОПКИ-КАПСУЛЫ */
+        /* КРУГЛЫЕ КНОПКИ-КАПСУЛЫ */
         .capsule-btn {
             -webkit-appearance: none !important; appearance: none !important; outline: none !important;
             box-shadow: 0 4px 12px rgba(255, 30, 0, 0.2) !important; 
             width: 100% !important;
-            padding: 10px 4px !important;
+            padding: 11px 4px !important;
             font-size: 13px !important; 
             font-weight: 800 !important; 
             text-align: center !important;
@@ -182,12 +186,12 @@
             border-color: #e61b00 !important;
         }
 
-        /* 🔥 КНОПКА START В ОБЩЕМ ОГНЕННОМ СТИЛЕ */
+        /* КНОПКА START БЕЗ СДВИГОВ И ПЕРЕКОСОВ */
         .neo-start-btn {
             -webkit-appearance: none !important; appearance: none !important; outline: none !important;
-            box-shadow: 0 4px 12px rgba(255, 30, 0, 0.2) !important; 
+            box-shadow: 0 4px 12px rgba(255, 30, 0, 0.3) !important; 
             width: 100% !important;
-            padding: 10px 4px !important;
+            padding: 11px 4px !important; /* Синхронизировали внутренний отступ с капсулами */
             font-size: 13px !important; 
             font-weight: 800 !important; 
             text-align: center !important;
@@ -214,13 +218,13 @@
             border-color: #e61b00 !important;
         }
 
-        /* 📱 СОБСТВЕННАЯ КАСТOMНАЯ ШТОРКА */
+        /* СОБСТВЕННАЯ КАСТOMНАЯ ШТОРКА */
         .custom-sheet-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.4); 
-            backdrop-filter: blur(2px);
-            z-index: 9999;
+            background: rgba(0, 0, 0, 0.6); 
+            backdrop-filter: blur(4px);
+            z-index: 99999;
             display: none;
             opacity: 0;
             transition: opacity 0.2s ease;
@@ -264,15 +268,13 @@
             display: flex;
             flex-direction: column;
             gap: 0;
-            background: #2c2c2e;
-            border-radius: 16px;
-            overflow: hidden;
-            padding: 0; margin: 0;list-style: none;}
-
-        .custom-sheet-item {width: 100%;padding: 12px 16px;font-size: 15px;font-weight: 600;background: none;
-            border: none;color: #fff;text-align: center !important;display: flex !important;
-            align-items: center !important;justify-content: space-between !important;
-            gap: 12px !important;box-sizing: border-box;-webkit-tap-highlight-color: transparent;
+            background: #2c2c2e;border-radius: 16px;
+            overflow: hidden;padding: 0; margin: 0;
+            list-style: none;}.custom-sheet-item {width: 100%;padding: 12px 16px;
+            font-size: 15px;font-weight: 600;background: none;border: none;color: #fff;
+            text-align: center !important;display: flex !important;align-items: center !important;
+            justify-content: space-between !important;gap: 12px !important;box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
         .custom-sheet-item:not(:last-child) {border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
         }

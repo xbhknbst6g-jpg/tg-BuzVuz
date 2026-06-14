@@ -282,67 +282,74 @@
         }
         .custom-sheet-item .coin-price {color: #ff6600 !important;font-size: 13px;font-weight: 800;
         }
+        /* Скрываем стандартный веб-скроллбар для горизонтальной ленты */
+        .swap-steps-grid::-webkit-scrollbar { 
+            display: none !important; 
+        }
+
     </style>
 </head>
 <body>
-    <!-- ЛЕНТА ВЕРХУШКИ -->
-        <div class="tabs-container">
-            <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); text-align: center;">Генерация картинок по тексту</div>
-        </div>
+        <!-- ЛЕНТА ВЕРХУШКИ С НАШИМ ФИРМЕННЫМ ЗАГЛОВКОМ (БЕЗ КНОПКИ НАЗАД, ТАК КАК ЭКРАН ОДИН) -->
+    <div class="tabs-container" id="direct_gen_tabs" style="justify-content: center; padding: 10px 0 14px 0 !important;">
+        <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); white-space: nowrap; text-align: center;">Генерация картинок по тексту</div>
+    </div>
 
-        <!-- КОНТЕЙНЕР-ОРИЕНТИР С ФИРМЕННЫМ НЕОНОВЫМ ТЕКСТОМ -->
-        <div class="custom-prompt-container" style="margin-top: 15px; box-sizing: border-box; display: flex; flex-direction: column;">
+    <!-- ЕДИНЫЙ СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (ОТКРЫТ ПО ДЕФОЛТУ) -->
+    <div id="direct_gen_settings_block" style="display: block;">
+        
+        <!-- 🔥 КОНТЕЙНЕР-ОРИЕНТИР С ВАШИМИ РАЗМЕРАМИ И ОТСТУПАМИ -->
+        <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 190px); box-sizing: border-box; display: flex; flex-direction: column;">
             
-            <!-- Интегрировали ваши классы стиля текста -->
             <div class="menu-title" style="text-align: center;">📍 Примеры генерации:</div>
             <div class="menu-desc" style="text-align: center; margin-bottom: 12px;">Что можно получить по простому текстовому запросу</div>
             
-            <!-- СЕТКА ИЗ 3-Х НЕОНОВЫХ КАРТОЧЕК -->
+            <!-- 🔥 ВАША РОДНАЯ СЕТКА ШАБЛОНОВ С ВЕРТИКАЛЬНЫМИ КАРТОЧКАМИ 9:16 -->
             <div class="swap-steps-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-                <div class="phone-template-card" style="height: 110px;">
+                <!-- Пример 1 (Вытянутый 9:16) -->
+                <div class="phone-template-card" style="height: 150px !important;">
                     <img src="https://postimg.cc" alt="Пример 1" style="width: 100%; height: 100%; object-fit: cover;">
-                    <div class="card-overlay" style="font-size: 10px !important; padding: 4px 2px !important;">Кот 🐱</div>
+                    <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Кот 🐱</div>
                 </div>
-                <div class="phone-template-card" style="height: 110px;">
+                <!-- Пример 2 (Вытянутый 9:16) -->
+                <div class="phone-template-card" style="height: 150px !important;">
                     <img src="https://postimg.cc" alt="Пример 2" style="width: 100%; height: 100%; object-fit: cover;">
-                    <div class="card-overlay" style="font-size: 10px !important; padding: 4px 2px !important;">Неон ⚡</div>
+                    <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Неон ⚡</div>
                 </div>
-                <div class="phone-template-card" style="height: 110px;">
+                <!-- Пример 3 (Вытянутый 9:16) -->
+                <div class="phone-template-card" style="height: 150px !important;">
                     <img src="https://postimg.cc" alt="Пример 3" style="width: 100%; height: 100%; object-fit: cover;">
-                    <div class="card-overlay" style="font-size: 10px !important; padding: 4px 2px !important;">Космос 🌌</div>
+                    <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Космос 🌌</div>
                 </div>
             </div>
 
-            <!-- ИНСТРУКЦИЯ С ВАШИМ ОТСТУПОМ 40px -->
+            <!-- 🔥 УВЕЛИЧИЛИ ОТСТУП СВЕРХУ ДО 40px -->
             <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
                 Шаг 1: Настройте формат кадра и качество генерации на кнопках внизу.<br>
                 Шаг 2: Нажмите огненную кнопку START.<br>
                 Шаг 3: Веб-сайт закроется, и бот в чате Telegram попросит вас написать текст (промпт) для создания изображения!
             </div>
+
         </div>
 
-        <!-- 🔥 УЛЬТРАКОМПАКТНАЯ ФИКСИРОВАННАЯ ПАНЕЛЬ КНОПОК ПО ЦЕНТРУ -->
-        <div class="single-row-controls">
-            <div class="control-col">
-                <div class="control-label">Качество</div>
-                <button id="btn_direct_quality" class="capsule-btn">⚡ Standard</button>
+        <!-- 🔥 УВЕЛИЧИЛИ ОТСТУП МЕЖДУ ТЕКСТОМ И КНОПКАМИ ДО 55px (СТРОГО КАК В ОРИГИНАЛЕ) -->
+        <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px; display: flex; gap: 8px;">
+            <div class="control-col" style="flex: 1;">
+                <button id="btn_direct_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
             </div>
-            
-            <div class="control-col">
-                <div class="control-label">Соотношение</div>
-                <button id="btn_direct_ratio" class="capsule-btn">1:1</button>
+            <div class="control-col" style="flex: 1;">
+                <button id="btn_direct_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">1:1</button>
             </div>
-            
-            <div class="control-col control-col-btn">
-                <!-- Без лейбла сверху, чтобы align-items: center выровнял Start в идеальную линию с капсулами -->
+            <div class="control-col control-col-btn" style="flex: 1.2;">
                 <button id="neo_direct_submit_btn" class="neo-start-btn" onclick="sendDirectGenData()">
                     Start 1 🪙
                 </button>
             </div>
         </div>
-    </div>
 
-    <!-- УНИВЕРСАЛЬНАЯ КАСТОМНАЯ ШТОРКА (HTML ПОДЛОЖКА) -->
+    </div> <!-- Конец служебного блока -->
+
+    <!-- УНИВЕРСАЛЬНАЯ КАСТОМНАЯ ШТОРКА -->
     <div id="custom_action_sheet" class="custom-sheet-overlay" onclick="closeCustomSheet()">
         <div class="custom-sheet-panel" onclick="event.stopPropagation()">
             <div id="custom_sheet_title" class="custom-sheet-title">ЗАГОЛОВОК</div>
@@ -353,9 +360,7 @@
     </div>
 
     <script>
-
-
- const tg = window.Telegram.WebApp;
+        const tg = window.Telegram.WebApp;
 
         // Переменные настроек одиночного экрана
         let directGenRatio = '1:1';
@@ -369,12 +374,7 @@
                 if (tg.MainButton) tg.MainButton.hide(); 
             }
             
-            const directQualityBtn = document.getElementById('btn_direct_quality');
-            const directRatioBtn = document.getElementById('btn_direct_ratio');
-            
-            if (directQualityBtn) directQualityBtn.addEventListener('click', openUniversalQualitySheet);
-            if (directRatioBtn) directRatioBtn.addEventListener('click', openUniversalRatioSheet);
-
+            // Первично выставляем чистые цифры и цену на кнопках
             setDirectRatio(directGenRatio);
             updateNeoStartButtonText();
         });
@@ -437,7 +437,7 @@
             if (sheet) sheet.classList.remove('active');
         }
 
-        // Пересчет монет на встроенной кнопке
+        // Пересчет монет на встроенной кнопке Start
         function updateNeoStartButtonText() {
             const btnDirect = document.getElementById('neo_direct_submit_btn');
             if (btnDirect) {
@@ -445,7 +445,7 @@
             }
         }
 
-        // Чистая отправка диплинка боту
+        // Чистая отправка диплинка боту в Telegram
         function sendToTelegram(payload) {
             try {
                 const botUsername = "ChatGPT_BuzVuz_bot"; 
@@ -467,7 +467,7 @@
             }
         }
 
-        function sendDirectGenData() { 
+                function sendDirectGenData() { 
             try {
                 let ratio = (typeof directGenRatio !== 'undefined') ? directGenRatio : '1:1';
                 let quality = (typeof directGenQuality !== 'undefined') ? directGenQuality : 'schnell';
@@ -478,7 +478,7 @@
                     quality: quality
                 }); 
             } catch (err) {
-                console.error("Сбой отправки:", err);
+                console.error("Сбой отправки пакета:", err);
                 window.location.href = "https://t.me";
             }
         }

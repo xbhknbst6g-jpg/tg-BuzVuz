@@ -340,13 +340,13 @@
 
     </div>
 
-     <!-- 🔥 СТРОГО КАК В ОРИГИНАЛЕ: ЧИСТЫЕ КЛАССЫ БЕЗ ИНЛАЙН СТИЛЕЙ FLEX: 1 -->
-    <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px;">
+        <!-- 🔥 ИСПРАВЛЕНО: ОТСТУП СВЕРХУ 35px ДЛЯ СНИЖЕНИЯ КНОПОК И ДЕФОЛТ КНОПКИ 9:16 -->
+    <div class="single-row-controls" style="margin-top: 35px !important; margin-bottom: 15px;">
         <div class="control-col">
             <button id="btn_direct_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
         </div>
         <div class="control-col">
-            <button id="btn_direct_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">1:1</button>
+            <button id="btn_direct_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">9:16</button>
         </div>
         <div class="control-col control-col-btn">
             <button id="neo_direct_submit_btn" class="neo-start-btn" onclick="sendDirectGenData()">
@@ -354,6 +354,7 @@
             </button>
         </div>
     </div>
+
 
     <!-- УНИВЕРСАЛЬНАЯ КАСТОМНАЯ ШТОРКА -->
     <div id="custom_action_sheet" class="custom-sheet-overlay" onclick="closeCustomSheet()">
@@ -372,7 +373,7 @@
         // ====================================================================================
         const tg = window.Telegram.WebApp;
 
-        let directGenRatio = '1:1';
+        let directGenRatio = '9:16';
         let directGenQuality = 'schnell';
 
         // ====================================================================================

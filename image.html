@@ -483,19 +483,19 @@
         }
 
             // Обработчик качества: принимает значение настроек и обновляет капсулу напрямую по её жесткому ID
+        // ЧИСТЫЙ ОБРАБОТЧИК КАЧЕСТВА: Применяет настройки на капсулу без лишних проверок
         function selectQualityFromSheet(id, text) {
             directGenQuality = id; // Записываем значение ('schnell', 'dev', 'ultra_4k') в переменную
             
-            // 🔥 Жестко находим кнопку качества на экране по её точному HTML ID
+            // Напрямую находим кнопку качества на экране по её точному ID
             const el = document.getElementById('btn_direct_quality');
             if (el) {
-                el.innerHTML = text; // Обновляем текст на капсуле (например, '⚡ Standard')
+                el.innerHTML = text; // Мгновенно меняем текст (например, '⚡ Standard')
             }
 
             updateNeoStartButtonText();
             closeCustomSheet();
         }
-
         // ОТКРЫТИЕ ШТОРКИ ФОРМАТА ДЛЯ НАШЕГО ЭКРАНА (ОДИН В ОДИН С ВАШИМИ SPAN)
         function openUniversalRatioSheet() {
             const titleEl = document.getElementById('custom_sheet_title');
@@ -516,20 +516,19 @@
             document.getElementById('custom_action_sheet').classList.add('active');
         }
 
-                // Обработчик формата: принимает значение пропорций и обновляет капсулу напрямую по её жесткому ID
+        // ЧИСТЫЙ ОБРАБОТЧИК ФОРМАТА: Применяет настройки на капсулу без лишних проверок
         function selectRatioFromSheet(id) {
             directGenRatio = id; // Записываем значение формата ('9:16', '1:1' и т.д.) в переменную
             
-            // 🔥 Жестко находим кнопку формата на экране по её точному HTML ID
+            // Напрямую находим кнопку формата на экране по её точному ID
             const el = document.getElementById('btn_direct_ratio');
             if (el) {
-                el.innerHTML = id; // Обновляем чистые цифры на капсуле (например, '9:16')
+                el.innerHTML = id; // Мгновенно выводим чистые цифры формата
             }
 
             updateNeoStartButtonText();
             closeCustomSheet();
         }
-
         // Перенаправляем старые функции вызова из DOMContentLoaded на наш единый пульт управления шторкой
         function showNativeDirectQualityPopup() { openUniversalQualitySheet(); }
         function showNativeDirectRatioPopup() { openUniversalRatioSheet(); }

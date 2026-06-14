@@ -402,13 +402,22 @@
         // 6. ОБНОВЛЯТОР СТОИМОСТИ НА ВСТРОЕННОЙ КНОПКЕ START
         // ====================================================================================
         window.addEventListener('DOMContentLoaded', () => {
-            // 🔥 ШАГ 1: СРАЗУ ВКЛЮЧАЕМ ЭКРАН ИЗ ТЕМНОТЫ НА ПЕРВОЙ СТРОЧКЕ
+            // 🔥 ШАГ 1: МГНОВЕННО ВКЛЮЧАЕМ И ВНЕШНИЙ ЭКРАН, И ВНУТРЕННИЙ БЛОК НАСТРОЕК
             try {
+                // Включаем самый верхний контейнер экрана, чтобы убрать черный фон
+                const mainScreen = document.getElementById('image_generation_direct');
+                if (mainScreen) {
+                    mainScreen.style.display = "block";
+                }
+                
+                // Включаем внутренний служебный блок с карточками и кнопками
                 const settingsBlock = document.getElementById('direct_gen_settings_block');
-                if (settingsBlock) settingsBlock.style.display = "block";
-                console.log("[WebApp Direct] Служебный блок успешно открыт!");
+                if (settingsBlock) {
+                    settingsBlock.style.display = "block";
+                }
+                console.log("[WebApp Direct] Все блоки интерфейса принудительно открыты!");
             } catch (e) {
-                console.error("Ошибка принудительного открытия блока:", e);
+                console.error("Ошибка принудительного открытия контейнеров:", e);
             }
 
             if (tg) {
@@ -419,7 +428,7 @@
                 } catch (e) {}
             }
             
-            // 🔥 ШАГ 2: БЕЗОПАСНАЯ ПРИВЯЗКА КЛИКОВ
+            // --- ПРИВЯЗКА КЛИКОВ ДЛЯ НАШЕГО ЕДИНСТВЕННОГО РЕЖИМА ---
             try {
                 const qualityBtn = document.getElementById('btn_direct_quality');
                 const ratioBtn = document.getElementById('btn_direct_ratio');
@@ -427,12 +436,12 @@
                 if (qualityBtn) qualityBtn.addEventListener('click', showNativeDirectQualityPopup);
                 if (ratioBtn) ratioBtn.addEventListener('click', showNativeDirectRatioPopup);
             } catch (e) {
-                console.error("Ошибка привязки кликов:", e);
+                console.error("Ошибка привязки событий клика:", e);
             }
 
-            // 🔥 ШАГ 3: ИЗОЛИРОВАННЫЙ БЕЗОПАСНЫЙ ВЫЗОВ СИНХРОНИЗАТОРОВ
-            try { setDirectRatio(directGenRatio); } catch (e) { console.error("Ошибка setDirectRatio:", e); }
-            try { updateNeoStartButtonText(); } catch (e) { console.error("Ошибка updateNeoStartButtonText:", e); }
+            // Безопасный вызов стартовой синхронизации текстов капсул
+            try { setDirectRatio(directGenRatio); } catch (e) {}
+            try { updateNeoStartButtonText(); } catch (e) {}
         });
 
         function showNativeDirectQualityPopup() { openUniversalQualitySheet(); }

@@ -467,7 +467,7 @@
             }
         }
 
-                        function sendDirectGenData() { 
+        function sendDirectGenData() { 
             try {
                 let ratio = (typeof directGenRatio !== 'undefined') ? directGenRatio : '1:1';
                 let quality = (typeof directGenQuality !== 'undefined') ? directGenQuality : 'schnell';
@@ -483,63 +483,84 @@
             }
         }
 
-        // 🔥 ИСПРАВЛЕННАЯ ЛОГИКА ШТОРКИ КАЧЕСТВА: ПРИМЕНЯЕТ ЗНАЧЕНИЯ НАПРЯМУЮ
+        // Задаем режим этого экрана жестко, чтобы ваши родные обработчики знали, куда сохранять настройки
+        let currentActiveMode = 'image_generation_direct';
+
+        // ОТКРЫТИЕ ШТОРКИ КАЧЕСТВА ДЛЯ ЛЮБОГО АКТИВНОГО ЭКРАНА
         function openUniversalQualitySheet() {
             const titleEl = document.getElementById('custom_sheet_title');
             const listEl = document.getElementById('custom_sheet_list');
             if (!titleEl || !listEl) return;
 
             titleEl.innerText = "КАЧЕСТВО ГЕНЕРАЦИИ";
-            // Теперь клик вызывает точечный обработчик applyDirectQuality
+            
+            // Чистый аккуратный список без смайликов, цены прижаты вправо
             listEl.innerHTML = `
-                <li><button class="custom-sheet-item" onclick="applyDirectQuality('schnell', '⚡ Standard')"><span>Standard</span><span class="coin-price">  1 🪙</span></button></li>
-                <li><button class="custom-sheet-item" onclick="applyDirectQuality('dev', '💎 Pro')"><span>Pro</span><span class="coin-price">  1 🪙</span></button></li>
-                <li><button class="custom-sheet-item" onclick="applyDirectQuality('ultra_4k', '🔥 Ultra')"><span>Ultra</span><span class="coin-price">  1 🪙</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('schnell', '⚡ Standard')"><span>Standard</span><span class="coin-price">  1 🪙</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('dev', '💎 Pro')"><span>Pro</span><span class="coin-price">  1 🪙</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('ultra_4k', '🔥 Ultra')"><span>Ultra</span><span class="coin-price">  1 🪙</span></button></li>
             `;
+
             document.getElementById('custom_action_sheet').classList.add('active');
         }
 
-        // Функция мгновенного применения качества
-        function applyDirectQuality(id, text) {
-            directGenQuality = id; // Меняем переменную
+        // ЧИСТЫЙ ОБРАБОТЧИК ВЫБОРА КАЧЕСТВА ИЗ ШТОРКИ
+        function selectQualityFromSheet(id, text) {
+            // Прямо записываем настройки в переменные нашего единственного экрана
+            directGenQuality = id;
+            
             const dBtn = document.getElementById('btn_direct_quality');
-            if (dBtn) dBtn.innerHTML = text; // Меняем текст на кнопке
-
-            updateNeoStartButtonText(); // Пересчитываем монеты на кнопке Start
-            closeCustomSheet(); // Закрываем шторку
+            if (dBtn) dBtn.innerHTML = text;
+            
+            updateNeoStartButtonText();
+            closeCustomSheet();
         }
 
-        // 🔥 ИСПРАВЛЕННАЯ ЛОГИКА ШТОРКИ ФОРМАТА: ПРИМЕНЯЕТ ЗНАЧЕНИЯ НАПРЯМУЮ
+        // ОТКРЫТИЕ ШТОРКИ ФОРМАТА (БЕЗ ИКОНОК, ТОЛЬКО ЦИФРЫ)
         function openUniversalRatioSheet() {
             const titleEl = document.getElementById('custom_sheet_title');
             const listEl = document.getElementById('custom_sheet_list');
             if (!titleEl || !listEl) return;
 
             titleEl.innerText = "СООТНОШЕНИЕ СТОРОН";
-            // Теперь клик вызывает точечный обработчик applyDirectRatio
+            
             listEl.innerHTML = `
-                <li><button class="custom-sheet-item" onclick="applyDirectRatio('9:16')"><span style="width: 100%; text-align: center;">9:16</span></button></li>
-                <li><button class="custom-sheet-item" onclick="applyDirectRatio('3:4')"><span style="width: 100%; text-align: center;">3:4</span></button></li>
-                <li><button class="custom-sheet-item" onclick="applyDirectRatio('1:1')"><span style="width: 100%; text-align: center;">1:1</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('9:16')"><span style="width: 100%; text-align: center;">9:16</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('3:4')"><span style="width: 100%; text-align: center;">3:4</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('1:1')"><span style="width: 100%; text-align: center;">1:1</span></button></li>
                 <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('4:3')"><span style="width: 100%; text-align: center;">4:3</span></button></li>
                 <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('16:9')"><span style="width: 100%; text-align: center;">16:9</span></button></li>
             `;
+
             document.getElementById('custom_action_sheet').classList.add('active');
         }
 
-        // Функция мгновенного применения формата
-        function applyDirectRatio(ratio) {
-            directGenRatio = ratio; // Меняем переменную
-            const el = document.getElementById('btn_direct_ratio');
-            if (el) el.innerHTML = ratio; // Выводим чистые цифры на капсулу
-
+        // ЧИСТЫЙ ОБРАБОТЧИК ВЫБОРА ФОРМАТА ИЗ ШТОРКИ
+        function selectRatioFromSheet(id) {
+            // Напрямую вызываем родную синхронизацию капсулы
+            setDirectRatio(id);
+            
             updateNeoStartButtonText();
             closeCustomSheet();
         }
 
-        // Заглушки обратной совместимости, чтобы шторка формата не выдавала ошибок
-        function selectRatioFromSheet(id) { applyDirectRatio(id); }
-        function selectQualityFromSheet(id, text) { applyDirectQuality(id, text); }
+        // Ваша функция принудительной синхронизации формата для капсулы
+        function setDirectRatio(ratio) { 
+            directGenRatio = ratio; 
+            const el = document.getElementById('btn_direct_ratio');
+            if (el) el.innerHTML = ratio;
+        }
+
+        // Перенаправляем функции вызова из DOMContentLoaded на наш единый пульт управления шторкой
+        function showNativeDirectQualityPopup() { openUniversalQualitySheet(); }
+        function showNativeDirectRatioPopup() { openUniversalRatioSheet(); }
+
+        // Функция закрытия шторки
+        function closeCustomSheet() {
+            const sheet = document.getElementById('custom_action_sheet');
+            if (sheet) sheet.classList.remove('active');
+        }
     </script>
 </body>
 </html>
+

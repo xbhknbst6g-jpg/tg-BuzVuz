@@ -286,6 +286,11 @@
         .swap-steps-grid::-webkit-scrollbar { 
             display: none !important; 
         }
+        /* Жестко заставляем клик проходить сквозь спаны внутрь самой кнопки шторки */
+        .custom-sheet-item span {
+            pointer-events: none !important;
+        }
+
 
     </style>
 </head>
@@ -335,15 +340,15 @@
 
     </div>
 
-    <!-- 🔥 УВЕЛИЧИЛИ ОТСТУП МЕЖДУ ТЕКСТОМ И КНОПКАМИ ДО 55px (СТРОГО КАК В ОРИГИНАЛЕ) -->
-    <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px; display: flex; gap: 8px;">
-        <div class="control-col" style="flex: 1;">
+     <!-- 🔥 СТРОГО КАК В ОРИГИНАЛЕ: ЧИСТЫЕ КЛАССЫ БЕЗ ИНЛАЙН СТИЛЕЙ FLEX: 1 -->
+    <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px;">
+        <div class="control-col">
             <button id="btn_direct_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
         </div>
-        <div class="control-col" style="flex: 1;">
+        <div class="control-col">
             <button id="btn_direct_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">1:1</button>
         </div>
-        <div class="control-col control-col-btn" style="flex: 1.2;">
+        <div class="control-col control-col-btn">
             <button id="neo_direct_submit_btn" class="neo-start-btn" onclick="sendDirectGenData()">
                 Start 1 🪙
             </button>
@@ -477,12 +482,15 @@
             document.getElementById('custom_action_sheet').classList.add('active');
         }
 
-        // Обработчик качества: меняет переменную и текст на кнопке-капсуле по ID
+            // Обработчик качества: принимает значение настроек и обновляет капсулу напрямую по её жесткому ID
         function selectQualityFromSheet(id, text) {
-            directGenQuality = id; // Записываем в переменную
+            directGenQuality = id; // Записываем значение ('schnell', 'dev', 'ultra_4k') в переменную
             
+            // 🔥 Жестко находим кнопку качества на экране по её точному HTML ID
             const el = document.getElementById('btn_direct_quality');
-            if (el) el.innerHTML = text; // Обновляем текст на капсуле!
+            if (el) {
+                el.innerHTML = text; // Обновляем текст на капсуле (например, '⚡ Standard')
+            }
 
             updateNeoStartButtonText();
             closeCustomSheet();
@@ -508,12 +516,15 @@
             document.getElementById('custom_action_sheet').classList.add('active');
         }
 
-        // Обработчик формата: меняет переменную и выводит чистые цифры на кнопку-капсулу
+                // Обработчик формата: принимает значение пропорций и обновляет капсулу напрямую по её жесткому ID
         function selectRatioFromSheet(id) {
-            directGenRatio = id; // Записываем в переменную
+            directGenRatio = id; // Записываем значение формата ('9:16', '1:1' и т.д.) в переменную
             
+            // 🔥 Жестко находим кнопку формата на экране по её точному HTML ID
             const el = document.getElementById('btn_direct_ratio');
-            if (el) el.innerHTML = id; // Обновляем формат на капсуле!
+            if (el) {
+                el.innerHTML = id; // Обновляем чистые цифры на капсуле (например, '9:16')
+            }
 
             updateNeoStartButtonText();
             closeCustomSheet();

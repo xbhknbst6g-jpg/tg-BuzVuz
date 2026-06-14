@@ -366,18 +366,30 @@
         let directGenRatio = '1:1';
         let directGenQuality = 'schnell';
 
-        // Инициализация при старте
-        window.addEventListener('DOMContentLoaded', () => {
-            if (tg) {
-                tg.ready();  
-                tg.expand(); 
-                if (tg.MainButton) tg.MainButton.hide(); 
-            }
-            
-            // Первично выставляем чистые цифры и цену на кнопках
-            setDirectRatio(directGenRatio);
-            updateNeoStartButtonText();
-        });
+// ====================================================================================
+// 4. Старт WebApp, автоматическое разворачивание шторки и привязка кнопок (ОЧИЩЕНО)
+// ====================================================================================
+window.addEventListener('DOMContentLoaded', () => {
+    if (tg) {
+        tg.ready();  
+        tg.expand(); 
+        if (tg.MainButton) tg.MainButton.hide(); // Наглухо прячем нативную синюю кнопку ТГ
+    }
+    
+    // --- ПРИВЯЗКА КЛИКОВ ДЛЯ ЕДИНСТВЕННОГО ЭКРАНА ГЕНЕРАЦИИ ПО ТЕКСТУ ---
+    const directQualityBtn = document.getElementById('btn_direct_quality');
+    const directRatioBtn = document.getElementById('btn_direct_ratio');
+    
+    // Привязываем клики строго к вашим рабочим функциям вызова шторки
+    if (directQualityBtn) directQualityBtn.addEventListener('click', openUniversalQualitySheet);
+    if (directRatioBtn) directRatioBtn.addEventListener('click', openUniversalRatioSheet);
+
+    // Первично выставляем чистые цифры формата и цену на кнопке Start при загрузке
+    setDirectRatio(directGenRatio);
+    updateNeoStartButtonText();
+    
+    console.log("[WebApp Direct] Одиночный экран успешно запущен, кнопки привязаны!");
+});
 
         // Работа шторки качества
         function openUniversalQualitySheet() {

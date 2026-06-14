@@ -374,6 +374,18 @@
         // 4. СТАРТ WEBAPP И ПРИВЯЗКА СОБЫТИЙ КНОПОК
         // ====================================================================================
         window.addEventListener('DOMContentLoaded', () => {
+            // 🔥 ШАГ 1: ДОБАВЛЯЕМ КЛАСС active НА ГЛАВНЫЙ ЭКРАН (СТРОГО КАК В ВАШЕМ openScreen!)
+            const mainScreen = document.getElementById('image_generation_direct');
+            if (mainScreen) {
+                mainScreen.classList.add('active'); // Включаем видимость экрана по вашему CSS-стандарту
+            }
+
+            // 🔥 ШАГ 2: ПРИНУДИТЕЛЬНО ВКЛЮЧАЕМ СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (ВАШ РОДНОЙ КОД)
+            const settingsBlock = document.getElementById('direct_gen_settings_block');
+            if (settingsBlock) {
+                settingsBlock.style.display = "block";
+            }
+
             if (tg) {
                 tg.ready();  
                 tg.expand(); 
@@ -385,10 +397,6 @@
             
             if (qualityBtn) qualityBtn.addEventListener('click', showNativeDirectQualityPopup);
             if (ratioBtn) ratioBtn.addEventListener('click', showNativeDirectRatioPopup);
-
-            // 🔥 СИНХРОНИЗАЦИЯ С РОУТЕРОМ: Принудительно включаем блок на старте, как это делал openScreen!
-            const settingsBlock = document.getElementById('direct_gen_settings_block');
-            if (settingsBlock) settingsBlock.style.display = "block";
 
             setDirectRatio(directGenRatio);
             updateNeoStartButtonText();

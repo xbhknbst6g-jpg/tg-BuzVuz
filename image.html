@@ -376,10 +376,15 @@ window.addEventListener('DOMContentLoaded', () => {
     if (tg) {
         tg.ready();  
         tg.expand(); 
-        if (tg.MainButton) tg.MainButton.hide(); 
+        if (tg.MainButton) tg.MainButton.hide();
     }
     
-    // Просто выставляем начальный текст на капсулах, так как контент уже на экране
+    // 🔥 ОРИГИНАЛЬНОЕ МГНОВЕННОЕ ВКЛЮЧЕНИЕ ИЗ ТВОЕГО РОУТЕРА FACE SWAP
+    const settingsBlock = document.getElementById('direct_gen_settings_block');
+    if (settingsBlock) {
+        settingsBlock.style.display = "block";
+    }
+
     setDirectRatio(directGenRatio);
     updateNeoStartButtonText();
 });

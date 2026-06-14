@@ -360,45 +360,34 @@
     </div>
 
     <script>
-        // 1. Инициализация Telegram WebApp
         const tg = window.Telegram.WebApp;
 
-        // 2. Локальные переменные настроек одиночного экрана
+        // Локальные переменные настроек одиночного экрана
         let directGenRatio = '1:1';
         let directGenQuality = 'schnell';
 
-        // 3. Старт WebApp и привязка кнопок
+        // 4. Старт WebApp, автоматическое разворачивание шторки и привязка кнопок
         window.addEventListener('DOMContentLoaded', () => {
-            try {
-                if (tg) {
-                    tg.ready();  
-                    tg.expand(); 
-                    if (tg.MainButton) tg.MainButton.hide(); // Прячем синюю кнопку ТГ
-                }
-                
-                const directQualityBtn = document.getElementById('btn_direct_quality');
-                const directRatioBtn = document.getElementById('btn_direct_ratio');
-                
-                if (directQualityBtn) {
-                    directQualityBtn.addEventListener('click', openUniversalQualitySheet);
-                }
-                if (directRatioBtn) {
-                    directRatioBtn.addEventListener('click', openUniversalRatioSheet);
-                }
-
-                // Выставляем начальные значения текстов на капсулах
-                setDirectRatio(directGenRatio);
-                updateNeoStartButtonText();
-                
-                console.log("[WebApp] Кнопки успешно привязаны");
-            } catch (err) {
-                console.error("Ошибка при старте страницы:", err);
+            if (tg) {
+                tg.ready();  
+                tg.expand(); 
+                if (tg.MainButton) tg.MainButton.hide(); 
             }
+            
+            const directQualityBtn = document.getElementById('btn_direct_quality');
+            const directRatioBtn = document.getElementById('btn_direct_ratio');
+            
+            if (directQualityBtn) directQualityBtn.addEventListener('click', showNativeDirectQualityPopup);
+            if (directRatioBtn) directRatioBtn.addEventListener('click', showNativeDirectRatioPopup);
+
+            // Ставим начальные значения при загрузке
+            setDirectRatio(directGenRatio);
+            updateNeoStartButtonText();
         });
 
-// ====================================================================================
-// 7. УПРАВЛЕНИЕ УНИВЕРСАЛЬНОЙ КАСТОМНОЙ ШТОРКОЙ ДЛЯ ЭКРАНА КАРТИНОК (БЕЗ ИКОНОК)
-// ====================================================================================
+        // ====================================================================================
+        // 7. УПРАВЛЕНИЕ УНИВЕРСАЛЬНОЙ КАСТОМНОЙ ШТОРКОЙ ДЛЯ ЭКРАНА КАРТИНОК (БЕЗ ИКОНОК)
+        // ====================================================================================
 
         // ОТКРЫТИЕ ШТОРКИ КАЧЕСТВА ДЛЯ НАШЕГО ЭКРАНА
         function openUniversalQualitySheet() {
@@ -408,7 +397,6 @@
 
             titleEl.innerText = "КАЧЕСТВО ГЕНЕРАЦИИ";
             
-            // Чистый аккуратный список без смайликов, цены прижаты вправо
             listEl.innerHTML = `
                 <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('schnell', '⚡ Standard')"><span>Standard</span><span class="coin-price">  1 🪙</span></button></li>
                 <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('dev', '💎 Pro')"><span>Pro</span><span class="coin-price">  1 🪙</span></button></li>
@@ -424,7 +412,7 @@
             const dBtn = document.getElementById('btn_direct_quality');
             if (dBtn) dBtn.innerHTML = text;
 
-            if (typeof updateNeoStartButtonText === 'function') updateNeoStartButtonText();
+            updateNeoStartButtonText();
             closeCustomSheet();
         }
 
@@ -436,7 +424,6 @@
 
             titleEl.innerText = "СООТНОШЕНИЕ СТОРОН";
             
-            // Чистые аккуратные цифры без лишних слов
             listEl.innerHTML = `
                 <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('9:16')"><span style="width: 100%; text-align: center;">9:16</span></button></li>
                 <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('3:4')"><span style="width: 100%; text-align: center;">3:4</span></button></li>
@@ -450,10 +437,25 @@
 
         // Обработчик формата: вызывает родную функцию синхронизации кнопки
         function selectRatioFromSheet(id) {
-            setDirectRatio(id); // Вызываем родную синхронизацию нашего экрана
+            setDirectRatio(id); 
 
-            if (typeof updateNeoStartButtonText === 'function') updateNeoStartButtonText();
+            updateNeoStartButtonText();
             closeCustomSheet();
+        }
+
+        // 🔥 ВОЗВРАЩЕНА: Родная функция принудительной синхронизации формата для капсулы
+        function setDirectRatio(ratio) { 
+            directGenRatio = ratio; 
+            const el = document.getElementById('btn_direct_ratio');
+            if (el) el.innerHTML = ratio;
+        }
+
+        // 🔥 ВОЗВРАЩЕНА: Пересчет монет на встроенной кнопке Start в зависимости от качества
+        function updateNeoStartButtonText() {
+            const btnDirect = document.getElementById('neo_direct_submit_btn');
+            if (btnDirect) {
+                btnDirect.innerHTML = directGenQuality === 'ultra_4k' ? `Start 2 🪙` : `Start 1 🪙`;
+            }
         }
 
         // Перенаправляем функции вызова из DOMContentLoaded на наш единый пульт управления шторкой
@@ -466,22 +468,7 @@
             if (sheet) sheet.classList.remove('active');
         }
 
-
-
-        
-        // Обновлятор цены на встроенной кнопке Start
-        function updateNeoStartButtonText() {
-            try {
-                const btnDirect = document.getElementById('neo_direct_submit_btn');
-                if (btnDirect) {
-                    btnDirect.innerHTML = directGenQuality === 'ultra_4k' ? `Start 2 🪙` : `Start 1 🪙`;
-                }
-            } catch (err) {
-                console.error("Ошибка обновления цены кнопки:", err);
-            }
-        }
-
-        // 6. Формирование ссылки и отправка диплинка в Telegram
+        // Чистая отправка диплинка боту в Telegram
         function sendToTelegram(payload) {
             try {
                 const botUsername = "ChatGPT_BuzVuz_bot"; 
@@ -491,8 +478,6 @@
                 let startParam = `mode_puretext_q_${quality}_r_${ratio}`;
                 let telegramLink = `https://t.me{botUsername}?start=${startParam}`;
 
-                console.log("[WebApp Link] Перенаправление по ссылке:", telegramLink);
-
                 if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openTelegramLink === 'function') {
                     window.Telegram.WebApp.openTelegramLink(telegramLink);
                     window.Telegram.WebApp.close();
@@ -500,7 +485,7 @@
                     window.location.href = telegramLink;
                 }
             } catch (e) {
-                console.error("Ошибка генерации диплинка:", e);
+                console.error("Ошибка диплинка:", e);
                 window.location.href = "https://t.me";
             }
         }

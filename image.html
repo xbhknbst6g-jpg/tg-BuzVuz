@@ -2,13 +2,14 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <!-- Ограничение масштабирования для Web App и поддержка челки iPhone -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>AI Студия - Генерация картинок</title>
+    <title>AI Фотостудия</title>
+    
     <!-- Официальный скрипт Telegram Web App -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://telegram.org"></script>
+    
     <style>
-        /* ГЛОБАЛЬНАЯ ИНТЕГРАЦИЯ С ТЕМАМИ TELEGRAM */
+        /* ГЛОБАЛЬНЫЕ НАСТРОЙКИ ТЕМЫ TELEGRAM */
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
             background-color: var(--tg-theme-secondary-bg-color, #f4f6f9); 
@@ -18,257 +19,467 @@
             color: var(--tg-theme-text-color, #333); 
             -webkit-user-select: none; user-select: none;
         }
+
         .header { text-align: center; margin-bottom: 25px; padding-top: 10px; }
         .header h1 { font-size: 22px; margin: 0 0 5px 0; color: var(--tg-theme-text-color, #111); }
         .header p { font-size: 14px; margin: 0; color: var(--tg-theme-hint-color, #666); }
         
-        /* ИНТЕРФЕЙСНЫЕ КНОПКИ (ФОРМАТ И КАЧЕСТВО) */
-        .ratio-selector { display: flex; flex-wrap: wrap; gap: 8px; margin: 15px 0; justify-content: space-between; }
-        .ratio-btn, .quality-btn { 
-            -webkit-appearance: none; appearance: none; outline: none;
-            border: 2px solid var(--tg-theme-border-color, #e1e6eb); 
-            border-radius: 8px; background: var(--tg-theme-bg-color, #fff); 
-            color: var(--tg-theme-text-color, #333); cursor: pointer; 
-            font-weight: bold; text-align: center; transition: all 0.15s ease;
-            -webkit-tap-highlight-color: transparent;
+        /* АНИМАЦИЯ ПУЛЬСАЦИИ НЕОНА */
+        @keyframes neonPulse {
+            0% { opacity: 0.93; filter: drop-shadow(0 0 2px rgba(255,255,255,0.1)); }
+            50% { opacity: 1; filter: drop-shadow(0 0 5px rgba(255,255,255,0.3)); }
+            100% { opacity: 0.93; filter: drop-shadow(0 0 2px rgba(255,255,255,0.1)); }
         }
-        .ratio-btn { flex: 1 1 28%; padding: 10px 5px; font-size: 12px; }
-        .quality-selector { display: flex; gap: 10px; margin: 15px 0; }
-        .quality-btn { flex: 1; padding: 12px; font-size: 13px; }
 
-        /* ПОДСВЕТКА АКТИВНЫХ КНОПОК ПО ЦВЕТУ ТЕМЫ ЮЗЕРА */
-        .ratio-btn.active, .quality-btn.active { 
-            border-color: var(--tg-theme-button-color, #0088cc) !important; 
-            background: rgba(0, 136, 204, 0.08) !important; 
-            color: var(--tg-theme-button-color, #0088cc) !important;
+        /* ЛЕНТА ВЕРХУШКИ */
+        .tabs-container {
+            display: flex !important;
+            align-items: center !important; 
+            justify-content: center !important;
+            padding: 4px 3px 14px 3px !important; 
+            margin-top: 5px !important;
+        }
+
+        /* ФИРМЕННЫЕ ТЕКСТОВЫЕ НЕОНОВЫЕ СТИЛИ */
+        .menu-title { 
+            font-weight: 800; 
+            font-size: 15px; 
+            color: #ff6600; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px; 
+            margin-bottom: 5px; 
+            text-shadow: 0 0 10px rgba(255, 102, 0, 0.5);
+        }
+
+        .menu-desc { 
+            font-size: 12px; 
+            color: rgba(255, 255, 255, 0.65); 
+            line-height: 1.4; 
+            letter-spacing: 0.3px;
+        }
+
+        /* 🔥 СТИЛЬНЫЕ ОРАНЖЕВЫЕ НЕОНОВЫЕ КАРТОЧКИ ДЛЯ ГАЛЕРЕИ */
+        .phone-template-card {
+            position: relative !important;
+            border: 2px solid #ff6600 !important; 
+            border-radius: 12px !important; 
+            box-shadow: 0 4px 10px rgba(255, 102, 0, 0.2) !important; 
+            overflow: hidden !important;
+            transition: all 0.2s ease-in-out !important;
+            background-color: #111 !important;
+            animation: neonPulse 4s infinite ease-in-out;
+        }
+
+        .phone-template-card:active {
+            transform: scale(0.96) !important; 
+            box-shadow: 0 2px 15px rgba(255, 102, 0, 0.5) !important; 
+        }
+
+        .phone-template-card::after {
+            content: "" !important;
+            position: absolute !important;
+            bottom: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            height: 40px !important; 
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent) !important; 
+            pointer-events: none !important; 
+            z-index: 1 !important;
+        }
+
+        .card-overlay {
+            background: transparent !important; 
+            color: #ffffff !important; 
+            font-weight: 700 !important;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9) !important; 
+            font-size: 13px !important;
+            text-align: center !important;
+            padding: 8px 5px !important;
+            z-index: 2 !important;
+            position: absolute !important;
+            bottom: 0 !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        /* 🔥 Создаем невидимый отступ внизу экрана для плавной прокрутки */
+        .screen {
+            padding-bottom: 110px !important; 
+            box-sizing: border-box !important;
+        }
+
+        /* 🔥 НАСТРОЕК НЕОНОВЫХ КНОПОК: ФИКСИРОВАННАЯ ПАНЕЛЬ */
+        .single-row-controls {
+            display: flex !important;
+            gap: 8px !important;
+            align-items: center !important; 
+            width: 100% !important;
+            position: fixed !important;
+            bottom: 25px !important; 
+            left: 0 !important;
+            right: 0 !important;
+            padding: 0 16px !important; 
+            box-sizing: border-box !important;
+            z-index: 9999 !important; 
+        }
+
+        .control-col {
+            display: flex !important;
+            flex-direction: column !important;
+            flex: 1 !important;
+            min-width: 0 !important;
+        }
+        
+        .control-col-btn {
+            display: flex !important;
+            flex-direction: column !important;
+            flex: 1.2 !important;
+            min-width: 0 !important;
+        }
+
+        /* Заголовки над кнопками-капсулами */
+        .control-label {
+            font-size: 11px !important;
             font-weight: bold !important;
+            color: var(--tg-theme-hint-color, #777) !important;
+            margin-bottom: 4px !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
         }
-        .back-btn { 
-            display: inline-block; padding: 8px 14px; 
-            background: var(--tg-theme-secondary-bg-color, #e1e6eb); 
-            color: var(--tg-theme-text-color, #333); border-radius: 6px; 
-            font-size: 13px; font-weight: bold; cursor: pointer; margin-bottom: 15px; border: none; 
-            -webkit-tap-highlight-color: transparent;
+
+        /* 💊 КРУГЛЫЕ КНОПКИ-КАПСУЛЫ */
+        .capsule-btn {
+            -webkit-appearance: none !important; appearance: none !important; outline: none !important;
+            box-shadow: 0 4px 12px rgba(255, 30, 0, 0.2) !important; 
+            width: 100% !important;
+            padding: 10px 4px !important;
+            font-size: 13px !important; 
+            font-weight: 800 !important; 
+            text-align: center !important;
+            display: flex !important; 
+            align-items: center !important; 
+            justify-content: center !important; 
+            gap: 4px !important;
+            border: 2px solid #ff1e00 !important;     
+            background-color: #ff6600 !important; 
+            color: #ffffff !important;            
+            border-radius: 30px !important; 
+            cursor: pointer;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            transition: all 0.15s ease !important; 
+            -webkit-tap-highlight-color: transparent !important;
+            box-sizing: border-box !important;
         }
-        .tryon-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 15px; }
-        .tryon-card { background: var(--tg-theme-bg-color, #fff); border-radius: 12px; border: 1px solid var(--tg-theme-border-color, #ddd); padding: 12px; }
-        .tryon-card-title { font-size: 14px; font-weight: bold; margin-bottom: 8px; text-align: center; color: var(--tg-theme-text-color, #000); }
+        
+        .capsule-btn:active {
+            transform: scale(0.95) !important;
+            background-color: #e65c00 !important; 
+            border-color: #e61b00 !important;
+        }
+
+        /* 🔥 КНОПКА START В ОБЩЕМ ОГНЕННОМ СТИЛЕ */
+        .neo-start-btn {
+            -webkit-appearance: none !important; appearance: none !important; outline: none !important;
+            box-shadow: 0 4px 12px rgba(255, 30, 0, 0.2) !important; 
+            width: 100% !important;
+            padding: 10px 4px !important;
+            font-size: 13px !important; 
+            font-weight: 800 !important; 
+            text-align: center !important;
+            display: flex !important; 
+            align-items: center !important; 
+            justify-content: center !important; 
+            gap: 4px !important;
+            border: 2px solid #ff1e00 !important;     
+            background-color: #ff6600 !important; 
+            color: #ffffff !important;            
+            border-radius: 30px !important; 
+            cursor: pointer;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            transition: all 0.15s ease !important; 
+            -webkit-tap-highlight-color: transparent !important;
+            box-sizing: border-box !important;
+        }
+        
+        .neo-start-btn:active {
+            transform: scale(0.95) !important;
+            background-color: #e65c00 !important; 
+            border-color: #e61b00 !important;
+        }
+
+        /* 📱 СОБСТВЕННАЯ КАСТOMНАЯ ШТОРКА */
+        .custom-sheet-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.4); 
+            backdrop-filter: blur(2px);
+            z-index: 9999;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        
+        .custom-sheet-overlay.active {
+            display: block !important;
+            opacity: 1 !important;
+        }
+
+        .custom-sheet-panel {
+            position: absolute;
+            bottom: 16px; 
+            left: 50%;
+            transform: translate(-50%, 100%); 
+            width: calc(100% - 32px);
+            max-width: 400px; 
+            background: #1c1c1e;
+            border-radius: 24px; 
+            padding: 16px;
+            transition: transform 0.25s cubic-bezier(0.1, 0.7, 0.1, 1);
+            color: #fff;
+            box-sizing: border-box;
+        }
+        
+        .custom-sheet-overlay.active .custom-sheet-panel {
+            transform: translate(-50%, 0) !important; 
+        }
+
+        .custom-sheet-title {
+            font-size: 11px;
+            font-weight: 800;
+            color: #8e8e93;
+            text-align: center;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .custom-sheet-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            background: #2c2c2e;
+            border-radius: 16px;
+            overflow: hidden;
+            padding: 0; margin: 0;list-style: none;}
+
+        .custom-sheet-item {width: 100%;padding: 12px 16px;font-size: 15px;font-weight: 600;background: none;
+            border: none;color: #fff;text-align: center !important;display: flex !important;
+            align-items: center !important;justify-content: space-between !important;
+            gap: 12px !important;box-sizing: border-box;-webkit-tap-highlight-color: transparent;
+        }
+        .custom-sheet-item:not(:last-child) {border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
+        }
+        .custom-sheet-item:active {background: rgba(255, 255, 255, 0.08);
+        }
+        .custom-sheet-item .coin-price {color: #ff6600 !important;font-size: 13px;font-weight: 800;
+        }
     </style>
 </head>
 <body>
-    <!-- ЭКРАН: ПРЯМАЯ ГЕНЕРАЦИЯ КАРТИНОК ИЗ БОТА -->
-<div id="image_generation_direct" class="screen active">
-        
-    <!-- ЛЕНТА ВЕРХУШКИ (Только заголовок, без кнопок назад и табов) -->
-    <div class="tabs-container" style="justify-content: center; padding: 10px 0 14px 0 !important;">
-        <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); text-align: center;">Генерация картинок по тексту</div>
-    </div>
+    <!-- ЛЕНТА ВЕРХУШКИ -->
+        <div class="tabs-container">
+            <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); text-align: center;">Генерация картинок по тексту</div>
+        </div>
 
-    <!-- КОНТЕЙНЕР-ОРИЕНТИР С ИНСТРУКЦИЕЙ И 3 ПРИМЕРАМИ -->
-    <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 190px); box-sizing: border-box; display: flex; flex-direction: column;">
-        
-        <div style="font-size: 14px; font-weight: bold; margin-bottom: 12px; color: var(--tg-theme-text-color, #000); text-align: center;">📍 Примеры генерации:</div>
-        
-        <!-- СЕТКА ИЗ 3-Х ФИРМЕННЫХ НЕОНОВЫХ КАРТОЧЕК -->
-        <div class="swap-steps-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-            <!-- Пример 1 -->
-            <div class="phone-template-card" style="height: 110px;">
-                <img src="https://postimg.cc" alt="Пример 1" style="width: 100%; height: 100%; object-fit: cover;">
-                <div class="card-overlay" style="font-size: 10px !important; padding: 4px 2px !important;">Кот 🐱</div>
+        <!-- КОНТЕЙНЕР-ОРИЕНТИР С ФИРМЕННЫМ НЕОНОВЫМ ТЕКСТОМ -->
+        <div class="custom-prompt-container" style="margin-top: 15px; box-sizing: border-box; display: flex; flex-direction: column;">
+            
+            <!-- Интегрировали ваши классы стиля текста -->
+            <div class="menu-title" style="text-align: center;">📍 Примеры генерации:</div>
+            <div class="menu-desc" style="text-align: center; margin-bottom: 12px;">Что можно получить по простому текстовому запросу</div>
+            
+            <!-- СЕТКА ИЗ 3-Х НЕОНОВЫХ КАРТОЧЕК -->
+            <div class="swap-steps-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                <div class="phone-template-card" style="height: 110px;">
+                    <img src="https://postimg.cc" alt="Пример 1" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="card-overlay" style="font-size: 10px !important; padding: 4px 2px !important;">Кот 🐱</div>
+                </div>
+                <div class="phone-template-card" style="height: 110px;">
+                    <img src="https://postimg.cc" alt="Пример 2" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="card-overlay" style="font-size: 10px !important; padding: 4px 2px !important;">Неон ⚡</div>
+                </div>
+                <div class="phone-template-card" style="height: 110px;">
+                    <img src="https://postimg.cc" alt="Пример 3" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="card-overlay" style="font-size: 10px !important; padding: 4px 2px !important;">Космос 🌌</div>
+                </div>
             </div>
-            <!-- Пример 2 -->
-            <div class="phone-template-card" style="height: 110px;">
-                <img src="https://postimg.cc" alt="Пример 2" style="width: 100%; height: 100%; object-fit: cover;">
-                <div class="card-overlay" style="font-size: 10px !important; padding: 4px 2px !important;">Неон ⚡</div>
-            </div>
-            <!-- Пример 3 -->
-            <div class="phone-template-card" style="height: 110px;">
-                <img src="https://postimg.cc" alt="Пример 3" style="width: 100%; height: 100%; object-fit: cover;">
-                <div class="card-overlay" style="font-size: 10px !important; padding: 4px 2px !important;">Космос 🌌</div>
+
+            <!-- ИНСТРУКЦИЯ С ВАШИМ ОТСТУПОМ 40px -->
+            <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
+                Шаг 1: Настройте формат кадра и качество генерации на кнопках внизу.<br>
+                Шаг 2: Нажмите огненную кнопку START.<br>
+                Шаг 3: Веб-сайт закроется, и бот в чате Telegram попросит вас написать текст (промпт) для создания изображения!
             </div>
         </div>
 
-        <!-- ИНСТРУКЦИЯ С ОТСТУПОМ 40px -->
-        <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
-            Шаг 1: Настройте формат кадра и качество генерации на кнопках внизу.<br>
-            Шаг 2: Нажмите огненную кнопку START.<br>
-            Шаг 3: Веб-сайт закроется, и бот в чате Telegram попросит вас написать текст (промпт) для создания изображения!
+        <!-- 🔥 УЛЬТРАКОМПАКТНАЯ ФИКСИРОВАННАЯ ПАНЕЛЬ КНОПОК ПО ЦЕНТРУ -->
+        <div class="single-row-controls">
+            <div class="control-col">
+                <div class="control-label">Качество</div>
+                <button id="btn_direct_quality" class="capsule-btn">⚡ Standard</button>
+            </div>
+            
+            <div class="control-col">
+                <div class="control-label">Соотношение</div>
+                <button id="btn_direct_ratio" class="capsule-btn">1:1</button>
+            </div>
+            
+            <div class="control-col control-col-btn">
+                <!-- Без лейбла сверху, чтобы align-items: center выровнял Start в идеальную линию с капсулами -->
+                <button id="neo_direct_submit_btn" class="neo-start-btn" onclick="sendDirectGenData()">
+                    Start 1 🪙
+                </button>
+            </div>
         </div>
-
     </div>
 
-    <!-- ПАНЕЛЬ УПРАВЛЕНИЯ В ОДНУ СТРОКУ (ОТСТУП 55px) -->
-    <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px; display: flex; gap: 8px; align-items: flex-end;">
-        
-        <div class="control-col" style="flex: 1;">
-            <div class="control-label">Качество</div>
-            <button id="btn_direct_quality" class="capsule-btn">⚡ Standard</button>
+    <!-- УНИВЕРСАЛЬНАЯ КАСТОМНАЯ ШТОРКА (HTML ПОДЛОЖКА) -->
+    <div id="custom_action_sheet" class="custom-sheet-overlay" onclick="closeCustomSheet()">
+        <div class="custom-sheet-panel" onclick="event.stopPropagation()">
+            <div id="custom_sheet_title" class="custom-sheet-title">ЗАГОЛОВОК</div>
+            <ul id="custom_sheet_list" class="custom-sheet-list">
+                <!-- Элементы генерируются скриптом на лету -->
+            </ul>
         </div>
-        
-        <div class="control-col" style="flex: 1;">
-            <div class="control-label">Соотношение</div>
-            <button id="btn_direct_ratio" class="capsule-btn">1:1</button>
-        </div>
-        
-        <div class="control-col control-col-btn" style="flex: 1.2;">
-            <button id="neo_direct_submit_btn" class="neo-start-btn" onclick="sendDirectGenData()">
-                Start 1 🪙
-            </button>
-        </div>
-        
     </div>
-</div>
 
-<!-- УНИВЕРСАЛЬНАЯ КАСТОМНАЯ ШТОРКА (HTML ПОДЛОЖКА) -->
-<div id="custom_action_sheet" class="custom-sheet-overlay" onclick="closeCustomSheet()">
-    <div class="custom-sheet-panel" onclick="event.stopPropagation()">
-        <div id="custom_sheet_title" class="custom-sheet-title">ЗАГОЛОВОК</div>
-        <ul id="custom_sheet_list" class="custom-sheet-list">
-            <!-- Сюда JS подставит элементы -->
-        </ul>
-    </div>
-</div>
+    <script>
 
 
-<script>
+ const tg = window.Telegram.WebApp;
 
+        // Переменные настроек одиночного экрана
+        let directGenRatio = '1:1';
+        let directGenQuality = 'schnell';
 
-const tg = window.Telegram.WebApp;
+        // Инициализация при старте
+        window.addEventListener('DOMContentLoaded', () => {
+            if (tg) {
+                tg.ready();  
+                tg.expand(); 
+                if (tg.MainButton) tg.MainButton.hide(); 
+            }
+            
+            const directQualityBtn = document.getElementById('btn_direct_quality');
+            const directRatioBtn = document.getElementById('btn_direct_ratio');
+            
+            if (directQualityBtn) directQualityBtn.addEventListener('click', openUniversalQualitySheet);
+            if (directRatioBtn) directRatioBtn.addEventListener('click', openUniversalRatioSheet);
 
-// Локальные настройки единственного экрана
-let directGenRatio = '1:1';
-let directGenQuality = 'schnell';
+            setDirectRatio(directGenRatio);
+            updateNeoStartButtonText();
+        });
 
-// Старт WebApp и привязка кнопок к шторкам
-window.addEventListener('DOMContentLoaded', () => {
-    if (tg) {
-        tg.ready();  
-        tg.expand(); 
-        if (tg.MainButton) tg.MainButton.hide(); // Наглухо скрываем синюю кнопку ТГ, у нас свой пульт
-    }
-    
-    // Привязываем клики капсул напрямую к открытию шторок
-    const directQualityBtn = document.getElementById('btn_direct_quality');
-    const directRatioBtn = document.getElementById('btn_direct_ratio');
-    
-    if (directQualityBtn) directQualityBtn.addEventListener('click', openUniversalQualitySheet);
-    if (directRatioBtn) directRatioBtn.addEventListener('click', openUniversalRatioSheet);
+        // Работа шторки качества
+        function openUniversalQualitySheet() {
+            const titleEl = document.getElementById('custom_sheet_title');
+            const listEl = document.getElementById('custom_sheet_list');
+            if (!titleEl || !listEl) return;
 
-    // Выставляем начальные значения текстов на капсулах и кнопке Start
-    setDirectRatio(directGenRatio);
-    updateNeoStartButtonText();
-});
-
-// ====================================================================================
-// ЛОГИКА УНИВЕРСАЛЬНОЙ ШТОРКИ ВЫБОРА
-// ====================================================================================
-function openUniversalQualitySheet() {
-    const titleEl = document.getElementById('custom_sheet_title');
-    const listEl = document.getElementById('custom_sheet_list');
-    if (!titleEl || !listEl) return;
-
-    titleEl.innerText = "КАЧЕСТВО ГЕНЕРАЦИИ";
-    listEl.innerHTML = `
-        <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('schnell', '⚡ Standard')"><span>Standard</span><span class="coin-price">  1 🪙</span></button></li>
-        <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('dev', '💎 Pro')"><span>Pro</span><span class="coin-price">  1 🪙</span></button></li>
-        <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('ultra_4k', '🔥 Ultra')"><span>Ultra</span><span class="coin-price">  1 🪙</span></button></li>
-    `;
-    document.getElementById('custom_action_sheet').classList.add('active');
-}
-
-function selectQualityFromSheet(id, text) {
-    directGenQuality = id;
-    const dBtn = document.getElementById('btn_direct_quality');
-    if (dBtn) dBtn.innerHTML = text;
-
-    updateNeoStartButtonText();
-    closeCustomSheet();
-}
-
-function openUniversalRatioSheet() {
-    const titleEl = document.getElementById('custom_sheet_title');
-    const listEl = document.getElementById('custom_sheet_list');
-    if (!titleEl || !listEl) return;
-
-    titleEl.innerText = "СООТНОШЕНИЕ СТОРОН";
-    listEl.innerHTML = `
-        <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('9:16')"><span style="width: 100%; text-align: center;">9:16</span></button></li>
-        <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('3:4')"><span style="width: 100%; text-align: center;">3:4</span></button></li>
-        <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('1:1')"><span style="width: 100%; text-align: center;">1:1</span></button></li>
-        <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('4:3')"><span style="width: 100%; text-align: center;">4:3</span></button></li>
-        <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('16:9')"><span style="width: 100%; text-align: center;">16:9</span></button></li>
-    `;
-    document.getElementById('custom_action_sheet').classList.add('active');
-}
-
-function selectRatioFromSheet(id) {
-    setDirectRatio(id);
-    updateNeoStartButtonText();
-    closeCustomSheet();
-}
-
-function setDirectRatio(ratio) { 
-    directGenRatio = ratio; 
-    const el = document.getElementById('btn_direct_ratio');
-    if (el) el.innerHTML = ratio;
-}
-
-function closeCustomSheet() {
-    const sheet = document.getElementById('custom_action_sheet');
-    if (sheet) sheet.classList.remove('active');
-}
-
-// Обновлятор цены на кнопке Start (привязано к качеству)
-function updateNeoStartButtonText() {
-    const btnDirect = document.getElementById('neo_direct_submit_btn');
-    if (btnDirect) {
-        btnDirect.innerHTML = directGenQuality === 'ultra_4k' ? `Start 2 🪙` : `Start 1 🪙`;
-    }
-}
-
-// ====================================================================================
-// СБОРКА И ОТПРАВКА ДИПЛИНКА В БОТА
-// ====================================================================================
-function sendToTelegram(payload) {
-    try {
-        const botUsername = "ChatGPT_BuzVuz_bot"; 
-        let quality = payload.quality || 'schnell';
-        let ratio = payload.aspect_ratio ? payload.aspect_ratio.replace(':', '-') : '1-1';
-
-        // Формируем чистый старт-параметр строго для вашего текстового режима
-        let startParam = `mode_puretext_q_${quality}_r_${ratio}`;
-        let telegramLink = `https://t.me{botUsername}?start=${startParam}`;
-
-        console.log("[WebApp Link] Перенаправление по ссылке:", telegramLink);
-
-        if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openTelegramLink === 'function') {
-            window.Telegram.WebApp.openTelegramLink(telegramLink);
-            window.Telegram.WebApp.close();
-        } else {
-            window.location.href = telegramLink;
+            titleEl.innerText = "КАЧЕСТВО ГЕНЕРАЦИИ";
+            listEl.innerHTML = `
+                <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('schnell', '⚡ Standard')"><span>Standard</span><span class="coin-price">  1 🪙</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('dev', '💎 Pro')"><span>Pro</span><span class="coin-price">  1 🪙</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('ultra_4k', '🔥 Ultra')"><span>Ultra</span><span class="coin-price">  1 🪙</span></button></li>
+            `;
+            document.getElementById('custom_action_sheet').classList.add('active');
         }
-    } catch (e) {
-        console.error("Ошибка генерации диплинка:", e);
-        window.location.href = "https://t.me";
-    }
-}
 
-function sendDirectGenData() { 
-    try {
-        let ratio = (typeof directGenRatio !== 'undefined') ? directGenRatio : '1:1';
-        let quality = (typeof directGenQuality !== 'undefined') ? directGenQuality : 'schnell';
+        function selectQualityFromSheet(id, text) {
+            directGenQuality = id;
+            const dBtn = document.getElementById('btn_direct_quality');
+            if (dBtn) dBtn.innerHTML = text;
 
-        sendToTelegram({ 
-            mode_trigger: 'pure_text_image', 
-            aspect_ratio: ratio, 
-            quality: quality
-        }); 
-    } catch (err) {
-        console.error("Критический сбой отправки:", err);
-        window.location.href = "https://t.me";
-    }
-}
+            updateNeoStartButtonText();
+            closeCustomSheet();
+        }
 
-</script>
+        // Работа шторки формата кадра
+        function openUniversalRatioSheet() {
+            const titleEl = document.getElementById('custom_sheet_title');
+            const listEl = document.getElementById('custom_sheet_list');
+            if (!titleEl || !listEl) return;
+
+            titleEl.innerText = "СООТНОШЕНИЕ СТОРОН";
+            listEl.innerHTML = `
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('9:16')"><span style="width: 100%; text-align: center;">9:16</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('3:4')"><span style="width: 100%; text-align: center;">3:4</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('1:1')"><span style="width: 100%; text-align: center;">1:1</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('4:3')"><span style="width: 100%; text-align: center;">4:3</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('16:9')"><span style="width: 100%; text-align: center;">16:9</span></button></li>
+            `;
+            document.getElementById('custom_action_sheet').classList.add('active');
+        }
+
+        function selectRatioFromSheet(id) {
+            setDirectRatio(id);
+            updateNeoStartButtonText();
+            closeCustomSheet();
+        }
+
+        function setDirectRatio(ratio) { 
+            directGenRatio = ratio; 
+            const el = document.getElementById('btn_direct_ratio');
+            if (el) el.innerHTML = ratio;
+        }
+
+        function closeCustomSheet() {
+            const sheet = document.getElementById('custom_action_sheet');
+            if (sheet) sheet.classList.remove('active');
+        }
+
+        // Пересчет монет на встроенной кнопке
+        function updateNeoStartButtonText() {
+            const btnDirect = document.getElementById('neo_direct_submit_btn');
+            if (btnDirect) {
+                btnDirect.innerHTML = directGenQuality === 'ultra_4k' ? `Start 2 🪙` : `Start 1 🪙`;
+            }
+        }
+
+        // Чистая отправка диплинка боту
+        function sendToTelegram(payload) {
+            try {
+                const botUsername = "ChatGPT_BuzVuz_bot"; 
+                let quality = payload.quality || 'schnell';
+                let ratio = payload.aspect_ratio ? payload.aspect_ratio.replace(':', '-') : '1-1';
+
+                let startParam = `mode_puretext_q_${quality}_r_${ratio}`;
+                let telegramLink = `https://t.me{botUsername}?start=${startParam}`;
+
+                if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openTelegramLink === 'function') {
+                    window.Telegram.WebApp.openTelegramLink(telegramLink);
+                    window.Telegram.WebApp.close();
+                } else {
+                    window.location.href = telegramLink;
+                }
+            } catch (e) {
+                console.error("Ошибка диплинка:", e);
+                window.location.href = "https://t.me";
+            }
+        }
+
+        function sendDirectGenData() { 
+            try {
+                let ratio = (typeof directGenRatio !== 'undefined') ? directGenRatio : '1:1';
+                let quality = (typeof directGenQuality !== 'undefined') ? directGenQuality : 'schnell';
+
+                sendToTelegram({ 
+                    mode_trigger: 'pure_text_image', 
+                    aspect_ratio: ratio, 
+                    quality: quality
+                }); 
+            } catch (err) {
+                console.error("Сбой отправки:", err);
+                window.location.href = "https://t.me";
+            }
+        }
+    </script>
 </body>
 </html>

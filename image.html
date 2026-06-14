@@ -386,6 +386,10 @@
             if (qualityBtn) qualityBtn.addEventListener('click', showNativeDirectQualityPopup);
             if (ratioBtn) ratioBtn.addEventListener('click', showNativeDirectRatioPopup);
 
+            // 🔥 СИНХРОНИЗАЦИЯ С РОУТЕРОМ: Принудительно включаем блок на старте, как это делал openScreen!
+            const settingsBlock = document.getElementById('direct_gen_settings_block');
+            if (settingsBlock) settingsBlock.style.display = "block";
+
             setDirectRatio(directGenRatio);
             updateNeoStartButtonText();
         });
@@ -393,6 +397,7 @@
         function showNativeDirectQualityPopup() { openUniversalQualitySheet(); }
         function showNativeDirectRatioPopup() { openUniversalRatioSheet(); }
 
+        
         // ====================================================================================
         // 6. ОБНОВЛЯТОР СТОИМОСТИ НА ВСТРОЕННОЙ КНОПКЕ START
         // ====================================================================================

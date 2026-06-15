@@ -950,14 +950,17 @@
     }
 
     // Умный обработчик формата: определяет экран и вызывает его родную функцию синхронизации
-    function selectRatioFromSheet(id) {
-        // Ветка 1: Если мы на экране Цифровой Оптики
+    function selectQualityFromSheet(id, text) {
         if (currentActiveMode === 'text_image') {
-            setTextRatio(id);
+            selectedTextQuality = id;
+            const el = document.getElementById('btn_text_quality') || document.getElementById('btn_direct_quality');
+            if (el) el.innerHTML = text;
         } 
-        // Ветка 2: Если мы на экране Умного Фокуса
         else if (currentActiveMode === 'image_generation_direct') {
-            setDirectRatio(id);
+            directGenQuality = id;
+            // Находит кнопку на втором экране, даже если в HTML у нее ID с двойкой
+            const el = document.getElementById('btn_direct_quality_2') || document.getElementById('btn_direct_quality');
+            if (el) el.innerHTML = text;
         }
         
         updateNeoStartButtonText();
@@ -973,7 +976,8 @@
 
     function setDirectRatio(ratio) { 
         directGenRatio = ratio; 
-        const el = document.getElementById('btn_direct_ratio');
+        // Находит кнопку формата на втором экране, даже если у нее ID с двойкой
+        const el = document.getElementById('btn_direct_ratio_2') || document.getElementById('btn_direct_ratio');
         if (el) el.innerHTML = ratio;
     }
 
@@ -993,9 +997,9 @@
     // УМНЫЙ ОБНОВЛЯТОР СТОИМОСТИ НА ВСТРОЕННЫХ КНОПКАХ (ОБЪЕДИНЕННЫЙ)
     function updateNeoStartButtonText() {
         const btnText = document.getElementById('neo_text_submit_btn');
-        const btnDirect = document.getElementById('neo_direct_submit_btn');
+        // Находит кнопку запуска START на втором экране с любым ID
+        const btnDirect = document.getElementById('neo_direct_submit_btn_2') || document.getElementById('neo_direct_submit_btn');
         
-        // Расчет для Цифровой Оптики
         if (btnText) {
             if (selectedAiModelEngine === 'custom') {
                 btnText.innerHTML = `Start 2 🪙`; 
@@ -1004,7 +1008,6 @@
             }
         }
         
-        // Расчет для Умного Фокуса
         if (btnDirect) {
             if (directGenQuality === 'ultra_4k') {
                 btnDirect.innerHTML = `Start 2 🪙`;

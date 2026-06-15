@@ -475,9 +475,85 @@
 
             </div> <!-- Конец сетки main-menu-grid -->
         </div> <!-- Конец экрана foto -->
+
+
     
+<!-- ========================================== -->
+<!-- ЭКРАН 1: ФЛЮКС (ЦИФРОВАЯ ОПТИКА)           -->
+<!-- ========================================== -->
+        <div id="text_image" class="screen">
+            
+            <!-- Верхний таб-контейнер -->
+            <div class="tabs-container" id="direct_gen_tabs">
+                <div style="font-size: 16px; font-weight: 800; color: #ffffff; margin-left: 5px; white-space: nowrap; text-transform: uppercase; letter-spacing: 1px;">
+                    Генерация картинок по тексту
+                </div>
+            </div>
+
+            <!-- КОНТЕЙНЕР НАСТРОЕК И ПРИМЕРОВ (Теперь открыт и адаптирован под фиолетовый стиль) -->
+            <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 190px); box-sizing: border-box; display: flex; flex-direction: column;">
+                
+                <!-- Фиолетовые неоновые заголовки в стиле Цифровой Оптике -->
+                <div class="menu-title" style="text-align: center; color: #b624ff !important; text-shadow: 0 0 10px rgba(182, 36, 255, 0.6) !important;">
+                    📍 Примеры генерации:
+                </div>
+                <div class="menu-desc" style="text-align: center; margin-bottom: 12px; color: rgba(255, 255, 255, 0.65) !important;">
+                    Что можно получить по простому текстовому запросу
+                </div>
+                
+                <!-- РОДНАЯ СЕТКА ШАБЛОНОВ С ВЕРТИКАЛЬНЫМИ КАРТОЧКАМИ 9:16 -->
+                <div class="swap-steps-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                    
+                    <!-- Пример 1 -->
+                    <div class="phone-template-card" style="height: 150px !important; border-color: #b624ff !important; box-shadow: 0 4px 10px rgba(182, 36, 255, 0.2) !important;">
+                        <img src="https://unsplash.com" alt="Кот" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Кот 🐱</div>
+                    </div>
+                    
+                    <!-- Пример 2 -->
+                    <div class="phone-template-card" style="height: 150px !important; border-color: #b624ff !important; box-shadow: 0 4px 10px rgba(182, 36, 255, 0.2) !important;">
+                        <img src="https://unsplash.com" alt="Неон" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Неон ⚡</div>
+                    </div>
+                    
+                    <!-- Пример 3 -->
+                    <div class="phone-template-card" style="height: 150px !important; border-color: #b624ff !important; box-shadow: 0 4px 10px rgba(182, 36, 255, 0.2) !important;">
+                        <img src="https://unsplash.com" alt="Космос" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Космос 🌌</div>
+                    </div>
+                    
+                </div>
+
+                <!-- ИНСТРУКЦИЯ ДЛЯ ПОЛЬЗОВАТЕЛЯ -->
+                <div style="font-size: 13px; color: rgba(255, 255, 255, 0.5); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
+                    <b style="color: #b624ff;">Шаг 1:</b> Настройте формат кадра и качество генерации на кнопках внизу.<br>
+                    <b style="color: #b624ff;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
+                    <b style="color: #b624ff;">Шаг 3:</b> Приложение закроется, и бот в чате Telegram попросит вас написать текст (промпт) для создания изображения!
+                </div>
+
+            </div>
+
+            <!-- ПАНЕЛЬ УПРАВЛЕНИЯ КНОПКАМИ (Нижний ряд) -->
+            <div class="single-row-controls" style="display: flex; gap: 10px; margin-top: 15px;">
+                <div class="control-col" style="flex: 1;">
+                    <button id="btn_direct_quality" class="capsule-btn" onclick="openUniversalQualitySheet()" style="width: 100%;">⚡ Standard</button>
+                </div>
+                <div class="control-col" style="flex: 1;">
+                    <button id="btn_direct_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()" style="width: 100%;">9:16</button>
+                </div>
+                <div class="control-col control-col-btn" style="flex: 1.2;">
+                    <button id="neo_direct_submit_btn" class="neo-start-btn" onclick="sendDirectGenData()" style="width: 100%; background: #b624ff; box-shadow: 0 0 15px rgba(182, 36, 255, 0.4); color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold;">
+                        Start 1 🪙
+                    </button>
+                </div>
+            </div>
+
+        </div> <!-- КОНЕЦ ЭКРАНА text_image -->
 
 
+<!-- ========================================== -->
+<!-- ЭКРАН 2: БАНАН          -->
+<!-- ========================================== -->
 
         <div id="image_generation_direct" class="screen">
             

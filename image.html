@@ -219,16 +219,23 @@
 
 
 /* 📋 БЛОК ИНСТРУКЦИИ: ОБЫЧНЫЙ СЕРЫЙ ШРИФТ ДЛЯ ТЕКСТА (шаг 1 и тд) */
+        /* 📋 БЛОК ИНСТРУКЦИИ: РАСТЯГИВАЕМ НА ВСЮ ШИРИНУ И ДЕЛАЕМ СЕРЫМ */
         .custom-prompt-container div[style*="font-size: 13px"] {
-            color: rgba(255, 255, 255, 0.6) !important; /* Обычный серый цвет текста */
-            font-weight: 400 !important; /* Обычный тонкий шрифт */
+            color: rgba(255, 255, 255, 0.6) !important; /* Твой серый цвет текста */
+            font-weight: 400 !important; /* Твой тонкий шрифт */
+            
+            /* 🔥 ЖЕСТКИЙ ФИКС ШИРИНЫ ДЛЯ ЭКРАНА СМАРТФОНА: */
+            width: 100% !important;
+            display: block !important;
+            box-sizing: border-box !important;
         }
 
         /* НАДПИСИ "Шаг 1:", "Шаг 2:", "Шаг 3:" СТРОГО БЕЛЫЕ И ЖИРНЫЕ */
         .custom-prompt-container div[style*="font-size: 13px"] b {
-            color: #ffffff !important; /* Белый цвет для Шагов */
-            font-weight: 800 !important; /* Жирный шрифт */
+            color: #ffffff !important; /* Твой белый цвет для Шагов */
+            font-weight: 800 !important; /* Твой жирный шрифт */
         }
+
 
 /* Создаем невидимый отступ внизу экрана */
         .screen {

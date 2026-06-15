@@ -715,6 +715,40 @@
 
 
 // ====================================================================================
+// 🔥 АВТОМАТИЧЕСКИЙ ПЕРЕХОД ПО КНОПКЕ "НОВЫЙ ПРОЕКТ" ИЗ БОТА
+// ====================================================================================
+        (function() {
+            // 1. Читаем адресную строку и ищем любые параметры режима
+            const urlParams = new URLSearchParams(window.location.search);
+            let startMode = urlParams.get('mode');
+            
+            // 🔍 ФИКС БАГА ТЕЛЕГРАМА: Проверяем, не спрятал ли Telegram параметр внутрь tgWebAppStartParam
+            const tgStartParam = urlParams.get('tgWebAppStartParam');
+            if (!startMode && tgStartParam) {
+                startMode = tgStartParam; // Если Telegram пережал ссылку, забираем режим оттуда
+            }
+
+            // 2. Если бот прислал direct, принудительно открываем Умный Фокус
+            if (startMode === 'direct') {
+                setTimeout(function() {
+                    if (typeof openScreen === 'function') {
+                        openScreen('image_generation_direct');
+                        console.log("🚀 Автопереход: Успешно открыт экран Умного Фокуса из инлайн-кнопки бота!");
+                    }
+                }, 150);
+            }
+            // 3. Если бот прислал text_image, открываем Цифровую Оптику
+            else if (startMode === 'text_image') {
+                setTimeout(function() {
+                    if (typeof openScreen === 'function') {
+                        openScreen('text_image');
+                    }
+                }, 150);
+            }
+        })();
+
+
+// ====================================================================================
 // 2.5 ФУНКЦИИ ВОЗВРАТА НАЗАД (СТРОГО ДВА НАШИХ РЕЖИМА)
 // ====================================================================================
         // для Цифровой Оптики

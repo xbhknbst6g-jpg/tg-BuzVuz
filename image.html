@@ -607,69 +607,90 @@
             <!-- 🔥 ЛЕНТА ВЕРХУШКИ №2: Бирюзовая кнопка Назад и заголовок -->
             <div class="tabs-container" id="direct_gen_tabs_2" style="display: flex !important; align-items: center !important; justify-content: flex-start !important; width: 100%; box-sizing: border-box; margin-bottom: 8px; gap: 12px;">
                 
-                <!-- Наша круглая кнопка назад, которая сама покрасится в циан -->
+                <!-- Круглая кнопка назад, которая красится в циан по CSS-переменным -->
                 <div style="--neon-color: #00f2fe; --neon-glow: rgba(0, 242, 254, 0.3);">
                     <button class="back-tab-btn" onclick="handleTextBackClick()"></button>
                 </div>
 
+                <!-- Название текущего режима -->
                 <div style="font-size: 16px; font-weight: 800; color: #ffffff; white-space: nowrap; text-transform: uppercase; letter-spacing: 1px;">
                     Умный Фокус
                 </div>
             </div>
 
-            <!-- КОНТЕЙНЕР НАСТРОЕК И ПРИМЕРОВ (Бирюзовый стиль) -->
-            <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 190px); box-sizing: border-box; display: flex; flex-direction: column;">
-                
-                <div class="menu-title" style="text-align: center; color: #00f2fe !important; text-shadow: 0 0 10px rgba(0, 242, 254, 0.6) !important;">
-                    📍 Примеры генерации:
-                </div>
-                <div class="menu-desc" style="text-align: center; margin-bottom: 12px; color: rgba(255, 255, 255, 0.65) !important;">
-                    Что можно получить на движке Nano Banana
-                </div>
-                
-                <!-- РОДНАЯ СЕТКА ШАБЛОНОВ 9:16 -->
-                <div class="swap-steps-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-                    <div class="phone-template-card" style="height: 150px !important; border-color: #00f2fe !important; box-shadow: 0 4px 10px rgba(0, 242, 254, 0.2) !important;">
-                        <img src="https://unsplash.com" alt="Арт" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Арт 🎨</div>
+            <!-- 🔥 ШАГ 2: БЛОК НАСТРОЕК (Полностью разделенный, управляется через ваш JavaScript) -->
+            <div id="direct_gen_settings_block" style="display: none;">
+
+                <!-- КОНТЕЙНЕР НАСТРОЕК И ПРИМЕРОВ (Бирюзовый стиль) -->
+                <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 190px); box-sizing: border-box; display: flex; flex-direction: column;">
+                    
+                    <div class="menu-title" style="text-align: center; color: #00f2fe !important; text-shadow: 0 0 10px rgba(0, 242, 254, 0.6) !important;">
+                        📍 Примеры генерации:
                     </div>
-                    <div class="phone-template-card" style="height: 150px !important; border-color: #00f2fe !important; box-shadow: 0 4px 10px rgba(0, 242, 254, 0.2) !important;">
-                        <img src="https://unsplash.com" alt="Киберпанк" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Кибер 🌐</div>
+                    <div class="menu-desc" style="text-align: center; margin-bottom: 12px; color: rgba(255, 255, 255, 0.65) !important;">
+                        Что можно получить на движке Nano Banana
                     </div>
-                    <div class="phone-template-card" style="height: 150px !important; border-color: #00f2fe !important; box-shadow: 0 4px 10px rgba(0, 242, 254, 0.2) !important;">
-                        <img src="https://unsplash.com" alt="Аниме" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Аниме 🌸</div>
+                    
+                    <!-- РОДНАЯ СЕТКА ШАБЛОНОВ 9:16 -->
+                    <div class="swap-steps-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                        <div class="phone-template-card" style="height: 150px !important; border-color: #00f2fe !important; box-shadow: 0 4px 10px rgba(0, 242, 254, 0.2) !important;">
+                            <img src="https://unsplash.com" alt="Арт" style="width: 100%; height: 100%; object-fit: cover;">
+                            <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Арт 🎨</div>
+                        </div>
+                        <div class="phone-template-card" style="height: 150px !important; border-color: #00f2fe !important; box-shadow: 0 4px 10px rgba(0, 242, 254, 0.2) !important;">
+                            <img src="https://unsplash.com" alt="Киберпанк" style="width: 100%; height: 100%; object-fit: cover;">
+                            <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Кибер 🌐</div>
+                        </div>
+                        <div class="phone-template-card" style="height: 150px !important; border-color: #00f2fe !important; box-shadow: 0 4px 10px rgba(0, 242, 254, 0.2) !important;">
+                            <img src="https://unsplash.com" alt="Аниме" style="width: 100%; height: 100%; object-fit: cover;">
+                            <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Аниме 🌸</div>
+                        </div>
+                    </div>
+
+                    <!-- ИНСТРУКЦИЯ ДЛЯ ПОЛЬЗОВАТЕЛЯ -->
+                    <div style="font-size: 13px; color: rgba(255, 255, 255, 0.5); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
+                        <b style="color: #00f2fe;">Шаг 1:</b> Выберите пропорции и скорость на кнопках ниже.<br>
+                        <b style="color: #00f2fe;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
+                        <b style="color: #00f2fe;">Шаг 3:</b> Бот мгновенно сгенерирует картинку по вашему тексту в чате!
                     </div>
                 </div>
 
-                <!-- ИНСТРУКЦИЯ -->
-                <div style="font-size: 13px; color: rgba(255, 255, 255, 0.5); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
-                    <b style="color: #00f2fe;">Шаг 1:</b> Выберите пропорции и скорость на кнопках ниже.<br>
-                    <b style="color: #00f2fe;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
-                    <b style="color: #00f2fe;">Шаг 3:</b> Бот мгновенно сгенерирует картинку по вашему тексту в чате!
+                <!-- ПАНЕЛЬ УПРАВЛЕНИЯ КНОПКАМИ (Нижний ряд) -->
+                <div class="single-row-controls" style="display: flex; gap: 10px; margin-top: 15px;">
+                    <div class="control-col" style="flex: 1;">
+                        <button id="btn_direct_quality_2" class="capsule-btn" onclick="openUniversalQualitySheet()" style="width: 100%;">⚡ Fast</button>
+                    </div>
+                    <div class="control-col" style="flex: 1;">
+                        <button id="btn_direct_ratio_2" class="capsule-btn" onclick="openUniversalRatioSheet()" style="width: 100%;">1:1</button>
+                    </div>
+                    <div class="control-col control-col-btn" style="flex: 1.2;">
+                        <button id="neo_direct_submit_btn_2" class="neo-start-btn" onclick="sendDirectGenData()" style="width: 100%; background: #00f2fe; box-shadow: 0 0 15px rgba(0, 242, 254, 0.4); color: #0d0f1d; border: none; padding: 10px; border-radius: 8px; font-weight: bold;">
+                            Start 1 🪙
+                        </button>
+                    </div>
                 </div>
-            </div>
 
-            <!-- ПАНЕЛЬ УПРАВЛЕНИЯ КНОПКАМИ -->
-            <div class="single-row-controls" style="display: flex; gap: 10px; margin-top: 15px;">
-                <div class="control-col" style="flex: 1;">
-                    <button id="btn_direct_quality_2" class="capsule-btn" onclick="openUniversalQualitySheet()" style="width: 100%;">⚡ Fast</button>
-                </div>
-                <div class="control-col" style="flex: 1;">
-                    <button id="btn_direct_ratio_2" class="capsule-btn" onclick="openUniversalRatioSheet()" style="width: 100%;">1:1</button>
-                </div>
-                <div class="control-col control-col-btn" style="flex: 1.2;">
-                    <button id="neo_direct_submit_btn_2" class="neo-start-btn" onclick="sendDirectGenData()" style="width: 100%; background: #00f2fe; box-shadow: 0 0 15px rgba(0, 242, 254, 0.4); color: #0d0f1d; border: none; padding: 10px; border-radius: 8px; font-weight: bold;">
-                        Start 1 🪙
-                    </button>
-                </div>
-            </div>
-
+            </div> <!-- Закрыли служебный блок direct_gen_settings_block -->
         </div> <!-- КОНЕЦ ЭКРАНА image_generation_direct -->
 
 
-        <!-- 🔥 СКРИПТ НАЧИНАЕТСЯ В ПОЛНОЙ ИЗОЛЯЦИИ ОТ HTML-ОБОЛОЧЕК -->
+<!-- ========================================== -->
+<!-- УНИВЕРСАЛЬНАЯ НЕОНОВАЯ ШТОРКА ВЫБОРА       -->
+<!-- ========================================== -->
+        <div id="custom_action_sheet" class="custom-sheet-overlay" onclick="closeCustomSheet()">
+            <div class="custom-sheet-panel" onclick="event.stopPropagation()">
+                <!-- Полоска-индикатор, за которую "тянут" шторку -->
+                <div style="width: 40px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin: 0 auto 15px auto;"></div>
+                
+                <div id="custom_sheet_title" class="custom-sheet-title">Выберите параметр</div>
+                <ul id="custom_sheet_list" class="custom-sheet-list">
+                    <!-- Сюда JavaScript будет сам подставлять нужные элементы списка <li> -->
+                </ul>
+            </div>
+        </div>
+
+
+       
     <script>
 // ====================================================================================
 // 1. СИСТЕМНАЯ ИНИЦИАЛИЗАЦИЯ И ПЕРЕМЕННЫЕ (СТРОГО ДВА РЕЖИМА)

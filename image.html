@@ -245,26 +245,19 @@
 
         /* 🔥 НАСТРОЙКА КНОПОК: ГОРИЗОНТАЛЬНАЯ ПАНЕЛЬ НАМЕРТВО ВНИЗУ */
 /* 🔥 НАМЕРТВО ФИКСИРУЕМ ПУЛЬТ КНОПОК ВНИЗУ ЭКРАНА С БЕСШОВНЫМ ГРАДИЕНТОМ */
+        /* УБРАЛИ НАФИГ FIXED, СТАВИМ СТАНДАРТНЫЙ ЛАКОНИЧНЫЙ РЯД КНОПОК */
         .single-row-controls {
             display: flex !important;
-            gap: 8px !important;
-            align-items: center !important; 
+            align-items: center !important;
+            justify-content: space-between !important;
+            gap: 10px !important;
             width: 100% !important;
-            
-            position: fixed !important;
-            bottom: 20px !important; 
-            left: 0 !important;
-            right: 0 !important;
-            
-            padding: 0 16px !important; 
             box-sizing: border-box !important;
-            z-index: 9999 !important;
             
-            /* 🔥 Фикс: Градиент в цвет твоего основного фона #0d0f1d */
-            background: linear-gradient(to top, #0d0f1d 85%, transparent) !important;
-            padding-top: 15px !important;
-            /* Умный отступ снизу для айфонов с полоской, чтобы кнопки не прилипали */
-            padding-bottom: calc(env(safe-area-inset-bottom) + 5px) !important; 
+            /* 🔥 ЖЕСТКИЙ ОТСТУП ИЗ ТВОЕГО РАБОЧЕГО ПРИМЕРА */
+            margin-top: 55px !important; 
+            margin-bottom: 15px !important;
+            padding: 0 5px !important;
         }
 
         /* Жесткий отступ в самом низу контента, чтобы текст инструкции не залезал под фиксированные кнопки */
@@ -607,7 +600,7 @@
             </div>
 
             <!-- ПАНЕЛЬ УПРАВЛЕНИЯ КНОПКАМИ -->
-            <div class="single-row-controls">
+            <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px;">
                 <div class="control-col" style="flex: 1;"><button id="btn_text_quality" class="capsule-btn" onclick="openUniversalQualitySheet()" style="width: 100%;">⚡ Standard</button></div>
                 <div class="control-col" style="flex: 1;"><button id="btn_text_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()" style="width: 100%;">9:16</button></div>
                 <div class="control-col control-col-btn" style="flex: 1.2;"><button id="neo_text_submit_btn" class="neo-start-btn" onclick="sendTextGenData()" style="width: 100%;">Start 1 🪙</button></div>
@@ -651,7 +644,7 @@
             </div>
 
             <!-- ПАНЕЛЬ УПРАВЛЕНИЯ КНОПКАМИ -->
-            <div class="single-row-controls">
+            <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px;">
                 <div class="control-col" style="flex: 1;"><button id="btn_direct_quality" class="capsule-btn" onclick="openUniversalQualitySheet()" style="width: 100%;">⚡ Standard</button></div>
                 <div class="control-col" style="flex: 1;"><button id="btn_direct_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()" style="width: 100%;">1:1</button></div>
                 <div class="control-col control-col-btn" style="flex: 1.2;"><button id="neo_direct_submit_btn" class="neo-start-btn" onclick="sendDirectGenData()" style="width: 100%;">Start 1 🪙</button></div>

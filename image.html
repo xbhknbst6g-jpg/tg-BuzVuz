@@ -571,8 +571,6 @@
                 Генерация картинок по тексту
             </div>
 
-            </div>
-
             <!-- КОНТЕЙНЕР НАСТРОЕК И ПРИМЕРОВ (Теперь открыт и адаптирован под фиолетовый стиль) -->
             <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 190px); box-sizing: border-box; display: flex; flex-direction: column;">
                 
@@ -614,17 +612,18 @@
             <!-- ПАНЕЛЬ УПРАВЛЕНИЯ КНОПКАМИ (Нижний ряд) -->
             <div class="single-row-controls" style="display: flex; gap: 10px; margin-top: 15px;">
                 <div class="control-col" style="flex: 1;">
-                    <button id="btn_direct_quality" class="capsule-btn" onclick="openUniversalQualitySheet()" style="width: 100%;">⚡ Standard</button>
+                    <button id="btn_text_quality" class="capsule-btn" onclick="openUniversalQualitySheet()" style="width: 100%;">⚡ Standard</button>
                 </div>
                 <div class="control-col" style="flex: 1;">
-                    <button id="btn_direct_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()" style="width: 100%;">9:16</button>
+                    <button id="btn_text_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()" style="width: 100%;">9:16</button>
                 </div>
                 <div class="control-col control-col-btn" style="flex: 1.2;">
-                    <button id="neo_direct_submit_btn" class="neo-start-btn" onclick="sendDirectGenData()" style="width: 100%; background: #b624ff; box-shadow: 0 0 15px rgba(182, 36, 255, 0.4); color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold;">
+                    <button id="neo_text_submit_btn" class="neo-start-btn" onclick="sendTextGenData()" style="width: 100%;">
                         Start 1 🪙
                     </button>
                 </div>
             </div>
+
 
         </div> <!-- КОНЕЦ ЭКРАНА text_image -->
 
@@ -685,15 +684,16 @@
                 </div>
 
                 <!-- ПАНЕЛЬ УПРАВЛЕНИЯ КНОПКАМИ (Нижний ряд) -->
+                <!-- КНОПКИ ДЛЯ 2 ЭКРАНА (Умный Фокус) -->
                 <div class="single-row-controls" style="display: flex; gap: 10px; margin-top: 15px;">
                     <div class="control-col" style="flex: 1;">
-                        <button id="btn_direct_quality_2" class="capsule-btn" onclick="openUniversalQualitySheet()" style="width: 100%;">⚡ Fast</button>
+                        <button id="btn_direct_quality" class="capsule-btn" onclick="openUniversalQualitySheet()" style="width: 100%;">⚡ Standard</button>
                     </div>
                     <div class="control-col" style="flex: 1;">
-                        <button id="btn_direct_ratio_2" class="capsule-btn" onclick="openUniversalRatioSheet()" style="width: 100%;">1:1</button>
+                        <button id="btn_direct_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()" style="width: 100%;">1:1</button>
                     </div>
                     <div class="control-col control-col-btn" style="flex: 1.2;">
-                        <button id="neo_direct_submit_btn_2" class="neo-start-btn" onclick="sendDirectGenData()" style="width: 100%; background: #00f2fe; box-shadow: 0 0 15px rgba(0, 242, 254, 0.4); color: #0d0f1d; border: none; padding: 10px; border-radius: 8px; font-weight: bold;">
+                        <button id="neo_direct_submit_btn" class="neo-start-btn" onclick="sendDirectGenData()" style="width: 100%;">
                             Start 1 🪙
                         </button>
                     </div>

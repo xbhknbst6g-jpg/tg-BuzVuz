@@ -306,6 +306,48 @@
     </style>
 </head>
 <body>
+    <!-- ========================================== -->
+    <!-- ЭКРАН 1: ГЛАВНОЕ МЕНЮ ФОТО-СТУДИИ          -->
+    <!-- ========================================== -->
+    <div id="foto" class="screen active">
+        <div class="header"></div>
+        <h1 class="ai-studio-title">AI Studio</h1>
+        <div class="neon-divider"></div>
+
+        <p style="text-align: center; color: var(--tg-theme-hint-color, #666); font-size: 14px; margin-top: 5px;">Выберите нужный инструмент генерации ниже</p>
+
+        <div class="main-menu-grid">
+            <!-- 1. Цифровая Оптика (Старый класс text_image, под капотом мощный Flux) -->
+            <div class="menu-card orange" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('text_image');">
+                <div class="menu-icon">
+                    <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-camera">
+                        <path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/>
+                        <circle cx="12" cy="13" r="3"/>
+                    </svg>
+                </div>
+                <div class="menu-info">
+                    <div class="menu-title">1. Цифровая Оптика</div>
+                    <div class="menu-desc">Премиум-генерация высокого качества на Flux</div>
+                </div>
+            </div>
+
+            <!-- 2. Умный Фокус (Наш новый класс image_generation_direct, под капотом Nano Banana) -->
+            <div class="menu-card red" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('image_generation_direct');">
+                <div class="menu-icon">
+                    <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wand-2">
+                        <path d="m21.66 10-5.66-5.66a2 2 0 0 0-2.83 0l-9.17 9.17a2 2 0 0 0 0 2.83l5.66 5.66a2 2 0 0 0 2.83 0l9.17-9.17a2 2 0 0 0 0-2.83Z"/>
+                        <path d="m14 16-2-2"/>
+                    </svg>
+                </div>
+                <div class="menu-info">
+                    <div class="menu-title">2. Умный Фокус</div>
+                    <div class="menu-desc">Быстрая генерация на движке Nano Banana</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div id="image_generation_direct" class="screen">
     
     <!-- СТРОГО КАК В ТВОЕМ РАБОЧЕМ ПРИМЕРЕ СВАПА: ЧИСТЫЙ КОНТЕЙНЕР БЕЗ ЛИШНЕЙ ДИЧИ -->
@@ -379,167 +421,322 @@
 
 
     <script>
-        // ====================================================================================
-        // 1. СИСТЕМНАЯ ИНИЦИАЛИЗАЦИЯ И ПЕРЕМЕННЫЕ (ТОЛЬКО КАРТИНКИ)
-        // ====================================================================================
+// ====================================================================================
+// 1. СИСТЕМНАЯ ИНИЦИАЛИЗАЦИЯ И ПЕРЕМЕННЫЕ (СТРОГО ДВА РЕЖИМА)
+// ====================================================================================
         const tg = window.Telegram.WebApp;
 
+        // Главная переменная роутера (Стартует с главного меню хаба 'foto')
+        let currentActiveMode = 'foto';
+
+        // 🟢 НАСТРОЙКИ ДЛЯ 1-ГО РЕЖИМА: «Цифровая Оптика» (Класс text_image на Flux)
+        let selectedTextRatio = '9:16';   
+        let selectedTextQuality = 'schnell';
+        let isTextImageStyleSelected = false; 
+        let selectedStyleName = ""; 
+        let currentGenerationMode = 'preset'; 
+        let selectedAiModelEngine = 'preset';  
+
+        // 🟢 НАСТРОЙКИ ДЛЯ 2-ГО РЕЖИМА: «Умный Фокус» (Класс image_generation_direct на Nano Banana)
         let directGenRatio = '9:16';
         let directGenQuality = 'schnell';
 
-        // ====================================================================================
-        // 4. СТАРТ WEBAPP И ПРИВЯЗКА СОБЫТИЙ КНОПОК
-        // ====================================================================================
+
+// ====================================================================================
+// 2.5 ФУНКЦИИ ВОЗВРАТА НАЗАД (СТРОГО ДВА НАШИХ РЕЖИМА)
+// ====================================================================================
+        // для Цифровой Оптики
+        function handleTextBackClick() {
+            openScreen('foto'); // С первого клика возвращает в главное меню хаба
+        }
+
+        // для Умного Фокуса
+        function handleDirectGenBackClick() {
+            openScreen('foto'); // С первого клика возвращает в главное меню хаба
+        }
+
+// ====================================================================================
+// 4. Старт WebApp, автоматическое разворачивание шторки и привязка кнопок
+// ====================================================================================
         window.addEventListener('DOMContentLoaded', () => {
-            // 🔥 ШАГ 1: ДОБАВЛЯЕМ КЛАСС active НА ГЛАВНЫЙ ЭКРАН (СТРОГО КАК В ВАШЕМ openScreen!)
-            const mainScreen = document.getElementById('image_generation_direct');
-            if (mainScreen) {
-                mainScreen.classList.add('active'); // Включаем видимость экрана по вашему CSS-стандарту
-            }
-
-            // 🔥 ШАГ 2: ПРИНУДИТЕЛЬНО ВКЛЮЧАЕМ СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (ВАШ РОДНОЙ КОД)
-            const settingsBlock = document.getElementById('direct_gen_settings_block');
-            if (settingsBlock) {
-                settingsBlock.style.display = "block";
-            }
-
             if (tg) {
                 tg.ready();  
                 tg.expand(); 
-                if (tg.MainButton) tg.MainButton.hide(); 
             }
             
-            const qualityBtn = document.getElementById('btn_direct_quality');
-            const ratioBtn = document.getElementById('btn_direct_ratio');
+            // --- 1. ПРИВЯЗКА КЛИКОВ: ЦИФРОВАЯ ОПТИКА (Класс text_image) ---
+            const textQualityBtn = document.getElementById('btn_text_quality');
+            const textRatioBtn = document.getElementById('btn_text_ratio');
             
-            if (qualityBtn) qualityBtn.addEventListener('click', showNativeDirectQualityPopup);
-            if (ratioBtn) ratioBtn.addEventListener('click', showNativeDirectRatioPopup);
+            if (textQualityBtn) textQualityBtn.addEventListener('click', showNativeQualityPopup);
+            if (textRatioBtn) textRatioBtn.addEventListener('click', showNativeRatioPopup);
 
-            setDirectRatio(directGenRatio);
-            updateNeoStartButtonText();
+            // --- 2. ПРИВЯЗКА КЛИКОВ: УМНЫЙ ФОКУС (Класс image_generation_direct) ---
+            const directQualityBtn = document.getElementById('btn_direct_quality');
+            const directRatioBtn = document.getElementById('btn_direct_ratio');
+            
+            if (directQualityBtn) directQualityBtn.addEventListener('click', showNativeDirectQualityPopup);
+            if (directRatioBtn) directRatioBtn.addEventListener('click', showNativeDirectRatioPopup);
+
+            // Умный стартовый роутер, который спасет от кэшивания Telegram
+            const urlParams = new URLSearchParams(window.location.search);
+            const targetScreen = urlParams.get('screen');
+
+            if (targetScreen) {
+                // Если бот явно передал экран (например, ?screen=image_generation_direct)
+                openScreen(targetScreen);
+            } else {
+                // Если зашли просто так — включаем главное меню хаба
+                openScreen('foto'); 
+            }
         });
 
-        function showNativeDirectQualityPopup() { openUniversalQualitySheet(); }
-        function showNativeDirectRatioPopup() { openUniversalRatioSheet(); }
-
-
-        // ====================================================================================
-        // 6. ОБНОВЛЯТОР СТОИМОСТИ НА ВСТРОЕННОЙ КНОПКЕ START
-        // ====================================================================================
-        window.addEventListener('DOMContentLoaded', () => {
-            // 🔥 ШАГ 1: МГНОВЕННО ВКЛЮЧАЕМ И ВНЕШНИЙ ЭКРАН, И ВНУТРЕННИЙ БЛОК НАСТРОЕК
-            try {
-                // Включаем самый верхний контейнер экрана, чтобы убрать черный фон
-                const mainScreen = document.getElementById('image_generation_direct');
-                if (mainScreen) {
-                    mainScreen.style.display = "block";
-                }
-                
-                // Включаем внутренний служебный блок с карточками и кнопками
-                const settingsBlock = document.getElementById('direct_gen_settings_block');
-                if (settingsBlock) {
-                    settingsBlock.style.display = "block";
-                }
-                console.log("[WebApp Direct] Все блоки интерфейса принудительно открыты!");
-            } catch (e) {
-                console.error("Ошибка принудительного открытия контейнеров:", e);
-            }
-
-            if (tg) {
-                try {
-                    tg.ready();  
-                    tg.expand(); 
-                    if (tg.MainButton) tg.MainButton.hide(); 
-                } catch (e) {}
-            }
-            
-            // --- ПРИВЯЗКА КЛИКОВ ДЛЯ НАШЕГО ЕДИНСТВЕННОГО РЕЖИМА ---
-            try {
-                const qualityBtn = document.getElementById('btn_direct_quality');
-                const ratioBtn = document.getElementById('btn_direct_ratio');
-                
-                if (qualityBtn) qualityBtn.addEventListener('click', showNativeDirectQualityPopup);
-                if (ratioBtn) ratioBtn.addEventListener('click', showNativeDirectRatioPopup);
-            } catch (e) {
-                console.error("Ошибка привязки событий клика:", e);
-            }
-
-            // Безопасный вызов стартовой синхронизации текстов капсул
-            try { setDirectRatio(directGenRatio); } catch (e) {}
-            try { updateNeoStartButtonText(); } catch (e) {}
-        });
-
-        function showNativeDirectQualityPopup() { openUniversalQualitySheet(); }
-        function showNativeDirectRatioPopup() { openUniversalRatioSheet(); }
 
 // ====================================================================================
-// 7. УПРАВЛЕНИЕ УНИВЕРСАЛЬНОЙ КАСТОМНОЙ ШТОРКОЙ (РАСПРЕДЕЛЕНИЕ ПО СТОРОНАМ И ЦЕНЫ)
+// 5. РОУТЕР ЭКРАНОВ И УМНЫЙ СЧЕТЧИК МОНЕТ НА КНОПКАХ START (ТОЛЬКО ДВА РЕЖИМА!)
 // ====================================================================================
 
-        function openUniversalQualitySheet() {
-            const titleEl = document.getElementById('custom_sheet_title');
-            const listEl = document.getElementById('custom_sheet_list');
-            if (!titleEl || !listEl) return;
-
-            titleEl.innerText = "КАЧЕСТВО ГЕНЕРАЦИИ";
+// Безопасное переключение подэкранов внутри foto.html
+        function openScreen(screenName) {
+            currentActiveMode = screenName;
             
-            // 🔥 ВОЗВРАЩЕНЫ СПАНЫ И ЦЕНЫ СПРАВА: Строго как в твоем правильном рабочем коде!
-            listEl.innerHTML = `
-                <li><button class="custom-sheet-item" onclick="directGenQuality='schnell'; document.getElementById('btn_direct_quality').innerHTML='⚡ Standard'; updateNeoStartButtonText(); closeCustomSheet();"><span>Standard</span><span class="coin-price">1 🪙</span></button></li>
-                <li><button class="custom-sheet-item" onclick="directGenQuality='dev'; document.getElementById('btn_direct_quality').innerHTML='💎 Pro'; updateNeoStartButtonText(); closeCustomSheet();"><span>Pro</span><span class="coin-price">1 🪙</span></button></li>
-                <li><button class="custom-sheet-item" onclick="directGenQuality='ultra_4k'; document.getElementById('btn_direct_quality').innerHTML='🔥 Ultra'; updateNeoStartButtonText(); closeCustomSheet();"><span>Ultra</span><span class="coin-price">1 🪙</span></button></li>
-            `;
-
-            document.getElementById('custom_action_sheet').classList.add('active');
-        }
-
-        function openUniversalRatioSheet() {
-            const titleEl = document.getElementById('custom_sheet_title');
-            const listEl = document.getElementById('custom_sheet_list');
-            if (!titleEl || !listEl) return;
-
-            titleEl.innerText = "СООТНОШЕНИЕ СТОРОН";
+            // ОСТАВИЛИ СТРОГО ТРИ ЭКРАНА: Главное хаб-меню, Цифровая Оптика и Умный Фокус
+            const screens = ['foto', 'text_image', 'image_generation_direct'];
             
-            // 🔥 ВОЗВРАЩЕНЫ СПАНЫ И ЦЕНТРАЛЬНОЕ ВЫРАВНИВАНИЕ ФОРМАТА ДЛЯ ЕДИНСТВА СТИЛЯ
-            listEl.innerHTML = `
-                <li><button class="custom-sheet-item" onclick="directGenRatio='9:16'; document.getElementById('btn_direct_ratio').innerHTML='9:16'; updateNeoStartButtonText(); closeCustomSheet();"><span style="width: 100%; text-align: center;">9:16</span></button></li>
-                <li><button class="custom-sheet-item" onclick="directGenRatio='3:4'; document.getElementById('btn_direct_ratio').innerHTML='3:4'; updateNeoStartButtonText(); closeCustomSheet();"><span style="width: 100%; text-align: center;">3:4</span></button></li>
-                <li><button class="custom-sheet-item" onclick="directGenRatio='1:1'; document.getElementById('btn_direct_ratio').innerHTML='1:1'; updateNeoStartButtonText(); closeCustomSheet();"><span style="width: 100%; text-align: center;">1:1</span></button></li>
-                <li><button class="custom-sheet-item" onclick="directGenRatio='4:3'; document.getElementById('btn_direct_ratio').innerHTML='4:3'; updateNeoStartButtonText(); closeCustomSheet();"><span style="width: 100%; text-align: center;">4:3</span></button></li>
-                <li><button class="custom-sheet-item" onclick="directGenRatio='16:9'; document.getElementById('btn_direct_ratio').innerHTML='16:9'; updateNeoStartButtonText(); closeCustomSheet();"><span style="width: 100%; text-align: center;">16:9</span></button></li>
-            `;
+            screens.forEach(s => {
+                const el = document.getElementById(s);
+                if (el) el.classList.remove('active');
+            });
+            
+            // Твой оригинальный сброс при выходе в главное меню хаба
+            if (screenName === 'foto') {
+                isTextImageStyleSelected = false;
+                selectedStyleName = "";
+                
+                // Сброс и скрытие блоков для Цифровой Оптики (text_image)
+                if (document.getElementById('text_image_title')) document.getElementById('text_image_title').innerText = "Примеры генераций Фото + Текст";
+                if (document.getElementById('text_image_subtitle')) document.getElementById('text_image_subtitle').innerText = "Выберите желаемый стиль для настройки:";
+                if (document.getElementById('text_image_large_preview')) document.getElementById('text_image_large_preview').src = "";
+                if (document.getElementById('text_image_settings_block')) document.getElementById('text_image_settings_block').style.display = "none";
+                if (document.getElementById('text_image_gallery')) document.getElementById('text_image_gallery').style.display = "grid";
+                
+                // 🔥 СБРОС ДЛЯ УМНОГО ФОКУСА: Скрываем служебный блок настроек при возврате в главное меню хаба
+                const directSettings = document.getElementById('direct_gen_settings_block');
+                if (directSettings) directSettings.style.display = "none";
+            }
 
-            document.getElementById('custom_action_sheet').classList.add('active');
+            if (tg && tg.MainButton) tg.MainButton.hide();
+
+            const activeScreenEl = document.getElementById(screenName);
+            if (activeScreenEl) {
+                activeScreenEl.classList.add('active');
+                if (typeof updateFotoMainButton === 'function') updateFotoMainButton(); 
+                
+                // 🔥 МГНОВЕННОЕ ВКЛЮЧЕНИЕ: для экрана Умного Фокуса при переходе из меню
+                if (screenName === 'image_generation_direct') {
+                    const directSettings = document.getElementById('direct_gen_settings_block');
+                    if (directSettings) directSettings.style.display = "block";
+                }
+
+                // Твой оригинальный сброс тумблера ИИ на "Фотореализм" при каждом входе в Цифровую Оптику (text_image)
+                if (screenName === 'text_image') {
+                    const defaultModelBtn = document.getElementById('btn_global_model_banana');
+                    if (defaultModelBtn && typeof switchGlobalAiModel === 'function') {
+                        switchGlobalAiModel('preset', defaultModelBtn);
+                    }
+                }
+            }
+            
+            // Обновляем текст стоимости монет на встроенных неоновых кнопках при смене экрана
+            if (typeof updateNeoStartButtonText === 'function') updateNeoStartButtonText();
         }
 
-        function closeCustomSheet() {
-            const sheet = document.getElementById('custom_action_sheet');
-            if (sheet) sheet.classList.remove('active');
+
+// ====================================================================================
+// 6. КРАТКИЙ И ЛАКОНИЧНЫЙ ОБНОВЛЯТОР ТЕКСТА ГЛАВНОЙ КНОПКИ ТЕЛЕГРАМ
+// ====================================================================================
+        function updateFotoMainButton() {
+            if (!tg || !tg.MainButton) return;
+            
+            // ИСПРАВЛЕНО: Поскольку на обоих экранах подрежимов теперь работают встроенные 
+            // горизонтальные неоновые кнопки пульта, нативная синяя кнопка Telegram больше вообще 
+            // не нужна. Мы полностью выключаем её отображение, чтобы исключить дублирование на экране!
+            tg.MainButton.hide();
         }
 
-        // Заглушки, чтобы старые привязки в коде (если они остались) не выдавали ошибок
-        function selectQualityFromSheet(id, text) { return; }
-        function selectRatioFromSheet(id) { return; }
-        function setDirectRatio(ratio) { return; }
-
-        // Обновлятор цены на встроенной кнопке Start (привязано к качеству)
+        // УМНЫЙ ОБНОВЛЯТОР СТОИМОСТИ НА ВСТРОЕННЫХ НЕОНОВЫХ КНОПКАХ (СИНХРОНИЗИРОВАНО ДЛЯ ДВУХ РЕЖИМОВ!)
         function updateNeoStartButtonText() {
-            const btnDirect = document.getElementById('neo_direct_submit_btn');
+            const btnText = document.getElementById('neo_text_submit_btn');     // Кнопка Цифровой Оптики
+            const btnDirect = document.getElementById('neo_direct_submit_btn'); // Кнопка Умного Фокуса
+            
+            // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ ЦИФРОВОЙ ОПТИКИ (Класс text_image на Flux)
+            if (btnText) {
+                if (selectedAiModelEngine === 'custom') {
+                    btnText.innerHTML = `Start 2 🪙`; // Цена за премиум-обработку Flux PuLID
+                } else {
+                    btnText.innerHTML = `Start 1 🪙`; // Стандартная цена за Nano Banana
+                }
+            }
+            
+            // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ УМНОГО ФОКУСА (Класс image_generation_direct на Nano Banana)
             if (btnDirect) {
-                btnDirect.innerHTML = directGenQuality === 'ultra_4k' ? `Start 2 🪙` : `Start 1 🪙`;
+                if (directGenQuality === 'ultra_4k') {
+                    btnDirect.innerHTML = `Start 2 🪙`; // Если выберут Ultra качество
+                } else {
+                    btnDirect.innerHTML = `Start 1 🪙`; // Стандартная цена за быстрое качество
+                }
             }
         }
 
-        // ====================================================================================
-        // 8. СБОРКА И ОТПРАВКА ДИПЛИНКА В БОТА
-        // ====================================================================================
+// ====================================================================================
+// 7. УПРАВЛЕНИЕ УНИВЕРСАЛЬНОЙ КАСТОМНОЙ ШТОРКОЙ ДЛЯ ДВУХ ЭКРАНОВ (СИНХРОНИЗИРОВАНО)
+// ====================================================================================
+
+    // ОТКРЫТИЕ ШТОРКИ КАЧЕСТВА ДЛЯ ЛЮБОГО АКТИВНОГО ЭКРАНА
+    function openUniversalQualitySheet() {
+        const titleEl = document.getElementById('custom_sheet_title');
+        const listEl = document.getElementById('custom_sheet_list');
+        if (!titleEl || !listEl) return;
+
+        titleEl.innerText = "КАЧЕСТВО ГЕНЕРАЦИИ";
+        
+        // 🔥 СТРОГО ТВОИ РОДНЫЕ СПАНЫ И ЦЕНЫ, ВЫЗЫВАЕМ УМНЫЙ ОБРАБОТЧИК
+        listEl.innerHTML = `
+            <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('schnell', '⚡ Standard')"><span>Standard</span><span class="coin-price">1 🪙</span></button></li>
+            <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('dev', '💎 Pro')"><span>Pro</span><span class="coin-price">1 🪙</span></button></li>
+            <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('ultra_4k', '🔥 Ultra')"><span>Ultra</span><span class="coin-price">1 🪙</span></button></li>
+        `;
+
+        document.getElementById('custom_action_sheet').classList.add('active');
+    }
+
+    // Умный обработчик качества: определяет экран, меняет его кнопку и переменную
+    function selectQualityFromSheet(id, text) {
+        // Ветка 1: Если мы на экране Цифровой Оптики
+        if (currentActiveMode === 'text_image') {
+            selectedTextQuality = id;
+            const el = document.getElementById('btn_text_quality');
+            if (el) el.innerHTML = text;
+        } 
+        // Ветка 2: Если мы на экране Умного Фокуса
+        else if (currentActiveMode === 'image_generation_direct') {
+            directGenQuality = id;
+            const el = document.getElementById('btn_direct_quality');
+            if (el) el.innerHTML = text;
+        }
+        
+        updateNeoStartButtonText();
+        closeCustomSheet();
+    }
+
+    // ОТКРЫТИЕ ШТОРКИ ФОРМАТА ДЛЯ ЛЮБОГО АКТИВНОГО ЭКРАНА
+    function openUniversalRatioSheet() {
+        const titleEl = document.getElementById('custom_sheet_title');
+        const listEl = document.getElementById('custom_sheet_list');
+        if (!titleEl || !listEl) return;
+
+        titleEl.innerText = "СООТНОШЕНИЕ СТОРОН";
+        
+        // 🔥 СТРОГО ТВОЯ ОРИГИНАЛЬНАЯ ЦЕНТРОВКА ВНУТРИ ТЕГОВ SPAN
+        listEl.innerHTML = `
+            <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('9:16')"><span style="width: 100%; text-align: center;">9:16</span></button></li>
+            <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('3:4')"><span style="width: 100%; text-align: center;">3:4</span></button></li>
+            <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('1:1')"><span style="width: 100%; text-align: center;">1:1</span></button></li>
+            <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('4:3')"><span style="width: 100%; text-align: center;">4:3</span></button></li>
+            <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('16:9')"><span style="width: 100%; text-align: center;">16:9</span></button></li>
+        `;
+
+        document.getElementById('custom_action_sheet').classList.add('active');
+    }
+
+    // Умный обработчик формата: определяет экран и вызывает его родную функцию синхронизации
+    function selectRatioFromSheet(id) {
+        // Ветка 1: Если мы на экране Цифровой Оптики
+        if (currentActiveMode === 'text_image') {
+            setTextRatio(id);
+        } 
+        // Ветка 2: Если мы на экране Умного Фокуса
+        else if (currentActiveMode === 'image_generation_direct') {
+            setDirectRatio(id);
+        }
+        
+        updateNeoStartButtonText();
+        closeCustomSheet();
+    }
+
+    // Функции принудительной синхронизации формата для капсул кадра на основном экране
+    function setTextRatio(ratio) { 
+        selectedTextRatio = ratio; 
+        const el = document.getElementById('btn_text_ratio');
+        if (el) el.innerHTML = ratio;
+    }
+
+    function setDirectRatio(ratio) { 
+        directGenRatio = ratio; 
+        const el = document.getElementById('btn_direct_ratio');
+        if (el) el.innerHTML = ratio;
+    }
+
+    // Перенаправляем функции вызова из DOMContentLoaded на наш единый пульт управления шторкой
+    function showNativeQualityPopup() { openUniversalQualitySheet(); }
+    function showNativeRatioPopup() { openUniversalRatioSheet(); }
+
+    function showNativeDirectQualityPopup() { openUniversalQualitySheet(); }
+    function showNativeDirectRatioPopup() { openUniversalRatioSheet(); }
+
+    // Функция закрытия шторки
+    function closeCustomSheet() {
+        const sheet = document.getElementById('custom_action_sheet');
+        if (sheet) sheet.classList.remove('active');
+    }
+
+    // УМНЫЙ ОБНОВЛЯТОР СТОИМОСТИ НА ВСТРОЕННЫХ КНОПКАХ (ОБЪЕДИНЕННЫЙ)
+    function updateNeoStartButtonText() {
+        const btnText = document.getElementById('neo_text_submit_btn');
+        const btnDirect = document.getElementById('neo_direct_submit_btn');
+        
+        // Расчет для Цифровой Оптики
+        if (btnText) {
+            if (selectedAiModelEngine === 'custom') {
+                btnText.innerHTML = `Start 2 🪙`; 
+            } else {
+                btnText.innerHTML = `Start 1 🪙`; 
+            }
+        }
+        
+        // Расчет для Умного Фокуса
+        if (btnDirect) {
+            if (directGenQuality === 'ultra_4k') {
+                btnDirect.innerHTML = `Start 2 🪙`;
+            } else {
+                btnDirect.innerHTML = `Start 1 🪙`;
+            }
+        }
+    }
+
+// ====================================================================================
+// 8. СБОРКА И ОТПРАВКА ДИПЛИНКА В БОТА (ОБЪЕДИНЕННЫЙ)
+// ====================================================================================
         function sendToTelegram(payload) {
             try {
                 const botUsername = "ChatGPT_BuzVuz_bot"; 
+
+                // Настройки по умолчанию
+                let mode = payload.ai_model_engine || 'pulid';
                 let quality = payload.quality || 'schnell';
                 let ratio = payload.aspect_ratio ? payload.aspect_ratio.replace(':', '-') : '1-1';
+                let faces = payload.faces_count || 1;
+                let isCustom = payload.is_custom_text_mode ? '1' : '0';
 
-                let startParam = `mode_puretext_q_${quality}_r_${ratio}`;
+                // 1. Стандартный параметр для Цифровой Оптики (Класс text_image)
+                let startParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}`;
+                
+                // 2. 🔥 Если триггер сработал от Умного Фокуса — собираем короткий параметр
+                if (payload.mode_trigger === 'pure_text_image') {
+                    startParam = `mode_puretext_q_${quality}_r_${ratio}`;
+                }
+
+                // 🔥 ИСПРАВЛЕНО: Слэш / и знак доллара $ на месте, ссылка соберется идеально!
                 let telegramLink = `https://t.me{botUsername}?start=${startParam}`;
 
                 console.log("[WebApp Link] Перенаправление по ссылке:", telegramLink);
@@ -556,10 +753,38 @@
             }
         }
 
+        // Кнопка START для 1-го режима: «Цифровая Оптика» (Класс text_image)
+        function sendPhotoTextData() { 
+            try {
+                let isCustomText = (typeof currentGenerationMode !== 'undefined' && currentGenerationMode === 'custom');
+                let currentModel = (typeof selectedAiModelEngine !== 'undefined' && selectedAiModelEngine === 'preset') ? 'banana' : 'pulid';
+
+                let ratio = (typeof selectedTextRatio !== 'undefined') ? selectedTextRatio : '9:16';
+                let quality = (typeof selectedTextQuality !== 'undefined') ? selectedTextQuality : 'schnell';
+
+                console.log("[WebApp] Сборка пакета Цифровой Оптики. Модель:", currentModel);
+
+                sendToTelegram({ 
+                    mode_trigger: 'text_image', 
+                    aspect_ratio: ratio, 
+                    quality: quality,
+                    ai_model_engine: currentModel,         
+                    is_custom_text_mode: isCustomText,     
+                    faces_count: 1          
+                }); 
+            } catch (err) {
+                console.error("Критический сбой отправки Цифровой Оптики:", err);
+                window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
+            }
+        }
+
+        // Кнопка START для 2-го режима: «Умный Фокус» (Класс image_generation_direct)
         function sendDirectGenData() { 
             try {
-                let ratio = (typeof directGenRatio !== 'undefined') ? directGenRatio : '1:1';
+                let ratio = (typeof directGenRatio !== 'undefined') ? directGenRatio : '9:16';
                 let quality = (typeof directGenQuality !== 'undefined') ? directGenQuality : 'schnell';
+
+                console.log("[WebApp] Сборка пакета Умного Фокуса. Формат:", ratio, "Качество:", quality);
 
                 sendToTelegram({ 
                     mode_trigger: 'pure_text_image', 
@@ -567,11 +792,11 @@
                     quality: quality
                 }); 
             } catch (err) {
-                console.error("Критический сбой отправки:", err);
+                console.error("Критический сбой отправки Умного Фокуса:", err);
                 window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
             }
         }
-        </script>
+    </script>
 </body>
 </html>
 

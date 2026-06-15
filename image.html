@@ -393,7 +393,7 @@
 
     </div>
 
-                <!-- 🔥 СТРОГО КАК В ОРИГИНАЛЕ FACE SWAP: ЧИСТЫЕ КЛАССЫ, ВСЯ НАСТРОЙКА ИДЕТ ЧЕРЕЗ СТИЛИ ВЫШЕ -->
+    <!-- СТРОГО КАК В ОРИГИНАЛЕ FACE SWAP: ЧИСТЫЕ КЛАССЫ, ВСЯ НАСТРОЙКА ИДЕТ ЧЕРЕЗ СТИЛИ ВЫШЕ -->
     <div class="single-row-controls">
         <div class="control-col">
             <button id="btn_direct_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
@@ -408,19 +408,25 @@
         </div>
     </div>
 
+    <!-- 🔥 ИСПРАВЛЕНО НАМЕРТВО: ЗАКРЫВАЕМ СЛУЖЕБНЫЙ БЛОК И ВНЕШНИЙ ЭКРАН ДО ТОГО, КАК НАЧНЕТСЯ ШТОРКА! -->
+    </div> <!-- 1. Закрыли служебный блок direct_gen_settings_block -->
+</div> <!-- 2. Закрыли главный родительский контейнер экрана image_generation_direct -->
 
-    <!-- УНИВЕРСАЛЬНАЯ КАСТОМНАЯ ШТОРКА -->
-    <div id="custom_action_sheet" class="custom-sheet-overlay" onclick="closeCustomSheet()">
-        <div class="custom-sheet-panel" onclick="event.stopPropagation()">
-            <div id="custom_sheet_title" class="custom-sheet-title">ЗАГОЛОВОК</div>
-            <ul id="custom_sheet_list" class="custom-sheet-list">
-                <!-- Элементы генерируются скриптом на лету -->
-            </ul>
-        </div>
+
+<!-- 🔥 ТЕПЕРЬ ШТОРКА СТОИТ НА СВОЕМ ЗАКОННОМ МЕСТЕ, ВНЕ ЭКРАНОВ СТУДИИ -->
+<!-- УНИВЕРСАЛЬНАЯ КАСТОМНАЯ ШТОРКА -->
+<div id="custom_action_sheet" class="custom-sheet-overlay" onclick="closeCustomSheet()">
+    <div class="custom-sheet-panel" onclick="event.stopPropagation()">
+        <div id="custom_sheet_title" class="custom-sheet-title">ЗАГОЛОВОК</div>
+        <ul id="custom_sheet_list" class="custom-sheet-list">
+            <!-- Элементы генерируются скриптом на лету -->
+        </ul>
     </div>
+</div>
 
 
-    <script>
+<!-- 🔥 СКРИПТ НАЧИНАЕТСЯ В ПОЛНОЙ ИЗОЛЯЦИИ ОТ HTML-ОБОЛОЧЕК -->
+<script>
 // ====================================================================================
 // 1. СИСТЕМНАЯ ИНИЦИАЛИЗАЦИЯ И ПЕРЕМЕННЫЕ (СТРОГО ДВА РЕЖИМА)
 // ====================================================================================

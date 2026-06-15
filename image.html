@@ -345,88 +345,89 @@
                 </div>
             </div>
         </div>
-    </div>
 
 
-    <div id="image_generation_direct" class="screen">
-    
-    <!-- СТРОГО КАК В ТВОЕМ РАБОЧЕМ ПРИМЕРЕ СВАПА: ЧИСТЫЙ КОНТЕЙНЕР БЕЗ ЛИШНЕЙ ДИЧИ -->
-    <div class="tabs-container" id="direct_gen_tabs">
-        <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); margin-left: 5px; white-space: nowrap;">Генерация картинок по тексту</div>
-    </div>
 
-    <!-- СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (Изначально полностью скрыт, как в твоих других режимах) -->
-    <div id="direct_gen_settings_block" style="display: none;">
-
+        <div id="image_generation_direct" class="screen">
             
-    <!-- КОНТЕЙНЕР-ОРИЕНТИР С ВАШИМИ РАЗМЕРАМИ И ОТСТУПАМИ -->
-    <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 190px); box-sizing: border-box; display: flex; flex-direction: column;">
-        
-        <div class="menu-title" style="text-align: center;">📍 Примеры генерации:</div>
-        <div class="menu-desc" style="text-align: center; margin-bottom: 12px;">Что можно получить по простому текстовому запросу</div>
-        
-        <!-- ВАША РОДНАЯ СЕТКА ШАБЛОНОВ С ВЕРТИКАЛЬНЫМИ КАРТОЧКАМИ 9:16 -->
-        <div class="swap-steps-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-            <!-- Пример 1 (Вытянутый 9:16) -->
-            <div class="phone-template-card" style="height: 150px !important;">
-                <img src="https://postimg.cc" alt="Пример 1" style="width: 100%; height: 100%; object-fit: cover;">
-                <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Кот 🐱</div>
+            <!-- СТРОГО КАК В ТВОЕМ РАБОЧЕМ ПРИМЕРЕ СВАПА: ЧИСТЫЙ КОНТЕЙНЕР БЕЗ ЛИШНЕЙ ДИЧИ -->
+            <div class="tabs-container" id="direct_gen_tabs">
+                <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); margin-left: 5px; white-space: nowrap;">Генерация картинок по тексту</div>
             </div>
-            <!-- Пример 2 (Вытянутый 9:16) -->
-            <div class="phone-template-card" style="height: 150px !important;">
-                <img src="https://postimg.cc" alt="Пример 2" style="width: 100%; height: 100%; object-fit: cover;">
-                <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Неон ⚡</div>
+
+            <!-- СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (Изначально полностью скрыт, как в твоих других режимах) -->
+            <div id="direct_gen_settings_block" style="display: none;">
+
+                    
+            <!-- КОНТЕЙНЕР-ОРИЕНТИР С ВАШИМИ РАЗМЕРАМИ И ОТСТУПАМИ -->
+            <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 190px); box-sizing: border-box; display: flex; flex-direction: column;">
+                
+                <div class="menu-title" style="text-align: center;">📍 Примеры генерации:</div>
+                <div class="menu-desc" style="text-align: center; margin-bottom: 12px;">Что можно получить по простому текстовому запросу</div>
+                
+                <!-- ВАША РОДНАЯ СЕТКА ШАБЛОНОВ С ВЕРТИКАЛЬНЫМИ КАРТОЧКАМИ 9:16 -->
+                <div class="swap-steps-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                    <!-- Пример 1 (Вытянутый 9:16) -->
+                    <div class="phone-template-card" style="height: 150px !important;">
+                        <img src="https://postimg.cc" alt="Пример 1" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Кот 🐱</div>
+                    </div>
+                    <!-- Пример 2 (Вытянутый 9:16) -->
+                    <div class="phone-template-card" style="height: 150px !important;">
+                        <img src="https://postimg.cc" alt="Пример 2" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Неон ⚡</div>
+                    </div>
+                    <!-- Пример 3 (Вытянутый 9:16) -->
+                    <div class="phone-template-card" style="height: 150px !important;">
+                        <img src="https://postimg.cc" alt="Пример 3" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Космос 🌌</div>
+                    </div>
+                </div>
+
+                <!-- 🔥 УВЕЛИЧИЛИ ОТСТУП СВЕРХУ ДО 40px -->
+                <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
+                    Шаг 1: Настройте формат кадра и качество генерации на кнопках внизу.<br>
+                    Шаг 2: Нажмите огненную кнопку START.<br>
+                    Шаг 3: Веб-сайт закроется, и бот в чате Telegram попросит вас написать текст (промпт) для создания изображения!
+                </div>
+
             </div>
-            <!-- Пример 3 (Вытянутый 9:16) -->
-            <div class="phone-template-card" style="height: 150px !important;">
-                <img src="https://postimg.cc" alt="Пример 3" style="width: 100%; height: 100%; object-fit: cover;">
-                <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Космос 🌌</div>
+
+            <!-- СТРОГО КАК В ОРИГИНАЛЕ FACE SWAP: ЧИСТЫЕ КЛАССЫ, ВСЯ НАСТРОЙКА ИДЕТ ЧЕРЕЗ СТИЛИ ВЫШЕ -->
+            <div class="single-row-controls">
+                <div class="control-col">
+                    <button id="btn_direct_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
+                </div>
+                <div class="control-col">
+                    <button id="btn_direct_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">9:16</button>
+                </div>
+                <div class="control-col control-col-btn">
+                    <button id="neo_direct_submit_btn" class="neo-start-btn" onclick="sendDirectGenData()">
+                        Start 1 🪙
+                    </button>
+                </div>
+            </div>
+
+            <!-- 🔥 ИСПРАВЛЕНО НАМЕРТВО: ЗАКРЫВАЕМ СЛУЖЕБНЫЙ БЛОК И ВНЕШНИЙ ЭКРАН ДО ТОГО, КАК НАЧНЕТСЯ ШТОРКА! -->
+            </div> <!-- 1. Закрыли служебный блок direct_gen_settings_block -->
+        </div> <!-- 2. Закрыли главный родительский контейнер экрана image_generation_direct -->
+
+
+        <!-- 🔥 ТЕПЕРЬ ШТОРКА СТОИТ НА СВОЕМ ЗАКОННОМ МЕСТЕ, ВНЕ ЭКРАНОВ СТУДИИ -->
+        <!-- УНИВЕРСАЛЬНАЯ КАСТОМНАЯ ШТОРКА -->
+        <div id="custom_action_sheet" class="custom-sheet-overlay" onclick="closeCustomSheet()">
+            <div class="custom-sheet-panel" onclick="event.stopPropagation()">
+                <div id="custom_sheet_title" class="custom-sheet-title">ЗАГОЛОВОК</div>
+                <ul id="custom_sheet_list" class="custom-sheet-list">
+                    <!-- Элементы генерируются скриптом на лету -->
+                </ul>
             </div>
         </div>
-
-        <!-- 🔥 УВЕЛИЧИЛИ ОТСТУП СВЕРХУ ДО 40px -->
-        <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
-            Шаг 1: Настройте формат кадра и качество генерации на кнопках внизу.<br>
-            Шаг 2: Нажмите огненную кнопку START.<br>
-            Шаг 3: Веб-сайт закроется, и бот в чате Telegram попросит вас написать текст (промпт) для создания изображения!
-        </div>
-
     </div>
 
-    <!-- СТРОГО КАК В ОРИГИНАЛЕ FACE SWAP: ЧИСТЫЕ КЛАССЫ, ВСЯ НАСТРОЙКА ИДЕТ ЧЕРЕЗ СТИЛИ ВЫШЕ -->
-    <div class="single-row-controls">
-        <div class="control-col">
-            <button id="btn_direct_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
-        </div>
-        <div class="control-col">
-            <button id="btn_direct_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">9:16</button>
-        </div>
-        <div class="control-col control-col-btn">
-            <button id="neo_direct_submit_btn" class="neo-start-btn" onclick="sendDirectGenData()">
-                Start 1 🪙
-            </button>
-        </div>
-    </div>
 
-    <!-- 🔥 ИСПРАВЛЕНО НАМЕРТВО: ЗАКРЫВАЕМ СЛУЖЕБНЫЙ БЛОК И ВНЕШНИЙ ЭКРАН ДО ТОГО, КАК НАЧНЕТСЯ ШТОРКА! -->
-    </div> <!-- 1. Закрыли служебный блок direct_gen_settings_block -->
-</div> <!-- 2. Закрыли главный родительский контейнер экрана image_generation_direct -->
-
-
-<!-- 🔥 ТЕПЕРЬ ШТОРКА СТОИТ НА СВОЕМ ЗАКОННОМ МЕСТЕ, ВНЕ ЭКРАНОВ СТУДИИ -->
-<!-- УНИВЕРСАЛЬНАЯ КАСТОМНАЯ ШТОРКА -->
-<div id="custom_action_sheet" class="custom-sheet-overlay" onclick="closeCustomSheet()">
-    <div class="custom-sheet-panel" onclick="event.stopPropagation()">
-        <div id="custom_sheet_title" class="custom-sheet-title">ЗАГОЛОВОК</div>
-        <ul id="custom_sheet_list" class="custom-sheet-list">
-            <!-- Элементы генерируются скриптом на лету -->
-        </ul>
-    </div>
-</div>
-
-
-<!-- 🔥 СКРИПТ НАЧИНАЕТСЯ В ПОЛНОЙ ИЗОЛЯЦИИ ОТ HTML-ОБОЛОЧЕК -->
-<script>
+        <!-- 🔥 СКРИПТ НАЧИНАЕТСЯ В ПОЛНОЙ ИЗОЛЯЦИИ ОТ HTML-ОБОЛОЧЕК -->
+    <script>
 // ====================================================================================
 // 1. СИСТЕМНАЯ ИНИЦИАЛИЗАЦИЯ И ПЕРЕМЕННЫЕ (СТРОГО ДВА РЕЖИМА)
 // ====================================================================================

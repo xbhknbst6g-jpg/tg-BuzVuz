@@ -569,7 +569,6 @@
 <!-- ========================================== -->
         <div id="text_image" class="screen">
             
-            <!-- ЛЕНТА ВЕРХУШКИ -->
             <div class="tabs-container">
                 <button class="back-tab-btn" onclick="handleTextBackClick()"></button>
                 <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;">
@@ -577,34 +576,30 @@
                 </div>
             </div>
 
-            <!-- БЛОК НАСТРОЕК (Включается через JS) -->
             <div id="text_image_settings_block" class="custom-prompt-container" style="display: none;">                
-                <!-- Заголовки (теперь белые) -->
                 <div class="menu-title">Примеры генерации:</div>
                 <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">Что можно получить по простому текстовому запросу</div>
                 
-                <!-- Сетка карточек 9:16 в один ряд -->
                 <div class="swap-steps-grid">
                     <div class="phone-template-card"><img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg"></div>
                     <div class="phone-template-card"><img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg"></div>
                     <div class="phone-template-card"><img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg"></div>
                 </div>
 
-                <!-- Текст инструкции (белые Шаги, серое описание) -->
                 <div style="font-size: 13px; line-height: 1.5; margin-top: 25px !important; padding: 0 5px;">
                     <b>Шаг 1:</b> Настройте формат кадра и качество генерации на кнопках внизу.<br>
                     <b>Шаг 2:</b> Нажмите огненную кнопку START.<br>
                     <b>Шаг 3:</b> Веб-сайт закроется, и бот в чате Telegram попросит вас написать текст (промпт) для создания изображения!
                 </div>
 
-            </div>
+                <!-- 🔥 ПЕРЕНЕСЛИ ВНУТРЬ БЛОКА НАСТРОЕК -->
+                <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px;">
+                    <div class="control-col" style="flex: 1;"><button id="btn_text_quality" class="capsule-btn" onclick="openUniversalQualitySheet()" style="width: 100%;">⚡ Standard</button></div>
+                    <div class="control-col" style="flex: 1;"><button id="btn_text_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()" style="width: 100%;">9:16</button></div>
+                    <div class="control-col control-col-btn" style="flex: 1.2;"><button id="neo_text_submit_btn" class="neo-start-btn" onclick="sendTextGenData()" style="width: 100%;">Start 1 🪙</button></div>
+                </div>
 
-            <!-- ПАНЕЛЬ УПРАВЛЕНИЯ КНОПКАМИ -->
-            <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px;">
-                <div class="control-col" style="flex: 1;"><button id="btn_text_quality" class="capsule-btn" onclick="openUniversalQualitySheet()" style="width: 100%;">⚡ Standard</button></div>
-                <div class="control-col" style="flex: 1;"><button id="btn_text_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()" style="width: 100%;">9:16</button></div>
-                <div class="control-col control-col-btn" style="flex: 1.2;"><button id="neo_text_submit_btn" class="neo-start-btn" onclick="sendTextGenData()" style="width: 100%;">Start 1 🪙</button></div>
-            </div>
+            </div> <!-- Закрыли блок настроек text_image_settings_block ПОСЛЕ кнопок -->
         </div>
 
 <!-- ========================================== -->
@@ -612,44 +607,38 @@
 <!-- ========================================== -->
         <div id="image_generation_direct" class="screen">
             
-            <!-- ЛЕНТА ВЕРХУШКИ -->
             <div class="tabs-container">
                 <button class="back-tab-btn" onclick="handleTextBackClick()"></button>
                 <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;">
-                    Генераия картинок по тексту
+                    Генерация картинок по тексту
                 </div>
             </div>
 
-            <!-- БЛОК НАСТРОЕК (Включается через JS) -->
             <div id="direct_gen_settings_block" class="custom-prompt-container" style="display: none;">
                 
-                <!-- Заголовки (теперь белые) -->
                 <div class="menu-title">Примеры генерации:</div>
                 <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">Что можно получить на движке Nano Banana</div>
                 
-                <!-- Сетка карточек 9:16 в один ряд -->
                 <div class="swap-steps-grid">
                     <div class="phone-template-card"><img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg"></div>
                     <div class="phone-template-card"><img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg"></div>
                     <div class="phone-template-card"><img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg"></div>
                 </div>
 
-                <!-- Текст инструкции -->
                 <div style="font-size: 13px; line-height: 1.5; margin-top: 25px !important; padding: 0 5px;">
                     <b>Шаг 1:</b> Выберите пропорции и скорость на кнопках ниже.<br>
                     <b>Шаг 2:</b> Нажмите кнопку запуска START.<br>
                     <b>Шаг 3:</b> Бот мгновенно сгенерирует картинку по вашему тексту в чате!
                 </div>
 
-            </div>
+                <!-- 🔥 ПЕРЕНЕСЛИ ВНУТРЬ БЛОКА НАСТРОЕК -->
+                <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px;">
+                    <div class="control-col" style="flex: 1;"><button id="btn_direct_quality" class="capsule-btn" onclick="openUniversalQualitySheet()" style="width: 100%;">⚡ Standard</button></div>
+                    <div class="control-col" style="flex: 1;"><button id="btn_direct_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()" style="width: 100%;">1:1</button></div>
+                    <div class="control-col control-col-btn" style="flex: 1.2;"><button id="neo_direct_submit_btn" class="neo-start-btn" onclick="sendDirectGenData()" style="width: 100%;">Start 1 🪙</button></div>
+                </div>
 
-            <!-- ПАНЕЛЬ УПРАВЛЕНИЯ КНОПКАМИ -->
-            <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px;">
-                <div class="control-col" style="flex: 1;"><button id="btn_direct_quality" class="capsule-btn" onclick="openUniversalQualitySheet()" style="width: 100%;">⚡ Standard</button></div>
-                <div class="control-col" style="flex: 1;"><button id="btn_direct_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()" style="width: 100%;">1:1</button></div>
-                <div class="control-col control-col-btn" style="flex: 1.2;"><button id="neo_direct_submit_btn" class="neo-start-btn" onclick="sendDirectGenData()" style="width: 100%;">Start 1 🪙</button></div>
-            </div>
-
+            </div> <!-- Закрыли блок настроек direct_gen_settings_block ПОСЛЕ кнопок -->
         </div>
 
 

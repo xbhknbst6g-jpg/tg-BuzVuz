@@ -199,40 +199,45 @@
             z-index: 1 !important;
         }
 
+        /* Текст под карточками примеров: строго оранжевый и без теней */
         .card-overlay {
             background: transparent !important; 
-            color: #ffffff !important; 
-            font-weight: 700 !important;
-            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9) !important; 
-            font-size: 13px !important;
+            font-weight: 500 !important;
+            font-size: 11px !important;
             text-align: center !important;
-            padding: 8px 5px !important;
-            z-index: 2 !important;
+            padding: 6px 4px !important;
             position: absolute !important;
             bottom: 0 !important;
             width: 100% !important;
             box-sizing: border-box !important;
+            z-index: 2 !important;
+            text-shadow: none !important; /* Убрали темную тень, чтобы текст был чистым */
         }
 
-        /* Создаем невидимый отступ внизу экрана */
+        /* Делаем слова "1. Фото", "2. Фото", "3. Итог" жирными */
+        .card-overlay b {
+            font-weight: 800 !important;
+        }
+
+        /* Текст инструкции ниже: полностью белый, включая теги <b> */
+        .custom-prompt-container div[style*="font-size: 13px"],
+        .custom-prompt-container div[style*="font-size: 13px"] b {
+            color: #ffffff !important; 
+            font-weight: 500 !important;
+            text-shadow: none !important;
+        }
+
+        /* Делаем жирными только слова "Шаг 1:", "Шаг 2:", "Шаг 3:" */
+        .custom-prompt-container div[style*="font-size: 13px"] b {
+            font-weight: 800 !important; 
+        }
+
+
+/* Создаем невидимый отступ внизу экрана */
         .screen {
             padding-bottom: 120px !important; 
             box-sizing: border-box !important;
         }
-
-        /* СТИЛИЗАЦИЯ ИНСТРУКЦИИ: БЕЛЫЙ ТЕКСТ И ОРАНЖЕВЫЕ ЖИРНЫЕ ШАГИ */
-        .custom-prompt-container div[style*="font-size: 13px"] {
-            color: #ffffff !important; /* Делаем весь основной текст инструкции белым */
-            font-weight: 500;
-        }
-
-        /* Красим только сами шаги (теги <b>) в оранжевый неон и делаем их жирными */
-        .custom-prompt-container div[style*="font-size: 13px"] b {
-            color: #ff6600 !important; 
-            font-weight: 800 !important; 
-            text-shadow: 0 0 8px rgba(255, 102, 0, 0.4); /* Мягкое неоновое свечение для шагов */
-        }
-
 
         /* 🔥 НАСТРОЙКА КНОПОК: ГОРИЗОНТАЛЬНАЯ ПАНЕЛЬ НАМЕРТВО ВНИЗУ */
         .single-row-controls {
@@ -582,27 +587,26 @@
                 </div>
                 
                 <!-- РОДНАЯ СЕТКА ШАБЛОНОВ С ВЕРТИКАЛЬНЫМИ КАРТОЧКАМИ 9:16 -->
-                <div class="swap-steps-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-                    
-                    <!-- Пример 1 -->
-                    <div class="phone-template-card" style="height: 150px !important; border-color: #b624ff !important; box-shadow: 0 4px 10px rgba(182, 36, 255, 0.2) !important;">
-                        <img src="https://unsplash.com" alt="Кот" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Кот 🐱</div>
+                <div class="swap-steps-grid">
+                    <!-- Карточка 1 -->
+                    <div class="phone-template-card" style="height: 150px !important;">
+                        <img src="ССЫЛКА_НА_ФОТО_1" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="card-overlay" style="color: #ff6600 !important;"><b>1. Фото</b> во весь рост</div>
                     </div>
                     
-                    <!-- Пример 2 -->
-                    <div class="phone-template-card" style="height: 150px !important; border-color: #b624ff !important; box-shadow: 0 4px 10px rgba(182, 36, 255, 0.2) !important;">
-                        <img src="https://unsplash.com" alt="Неон" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Неон ⚡</div>
+                    <!-- Карточка 2 -->
+                    <div class="phone-template-card" style="height: 150px !important;">
+                        <img src="ССЫЛКА_НА_ФОТО_2" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="card-overlay" style="color: #ff6600 !important;"><b>2. Фото</b> вещи</div>
                     </div>
                     
-                    <!-- Пример 3 -->
-                    <div class="phone-template-card" style="height: 150px !important; border-color: #b624ff !important; box-shadow: 0 4px 10px rgba(182, 36, 255, 0.2) !important;">
-                        <img src="https://unsplash.com" alt="Космос" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Космос 🌌</div>
+                    <!-- Карточка 3 -->
+                    <div class="phone-template-card" style="height: 150px !important;">
+                        <img src="ССЫЛКА_НА_ФОТО_3" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="card-overlay" style="color: #ff6600 !important;"><b>3. Итог</b> 🔥</div>
                     </div>
-                    
                 </div>
+
 
                 <!-- ИНСТРУКЦИЯ ДЛЯ ПОЛЬЗОВАТЕЛЯ -->
                 <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
@@ -660,20 +664,26 @@
                     </div>
                     
                     <!-- РОДНАЯ СЕТКА ШАБЛОНОВ 9:16 -->
-                    <div class="swap-steps-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-                        <div class="phone-template-card" style="height: 150px !important; border-color: #00f2fe !important; box-shadow: 0 4px 10px rgba(0, 242, 254, 0.2) !important;">
-                            <img src="https://unsplash.com" alt="Арт" style="width: 100%; height: 100%; object-fit: cover;">
-                            <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Арт 🎨</div>
+                    <div class="swap-steps-grid">
+                        <!-- Карточка 1 -->
+                        <div class="phone-template-card" style="height: 150px !important;">
+                            <img src="ССЫЛКА_НА_ФОТО_1" style="width: 100%; height: 100%; object-fit: cover;">
+                            <div class="card-overlay" style="color: #ff6600 !important;"><b>1. Фото</b> во весь рост</div>
                         </div>
-                        <div class="phone-template-card" style="height: 150px !important; border-color: #00f2fe !important; box-shadow: 0 4px 10px rgba(0, 242, 254, 0.2) !important;">
-                            <img src="https://unsplash.com" alt="Киберпанк" style="width: 100%; height: 100%; object-fit: cover;">
-                            <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Кибер 🌐</div>
+                        
+                        <!-- Карточка 2 -->
+                        <div class="phone-template-card" style="height: 150px !important;">
+                            <img src="ССЫЛКА_НА_ФОТО_2" style="width: 100%; height: 100%; object-fit: cover;">
+                            <div class="card-overlay" style="color: #ff6600 !important;"><b>2. Фото</b> вещи</div>
                         </div>
-                        <div class="phone-template-card" style="height: 150px !important; border-color: #00f2fe !important; box-shadow: 0 4px 10px rgba(0, 242, 254, 0.2) !important;">
-                            <img src="https://unsplash.com" alt="Аниме" style="width: 100%; height: 100%; object-fit: cover;">
-                            <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Аниме 🌸</div>
+                        
+                        <!-- Карточка 3 -->
+                        <div class="phone-template-card" style="height: 150px !important;">
+                            <img src="ССЫЛКА_НА_ФОТО_3" style="width: 100%; height: 100%; object-fit: cover;">
+                            <div class="card-overlay" style="color: #ff6600 !important;"><b>3. Итог</b> 🔥</div>
                         </div>
                     </div>
+
 
                     <!-- ИНСТРУКЦИЯ ДЛЯ ПОЛЬЗОВАТЕЛЯ -->
                     <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">

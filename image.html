@@ -190,7 +190,7 @@
             border: 2px solid #ff6600 !important; 
             border-radius: 12px !important; 
             box-shadow: 0 4px 10px rgba(255, 102, 0, 0.2) !important; 
-            overflow: hidden !important;
+            overflow: visible !important;
             background-color: #111 !important;
         }
 
@@ -203,19 +203,24 @@
         }
 
         /* Оранжевый текст внизу карточки (1. Фото жирным, остальное обычным) */
+        /* 🔥 ОБНОВЛЕННЫЙ БЛОК: ТЕКСТ СТРОГО ПОД КАРТОЧКАМИ И ОРАНЖЕВЫЙ */
         .card-overlay {
             background: transparent !important; 
-            color: #ff6600 !important; /* Полностью оранжевый текст */
-            font-size: 11px !important;
+            color: #ff6600 !important; /* Текст становится оранжевым, как ты просил */
+            font-weight: 700 !important;
+            font-size: 11px !important; /* Чуть уменьшили, чтобы влезал в один ряд на смартфонах */
             text-align: center !important;
-            padding: 8px 4px !important;
-            position: absolute !important;
-            bottom: 0 !important;
+            padding: 8px 5px !important;
+            z-index: 2 !important;
+            
+            /* 🔥 МАГИЯ ПЕРЕНОСА ПОД КАРТОЧКУ: */
+            position: relative !important; /* Меняем absolute на relative, чтобы текст выпал ИЗ картинки вниз */
+            margin-top: 5px !important; /* Делаем аккуратный зазор между низом фотки и текстом */
             width: 100% !important;
             box-sizing: border-box !important;
-            z-index: 2 !important;
-            text-shadow: none !important;
+            text-shadow: none !important; /* Убрали черную тень, на темном фоне она больше не нужна */
         }
+
 
         .card-overlay b {
             font-weight: 800 !important; /* Жирный шрифт для "1. Фото" */

@@ -12,6 +12,7 @@
         /* ========================================== */
         /* 🔥 ЖЕСТКО ФИКСИРУЕМ ТЕМНУЮ ТЕМУ ДЛЯ ВСЕГО  */
         /* ========================================== */
+        /*  базовые настройки внешнего вида для абсолютно всей страницы приложения */
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
             background-color: #0d0f1d !important; /* Глубокий благородный темно-синий фон */
@@ -137,11 +138,11 @@
         .menu-card:active .menu-icon { transform: scale(1.1); }
 
         .menu-info { display: flex !important; flex-direction: column !important; text-align: left !important; }
-        .menu-title { 
-            font-weight: 800; font-size: 15px; 
-            color: var(--neon-color) !important; 
-            text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 5px; 
-            text-shadow: 0 0 10px var(--neon-glow);
+        /* Делаем заголовки примеров на обоих экранах чисто белыми */
+        .menu-title {
+            color: #ffffff !important;
+            text-shadow: none !important; /* Убираем неоновый свет */
+            font-weight: 800 !important;
         }
         .menu-desc { font-size: 12px; color: rgba(255, 255, 255, 0.65) !important; line-height: 1.4; letter-spacing: 0.3px; }
 
@@ -231,16 +232,18 @@
             z-index: 1 !important;
         }
 
-        /* Текст инструкции в самом низу: весь белый */
-        .custom-prompt-container div[style*="font-size: 13px"],
-        .custom-prompt-container div[style*="font-size: 13px"] b {
-            color: #ffffff !important; 
-            font-weight: 500 !important;
-        }
-        .custom-prompt-container div[style*="font-size: 13px"] b {
-            font-weight: 800 !important; /* Жирный для "Шаг 1:" */
+
+/* 📋 БЛОК ИНСТРУКЦИИ: ОБЫЧНЫЙ СЕРЫЙ ШРИФТ ДЛЯ ТЕКСТА (шаг 1 и тд) */
+        .custom-prompt-container div[style*="font-size: 13px"] {
+            color: rgba(255, 255, 255, 0.6) !important; /* Обычный серый цвет текста */
+            font-weight: 400 !important; /* Обычный тонкий шрифт */
         }
 
+        /* НАДПИСИ "Шаг 1:", "Шаг 2:", "Шаг 3:" СТРОГО БЕЛЫЕ И ЖИРНЫЕ */
+        .custom-prompt-container div[style*="font-size: 13px"] b {
+            color: #ffffff !important; /* Белый цвет для Шагов */
+            font-weight: 800 !important; /* Жирный шрифт */
+        }
 
 /* Создаем невидимый отступ внизу экрана */
         .screen {
@@ -625,6 +628,7 @@
                     <b>Шаг 3:</b> Веб-сайт закроется, и бот в чате Telegram попросит вас написать текст...
                 </div>
 
+
             </div>
 
             <!-- ПАНЕЛЬ УПРАВЛЕНИЯ КНОПКАМИ (Нижний ряд) -->
@@ -697,11 +701,11 @@
 
 
                     <!-- ИНСТРУКЦИЯ ДЛЯ ПОЛЬЗОВАТЕЛЯ -->
-                    <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
-                        <b>Шаг 1:</b> Настройте формат кадра и качество генерации на кнопках внизу.<br>
-                        <b>Шаг 2:</b> Нажмите огненную кнопку START.<br>
-                        <b>Шаг 3:</b> Веб-сайт закроется, и бот в чате Telegram попросит вас написать текст...
-                    </div>
+                <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
+                    <b>Шаг 1:</b> Настройте формат кадра и качество генерации на кнопках внизу.<br>
+                    <b>Шаг 2:</b> Нажмите огненную кнопку START.<br>
+                    <b>Шаг 3:</b> Веб-сайт закроется, и бот в чате Telegram попросит вас написать текст...
+                </div>
                 </div>
 
                 <!-- ПАНЕЛЬ УПРАВЛЕНИЯ КНОПКАМИ (Нижний ряд) -->

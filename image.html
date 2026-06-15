@@ -139,16 +139,23 @@
 
         .menu-info { display: flex !important; flex-direction: column !important; text-align: left !important; }
         /* 📍 ЗАГОЛОВОК ПРИМЕРОВ ГЕНЕРАЦИИ: СТРОГО ЧИСТО БЕЛЫЙ */
+        /* ТЕКСТОВЫЙ ЗАГОЛОВОК КАРТОЧКИ (Авто-цвет режима) */
         .menu-title { 
             font-weight: 800 !important; 
             font-size: 15px !important; 
-            color: #ffffff !important; /* 🔥 СТРОГО БЕЛЫЙ ЦВЕТ вместо фиолетового или оранжевого */
+            
+            /* 🔥 МАГИЯ: Текст заголовка теперь сам берет цвет своей карточки (оранжевый/фиолетовый) */
+            color: var(--neon-color) !important; 
+            
             text-transform: uppercase !important; 
             letter-spacing: 1.5px !important; 
             margin-bottom: 5px !important; 
-            text-align: center !important;
-            text-shadow: none !important; /* 🔥 ПОЛНОСТЬЮ УБРАЛИ ФИОЛЕТОВОЕ ИЛИ ОРАНЖЕВОЕ СВЕЧЕНИЕ */
+            text-align: left !important; 
+            
+            /* Добавляем сочное неоновое свечение буквам в цвет режима */
+            text-shadow: 0 0 10px var(--neon-glow) !important;
         }
+
         .menu-desc { font-size: 12px; color: rgba(255, 255, 255, 0.65) !important; line-height: 1.4; letter-spacing: 0.3px; }
 
         /* ТЕМЫ ДЛЯ КАРТОЧЕК МЕНЮ */

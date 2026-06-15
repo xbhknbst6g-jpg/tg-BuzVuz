@@ -1073,6 +1073,63 @@
                 window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
             }
         }
+
+
+
+// ====================================================================================
+// 8. ФУНКЦИИ ОТПРАВКИ В ПИТОН
+// ====================================================================================
+
+        // 1. ОТПРАВКА ДАННЫХ ДЛЯ ЭКРАНА: ЦИФРОВАЯ ОПТИКА
+        function sendTextGenData() {
+            if (window.Telegram?.WebApp?.HapticFeedback) {
+                Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+            }
+            
+            // Переменная модели ИИ на твоем первом экране
+            const selectedModel = typeof selectedAiModelEngine !== 'undefined' ? selectedAiModelEngine : 'pulid';
+
+            // Формируем JSON строго по структуре твоего Python-хендлера
+            const payload = {
+                mode_trigger: 'text_image', // Строго mode_trigger
+                aspect_ratio: typeof selectedTextRatio !== 'undefined' ? selectedTextRatio : '9:16', // Строго aspect_ratio
+                quality: typeof selectedTextQuality !== 'undefined' ? selectedTextQuality : 'schnell',
+                ai_model_engine: selectedModel, // Нужно твоему бэкенду для расчета стоимости (6 или 5 монет)
+                is_custom_text_mode: true,
+                template_id: 'custom'
+            };
+
+            console.log("🧩 Отправка Цифровой Оптики (подгон под бэкенд):", payload);
+
+            if (window.Telegram?.WebApp) {
+                Telegram.WebApp.sendData(JSON.stringify(payload));
+                Telegram.WebApp.close();
+            }
+        }
+
+        // 2. ОТПРАВКА ДАННЫХ ДЛЯ ЭКРАНА: УМНЫЙ ФОКУС
+        function sendDirectGenData() {
+            if (window.Telegram?.WebApp?.HapticFeedback) {
+                Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+            }
+
+            // Формируем JSON строго по структуре твоего Python-хендлера
+            const payload = {
+                mode_trigger: 'image_generation_direct', // Строго mode_trigger
+                aspect_ratio: typeof directGenRatio !== 'undefined' ? directGenRatio : '1:1', // Строго aspect_ratio
+                quality: typeof directGenQuality !== 'undefined' ? directGenQuality : 'schnell',
+                is_custom_text_mode: true,
+                template_id: 'custom'
+            };
+
+            console.log("🧩 Отправка Умного Фокуса (подгон под бэкенд):", payload);
+
+            if (window.Telegram?.WebApp) {
+                Telegram.WebApp.sendData(JSON.stringify(payload));
+                Telegram.WebApp.close();
+            }
+        }
+
     </script>
 </body>
 </html>

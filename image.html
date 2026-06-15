@@ -424,6 +424,52 @@
         }
 
 
+        /* ⬅️ ВОЗВРАЩАЕМ И ФИКСИРУЕМ КРУГЛУЮ СТРЕЛКУ НАЗАД */
+        .back-tab-btn {
+            -webkit-appearance: none !important; appearance: none !important; outline: none !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            position: relative !important; 
+            
+            /* Автоматически берет цвет режима */
+            border: 2px solid var(--neon-color) !important;
+            background-color: rgba(10, 15, 30, 0.7) !important;
+            box-shadow: 0 4px 12px var(--neon-glow) !important;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            
+            border-radius: 50% !important; 
+            width: 32px !important;
+            height: 32px !important;
+            min-width: 32px !important; 
+            max-width: 32px !important;
+            padding: 0 !important;
+            margin-right: 2px !important;
+            cursor: pointer !important;
+            transition: all 0.15s ease !important;
+            -webkit-tap-highlight-color: transparent !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Сама белая стрелочка внутри круга */
+        .back-tab-btn::before {
+            content: "" !important;
+            position: absolute !important;
+            width: 7px !important; 
+            height: 7px !important; 
+            border-left: 2.5px solid #ffffff !important;  
+            border-bottom: 2.5px solid #ffffff !important; 
+            transform: translate(1.5px, 0) rotate(45deg) !important; 
+        }
+
+        .back-tab-btn:active {
+            transform: scale(0.92) !important;
+            background-color: rgba(5, 8, 20, 0.85) !important;
+            box-shadow: 0 2px 15px var(--neon-color) !important; 
+        }
+
+
 
 
     </style>
@@ -482,6 +528,8 @@
 <!-- ЭКРАН 1: ФЛЮКС (ЦИФРОВАЯ ОПТИКА)           -->
 <!-- ========================================== -->
         <div id="text_image" class="screen">
+            <div style="--neon-color: #b624ff; --neon-glow: rgba(182, 36, 255, 0.3);">
+            <button class="back-tab-btn" onclick="handleTextBackClick()"></button>
             
             <!-- Верхний таб-контейнер -->
             <div class="tabs-container" id="direct_gen_tabs">
@@ -556,6 +604,8 @@
 <!-- ========================================== -->
 
         <div id="image_generation_direct" class="screen">
+           <div style="--neon-color: #00f2fe; --neon-glow: rgba(0, 242, 254, 0.3);">
+            <button class="back-tab-btn" onclick="handleTextBackClick()"></button>
             
             <!-- СТРОГО КАК В ТВОЕМ РАБОЧЕМ ПРИМЕРЕ СВАПА: ЧИСТЫЙ КОНТЕЙНЕР БЕЗ ЛИШНЕЙ ДИЧИ -->
             <div class="tabs-container" id="direct_gen_tabs">

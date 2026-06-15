@@ -747,7 +747,6 @@
 // 5. РОУТЕР ЭКРАНОВ И УМНЫЙ СЧЕТЧИК МОНЕТ НА КНОПКАХ START (ТОЛЬКО ДВА РЕЖИМА!)
 // ====================================================================================
 
-// Безопасное переключение подэкранов внутри foto.html
         function openScreen(screenName) {
             currentActiveMode = screenName;
             
@@ -787,6 +786,12 @@
                 if (screenName === 'image_generation_direct') {
                     const directSettings = document.getElementById('direct_gen_settings_block');
                     if (directSettings) directSettings.style.display = "block";
+                }
+
+                // 🔥 МГНОВЕННОЕ ВКЛЮЧЕНИЕ: для экрана Цифровой Оптики (Включаем блок настроек, чтобы он не пропадал!)
+                if (screenName === 'text_image') {
+                    const textSettings = document.getElementById('text_image_settings_block');
+                    if (textSettings) textSettings.style.display = "block";
                 }
 
                 // Твой оригинальный сброс тумблера ИИ на "Фотореализм" при каждом входе в Цифровую Оптику (text_image)

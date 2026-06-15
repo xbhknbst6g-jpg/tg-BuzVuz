@@ -301,6 +301,21 @@
         .custom-sheet-item span {
             pointer-events: none !important;
         }
+        /* 🔥 НАМЕРТВО СВЯЗЫВАЕМ ПЕРЕКЛЮЧЕНИЕ: Скрываем все экраны,(чтобы при старте был только главный экран) кроме активного */
+        .screen { 
+            display: none !important; 
+        }
+        .screen.active { 
+            display: block !important; 
+            animation: fadeIn 0.2s ease-in-out; 
+        }
+
+        /* Анимация плавного появления, чтобы экраны вылетали красиво */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
 
 
     </style>

@@ -170,7 +170,7 @@
             padding: 4px 3px 14px 3px !important; margin-top: 5px !important;
         }
 
-        
+
                 /* 📱 ОРАНЖЕВЫЕ КАРТОЧКИ ПРИМЕРОВ ГЕНЕРАЦИИ */
         .phone-template-card {
             position: relative !important;
@@ -219,6 +219,20 @@
             padding-bottom: 120px !important; 
             box-sizing: border-box !important;
         }
+
+        /* СТИЛИЗАЦИЯ ИНСТРУКЦИИ: БЕЛЫЙ ТЕКСТ И ОРАНЖЕВЫЕ ЖИРНЫЕ ШАГИ */
+        .custom-prompt-container div[style*="font-size: 13px"] {
+            color: #ffffff !important; /* Делаем весь основной текст инструкции белым */
+            font-weight: 500;
+        }
+
+        /* Красим только сами шаги (теги <b>) в оранжевый неон и делаем их жирными */
+        .custom-prompt-container div[style*="font-size: 13px"] b {
+            color: #ff6600 !important; 
+            font-weight: 800 !important; 
+            text-shadow: 0 0 8px rgba(255, 102, 0, 0.4); /* Мягкое неоновое свечение для шагов */
+        }
+
 
         /* 🔥 НАСТРОЙКА КНОПОК: ГОРИЗОНТАЛЬНАЯ ПАНЕЛЬ НАМЕРТВО ВНИЗУ */
         .single-row-controls {
@@ -591,10 +605,10 @@
                 </div>
 
                 <!-- ИНСТРУКЦИЯ ДЛЯ ПОЛЬЗОВАТЕЛЯ -->
-                <div style="font-size: 13px; color: rgba(255, 255, 255, 0.5); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
-                    <b style="color: #b624ff;">Шаг 1:</b> Настройте формат кадра и качество генерации на кнопках внизу.<br>
-                    <b style="color: #b624ff;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
-                    <b style="color: #b624ff;">Шаг 3:</b> Приложение закроется, и бот в чате Telegram попросит вас написать текст (промпт) для создания изображения!
+                <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
+                    <b>Шаг 1:</b> Настройте формат кадра и качество генерации на кнопках внизу.<br>
+                    <b>Шаг 2:</b> Нажмите огненную кнопку START.<br>
+                    <b>Шаг 3:</b> Веб-сайт закроется, и бот в чате Telegram попросит вас написать текст...
                 </div>
 
             </div>
@@ -662,10 +676,10 @@
                     </div>
 
                     <!-- ИНСТРУКЦИЯ ДЛЯ ПОЛЬЗОВАТЕЛЯ -->
-                    <div style="font-size: 13px; color: rgba(255, 255, 255, 0.5); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
-                        <b style="color: #00f2fe;">Шаг 1:</b> Выберите пропорции и скорость на кнопках ниже.<br>
-                        <b style="color: #00f2fe;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
-                        <b style="color: #00f2fe;">Шаг 3:</b> Бот мгновенно сгенерирует картинку по вашему тексту в чате!
+                    <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
+                        <b>Шаг 1:</b> Настройте формат кадра и качество генерации на кнопках внизу.<br>
+                        <b>Шаг 2:</b> Нажмите огненную кнопку START.<br>
+                        <b>Шаг 3:</b> Веб-сайт закроется, и бот в чате Telegram попросит вас написать текст...
                     </div>
                 </div>
 

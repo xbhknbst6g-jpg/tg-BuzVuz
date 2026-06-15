@@ -218,31 +218,22 @@
         }
 
 
-        /* 🔥 1. ФИКС СТРУКТУРЫ ЭКРАНОВ: ВЫРАВНИВАЕМ ВСЁ В ОДНУ КОЛОНКУ НА ВЕСЬ ЭКРАН */
-        #text_image, #image_generation_direct {
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: stretch !important;
-            justify-content: flex-start !important;
-            width: 100% !important;
-            box-sizing: border-box !important;
-        }
 /* 📋 БЛОК ИНСТРУКЦИИ: ОБЫЧНЫЙ СЕРЫЙ ШРИФТ ДЛЯ ТЕКСТА (шаг 1 и тд) */
-        /* 📋 БЛОК ИНСТРУКЦИИ: РАСТЯГИВАЕМ НА ВСЮ ШИРИНУ И ДЕЛАЕМ СЕРЫМ */
-        .custom-prompt-container div[style*="font-size: 13px"] {
-            color: rgba(255, 255, 255, 0.6) !important; /* Твой серый цвет текста */
-            font-weight: 400 !important; /* Твой тонкий шрифт */
-            
-            /* 🔥 ЖЕСТКИЙ ФИКС ШИРИНЫ ДЛЯ ЭКРАНА СМАРТФОНА: */
+        .custom-prompt-container {
             width: 100% !important;
-            display: block !important;
             box-sizing: border-box !important;
         }
 
-        /* НАДПИСИ "Шаг 1:", "Шаг 2:", "Шаг 3:" СТРОГО БЕЛЫЕ И ЖИРНЫЕ */
+        .custom-prompt-container div[style*="font-size: 13px"] {
+            color: rgba(255, 255, 255, 0.6) !important;
+            font-weight: 400 !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
         .custom-prompt-container div[style*="font-size: 13px"] b {
-            color: #ffffff !important; /* Твой белый цвет для Шагов */
-            font-weight: 800 !important; /* Твой жирный шрифт */
+            color: #ffffff !important;
+            font-weight: 800 !important;
         }
 
 
@@ -588,8 +579,7 @@
             </div>
 
             <!-- БЛОК НАСТРОЕК (Включается через JS) -->
-            <div id="text_image_settings_block" class="custom-prompt-container">
-                
+            <div id="text_image_settings_block" class="custom-prompt-container" style="display: none;">                
                 <!-- Заголовки (теперь белые) -->
                 <div class="menu-title">Примеры генерации:</div>
                 <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">Что можно получить по простому текстовому запросу</div>
@@ -632,7 +622,7 @@
             </div>
 
             <!-- БЛОК НАСТРОЕК (Включается через JS) -->
-            <div id="direct_gen_settings_block" class="custom-prompt-container">
+            <div id="direct_gen_settings_block" class="custom-prompt-container" style="display: none;">
                 
                 <!-- Заголовки (теперь белые) -->
                 <div class="menu-title">Примеры генерации:</div>

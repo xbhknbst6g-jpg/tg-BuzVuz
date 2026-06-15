@@ -929,6 +929,23 @@
         closeCustomSheet();
     }
 
+    // 🔥 УМНЫЙ ОБРАБОТЧИК ФОРМАТА: СТОИТ СТРОГО ПОД КАЧЕСТВОМ И РЕШАЕТ ТВОЮ ПРОБЛЕМУ
+    function selectRatioFromSheet(id) {
+        if (currentActiveMode === 'text_image') {
+            selectedTextRatio = id;
+            const el = document.getElementById('btn_text_ratio') || document.getElementById('btn_direct_ratio');
+            if (el) el.innerHTML = id;
+        } 
+        else if (currentActiveMode === 'image_generation_direct') {
+            directGenRatio = id;
+            const el = document.getElementById('btn_direct_ratio_2') || document.getElementById('btn_direct_ratio');
+            if (el) el.innerHTML = id;
+        }
+        
+        updateNeoStartButtonText();
+        closeCustomSheet();
+    }
+
     // ОТКРЫТИЕ ШТОРКИ ФОРМАТА ДЛЯ ЛЮБОГО АКТИВНОГО ЭКРАНА
     function openUniversalRatioSheet() {
         const titleEl = document.getElementById('custom_sheet_title');
@@ -949,23 +966,6 @@
         document.getElementById('custom_action_sheet').classList.add('active');
     }
 
-    // Умный обработчик формата: определяет экран и вызывает его родную функцию синхронизации
-    function selectQualityFromSheet(id, text) {
-        if (currentActiveMode === 'text_image') {
-            selectedTextQuality = id;
-            const el = document.getElementById('btn_text_quality') || document.getElementById('btn_direct_quality');
-            if (el) el.innerHTML = text;
-        } 
-        else if (currentActiveMode === 'image_generation_direct') {
-            directGenQuality = id;
-            // Находит кнопку на втором экране, даже если в HTML у нее ID с двойкой
-            const el = document.getElementById('btn_direct_quality_2') || document.getElementById('btn_direct_quality');
-            if (el) el.innerHTML = text;
-        }
-        
-        updateNeoStartButtonText();
-        closeCustomSheet();
-    }
 
     // Функции принудительной синхронизации формата для капсул кадра на основном экране
     function setTextRatio(ratio) { 

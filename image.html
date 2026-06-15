@@ -335,45 +335,52 @@
     </style>
 </head>
 <body>
-    <!-- ========================================== -->
-    <!-- ЭКРАН 1: ГЛАВНОЕ МЕНЮ ФОТО-СТУДИИ          -->
-    <!-- ========================================== -->
-    <div id="foto" class="screen active">
-        <div class="header"></div>
-        <h1 class="ai-studio-title" style="text-align: center; font-size: 26px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.3); margin-bottom: 5px;">AI Studio</h1>
-        <div class="neon-divider" style="height: 2px; background: linear-gradient(90deg, transparent, #ff6600, #00f0ff, transparent); margin: 10px auto; width: 80%;"></div>
+<!-- ========================================== -->
+<!-- ЭКРАН 1: ГЛАВНОЕ МЕНЮ ФОТО-СТУДИИ          -->
+<!-- ========================================== -->
+        <div id="foto" class="screen active">
+            
+            <!-- Твой фирменный неоновый градиентный заголовок -->
+            <h1 class="ai-studio-title">AI Studio</h1>
+            
+            <!-- Твоя светящаяся лазерная линия переливания -->
+            <div class="neon-divider"></div>
 
-        <p style="text-align: center; color: var(--tg-theme-hint-color, #666); font-size: 14px; margin-top: 5px; margin-bottom: 25px;">Выберите нужный инструмент генерации ниже</p>
+            <p style="text-align: center; color: var(--tg-theme-hint-color, #666); font-size: 14px; margin-top: 5px; margin-bottom: 25px;">Выберите нужный инструмент генерации ниже</p>
 
-        <div class="main-menu-grid">
-            <!-- 1. Карточка: Цифровая Оптика (Класс text_image, оранжевый неон) -->
-            <div class="menu-card orange" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('text_image');">
-                <div class="menu-icon">
-                    <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/>
-                        <circle cx="12" cy="13" r="3"/>
-                    </svg>
+            <!-- Сетка, в которой карточки будут стоять строго друг под другом -->
+            <div class="main-menu-grid">
+                
+                <!-- 1. КАРТОЧКА: ЦИФРОВАЯ ОПТИКА (Твой оригинальный оранжевый неон) -->
+                <div class="menu-card orange" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('text_image');">
+                    <div class="menu-icon">
+                        <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/>
+                            <circle cx="12" cy="13" r="3"/>
+                        </svg>
+                    </div>
+                    <div class="menu-info">
+                        <div class="menu-title">1. Цифровая Оптика</div>
+                        <div class="menu-desc">Премиум-генерация высокого качества на Flux</div>
+                    </div>
                 </div>
-                <div class="menu-info">
-                    <div class="menu-title">1. Цифровая Оптика</div>
-                    <div class="menu-desc">Премиум-генерация высокого качества на Flux</div>
-                </div>
-            </div>
 
-            <!-- 2. Карточка: Умный Фокус (Класс image_generation_direct, бирюзовый неон Cyan) -->
-            <div class="menu-card cyan" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('image_generation_direct');">
-                <div class="menu-icon">
-                    <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="m21.66 10-5.66-5.66a2 2 0 0 0-2.83 0l-9.17 9.17a2 2 0 0 0 0 2.83l5.66 5.66a2 2 0 0 0 2.83 0l9.17-9.17a2 2 0 0 0 0-2.83Z"/>
-                        <path d="m14 16-2-2"/>
-                    </svg>
+                <!-- 2. КАРТОЧКА: УМНЫЙ ФОКУС (Берем твой сочный фиолетовый неон от Face Swap) -->
+                <div class="menu-card purple" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('image_generation_direct');">
+                    <div class="menu-icon">
+                        <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m21.66 10-5.66-5.66a2 2 0 0 0-2.83 0l-9.17 9.17a2 2 0 0 0 0 2.83l5.66 5.66a2 2 0 0 0 2.83 0l9.17-9.17a2 2 0 0 0 0-2.83Z"/>
+                            <path d="m14 16-2-2"/>
+                        </svg>
+                    </div>
+                    <div class="menu-info">
+                        <div class="menu-title">2. Умный Фокус</div>
+                        <div class="menu-desc">Быстрая генерация на движке Nano Banana</div>
+                    </div>
                 </div>
-                <div class="menu-info">
-                    <div class="menu-title">2. Умный Фокус</div>
-                    <div class="menu-desc">Быстрая генерация на движке Nano Banana</div>
-                </div>
-            </div>
-        </div>
+
+            </div> <!-- Конец сетки main-menu-grid -->
+        </div> <!-- Конец экрана foto -->
     
 
 

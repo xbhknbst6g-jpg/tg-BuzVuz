@@ -182,43 +182,35 @@
             box-sizing: border-box !important;
         }
 
-        /* Оранжевые вытянутые карточки пропорций 9:16 */
+        /* КАРТОЧКА: Возвращаем правильный размер и скругление */
         .phone-template-card {
             position: relative !important;
-            aspect-ratio: 9 / 16 !important; /* Намертво фиксирует пропорции 9:16 */
-            width: 100% !important;
+            aspect-ratio: 9 / 16 !important; /* Четкие пропорции 9:16 */
             border: 2px solid #ff6600 !important; 
             border-radius: 12px !important; 
             box-shadow: 0 4px 10px rgba(255, 102, 0, 0.2) !important; 
-            overflow: visible !important;
-            background-color: #111 !important;
+            overflow: hidden !important; /* 🔥 Возвращаем скрытие краев, чтобы картинка не вылезала за скругления */
+            background-color: #111424 !important;
+            animation: neonPulse 4s infinite ease-in-out;
+            margin-bottom: 25px !important; /* 🔥 Создаем жесткий одинаковый зазор СНИЗУ под ВСЕМИ карточками для текста */
         }
 
-        /* Картинка внутри растягивается строго по форме карточки */
-        .phone-template-card img {
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: cover !important;
-            display: block !important;
-        }
-
-        /* Оранжевый текст внизу карточки (1. Фото жирным, остальное обычным) */
-        /* 🔥 ОБНОВЛЕННЫЙ БЛОК: ТЕКСТ СТРОГО ПОД КАРТОЧКАМИ И ОРАНЖЕВЫЙ */
+        /* ТЕКСТ: Сажаем его строго на свое место под оранжевую рамку */
         .card-overlay {
             background: transparent !important; 
-            color: #ff6600 !important; /* Текст становится оранжевым, как ты просил */
+            color: #ff6600 !important; /* Строго оранжевый цвет */
             font-weight: 700 !important;
-            font-size: 11px !important; /* Чуть уменьшили, чтобы влезал в один ряд на смартфонах */
+            font-size: 11px !important;
             text-align: center !important;
-            padding: 8px 5px !important;
-            z-index: 2 !important;
+            padding: 0 4px !important;
             
-            /* 🔥 МАГИЯ ПЕРЕНОСА ПОД КАРТОЧКУ: */
-            position: relative !important; /* Меняем absolute на relative, чтобы текст выпал ИЗ картинки вниз */
-            margin-top: 5px !important; /* Делаем аккуратный зазор между низом фотки и текстом */
+            position: absolute !important; 
+            top: calc(100% + 6px) !important; /* 🔥 Магия: привязываем текст ровно на 6 пикселей ниже оранжевой рамки */
+            left: 0 !important;
             width: 100% !important;
             box-sizing: border-box !important;
-            text-shadow: none !important; /* Убрали черную тень, на темном фоне она больше не нужна */
+            z-index: 5 !important;
+            text-shadow: none !important;
         }
 
 

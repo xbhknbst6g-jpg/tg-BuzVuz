@@ -600,87 +600,73 @@
 
 
 <!-- ========================================== -->
-<!-- ЭКРАН 2: БАНАН          -->
+<!-- ЭКРАН 2: НАНУ БАНАНА (УМНЫЙ ФОКУС)         -->
 <!-- ========================================== -->
-
         <div id="image_generation_direct" class="screen">
-           <div style="--neon-color: #00f2fe; --neon-glow: rgba(0, 242, 254, 0.3);">
-            <button class="back-tab-btn" onclick="handleTextBackClick()"></button>
             
-            <!-- СТРОГО КАК В ТВОЕМ РАБОЧЕМ ПРИМЕРЕ СВАПА: ЧИСТЫЙ КОНТЕЙНЕР БЕЗ ЛИШНЕЙ ДИЧИ -->
-            <div class="tabs-container" id="direct_gen_tabs">
-                <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); margin-left: 5px; white-space: nowrap;">Генерация картинок по тексту</div>
+            <!-- 🔥 ЛЕНТА ВЕРХУШКИ №2: Бирюзовая кнопка Назад и заголовок -->
+            <div class="tabs-container" id="direct_gen_tabs_2" style="display: flex !important; align-items: center !important; justify-content: flex-start !important; width: 100%; box-sizing: border-box; margin-bottom: 8px; gap: 12px;">
+                
+                <!-- Наша круглая кнопка назад, которая сама покрасится в циан -->
+                <div style="--neon-color: #00f2fe; --neon-glow: rgba(0, 242, 254, 0.3);">
+                    <button class="back-tab-btn" onclick="handleTextBackClick()"></button>
+                </div>
+
+                <div style="font-size: 16px; font-weight: 800; color: #ffffff; white-space: nowrap; text-transform: uppercase; letter-spacing: 1px;">
+                    Умный Фокус
+                </div>
             </div>
 
-            <!-- СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (Изначально полностью скрыт, как в твоих других режимах) -->
-            <div id="direct_gen_settings_block" style="display: none;">
-
-                    
-            <!-- КОНТЕЙНЕР-ОРИЕНТИР С ВАШИМИ РАЗМЕРАМИ И ОТСТУПАМИ -->
+            <!-- КОНТЕЙНЕР НАСТРОЕК И ПРИМЕРОВ (Бирюзовый стиль) -->
             <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 190px); box-sizing: border-box; display: flex; flex-direction: column;">
                 
-                <div class="menu-title" style="text-align: center;">📍 Примеры генерации:</div>
-                <div class="menu-desc" style="text-align: center; margin-bottom: 12px;">Что можно получить по простому текстовому запросу</div>
+                <div class="menu-title" style="text-align: center; color: #00f2fe !important; text-shadow: 0 0 10px rgba(0, 242, 254, 0.6) !important;">
+                    📍 Примеры генерации:
+                </div>
+                <div class="menu-desc" style="text-align: center; margin-bottom: 12px; color: rgba(255, 255, 255, 0.65) !important;">
+                    Что можно получить на движке Nano Banana
+                </div>
                 
-                <!-- ВАША РОДНАЯ СЕТКА ШАБЛОНОВ С ВЕРТИКАЛЬНЫМИ КАРТОЧКАМИ 9:16 -->
+                <!-- РОДНАЯ СЕТКА ШАБЛОНОВ 9:16 -->
                 <div class="swap-steps-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-                    <!-- Пример 1 (Вытянутый 9:16) -->
-                    <div class="phone-template-card" style="height: 150px !important;">
-                        <img src="https://postimg.cc" alt="Пример 1" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Кот 🐱</div>
+                    <div class="phone-template-card" style="height: 150px !important; border-color: #00f2fe !important; box-shadow: 0 4px 10px rgba(0, 242, 254, 0.2) !important;">
+                        <img src="https://unsplash.com" alt="Арт" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Арт 🎨</div>
                     </div>
-                    <!-- Пример 2 (Вытянутый 9:16) -->
-                    <div class="phone-template-card" style="height: 150px !important;">
-                        <img src="https://postimg.cc" alt="Пример 2" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Неон ⚡</div>
+                    <div class="phone-template-card" style="height: 150px !important; border-color: #00f2fe !important; box-shadow: 0 4px 10px rgba(0, 242, 254, 0.2) !important;">
+                        <img src="https://unsplash.com" alt="Киберпанк" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Кибер 🌐</div>
                     </div>
-                    <!-- Пример 3 (Вытянутый 9:16) -->
-                    <div class="phone-template-card" style="height: 150px !important;">
-                        <img src="https://postimg.cc" alt="Пример 3" style="width: 100%; height: 100%; object-fit: cover;">
-                        <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Космос 🌌</div>
+                    <div class="phone-template-card" style="height: 150px !important; border-color: #00f2fe !important; box-shadow: 0 4px 10px rgba(0, 242, 254, 0.2) !important;">
+                        <img src="https://unsplash.com" alt="Аниме" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="card-overlay" style="font-size: 11px !important; padding: 6px 4px !important;">Аниме 🌸</div>
                     </div>
                 </div>
 
-                <!-- 🔥 УВЕЛИЧИЛИ ОТСТУП СВЕРХУ ДО 40px -->
-                <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
-                    Шаг 1: Настройте формат кадра и качество генерации на кнопках внизу.<br>
-                    Шаг 2: Нажмите огненную кнопку START.<br>
-                    Шаг 3: Веб-сайт закроется, и бот в чате Telegram попросит вас написать текст (промпт) для создания изображения!
+                <!-- ИНСТРУКЦИЯ -->
+                <div style="font-size: 13px; color: rgba(255, 255, 255, 0.5); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
+                    <b style="color: #00f2fe;">Шаг 1:</b> Выберите пропорции и скорость на кнопках ниже.<br>
+                    <b style="color: #00f2fe;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
+                    <b style="color: #00f2fe;">Шаг 3:</b> Бот мгновенно сгенерирует картинку по вашему тексту в чате!
                 </div>
-
             </div>
 
-            <!-- СТРОГО КАК В ОРИГИНАЛЕ FACE SWAP: ЧИСТЫЕ КЛАССЫ, ВСЯ НАСТРОЙКА ИДЕТ ЧЕРЕЗ СТИЛИ ВЫШЕ -->
-            <div class="single-row-controls">
-                <div class="control-col">
-                    <button id="btn_direct_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
+            <!-- ПАНЕЛЬ УПРАВЛЕНИЯ КНОПКАМИ -->
+            <div class="single-row-controls" style="display: flex; gap: 10px; margin-top: 15px;">
+                <div class="control-col" style="flex: 1;">
+                    <button id="btn_direct_quality_2" class="capsule-btn" onclick="openUniversalQualitySheet()" style="width: 100%;">⚡ Fast</button>
                 </div>
-                <div class="control-col">
-                    <button id="btn_direct_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">9:16</button>
+                <div class="control-col" style="flex: 1;">
+                    <button id="btn_direct_ratio_2" class="capsule-btn" onclick="openUniversalRatioSheet()" style="width: 100%;">1:1</button>
                 </div>
-                <div class="control-col control-col-btn">
-                    <button id="neo_direct_submit_btn" class="neo-start-btn" onclick="sendDirectGenData()">
+                <div class="control-col control-col-btn" style="flex: 1.2;">
+                    <button id="neo_direct_submit_btn_2" class="neo-start-btn" onclick="sendDirectGenData()" style="width: 100%; background: #00f2fe; box-shadow: 0 0 15px rgba(0, 242, 254, 0.4); color: #0d0f1d; border: none; padding: 10px; border-radius: 8px; font-weight: bold;">
                         Start 1 🪙
                     </button>
                 </div>
             </div>
 
-            <!-- 🔥 ИСПРАВЛЕНО НАМЕРТВО: ЗАКРЫВАЕМ СЛУЖЕБНЫЙ БЛОК И ВНЕШНИЙ ЭКРАН ДО ТОГО, КАК НАЧНЕТСЯ ШТОРКА! -->
-            </div> <!-- 1. Закрыли служебный блок direct_gen_settings_block -->
-        </div> <!-- 2. Закрыли главный родительский контейнер экрана image_generation_direct -->
-
-
-        <!-- 🔥 ТЕПЕРЬ ШТОРКА СТОИТ НА СВОЕМ ЗАКОННОМ МЕСТЕ, ВНЕ ЭКРАНОВ СТУДИИ -->
-        <!-- УНИВЕРСАЛЬНАЯ КАСТОМНАЯ ШТОРКА -->
-        <div id="custom_action_sheet" class="custom-sheet-overlay" onclick="closeCustomSheet()">
-            <div class="custom-sheet-panel" onclick="event.stopPropagation()">
-                <div id="custom_sheet_title" class="custom-sheet-title">ЗАГОЛОВОК</div>
-                <ul id="custom_sheet_list" class="custom-sheet-list">
-                    <!-- Элементы генерируются скриптом на лету -->
-                </ul>
-            </div>
-        </div>
-    </div>
+        </div> <!-- КОНЕЦ ЭКРАНА image_generation_direct -->
 
 
         <!-- 🔥 СКРИПТ НАЧИНАЕТСЯ В ПОЛНОЙ ИЗОЛЯЦИИ ОТ HTML-ОБОЛОЧЕК -->

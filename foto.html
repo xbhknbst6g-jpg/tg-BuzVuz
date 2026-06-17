@@ -811,8 +811,8 @@
             
             <!-- Две широкие кнопки ИИ-моделей делят оставшееся место поровну -->
             <div style="display: flex; flex: 1; background: rgba(255,255,255,0.06); padding: 4px; border-radius: 14px; gap: 4px; margin-left: 8px;">
-                <button id="btn_global_model_banana" class="tab-btn active" style="flex: 1; font-size: 11px !important; padding: 7px 2px !important; margin: 0 !important; width: auto !important; min-width: 0 !important;" onclick="switchGlobalAiModel('preset', this)">Умный Фокус</button>
-                <button id="btn_global_model_pulid" class="tab-btn" style="flex: 1; font-size: 11px !important; padding: 7px 2px !important; margin: 0 !important; width: auto !important; min-width: 0 !important;" onclick="switchGlobalAiModel('custom', this)">Цифровая Оптика</button>
+                <button id="btn_global_model_banana" class="tab-btn active" style="flex: 1; font-size: 11px !important; padding: 7px 2px !important; margin: 0 !important; width: auto !important; min-width: 0 !important;" onclick="switchGlobalAiModel('banana', this)">Умный Фокус</button>
+                <button id="btn_global_model_pulid" class="tab-btn" style="flex: 1; font-size: 11px !important; padding: 7px 2px !important; margin: 0 !important; width: auto !important; min-width: 0 !important;" onclick="switchGlobalAiModel('pulid', this)">Цифровая Оптика</button>
             </div>
         </div>
 
@@ -1135,14 +1135,19 @@
         let selectedTryOnQuality = 'schnell';
         let selectedBgQuality = 'schnell';
 
-                // Системные переменные для контроля шагов Фото + Текст
+        // Системные переменные для контроля шагов Фото + Текст
         let isTextImageStyleSelected = false; 
         let selectedStyleName = ""; 
-        // Переменная для отслеживания режима: готовый шаблон или свой текст
+
+        // Переменная для отслеживания режима: готовый шаблон (preset) или свой текст (custom)
         let currentGenerationMode = 'preset';
-        // 🔥 ДОБАВИЛИ: Системная переменная для отслеживания сценария примерки одежды
+
+        // Системная переменная для отслеживания сценария примерки одежды
         let currentTryOnMode = 'face_swap_mode'; 
-        let selectedAiModelEngine = 'preset'; // По умолчанию стартует Nano Banana
+
+        // 🔥 ИСПРАВЛЕНО: Теперь по умолчанию стартует 'banana' (Умный Фокус), так как кнопка активна при старте!
+        let selectedAiModelEngine = 'banana'; 
+
         let selectedStyleFacesCount = 1; // По умолчанию всегда 1 человек
 
 
@@ -1292,10 +1297,10 @@
             document.getElementById('btn_global_model_pulid').classList.remove('active');
             element.classList.add('active');
 
-            selectedAiModelEngine = modelMode; // 'preset' или 'custom'
+            selectedAiModelEngine = modelMode; //  ('banana' или 'pulid')!
             console.log("Глобальный тумблер ИИ переключен на движок:", selectedAiModelEngine);
             
-            // 🔥 ДОБАВИЛИ: принудительно пересчитываем стоимость на нижней кнопке при клике на тумблер!
+            //  принудительно пересчитываем стоимость на нижней кнопке при клике на тумблер!
             updateNeoStartButtonText();
         }
 
@@ -1480,7 +1485,7 @@
                 if (screenName === 'text_image') {
                     const defaultModelBtn = document.getElementById('btn_global_model_banana');
                     if (defaultModelBtn) {
-                        switchGlobalAiModel('preset', defaultModelBtn);
+                        switchGlobalAiModel('banana', defaultModelBtn);
                     }
                 }
             }
@@ -1664,11 +1669,11 @@
         // 1. ИСПРАВЛЕННАЯ ФУНКЦИЯ СБОРКИ И ОТПРАВКИ (START)
         function sendPhotoTextData() { 
             try {
-                // Определяем вкладку "Свой"
+                // Определяем вкладку "Свой" (Тут логика правильная)
                 let isCustomText = (typeof currentGenerationMode !== 'undefined' && currentGenerationMode === 'custom');
 
-                // Определяем движок ИИ
-                let currentModel = (typeof selectedAiModelEngine !== 'undefined' && selectedAiModelEngine === 'preset') ? 'banana' : 'pulid';
+                // 🔥 ИСПРАВЛЕНО: Просто берем чистое значение модели, которое записал наш тумблер ('banana' или 'pulid')
+                let currentModel = (typeof selectedAiModelEngine !== 'undefined') ? selectedAiModelEngine : 'banana';
 
                 // Определяем количество лиц
                 let facesCountToSend = isCustomText ? 1 : (window.selectedStyleFacesCount || 1);
@@ -1691,7 +1696,7 @@
 
             } catch (err) {
                 console.error("Критический сбой внутри функции sendPhotoTextData:", err);
-                // Жесткая страховка: если что-то сломалось, этот блок всё равно насильно откроет вашего бота в Telegram
+                // Жесткая страховка: если что-то сломалось, открываем бота BuzVuz в Telegram
                 window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
             }
         }  

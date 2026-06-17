@@ -214,8 +214,6 @@
         }
 
 
-
-
                 /* НЕОНОВЫЙ ГРАДИЕНТНЫЙ ЗАГОЛОВОК */
         .ai-studio-title {
             font-size: 32px;
@@ -349,23 +347,21 @@
         
     /* НАСТРОЙКА КНОПОК НЕОНОВЫХ  */
     /* Горизонтальная ультракомпактная панель */
+    /* УБРАЛИ НАФИГ FIXED, СТАВИМ СТАНДАРТНЫЙ ЛАКОНИЧНЫЙ РЯД КНОПОК */
     .single-row-controls {
-        display: flex;
-        gap: 8px;
-        align-items: center; /* Выравниваем кнопки по центру горизонтали */
-        width: 100%;
-        
-        /* 🔥 ДЕЛАЕМ ПАНЕЛЬ ФИКСИРОВАННОЙ И ПРИПОДНИМАЕМ НАД НИЗОМ ЭКРАНА */
-        position: fixed !important;
-        bottom: 25px !important; /* Увеличьте до 30px или 35px, если нужно поднять еще выше */
-        left: 0;
-        right: 0;
-        
-        /* Добавляем боковые отступы, чтобы кнопки не прилипали к краям экрана смартфона */
-        padding: 0 16px !important; 
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 10px !important;
+        width: 100% !important;
         box-sizing: border-box !important;
-        z-index: 9999; /* Чтобы кнопки всегда были поверх картинок */
+        
+        /* 🔥 ЖЕСТКИЙ ОТСТУП ИЗ ТВОЕГО РАБОЧЕГО ПРИМЕРА */
+        margin-top: 55px !important; 
+        margin-bottom: 15px !important;
+        padding: 0 5px !important;
     }
+
 
     /* Создаем невидимый отступ внизу каждого экрана для плавной прокрутки */
     .screen {
@@ -478,7 +474,7 @@
         }
 
 
-        /* 📱 СОБСТВЕННАЯ КАСТOMНАЯ ШТОРКА (АККУРАТНАЯ И КОМПАКТНАЯ) */
+        /* 📱 СОБСТВЕННАЯ КАСТOMНАЯ ШТОРКА (АККУРАТНАЯ И КОМПАКТНАЯ)как я понял это для качества и размеров */
         .custom-sheet-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -729,8 +725,7 @@
     <!-- ЭКРАН 1: ГЛАВНОЕ МЕНЮ ФОТО-СТУДИИ          -->
     <!-- ========================================== -->
     <div id="foto" class="screen active">
-        <div class="header">
-        </div>
+        <div class="header"></div>
         <h1 class="ai-studio-title">AI Studio</h1>
         <div class="neon-divider"></div>
 
@@ -816,8 +811,8 @@
             
             <!-- Две широкие кнопки ИИ-моделей делят оставшееся место поровну -->
             <div style="display: flex; flex: 1; background: rgba(255,255,255,0.06); padding: 4px; border-radius: 14px; gap: 4px; margin-left: 8px;">
-                <button id="btn_global_model_banana" class="tab-btn active" style="flex: 1; font-size: 11px !important; padding: 7px 2px !important; margin: 0 !important; width: auto !important; min-width: 0 !important;" onclick="switchGlobalAiModel('preset', this)">Фотореализм</button>
-                <button id="btn_global_model_pulid" class="tab-btn" style="flex: 1; font-size: 11px !important; padding: 7px 2px !important; margin: 0 !important; width: auto !important; min-width: 0 !important;" onclick="switchGlobalAiModel('custom', this)">Обработка</button>
+                <button id="btn_global_model_banana" class="tab-btn active" style="flex: 1; font-size: 11px !important; padding: 7px 2px !important; margin: 0 !important; width: auto !important; min-width: 0 !important;" onclick="switchGlobalAiModel('preset', this)">Умный Фокус</button>
+                <button id="btn_global_model_pulid" class="tab-btn" style="flex: 1; font-size: 11px !important; padding: 7px 2px !important; margin: 0 !important; width: auto !important; min-width: 0 !important;" onclick="switchGlobalAiModel('custom', this)">Цифровая Оптика</button>
             </div>
         </div>
 
@@ -1481,7 +1476,7 @@
                     if (bgSettings) bgSettings.style.display = "block";
                 }
 
-                // 🔥 ДОБАВИЛИ: Сброс тумблера ИИ на "Фотореализм" при каждом входе в Фото + Текст
+                // 🔥 ДОБАВИЛИ: Сброс тумблера ИИ на "Умный Фокус" при каждом входе в Фото + Текст
                 if (screenName === 'text_image') {
                     const defaultModelBtn = document.getElementById('btn_global_model_banana');
                     if (defaultModelBtn) {

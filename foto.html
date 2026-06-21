@@ -1626,6 +1626,46 @@
         }
 
 
+// URL-адрес вашего сервера, где запущен бот и API
+        const API_URL = "https://thyself-lavish-underhand.ngrok-free.dev/api/v1/tariffs";
+
+        async function syncPricesFromDatabase() {
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json();
+                
+                // 1. Достаем актуальные базовые цены ИИ-услуг (блок services из MongoDB Compass)
+                const fluxPrice = data.services.flux_pulid.coins_min;       // Базовая цена Фото+Текст
+                const faceswapPrice = data.services.hy_wu_faceswap.coins_min; // Базовая цена Face Swap
+                const tryonPrice = data.services.hy_wu_clothing.coins_min;    // Базовая цена Примерки
+                const bgPrice = data.services.bria_background.coins_min;      // Базовая цена Смены фона
+
+                // 2. Находим нужные кнопки «START» на страницах сайта и силой меняем на новые цифры
+                // (Пусть разработчик фронтенда проверит ID элементов кнопок в HTML-коде)
+                if (document.getElementById("btn-start-flux")) {
+                    document.getElementById("btn-start-flux").innerHTML = `Start ${fluxPrice} 🪙`;
+                }
+                if (document.getElementById("btn-start-swap")) {
+                    document.getElementById("btn-start-swap").innerHTML = `Start ${faceswapPrice} 🪙`;
+                }
+                if (document.getElementById("btn-start-tryon")) {
+                    document.getElementById("btn-start-tryon").innerHTML = `Start ${tryonPrice} 🪙`;
+                }
+                if (document.getElementById("btn-start-bg")) {
+                    document.getElementById("btn-start-bg").innerHTML = `Start ${bgPrice} 🪙`;
+                }
+
+                console.log("✅ Все кнопки START на сайте успешно получили новые цены из MongoDB!");
+            } catch (error) {
+                console.error("❌ Не удалось загрузить динамические цены с сервера бота:", error);
+            }
+        }
+
+        // Запускаем синхронизацию автоматически, как только структура сайта загрузилась в браузере
+        window.addEventListener("DOMContentLoaded", syncPricesFromDatabase);
+
+
+
         // ====================================================================================
         // 8. ПЕРЕДАТЧИКИ JSON БОТУ И СИНХРОНИЗАЦИЯ С ПРЕСЕТАМИ ШАБЛОНОВ
         // ====================================================================================

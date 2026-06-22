@@ -681,7 +681,7 @@ body {
 <!-- ЭКРАН 1: ОЖИВЛЕНИЕ ФОТО (БЕЗ ЗВУКА)          -->
 <!-- ========================================== -->
     <div id="animate_nosound" class="screen">
-        
+            
         <!-- Фирменный контейнер вкладок с кнопкой назад -->
         <div class="tabs-container">
             <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openScreen('video_menu')"></button>
@@ -695,25 +695,43 @@ body {
             <div class="menu-title">Примеры генерации:</div>
             <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">Что можно получить из обычного статичного кадра</div>
             
-            <!-- Сетка примеров с тактильным откликом при клике -->
-            <div class="swap-steps-grid">
-                <div class="phone-template-card" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo('https://googleapis.com')">
-                    <img src="https://postimg.cc" alt="Пример 1">
+            <!-- Интерактивный пример (До / После) вместо старой сетки -->
+            <div class="example-preview-container" style="display: flex; flex-direction: column; gap: 12px; margin: 15px 0;">
+                
+                <!-- 1. Исходная статичная картинка -->
+                <div class="preview-card-box" style="position: relative; width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1);">
+                    <img src="https://unsplash.com" 
+                        style="width: 100%; height: 180px; object-fit: cover; display: block;" alt="Фото оригинал">
+                    <span style="position: absolute; top: 10px; left: 10px; background: rgba(0, 0, 0, 0.6); color: #fff; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; text-transform: uppercase;">📸 Фото-оригинал</span>
                 </div>
-                <div class="phone-template-card" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo('https://googleapis.com')">
-                    <img src="https://postimg.cc" alt="Пример 2">
-                </div>
-                <div class="phone-template-card" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo('https://googleapis.com')">
-                    <!-- Пустая карточка для сохранения сетки из 3 элементов, как в образце -->
-                    <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: rgba(255,255,255,0.2); font-size: 24px;">🎬</div>
+
+                <!-- Стрелочка перехода -->
+                <div style="text-align: center; color: #ff7300; font-size: 18px; margin: -5px 0;">🔽</div>
+
+                <!-- 2. Живой видео-пример -->
+                <div class="preview-card-box" style="position: relative; width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.2);">
+                    <video id="preview_nosound_video" style="width: 100%; height: 180px; object-fit: cover; display: block;" loop muted playsinline>
+                        <source src="https://mixkit.co" type="video/mp4">
+                        Ваш браузер не поддерживает видео.
+                    </video>
+                    
+                    <span style="position: absolute; top: 10px; left: 10px; background: #ff7300; color: #fff; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; text-transform: uppercase;">🔥 Результат ИИ</span>
+                    
+                    <div id="video_nosound_play_overlay" onclick="toggleNoSoundVideo()" 
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s;">
+                        <div style="background: #ff7300; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px #ff7300;">
+                            <span id="play_nosound_icon_sym" style="color: white; font-size: 20px; margin-left: 4px;">▶️</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Текст пошаговой инструкции -->
+            <!-- Текст пошаговой инструкции обновлен под авто-формат -->
             <div style="font-size: 13px; line-height: 1.5; margin-top: 25px !important; padding: 0 5px; color: rgba(255, 255, 255, 0.6) !important;">
-                <b>Шаг 1:</b> Выберите длительность и формат видео на кнопках ниже.<br>
+                <b>Шаг 1:</b> Выберите длительность видео на кнопке ниже.<br>
                 <b>Шаг 2:</b> Нажмите кнопку запуска START.<br>
-                <b>Шаг 3:</b> Бот оживит ваше фото и пришлет готовый ролик в чат!                
+                <b>Шаг 3:</b> Бот попросит отправить <b>фотографию</b> для оживления.<br>
+                <span style="color: #ff7300;">*️⃣ Бот автоматически определит формат фото (16:9, 9:16, 1:1) и сохранит его пропорции!</span>
             </div>
 
             <!-- Фирменная лазерная линия-разделитель (Оранжевый неон) -->
@@ -724,27 +742,20 @@ body {
                 <b>Итоговая цена зависит от выбранной длительности и отображается на кнопке START</b>
             </div>
 
-            <!-- 🔥 ПУЛЬТ УПРАВЛЕНИЯ РЕЖИМА 1 -->
-            <div class="single-row-controls">
+            <!-- 🔥 ОБНОВЛЕННЫЙ ПУЛЬТ УПРАВЛЕНИЯ РЕЖИМА 1 (Две колонки) -->
+            <div class="single-row-controls" style="display: flex; gap: 15px; align-items: flex-end;">
                 <!-- Колонка Длительности -->
-                <div class="control-col">
+                <div class="control-col" style="flex: 1;">
                     <div class="control-label">Длительность</div>
-                    <button id="btn_video_duration" class="capsule-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openUniversalDurationSheet()">⏱️ 5 сек</button>
-                </div>
-                
-                <!-- Колонка Формата -->
-                <div class="control-col">
-                    <div class="control-label">Формат кадра</div>
-                    <button id="btn_video_ratio" class="capsule-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openUniversalRatioSheet()">16:9</button>
+                    <button id="btn_video_duration" class="capsule-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openUniversalDurationSheet()">⏱️ 5 сек</button>
                 </div>
                 
                 <!-- Кнопка запуска -->
-                <div class="control-col-btn">
+                <div class="control-col-btn" style="flex: 1.5;">
                     <div class="control-label">Запуск ИИ</div>
-                    <button id="neo_video_submit_btn" class="neo-start-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendVideoGenData()">Start 2 🪙</button>
+                    <button id="neo_video_submit_btn" class="neo-start-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendVideoGenData()">Start 2 🪙</button>
                 </div>
             </div>
-
 
         </div> <!-- Закрыли блок настроек video_nosound_settings_block -->
     </div>
@@ -767,20 +778,38 @@ body {
             <div class="menu-title">Примеры говорящих аватаров:</div>
             <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">Что можно получить по вашему тексту с аудиодорожкой</div>
             
-            <!-- Сетка примеров с тактильным откликом при клике -->
-            <div class="swap-steps-grid">
-                <div class="phone-template-card" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo('https://googleapis.com')">
-                    <img src="https://postimg.cc" alt="Пример 1">
+                    <!-- Интерактивный пример (До / После) говорящего аватара вместо старой сетки карточек -->
+            <div class="example-preview-container" style="display: flex; flex-direction: column; gap: 12px; margin: 15px 0;">
+                
+                <!-- 1. Исходная статичная картинка аватара -->
+                <div class="preview-card-box" style="position: relative; width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1);">
+                    <img src="https://unsplash.com" 
+                        style="width: 100%; height: 180px; object-fit: cover; display: block;" alt="Фото оригинал">
+                    <span style="position: absolute; top: 10px; left: 10px; background: rgba(0, 0, 0, 0.6); color: #fff; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; text-transform: uppercase;">📸 Исходное фото</span>
                 </div>
-                <div class="phone-template-card">
-                    <!-- Заглушка для сохранения сетки из 3 элементов, как в образце -->
-                    <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: rgba(255,255,255,0.2); font-size: 24px;">🔊</div>
-                </div>
-                <div class="phone-template-card">
-                    <!-- Заглушка для сохранения сетки из 3 элементов, как в образце -->
-                    <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: rgba(255,255,255,0.2); font-size: 24px;">👤</div>
+
+                <!-- Стрелочка перехода -->
+                <div style="text-align: center; color: #ff7300; font-size: 18px; margin: -5px 0;">🔽</div>
+
+                <!-- 2. Живой видео-пример говорящего аватара (со звуком) -->
+                <div class="preview-card-box" style="position: relative; width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.2);">
+                    <!-- 💡 Сюда вставьте ссылку на демонстрационный ролик Sora 2 / говорящего аватара -->
+                    <video id="preview_sound_video" style="width: 100%; height: 180px; object-fit: cover; display: block;" loop playsinline>
+                        <source src="https://mixkit.co" type="video/mp4">
+                        Ваш браузер не поддерживает видео.
+                    </video>
+                    
+                    <span style="position: absolute; top: 10px; left: 10px; background: #ff7300; color: #fff; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; text-transform: uppercase;">🗣️ Говорящий ИИ-аватар</span>
+                    
+                    <div id="video_sound_play_overlay" onclick="toggleSoundVideo()" 
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s;">
+                        <div style="background: #ff7300; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px #ff7300;">
+                            <span id="play_sound_icon_sym" style="color: white; font-size: 20px; margin-left: 4px;">▶️</span>
+                        </div>
+                    </div>
                 </div>
             </div>
+
 
             <!-- Текст пошаговой инструкции -->
             <div style="font-size: 13px; line-height: 1.5; margin-top: 25px !important; padding: 0 5px; color: rgba(255, 255, 255, 0.6) !important;">
@@ -846,7 +875,7 @@ body {
 <!-- ЭКРАН 3: ОЖИВЛЕНИЕ ПО ВИДЕО (MOTION CONTROL) -->
 <!-- ========================================== -->
     <div id="video_motion_control" class="screen">
-        
+            
         <!-- Фирменный контейнер вкладок с кнопкой назад -->
         <div class="tabs-container">
             <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openScreen('video_menu')"></button>
@@ -860,49 +889,61 @@ body {
             <div class="menu-title">Примеры генерации:</div>
             <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">Управление мимикой и точный перенос движений лица</div>
             
-            <!-- Сетка шаблонов (Замените картинки на свои примеры лиц/движений) -->
-            <div class="swap-steps-grid">
-                <div class="phone-template-card"><img src="https://postimg.cc"></div>
-                <div class="phone-template-card"><img src="https://postimg.cc"></div>
-                <div class="phone-template-card"><img src="https://postimg.cc"></div>
-            </div>
-
-            <!-- Текст инструкции изменён под логику бэкенда -->
-            <div style="font-size: 13px; line-height: 1.5; margin-top: 25px !important; padding: 0 5px; color: rgba(255, 255, 255, 0.6) !important;">
-                <b>Шаг 1:</b> Настройте параметры длительности и качества на кнопках ниже.<br>
-                <b>Шаг 2:</b> Нажмите кнопку запуска START.<br>
-                <b>Шаг 3:</b> Бот попросит отправить в чат <b>фотографию лица</b> для переноса движений!                
-            </div>
-
-            <!-- Наша лазерная линия-разделитель (Оранжевый неон) -->
-            <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
-
-            <!-- Строка про итог (Белая и жирная) -->
-            <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center;">
-                <b>Итоговая цена зависит от выбранной длительности и отображается на кнопке START</b>
-            </div>
-
-            <!-- 🔥 ПУЛЬТ УПРАВЛЕНИЯ РЕЖИМА 3 -->
-            <div class="single-row-controls">
-                <!-- Колонка Длительности -->
-                <div class="control-col">
-                    <div class="control-label">Длительность</div>
-                    <button id="btn_motion_duration" class="capsule-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openUniversalDurationSheet()">⏱️ 5 сек</button>
-                </div>
+            <!-- Интерактивный пример (До / После) вместо старой сетки картинок -->
+            <div class="example-preview-container" style="display: flex; flex-direction: column; gap: 12px; margin: 15px 0;">
                 
-                <!-- Колонка Формата -->
-                <div class="control-col">
-                    <div class="control-label">Формат кадра</div>
-                    <button id="btn_motion_ratio" class="capsule-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openUniversalRatioSheet()">9:16</button>
+                <!-- 1. Исходная статичная картинка лица -->
+                <div class="preview-card-box" style="position: relative; width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1);">
+                    <img src="https://unsplash.com" 
+                        style="width: 100%; height: 180px; object-fit: cover; display: block;" alt="Фото оригинал">
+                    <span style="position: absolute; top: 10px; left: 10px; background: rgba(0, 0, 0, 0.6); color: #fff; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; text-transform: uppercase;">📸 Фото лица</span>
                 </div>
-                
-                <!-- Кнопка запуска -->
-                <div class="control-col-btn">
-                    <div class="control-label">Запуск ИИ</div>
-                    <button id="neo_motion_submit_btn" class="neo-start-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendMotionControlData()">Start 1 🪙</button>
+
+                <!-- Стрелочка перехода -->
+                <div style="text-align: center; color: #ff7300; font-size: 18px; margin: -5px 0;">🔽</div>
+
+                <!-- 2. Живой видео-пример точного переноса движений -->
+                <div class="preview-card-box" style="position: relative; width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.2);">
+                    <video id="preview_motion_video" style="width: 100%; height: 180px; object-fit: cover; display: block;" loop muted playsinline>
+                        <source src="https://mixkit.co" type="video/mp4">
+                        Ваш браузер не поддерживает видео.
+                    </video>
+                    
+                    <span style="position: absolute; top: 10px; left: 10px; background: #ff7300; color: #fff; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; text-transform: uppercase;">🔥 Результат движения</span>
+                    
+                    <div id="video_motion_play_overlay" onclick="toggleMotionVideo()" 
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s;">
+                        <div style="background: #ff7300; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px #ff7300;">
+                            <span id="play_motion_icon_sym" style="color: white; font-size: 20px; margin-left: 4px;">▶️</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
+                   <!-- Текст инструкции изменён под логику посекундной оплаты в чате -->
+        <div style="font-size: 13px; line-height: 1.5; margin-top: 25px !important; padding: 0 5px; color: rgba(255, 255, 255, 0.6) !important;">
+            <b>Шаг 1:</b> Нажмите кнопку запуска START.<br>
+            <b>Шаг 2:</b> Бот попросит вас отправить <b>фотографию лица</b>.<br>
+            <b>Шаг 3:</b> Затем отправьте <b>видео-референс</b> с движениями.<br>
+            <span style="color: #ff7300;">*️⃣ Бот автоматически посчитает длительность вашего видео и назовёт итоговую стоимость генерации в монетах перед стартом!</span>
+        </div>
+
+        <!-- Наша лазерная линия-разделитель (Оранжевый неон) -->
+        <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
+
+        <!-- Строка про итог (Посекундный тариф) -->
+        <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center; margin-bottom: 20px;">
+            <b>Списание монет происходит посекундно, исходя из длины присланного вами видео.</b>
+        </div>
+
+        <!-- 🔥 ОДНА ЧИСТАЯ КНОПКА START ДЛЯ ПЕРЕХОДА В БОТ -->
+        <div style="padding: 0 5px; margin-bottom: 10px;">
+            <button id="neo_motion_submit_btn" class="neo-start-btn" style="width: 100%; height: 50px; font-size: 16px; font-weight: bold; letter-spacing: 1px;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendMotionControlData()">
+                START 🪙
+            </button>
+        </div>
+
+            </div>
 
         </div>
     </div>
@@ -945,15 +986,15 @@ body {
 
     // 🎥 НАСТРОЙКИ ДЛЯ 1-ГО РЕЖИМА: «Оживление фото» (Без звука, Kling 2.1)
     let currentKlingDuration = 5;  
-    let currentAnimateRatio = '16:9';  
+    let currentAnimateRatio = 'auto';  
 
     // 🔊 НАСТРОЙКИ ДЛЯ 2-ГО РЕЖИМА: «Оживление со звуком» (С голосом ИИ, Sora-2)
-    let soundGenRatio = '16:9';
+    let soundGenRatio = 'auto';
     let selectedVoiceId = 'voice_male_01';
 
     // 👤 НАСТРОЙКИ ДЛЯ 3-ГО РЕЖИМА: «Оживление по видео» (Motion Control, Kling v2.6)
     let motionGenDuration = 5;
-    let motionGenRatio = '9:16';
+    let motionGenRatio = 'auto';
 
 
     // ====================================================================================
@@ -1202,146 +1243,237 @@ body {
         }
 
 // ====================================================================================
+// 67. Функция управления интерактивным видео-плеером для Режима 1
+// ====================================================================================
+// для Режима 1
+        function toggleNoSoundVideo() {
+            const video = document.getElementById('preview_nosound_video');
+            const overlay = document.getElementById('video_nosound_play_overlay');
+            const icon = document.getElementById('play_nosound_icon_sym');
+            
+            if (tg?.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+
+            if (video.paused) {
+                video.play();
+                overlay.style.background = "rgba(0,0,0,0)";
+                icon.innerText = "⏸️";
+                // Плавно прячем оверлей, чтобы не мешал просмотру лица
+                setTimeout(() => { 
+                    if (!video.paused) overlay.style.opacity = "0"; 
+                }, 1500);
+            } else {
+                video.pause();
+                overlay.style.opacity = "1";
+                overlay.style.background = "rgba(0,0,0,0.4)";
+                icon.innerText = "▶️";
+            }
+        }
+
+        // Возвращаем видимость интерфейса при тапе или наведении
+        document.getElementById('video_nosound_play_overlay').addEventListener('mouseenter', () => {
+            document.getElementById('video_nosound_play_overlay').style.opacity = "1";
+        });
+
+// для Режима 2 (Со звуком)
+function toggleSoundVideo() {
+    const video = document.getElementById('preview_sound_video');
+    const overlay = document.getElementById('video_sound_play_overlay');
+    const icon = document.getElementById('play_sound_icon_sym');
+    
+    if (tg?.HapticFeedback) {
+        tg.HapticFeedback.impactOccurred('light');
+    }
+
+    if (video.paused) {
+        video.play();
+        overlay.style.background = "rgba(0,0,0,0)";
+        icon.innerText = "⏸️";
+        // Плавно убираем оверлей через 1.5 секунды
+        setTimeout(() => { if (!video.paused) overlay.style.opacity = "0"; }, 1500);
+    } else {
+        video.pause();
+        overlay.style.opacity = "1";
+        overlay.style.background = "rgba(0,0,0,0.4)";
+        icon.innerText = "▶️";
+    }
+}
+
+// Показываем оверлей управления обратно при наведении/клике
+document.getElementById('video_sound_play_overlay').addEventListener('mouseenter', () => {
+    document.getElementById('video_sound_play_overlay').style.opacity = "1";
+});
+
+
+
+// для Режима 3
+function toggleMotionVideo() {
+    const video = document.getElementById('preview_motion_video');
+    const overlay = document.getElementById('video_motion_play_overlay');
+    const icon = document.getElementById('play_motion_icon_sym');
+    
+    if (tg?.HapticFeedback) {
+        tg.HapticFeedback.impactOccurred('light');
+    }
+
+    if (video.paused) {
+        video.play();
+        overlay.style.background = "rgba(0,0,0,0)";
+        icon.innerText = "⏸️";
+        setTimeout(() => { if (!video.paused) overlay.style.opacity = "0"; }, 1500);
+    } else {
+        video.pause();
+        overlay.style.opacity = "1";
+        overlay.style.background = "rgba(0,0,0,0.4)";
+        icon.innerText = "▶️";
+    }
+}
+
+// Возвращаем видимость кнопки при тапе или наведении
+document.getElementById('video_motion_play_overlay').addEventListener('mouseenter', () => {
+    document.getElementById('video_motion_play_overlay').style.opacity = "1";
+});
+
+
+// ====================================================================================
 // 7. УПРАВЛЕНИЕ УНИВЕРСАЛЬНОЙ КАСТОМНОЙ ШТОРКОЙ ДЛЯ ТРЕХ ВИДЕО-РЕЖИМОВ (СИНХРОНИЗИРОВАНО)
 // ====================================================================================
 
-        // ⏱️ 1. ШТОРКА ВЫБОРА ДЛИТЕЛЬНОСТИ (Для Режима 1 и Режима 3)
-        function openUniversalDurationSheet() {
-            const durationOptions = [
-                { label: "⏱️ 5 секунд", value: 5, price: "2" },
-                { label: "⏱️ 10 секунд", value: 10, price: "4" }
-            ];
-            
-            // В третьем режиме Kling v2.6 тарифы за 5/10 сек могут отличаться (ставим по условию)
-            if (currentActiveMode === 'video_motion_control') {
-                durationOptions[0].price = "1";
-                durationOptions[1].price = "2";
-            }
-            
-            openCustomSheet("ВЫБОР ДЛИТЕЛЬНОСТИ ВИДЕО", durationOptions, function(value, label) {
-                // Записываем в твою глобальную переменную
-                currentKlingDuration = value; 
-                
-                // Синхронно находим активную капсулу на текущем экране и меняем ей текст
-                if (currentActiveMode === 'animate_nosound') {
-                    const el = document.getElementById('btn_video_duration');
-                    if (el) el.innerText = label;
-                } 
-                else if (currentActiveMode === 'video_motion_control') {
-                    const el = document.getElementById('btn_motion_duration');
-                    if (el) el.innerText = label;
-                }
-                
-                // Пересчитываем цены монет на кнопках запуска START
-                updateStartButtonsPrice();
-            });
+// ⏱️ 1. ШТОРКА ВЫБОРА ДЛИТЕЛЬНОСТИ (Для Режима 1 и Режима 3)
+function openUniversalDurationSheet() {
+    const durationOptions = [
+        { label: "⏱️ 5 секунд", value: 5, price: "2" },
+        { label: "⏱️ 10 секунд", value: 10, price: "4" }
+    ];
+    
+    // Исправлено: правильно меняем цены внутри массива по индексам [0] и [1]
+    if (currentActiveMode === 'video_motion_control') {
+        durationOptions[0].price = "1";
+        durationOptions[1].price = "2";
+    }
+    
+    openCustomSheet("ВЫБОР ДЛИТЕЛЬНОСТИ ВИДЕО", durationOptions, function(value, label) {
+        
+        // Исправлено: разделяем сохранение данных под каждый режим в свою переменную
+        if (currentActiveMode === 'animate_nosound') {
+            currentKlingDuration = value; // Запись для Режима 1
+        } 
+        else if (currentActiveMode === 'video_motion_control') {
+            motionGenDuration = value;    // Запись для Режима 3
+        } 
+        
+        // Синхронно находим активную капсулу на текущем экране и меняем ей текст
+        if (currentActiveMode === 'animate_nosound') {
+            const el = document.getElementById('btn_video_duration');
+            if (el) el.innerText = label;
+        } 
+        else if (currentActiveMode === 'video_motion_control') {
+            const el = document.getElementById('btn_motion_duration');
+            if (el) el.innerText = label;
         }
+        
+        // Пересчитываем цены монет на кнопках запуска START (теперь всё сработает корректно)
+        updateStartButtonsPrice();
+    });
+}
 
-        // 📐 2. ШТОРКА ВЫБОРА ФОРМАТА КАДРА (Для всех трех видео-режимов)
-        function openUniversalRatioSheet() {
-            const ratioOptions = [
-                { label: "Формат 16:9 (Горизонтальный)", value: "16:9" },
-                { label: "Формат 9:16 (Вертикальный)", value: "9:16" }
-            ];
-            
-            openCustomSheet("ВЫБОР ФОРМАТА КАДРА", ratioOptions, function(value, label) {
-                // Распределяем выбранный формат по переменным в зависимости от активного экрана
-                if (currentActiveMode === 'animate_nosound') {
-                    currentAnimateRatio = value;
-                    const el = document.getElementById('btn_video_ratio');
-                    if (el) el.innerText = value;
-                } 
-                else if (currentActiveMode === 'animate_sound') {
-                    soundGenRatio = value;
-                    const el = document.getElementById('btn_video_sound_ratio');
-                    if (el) el.innerText = value;
-                } 
-                else if (currentActiveMode === 'video_motion_control') {
-                    motionGenRatio = value;
-                    const el = document.getElementById('btn_motion_ratio');
-                    if (el) el.innerText = value;
-                }
-            });
+// 📐 2. ШТОРКА ВЫБОРА ФОРМАТА КАДРА (Осталась только для Режима 2: Оживление со звуком)
+function openUniversalRatioSheet() {
+    const ratioOptions = [
+        { label: "⚙️ Автоматически (как на фото)", value: "auto" },
+        { label: "Формат 16:9 (Горизонтальный)", value: "16:9" },
+        { label: "Формат 9:16 (Вертикальный)", value: "9:16" }
+    ];
+    
+    openCustomSheet("ВЫБОР ФОРМАТА КАДРА", ratioOptions, function(value, label) {
+        // Записываем строго для Режима 2 (animate_sound)
+        if (currentActiveMode === 'animate_sound') {
+            soundGenRatio = value;
+            const el = document.getElementById('btn_video_sound_ratio');
+            if (el) el.innerText = value === "auto" ? "🤖 Авто" : value;
         }
+    });
+}
 
-        // 🧑 3. ШТОРКА ВЫБОРА AI-ГОЛОСА (Для Режима 2)
-        function openUniversalVoiceSheet() {
-            const voiceOptions = [
-                { label: "🧑 Мужской голос 1", value: "voice_male_01" },
-                { label: "👩 Женский голос 2", value: "voice_female_02" }
-            ];
-            
-            openCustomSheet("ВЫБОР AI-ГОЛОСА ОЗВУЧКИ", voiceOptions, function(value, label) {
-                // Сохраняем системный ID голоса в твою глобальную переменную
-                selectedVoiceId = value; 
-                
-                // Меняем текст на капсуле выбора голоса во 2-м режиме
-                const el = document.getElementById('btn_voice_select');
-                if (el) el.innerText = label;
-            });
-        }
+// 🧑 3. ШТОРКА ВЫБОРА AI-ГОЛОСА (Для Режима 2)
+function openUniversalVoiceSheet() {
+    const voiceOptions = [
+        { label: "👨 Мужской (Глубокий, спокойный)", value: "voice_male_deep" },
+        { label: "👩 Женский (Приятный, молодой)", value: "voice_female_young" },
+        { label: "🧔 Мужской (Энергичный, громкий)", value: "voice_male_energetic" },
+        { label: "🤖 Роботизированный (AI стиль)", value: "voice_robot" }
+    ];
+    
+    openCustomSheet("ВЫБОР AI-ГОЛОСА ОЗВУЧКИ", voiceOptions, function(value, label) {
+        // Сохраняем системный ID голоса в твою глобальную переменную
+        selectedVoiceId = value; 
+        
+        // Меняем текст на капсуле выбора голоса во 2-м режиме
+        const el = document.getElementById('btn_voice_select');
+        if (el) el.innerText = label;
+    });
+}
 
 // ====================================================================================
 // 8. СБОР И ОТПРАВКА ДАННЫХ ИЗ WEBAPP В PYTHON БОТ (ЧЕРЕЗ TG.SENDDATA)
 // ====================================================================================
 
-        // 🎥 1. Отправка для Режима 1: Оживление фото (без звука)
-        function sendVideoGenData() {
-            if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
-            
-            const dataToSend = {
-                mode_trigger: "video_menu",          
-                video_type: "default",               // Сработает ветка else (обычный Kling 2.1)
-                video_duration: currentKlingDuration, // Выбранные через шторку 5 или 10 сек
-                chosen_ratio: currentAnimateRatio,   // Формат 16:9 или 9:16
-                cost: currentKlingDuration === 10 ? 4 : 2 
-            };
-            
-            if (tg) {
-                tg.sendData(JSON.stringify(dataToSend));
-                tg.close();
-            }
+    // 🎥 1. Отправка для Режима 1: Оживление фото (без звука)
+    function sendVideoGenData() {
+        if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
+        
+        const dataToSend = {
+            mode_trigger: "video_menu",          
+            video_type: "default",               // Сработает ветка else (обычный Kling 2.1)
+            video_duration: currentKlingDuration, // Выбранные через шторку 5 или 10 сек
+            chosen_ratio: "auto",                // 🔥 Поменяли на "auto", чтобы бот сам корректировал по картинке
+            cost: currentKlingDuration === 10 ? 4 : 2 
+        };
+        
+        if (tg) {
+            tg.sendData(JSON.stringify(dataToSend));
+            tg.close();
         }
+    }
 
-        // 🔊 2. Отправка для Режима 2: Оживление со звуком
-        function sendVideoSoundGenData() {
-            if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
-            
-            const toggle = document.getElementById("use_audio_toggle");
-            const isAudioActive = (toggle && toggle.checked);
-            
-            const dataToSend = {
-                mode_trigger: "video_menu",
-                video_type: "pro",                    // Сигнал для ветки elif (Sora-2)
-                video_duration: 5,                    // Фиксированно 5 сек
-                chosen_ratio: soundGenRatio,          
-                selected_voice: isAudioActive ? selectedVoiceId : "none", 
-                cost: 3                               
-            };
-            
-            if (tg) {
-                tg.sendData(JSON.stringify(dataToSend));
-                tg.close();
-            }
-        }
+// 🔊 2. Отправка для Режима 2: Оживление со звуком
+function sendVideoSoundGenData() {
+    if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
+    
+    const toggle = document.getElementById("use_audio_toggle");
+    const isAudioActive = (toggle && toggle.checked);
+    
+    const dataToSend = {
+        mode_trigger: "video_menu",
+        video_type: "pro",                    // Сигнал для ветки elif (Sora-2)
+        video_duration: 5,                    // Фиксированно 5 сек
+        chosen_ratio: soundGenRatio || "auto", // 🔥 Если переменная пустая, отправит "auto"
+        selected_voice: isAudioActive ? selectedVoiceId : "none", 
+        cost: 3                               
+    };
+    
+    if (tg) {
+        tg.sendData(JSON.stringify(dataToSend));
+        tg.close();
+    }
+}
 
-        // 👤 3. Отправка для Режима 3: Оживление по видео (Motion Control)
-        function sendMotionControlData() {
-            if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
-            
-            const dataToSend = {
-                mode_trigger: "video_menu",
-                video_type: "motion_control",         // Сигнал для первой ветки if (Kling v2.6)
-                video_duration: motionGenDuration,    // Секунды из капсулы 3-го режима
-                chosen_ratio: motionGenRatio,         // Формат из капсулы 3-го режима
-                cost: motionGenDuration === 10 ? 2 : 1 
-            };
-            
-            if (tg) {
-                tg.sendData(JSON.stringify(dataToSend));
-                tg.close();
-            }
-        }
+// 👤 3. Отправка для Режима 3: Оживление по видео (Motion Control)
+function sendMotionControlData() {
+    if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
+    
+    const dataToSend = {
+        mode_trigger: "video_menu",
+        video_type: "motion_control", 
+        action: "start_file_waiting" // Сигнал боту: переходи к сценарию запроса фото и видео в чате
+    };
+    
+    if (tg) {
+        tg.sendData(JSON.stringify(dataToSend));
+        tg.close();
+    }
+}
 
 
 

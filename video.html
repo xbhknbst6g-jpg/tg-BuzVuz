@@ -1077,7 +1077,7 @@ body {
 // Функция для управления вашим плеером videoPlayerModal
 // ====================================================================================
 
-// Открытие универсального полноэкранного плеера (ИСПРАВЛЕНО)
+// Открытие универсального полноэкранного плеера (ИСПРАВЛЕННАЯ НАДЁЖНАЯ ВЕРСИЯ)
 function openPreviewVideo(mediaUrl) {
     const modal = document.getElementById('videoPlayerModal');
     const playerVideo = document.getElementById('previewVideoPlayer');
@@ -1085,11 +1085,17 @@ function openPreviewVideo(mediaUrl) {
     
     if (!modal) return;
     
-    const urlLower = mediaUrl.toLowerCase();
+    // Предотвращаем ошибки, если прилетел пустой URL
+    const urlLower = String(mediaUrl).toLowerCase();
     
-    // Проверяем тип медиафайла
-    if (urlLower.includes('.mp4') || urlLower.includes('video') || urlLower.includes('mixkit')) {
-        // Включаем видео-режим
+    // 🔥 Железобетонная проверка: ищем mp4, mixkit или imgur через indexOf (работает везде)
+    const isVideoFile = urlLower.indexOf('.mp4') !== -1 || 
+                        urlLower.indexOf('mixkit') !== -1 || 
+                        urlLower.indexOf('imgur') !== -1 ||
+                        urlLower.indexOf('video') !== -1;
+    
+    if (isVideoFile) {
+        // 🎥 ВКЛЮЧАЕМ ВИДЕО-РЕЖИМ
         if (playerImage) {
             playerImage.style.display = "none";
             playerImage.src = "";
@@ -1097,11 +1103,21 @@ function openPreviewVideo(mediaUrl) {
         if (playerVideo) {
             playerVideo.src = mediaUrl;
             playerVideo.style.display = "block";
-            playerVideo.muted = false; // Включаем звук в плеере
-            playerVideo.play().catch(e => console.log("Автоплей заблокирован:", e));
+            playerVideo.muted = false; // По умолчанию включаем звук в плеере
+            
+            // 🔥 Умный обход блокировки автоплея на iOS/Android
+            const playPromise = playerVideo.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(function(error) {
+                    console.log("Браузер заблокировал звук, запускаем видео в режиме muted:", error);
+                    // Если система ругается на звук, глушим видео, чтобы оно гарантированно заиграло
+                    playerVideo.muted = true; 
+                    playerVideo.play();
+                });
+            }
         }
     } else {
-        // Включаем фото-режим (для .jpg, .png, Unsplash и т.д.)
+        // 📸 ВКЛЮЧАЕМ ФОТО-РЕЖИМ (для .jpg, .png и оригиналов)
         if (playerVideo) {
             playerVideo.pause();
             playerVideo.style.display = "none";
@@ -1113,7 +1129,7 @@ function openPreviewVideo(mediaUrl) {
         }
     }
     
-    // Включаем саму модалку на экране
+    // Включаем видимость самой модалки
     modal.style.display = "flex";
     setTimeout(() => {
         modal.classList.add('active'); 

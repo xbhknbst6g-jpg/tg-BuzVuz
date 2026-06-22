@@ -777,7 +777,7 @@ body {
 <!-- ЭКРАН 2: ОЖИВЛЕНИЕ СО ЗВУКОМ                -->
 <!-- ========================================== -->
     <div id="animate_sound" class="screen">
-        
+            
         <!-- Фирменный контейнер вкладок с кнопкой назад -->
         <div class="tabs-container">
             <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openScreen('video_menu')"></button>
@@ -791,41 +791,40 @@ body {
             <div class="menu-title">Примеры говорящих аватаров:</div>
             <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">Что можно получить по вашему тексту с аудиодорожкой</div>
             
-            <!-- 🔥 РЕЖИМ 2: КОМПАКТНЫЙ ГОРИЗОНТАЛЬНЫЙ РЯД ДЛЯ ДВУХ КАРТОЧЕК (ОБА КЛИКАБЕЛЬНЫ НА ВЕСЬ ЭКРАН) -->
-        <div class="example-preview-container" style="display: flex; flex-direction: row; gap: 15px; justify-content: center; margin: 15px auto; width: 90%; max-width: 340px;">
-            
-            <!-- 1. Карточка Исходного фото (Левая сторона) -->
-            <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;">
-                <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15); background: #000;">
-                    <!-- Клик по фото развернет оригинальную картинку аватара во весь экран -->
-                    <img src="https://i.postimg.cc/Kv5FrNzq/b-Lx-N-n-XBzkt-Aah-Ej-Tr-YFf.png" 
-                        onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo(this.src)"
-                        style="width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer;" alt="Фото оригинал">
+            <!-- 🔥 КОМПАКТНЫЙ ГОРИЗОНТАЛЬНЫЙ РЯД ДЛЯ ДВУХ КАРТОЧЕК -->
+            <div class="example-preview-container" style="display: flex; flex-direction: row; gap: 15px; justify-content: center; margin: 15px auto; width: 90%; max-width: 340px;">
+                
+                <!-- 1. Карточка Исходного фото (Левая сторона) -->
+                <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;">
+                    <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15); background: #000;">
+                        <img src="https://i.postimg.cc/Kv5FrNzq/b-Lx-N-n-XBzkt-Aah-Ej-Tr-YFf.png" 
+                            onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo(this.src)"
+                            style="width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer;" alt="Фото оригинал">
+                    </div>
+                    <div style="font-size: 11px; font-weight: 800; color: rgba(255, 255, 255, 0.5); text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">📸 Исходное фото</div>
                 </div>
-                <div style="font-size: 11px; font-weight: 800; color: rgba(255, 255, 255, 0.5); text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">📸 Исходное фото</div>
-            </div>
 
-            <!-- 2. Карточка Говорящего ИИ-аватара (Правая сторона) -->
-            <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;">
-                <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
-                    <!-- Используем object-fit: cover, чтобы видео заполнило всю рамку 9:16 без черных полей -->
-                    <video id="preview_sound_video" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo(this.querySelector('source').src)" style="width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer;" loop playsinline>
-                        <source src="https://i.imgur.com/Q6GrKyK.mp4" type="video/mp4">
-                        Ваш браузер не поддерживает видео.
-                    </video>
-                    
-                    <!-- Оверлей кнопки PLAY — запускает вашу родную функцию toggleSoundVideo -->
-                    <div id="video_sound_play_overlay" onclick="toggleSoundVideo()" 
-                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                        <div style="background: #ff7300; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px #ff7300;">
-                            <span id="play_sound_icon_sym" style="color: white; font-size: 14px; margin-left: 3px;">▶️</span>
+                <!-- 2. Карточка Говорящего ИИ-аватара (Правая сторона) -->
+                <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;">
+                    <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
+                        <video id="preview_sound_video" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo(this.querySelector('source').src)" style="width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer;" loop playsinline>
+                            <source src="https://i.imgur.com/Q6GrKyK.mp4" type="video/mp4">
+                            Ваш браузер не поддерживает видео.
+                        </video>
+                        
+                        <div id="video_sound_play_overlay" onclick="toggleSoundVideo()" 
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                            <div style="background: #ff7300; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px #ff7300;">
+                                <span id="play_sound_icon_sym" style="color: white; font-size: 14px; margin-left: 3px;">▶️</span>
+                            </div>
                         </div>
                     </div>
+                    <div style="font-size: 11px; font-weight: 800; color: #ff7300; text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">🗣️ Аватар ИИ</div>
                 </div>
-                <div style="font-size: 11px; font-weight: 800; color: #ff7300; text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">🗣️ Аватар ИИ</div>
-            </div>
 
-            <!-- Текст пошаговой инструкции -->
+            </div> <!-- 🔥 ИСПРАВЛЕНО: Жёстко закрыли контейнер с карточками! Теперь низ не улетит -->
+
+            <!-- Текст пошаговой инструкции (Ваш родной код) -->
             <div style="font-size: 13px; line-height: 1.5; margin-top: 25px !important; padding: 0 5px; color: rgba(255, 255, 255, 0.6) !important;">
                 <b>Шаг 1:</b> Настройте параметры видео и выберите AI-голос ниже.<br>
                 <b>Шаг 2:</b> Нажмите кнопку запуска START.<br>
@@ -841,7 +840,7 @@ body {
                     <input type="checkbox" id="use_audio_toggle" checked onchange="Telegram.WebApp.HapticFeedback.impactOccurred('light'); toggleVoiceSelector()" style="width: 18px; height: 18px; margin-right: 12px; cursor: pointer; accent-color: #ff7300;">
                     Включить AI-озвучку текста (Голос)
                 </label>
-                <!-- 🔥 ИСПРАВЛЕННОЕ ОПИСАНИЕ ПОД ГАЛОЧКОЙ -->
+                <!-- 🔥 ИСПРАВЛЕННОЕ ЧЕСТНОЕ ОПИСАНИЕ ПОД ГАЛОЧКОЙ -->
                 <div style="font-size: 12px; color: rgba(255, 255, 255, 0.5); margin-top: 6px; padding-left: 30px;">
                     Если выключено, видео создастся только с фоновыми шумами окружения, но без речи персонажа.
                 </div>
@@ -849,7 +848,6 @@ body {
 
             <!-- 🔥 БЛОК ВЫБОРА ГОЛОСА И ВАЖНАЯ ПОДСКАЗКА -->
             <div id="voice_selector_block" style="margin-bottom: 25px; padding: 0 5px;">
-                <!-- Неоновая карточка-подсказка в стиле вашей дизайн-системы -->
                 <div style="font-size: 12px; line-height: 1.4; color: rgba(255, 255, 255, 0.8); background: rgba(255, 115, 0, 0.1); border: 1px solid rgba(255, 115, 0, 0.3); padding: 10px; border-radius: 8px; box-shadow: inset 0 0 10px rgba(255, 115, 0, 0.05);">
                     💡 <b style="color: #ff7300;">Чтобы персонаж заговорил:</b> в тексте описания для бота обязательно укажите его прямую речь в кавычках.<br>
                     <i style="color: rgba(255, 255, 255, 0.6)">Пример: Девушка в кафе говорит: "Всем привет, как дела?".</i>
@@ -861,7 +859,7 @@ body {
                 <b>Итоговая цена зависит от выбранных настроек и отображается на кнопке START</b>
             </div>
 
-            <!-- 🔥 ПУЛЬТ УПРАВЛЕНИЯ РЕЖИМА 2 -->
+            <!-- 🔥 ПУЛЬТ УПРАВЛЕНИЯ РЕЖИМА 2 (Ваш оригинальный стиль) -->
             <div class="single-row-controls">
                 <!-- Колонка Выбора Голоса -->
                 <div class="control-col">
@@ -872,7 +870,7 @@ body {
                 <!-- Колонка Формата -->
                 <div class="control-col">
                     <div class="control-label">Формат кадра</div>
-                    <button id="btn_video_sound_ratio" class="capsule-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openUniversalRatioSheet()">16:9</button>
+                    <button id="btn_video_sound_ratio" class="capsule-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openUniversalRatioSheet()">🤖 Авто</button>
                 </div>
                 
                 <!-- Кнопка запуска -->

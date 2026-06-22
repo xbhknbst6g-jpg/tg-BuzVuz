@@ -710,7 +710,7 @@ body {
 
                 <!-- 2. Живой видео-пример -->
                 <div class="preview-card-box" style="position: relative; width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.2);">
-                    <video id="preview_nosound_video" style="width: 100%; height: 180px; object-fit: cover; display: block;" loop muted playsinline>
+                    <video id="preview_nosound_video" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo(this.querySelector('source').src)" style="width: 100%; height: 180px; object-fit: cover; display: block; cursor: pointer;" loop muted playsinline>
                         <source src="https://mixkit.co" type="video/mp4">
                         Ваш браузер не поддерживает видео.
                     </video>
@@ -794,7 +794,8 @@ body {
                 <!-- 2. Живой видео-пример говорящего аватара (со звуком) -->
                 <div class="preview-card-box" style="position: relative; width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.2);">
                     <!-- 💡 Сюда вставьте ссылку на демонстрационный ролик Sora 2 / говорящего аватара -->
-                    <video id="preview_sound_video" style="width: 100%; height: 180px; object-fit: cover; display: block;" loop playsinline>
+                    <video id="preview_sound_video" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo(this.querySelector('source').src)" style="width: 100%; height: 180px; object-fit: cover; display: block; cursor: pointer;" loop playsinline>
+
                         <source src="https://mixkit.co" type="video/mp4">
                         Ваш браузер не поддерживает видео.
                     </video>
@@ -904,7 +905,8 @@ body {
 
                 <!-- 2. Живой видео-пример точного переноса движений -->
                 <div class="preview-card-box" style="position: relative; width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.2);">
-                    <video id="preview_motion_video" style="width: 100%; height: 180px; object-fit: cover; display: block;" loop muted playsinline>
+                    <video id="preview_motion_video" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo(this.querySelector('source').src)" style="width: 100%; height: 180px; object-fit: cover; display: block; cursor: pointer;" loop muted playsinline>
+
                         <source src="https://mixkit.co" type="video/mp4">
                         Ваш браузер не поддерживает видео.
                     </video>
@@ -1039,6 +1041,47 @@ body {
             }, 150);
         }
     })();
+
+// ====================================================================================
+// Функция для управления вашим плеером videoPlayerModal
+// ====================================================================================
+
+            // Открытие вашего полноэкранного плеера
+        function openPreviewVideo(videoUrl) {
+            const modal = document.getElementById('videoPlayerModal');
+            const player = document.getElementById('previewVideoPlayer');
+            
+            if (modal && player) {
+                player.src = videoUrl;
+                modal.style.display = "flex"; // Включаем видимость модалки
+                
+                // Даем браузеру миллисекунду на отрисовку дисплея, затем плавно проявляем через класс
+                setTimeout(() => {
+                    modal.classList.add('active'); 
+                }, 10);
+                
+                // Включаем звук и запускаем воспроизведение
+                player.muted = false; 
+                player.play().catch(e => console.log("Автоплей заблокирован:", e));
+            }
+        }
+
+        // Закрытие вашего полноэкранного плеера (ИСПРАВЛЕНО)
+        function closePreviewVideo() {
+            const modal = document.getElementById('videoPlayerModal');
+            const player = document.getElementById('previewVideoPlayer');
+            
+            if (modal && player) {
+                modal.classList.remove('active'); // Убираем плавную непрозрачность
+                player.pause(); // Ставим видео на паузу
+                
+                // Ждем окончания CSS-анимации исчезновения (300 миллисекунд) и скрываем дисплей полностью
+                setTimeout(function() {
+                    modal.style.display = "none";
+                    player.src = ""; // Полностью очищаем память от видео-файла
+                }, 300); // Теперь скобка закрыта правильно!
+            }
+        }
 
 // ====================================================================================
 // 2.5 ФУНКЦИИ ВОЗВРАТА НАЗАД (СТРОГО НАШИ ВИДЕО РЕЖИМЫ)

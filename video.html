@@ -695,26 +695,23 @@ body {
             <div class="menu-title">Примеры генерации:</div>
             <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">Что можно получить из обычного статичного кадра</div>
             
-            <!-- 🔥 КОМПАКТНЫЙ ГОРИЗОНТАЛЬНЫЙ РЯД ДЛЯ ДВУХ КАРТОЧЕК (ДО / ПОСЛЕ) -->
+            <!-- 🔥 КОМПАКТНЫЙ ГОРИЗОНТАЛЬНЫЙ РЯД ДЛЯ ДВУХ КАРТОЧЕК (ОБА КЛИКАБЕЛЬНЫ НА ВЕСЬ ЭКРАН) -->
             <div class="example-preview-container" style="display: flex; flex-direction: row; gap: 15px; justify-content: center; margin: 15px auto; width: 90%; max-width: 340px;">
                 
-                <!-- 1. Карточка Фото-оригинала (Левая сторона) -->
+                <!-- 1. Карточка Фото-оригинала (Левая сторона - КЛИКАБЕЛЬНАЯ) -->
                 <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;">
-                    <!-- Жесткий мобильный формат 9:16 для рамки -->
                     <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15); background: #000;">
-                        <!-- object-fit: cover плотно заполняет рамку до краев -->
+                        <!-- 🔥 ИСПРАВЛЕНО: Добавлен клик на картинку, который разворачивает её в твой плеер! -->
                         <img src="https://i.postimg.cc/wMDnw6QS/IMG-0495.jpg" 
-                            style="width: 100%; height: 100%; object-fit: cover; display: block;" alt="Фото оригинал">
+                            onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo(this.src)"
+                            style="width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer;" alt="Фото оригинал">
                     </div>
-                    <!-- Подпись строго под левой карточкой -->
                     <div style="font-size: 11px; font-weight: 800; color: rgba(255, 255, 255, 0.5); text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">📸 Оригинал</div>
                 </div>
 
                 <!-- 2. Карточка Видео-результата (Правая сторона) -->
                 <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;">
-                    <!-- Жесткий мобильный формат 9:16 и неоновая обводка -->
                     <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
-                        <!-- object-fit: cover убирает черные поля по бокам видео -->
                         <video id="preview_nosound_video" style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline>
                             <source src="https://i.imgur.com/7bLn7AV.mp4" type="video/mp4">
                             Ваш браузер не поддерживает видео.
@@ -728,19 +725,18 @@ body {
                             </div>
                         </div>
                     </div>
-                    <!-- Подпись строго под правой карточкой -->
                     <div style="font-size: 11px; font-weight: 800; color: #ff7300; text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">🔥 Результат ИИ</div>
                 </div>
 
             </div>
 
 
+
             <!-- Текст пошаговой инструкции обновлен под авто-формат -->
             <div style="font-size: 13px; line-height: 1.5; margin-top: 25px !important; padding: 0 5px; color: rgba(255, 255, 255, 0.6) !important;">
                 <b>Шаг 1:</b> Выберите длительность видео на кнопке ниже.<br>
                 <b>Шаг 2:</b> Нажмите кнопку запуска START.<br>
-                <b>Шаг 3:</b> Бот попросит отправить <b>фотографию</b> для оживления.<br>
-                <span style="color: #ff7300;">*️⃣ Бот автоматически определит формат фото (16:9, 9:16, 1:1) и сохранит его пропорции!</span>
+                <b>Шаг 3:</b> Бот попросит отправить фотографию для оживления.<br>
             </div>
 
             <!-- Фирменная лазерная линия-разделитель (Оранжевый неон) -->

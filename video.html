@@ -695,26 +695,26 @@ body {
             <div class="menu-title">Примеры генерации:</div>
             <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">Что можно получить из обычного статичного кадра</div>
             
-            <!-- Контейнер с идеальными вертикальными карточками без полей по бокам -->
-            <div class="example-preview-container" style="display: flex; flex-direction: column; gap: 20px; margin: 15px auto; width: 60%; max-width: 200px;">
+            <!-- 🔥 КОМПАКТНЫЙ ГОРИЗОНТАЛЬНЫЙ РЯД ДЛЯ ДВУХ КАРТОЧЕК (ДО / ПОСЛЕ) -->
+            <div class="example-preview-container" style="display: flex; flex-direction: row; gap: 15px; justify-content: center; margin: 15px auto; width: 90%; max-width: 340px;">
                 
-                <!-- 1. Карточка Фото-оригинала -->
-                <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; width: 100%;">
-                    <!-- Контейнеру задан жесткий вертикальный формат 9:16 -->
+                <!-- 1. Карточка Фото-оригинала (Левая сторона) -->
+                <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;">
+                    <!-- Жесткий мобильный формат 9:16 для рамки -->
                     <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15); background: #000;">
-                        <!-- object-fit: cover заставляет картинку заполнить всю рамку без полей -->
+                        <!-- object-fit: cover плотно заполняет рамку до краев -->
                         <img src="https://i.postimg.cc/wMDnw6QS/IMG-0495.jpg" 
                             style="width: 100%; height: 100%; object-fit: cover; display: block;" alt="Фото оригинал">
                     </div>
-                    <!-- Подпись под фото -->
-                    <div style="font-size: 11px; font-weight: 800; color: rgba(255, 255, 255, 0.5); text-transform: uppercase; letter-spacing: 0.8px;">📸 Оригинал</div>
+                    <!-- Подпись строго под левой карточкой -->
+                    <div style="font-size: 11px; font-weight: 800; color: rgba(255, 255, 255, 0.5); text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">📸 Оригинал</div>
                 </div>
 
-                <!-- 2. Карточка Видео-результата -->
-                <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; width: 100%;">
-                    <!-- Контейнеру задан жесткий вертикальный формат 9:16 и неоновое свечение -->
-                    <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.2); background: #000;">
-                        <!-- object-fit: cover заставляет видео заполнить всю рамку без полей -->
+                <!-- 2. Карточка Видео-результата (Правая сторона) -->
+                <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;">
+                    <!-- Жесткий мобильный формат 9:16 и неоновая обводка -->
+                    <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
+                        <!-- object-fit: cover убирает черные поля по бокам видео -->
                         <video id="preview_nosound_video" style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline>
                             <source src="https://i.imgur.com/7bLn7AV.mp4" type="video/mp4">
                             Ваш браузер не поддерживает видео.
@@ -723,16 +723,17 @@ body {
                         <!-- Оверлей кнопки PLAY -->
                         <div id="video_nosound_play_overlay" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo(document.getElementById('preview_nosound_video').querySelector('source').src)" 
                             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                            <div style="background: #ff7300; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 12px #ff7300;">
-                                <span style="color: white; font-size: 16px; margin-left: 4px;">▶️</span>
+                            <div style="background: #ff7300; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px #ff7300;">
+                                <span style="color: white; font-size: 14px; margin-left: 3px;">▶️</span>
                             </div>
                         </div>
                     </div>
-                    <!-- Подпись под видео -->
-                    <div style="font-size: 11px; font-weight: 800; color: #ff7300; text-transform: uppercase; letter-spacing: 0.8px;">🔥 Результат ИИ</div>
+                    <!-- Подпись строго под правой карточкой -->
+                    <div style="font-size: 11px; font-weight: 800; color: #ff7300; text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">🔥 Результат ИИ</div>
                 </div>
 
             </div>
+
 
             <!-- Текст пошаговой инструкции обновлен под авто-формат -->
             <div style="font-size: 13px; line-height: 1.5; margin-top: 25px !important; padding: 0 5px; color: rgba(255, 255, 255, 0.6) !important;">

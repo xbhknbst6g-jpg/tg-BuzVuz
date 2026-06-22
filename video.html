@@ -695,39 +695,39 @@ body {
             <div class="menu-title">Примеры генерации:</div>
             <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">Что можно получить из обычного статичного кадра</div>
             
-            <!-- Интерактивный пример (До / После) с адаптивной высотой -->
-            <div class="example-preview-container" style="display: flex; flex-direction: column; gap: 12px; margin: 15px 0;">
+            <!-- Полностью обновленный, зауженный блок примеров без стрелок с подписями внизу -->
+            <div class="example-preview-container" style="display: flex; flex-direction: column; gap: 20px; margin: 15px auto; width: 85%; max-width: 320px;">
                 
-                <!-- 1. Исходная статичная картинка -->
-                <div class="preview-card-box" style="position: relative; width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1);">
-                    <img src="https://i.postimg.cc/wMDnw6QS/IMG-0495.jpg" 
-                        style="width: 100%; max-height: 240px; object-fit: contain; background: #000; display: block;" alt="Фото оригинал">
-                    <span style="position: absolute; top: 10px; left: 10px; background: rgba(0, 0, 0, 0.6); color: #fff; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; text-transform: uppercase; z-index: 10;">📸 Фото-оригинал</span>
+                <!-- 1. Карточка Фото-оригинала -->
+                <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center;">
+                    <div class="preview-card-box" style="position: relative; width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15); background: #000;">
+                        <img src="https://i.postimg.cc/wMDnw6QS/IMG-0495.jpg" 
+                            style="width: 100%; max-height: 220px; object-fit: contain; display: block;" alt="Фото оригинал">
+                    </div>
+                    <!-- Подпись под фото -->
+                    <div style="font-size: 12px; font-weight: 700; color: rgba(255, 255, 255, 0.6); text-transform: uppercase; letter-spacing: 0.5px;">📸 Оригинал</div>
                 </div>
 
-                <!-- Стрелочка перехода -->
-                <div style="text-align: center; color: #ff7300; font-size: 18px; margin: -5px 0;">🔽</div>
-
-                <!-- 2. Живой видео-пример -->
-                <div class="preview-card-box" style="position: relative; width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.2); background: #000;">
-                    <video id="preview_nosound_video" style="width: 100%; max-height: 240px; object-fit: contain; display: block;" loop muted playsinline>
-                        <source src="https://i.imgur.com/7bLn7AV.mp4" type="video/mp4">
-                        Ваш браузер не поддерживает видео.
-                    </video>
-                    
-                    <span style="position: absolute; top: 10px; left: 10px; background: #ff7300; color: #fff; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; text-transform: uppercase; z-index: 10;">🔥 Результат ИИ</span>
-                    
-                    <!-- 🔥 ИСПРАВЛЕНО: Клик по оверлею теперь ГАРАНТИРОВАНО открывает видео на весь экран! -->
-                    <div id="video_nosound_play_overlay" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo(document.getElementById('preview_nosound_video').querySelector('source').src)" 
-                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                        <div style="background: #ff7300; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px #ff7300;">
-                            <span style="color: white; font-size: 20px; margin-left: 4px;">▶️</span>
+                <!-- 2. Карточка Видео-результата -->
+                <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center;">
+                    <div class="preview-card-box" style="position: relative; width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.2); background: #000;">
+                        <video id="preview_nosound_video" style="width: 100%; max-height: 220px; object-fit: contain; display: block;" loop muted playsinline>
+                            <source src="https://i.imgur.com/7bLn7AV.mp4" type="video/mp4">
+                            Ваш браузер не поддерживает видео.
+                        </video>
+                        
+                        <!-- Оверлей кнопки PLAY -->
+                        <div id="video_nosound_play_overlay" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo(document.getElementById('preview_nosound_video').querySelector('source').src)" 
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                            <div style="background: #ff7300; width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 12px #ff7300;">
+                                <span style="color: white; font-size: 18px; margin-left: 4px;">▶️</span>
+                            </div>
                         </div>
                     </div>
+                    <!-- Подпись под видео -->
+                    <div style="font-size: 12px; font-weight: 700; color: #ff7300; text-transform: uppercase; letter-spacing: 0.5px;">🔥 Результат ИИ</div>
                 </div>
             </div>
-
-
             <!-- Текст пошаговой инструкции обновлен под авто-формат -->
             <div style="font-size: 13px; line-height: 1.5; margin-top: 25px !important; padding: 0 5px; color: rgba(255, 255, 255, 0.6) !important;">
                 <b>Шаг 1:</b> Выберите длительность видео на кнопке ниже.<br>

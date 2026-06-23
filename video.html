@@ -834,7 +834,7 @@ body {
 
             </div> <!-- Закрыли контейнер карточек -->
 
-                        <!-- Текст пошаговой инструкции -->
+                     <!-- Текст пошаговой инструкции -->
             <div style="font-size: 12px; line-height: 1.4; margin-top: 10px !important; padding: 0 5px; color: rgba(255, 255, 255, 0.5) !important;">
                 <b>Шаг 1:</b> Настройте параметры видео кнопками ниже.<br>
                 <b>Шаг 2:</b> Нажмите кнопку запуска START.<br>
@@ -842,7 +842,7 @@ body {
             </div>
 
             <!-- БЛОК ВЫБОРА ГОЛОСА И ПОДСКАЗКА -->
-            <!-- 🔥 ИСПРАВЛЕНО: Добавлен сочный отступ снизу (margin-bottom: 20px), чтобы отодвинуть всё, что ниже -->
+            <!-- 🔥 Сочный отступ снизу сохранен, как вы хотели -->
             <div id="voice_selector_block" style="margin-top: 10px; margin-bottom: 20px !important; padding: 0 5px;">
                 <div style="font-size: 11px; line-height: 1.3; color: rgba(255, 255, 255, 0.8); background: rgba(255, 115, 0, 0.08); border: 1px solid rgba(255, 115, 0, 0.25); padding: 5px 8px; border-radius: 8px;">
                     💡 <b style="color: #ff7300;">Чтобы персонаж заговорил:</b> в описании укажите его прямую речь в кавычках.<br>
@@ -850,16 +850,17 @@ body {
                 </div>
             </div>
 
-            <!-- 🔥 ПЕРЕНЕСЕНО И ОТСТУПЛЕНО: Линия теперь свободно лежит ниже, отделяя подсказку от цены -->
-            <div class="neon-divider" style="margin: 0 auto 14px auto !important; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5); height: 1px;"></div>
+            <!-- Линия-разделитель в промежутке -->
+            <div class="neon-divider" style="margin: 0 auto 12px auto !important; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5); height: 1px;"></div>
 
             <!-- ДВУХСТРОЧНАЯ НАДПИСЬ ИЗ ПРИМЕРА -->
-            <div style="font-size: 12px; line-height: 1.4; padding: 0 5px; text-align: center; margin-bottom: 12px !important; font-weight: bold; color: rgba(255,255,255,0.9);">
+            <!-- 🔥 ИСПРАВЛЕНО: margin-bottom сжат до 2px, чтобы кнопки подтянулись вплотную к буквам и поднялись выше -->
+            <div style="font-size: 12px; line-height: 1.4; padding: 0 5px; text-align: center; margin-bottom: 2px !important; font-weight: bold; color: rgba(255,255,255,0.9);">
                 Итоговая цена зависит от выбранных настроек и<br>отображается на кнопке START
             </div>
 
-            <!-- 4-колонный пульт управления: чётко сидит в самом низу -->
-            <div class="single-row-controls" style="display: flex; gap: 6px; align-items: center; width: 100%; padding: 0 2px; margin-top: 4px;">
+            <!-- 4-колонный пульт управления: подтянулся выше вслед за текстом -->
+            <div class="single-row-controls" style="display: flex; gap: 6px; align-items: center; width: 100%; padding: 0 2px; margin-top: 2px;">
                 
                 <!-- 1. Кнопка Длительности -->
                 <div class="control-col" style="flex: 1;">
@@ -881,6 +882,7 @@ body {
                     <button id="neo_video_sound_submit_btn" class="neo-start-btn" style="width: 100%; padding: 10px 2px; font-size: 12px;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendVideoSoundGenData()">Start 3 🪙</button>
                 </div>
             </div>
+
         </div> <!-- Закрыли блок настроек video_sound_settings_block -->
     </div> <!-- Закрыли главный контейнер экрана animate_sound -->
 

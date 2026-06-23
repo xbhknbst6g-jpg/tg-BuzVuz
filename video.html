@@ -887,107 +887,88 @@ body {
 <!-- ЭКРАН 3: ОЖИВЛЕНИЕ ПО ВИДЕО (MOTION CONTROL) -->
 <!-- ========================================== -->
     <div id="video_motion_control" class="screen">
-                    
-        <!-- 1. ШАПКА ЭКРАНА С КНОПКОЙ НАЗАД -->
-        <div class="tabs-container">
-            <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); handleMotionBackClick()"></button>
-            <div id="video_motion_main_title" style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;">
+            
+        <!-- ЛЕНТА ВЕРХУШКИ: Стрелка "Назад" и заголовок режима -->
+        <div class="tabs-container" style="display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100%; box-sizing: border-box; margin-bottom: 8px;">
+            <button class="back-tab-btn" onclick="handleMotionBackClick()"></button>
+            <div id="video_motion_main_title" style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%; margin-right: 30px;">
                 Оживление по видео
             </div>
         </div>
 
-        <!-- 2. СТРОКА ВКЛАДОК (Синхронизировано: везде используется 'preset' вместо templates!) -->
-        <div id="motion_tabs_row" class="motion-subtabs-row" style="display: flex; gap: 8px; justify-content: center; padding: 0 10px; margin-top: 12px; margin-bottom: 12px;">
-            <button class="tab-btn active" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); switchMotionTab('preset', this)" style="flex: 1; height: 36px; border-radius: 18px; font-size: 12px; font-weight: bold; border: none; outline: none; cursor: pointer;">
-                Шаблоны
-            </button>
-            <button class="tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); switchMotionTab('custom', this)" style="flex: 1; height: 36px; border-radius: 18px; font-size: 12px; font-weight: bold; border: none; outline: none; cursor: pointer;">
-                Свой
-            </button>
+        <!-- Вкладки подмодов: Шаблоны и Свой -->
+        <div class="tabs-container" id="video_motion_tabs" style="margin-bottom: 12px;">
+            <button class="tab-btn active" onclick="switchMotionTab('preset', this)">Шаблоны</button>
+            <button class="tab-btn" onclick="switchMotionTab('custom', this)">Свой</button>
         </div>
 
-        <!-- 3. ОСНОВНОЙ КОНТЕЙНЕР НАСТРОЕК -->
-        <div id="video_motion_settings_block" class="custom-prompt-container" style="padding: 10px 8px 12px 8px !important;">                
+        <div class="header" style="margin-bottom: 15px; text-align: center;">
+            <p id="video_motion_subtitle" style="font-size: 13px; margin: 4px 0 0 0; color: rgba(255,255,255,0.6);">Выберите готовый шаблон для настройки:</p>
+        </div>
+
+        <!-- ШАГ 1: ГАЛЕРЕЯ КАРТОЧЕК ШАБЛОНОВ (ВИДЕО) -->
+        <div class="phone-presets-grid" id="motion_gallery_block" style="display: grid;">
+            <!-- Карточка 1 -->
+            <div class="phone-template-card" onclick="selectMotionTemplate('Outside the city', 'https://imgur.com')">
+                <video style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay>
+                    <source src="https://imgur.com" type="video/mp4">
+                </video>
+                <div class="card-overlay">Outside the city</div>
+            </div>
+            <!-- Карточка 2 -->
+            <div class="phone-template-card" onclick="selectMotionTemplate('The Dark Soul', 'https://imgur.com')">
+                <video style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay>
+                    <source src="https://imgur.com" type="video/mp4">
+                </video>
+                <div class="card-overlay">The Dark Soul</div>
+            </div>
+        </div>
+
+        <!-- ШАГ 2: БЛОК НАСТРОЕК (Изначально скрыт, как в твоем примере!) -->
+        <div id="motion_controls_block" style="display: none;">
             
-            <!-- ==================== ПОДБЛОК А: ГАЛЕРЕЯ ШАБЛОНОВ (Вкладка Шаблоны) ==================== -->
-            <div id="motion_gallery_block" style="display: block;">
-                <div class="menu-desc" style="text-align: center; margin-bottom: 8px !important; font-size: 12px !important; opacity: 0.8;">Выберите готовый шаблон для оживления:</div>
-                
-                <div class="example-preview-container" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; justify-content: center; margin: 0 auto !important; width: 95%; max-width: 340px;">
-                    
-                    <!-- Карточка 1 -->
-                    <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 4px; align-items: center;">
-                        <div class="preview-card-box" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); selectMotionTemplate('Outside the city', 'https://imgur.com')" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15); background: #000; cursor: pointer;">
-                            <video style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay>
-                                <source src="https://imgur.com" type="video/mp4">
-                            </video>
-                            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.15);"></div>
-                        </div>
-                        <div style="font-size: 10px; font-weight: 800; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">Outside the city</div>
-                    </div>
-
-                    <!-- Карточка 2 -->
-                    <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 4px; align-items: center;">
-                        <div class="preview-card-box" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); selectMotionTemplate('The Dark Soul', 'https://imgur.com')" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15); background: #000; cursor: pointer;">
-                            <video style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay>
-                                <source src="https://imgur.com" type="video/mp4">
-                            </video>
-                            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.15);"></div>
-                        </div>
-                        <div style="font-size: 10px; font-weight: 800; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">The Dark Soul</div>
-                    </div>
-
+            <!-- 1. ИНСТРУКЦИЯ ДЛЯ ВКЛАДКИ "СВОЙ" -->
+            <div id="motion_custom_instruction" class="custom-prompt-container" style="display: none; margin-bottom: 15px; padding: 10px 8px;">
+                <div style="font-size: 13px; color: rgba(255, 255, 255, 0.6); line-height: 1.5;">
+                    <b style="color: #ffffff;">Шаг 1:</b> Настройте длительность видео кнопкой ниже.<br>
+                    <b style="color: #ffffff;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
+                    <b style="color: #ffffff;">Шаг 3:</b> Бот в чате попросит вас отправить фото лица и видео-референс!
                 </div>
             </div>
 
-            <!-- ==================== ПОДБЛОК Б: ПУЛЬТ УПРАВЛЕНИЯ (Для "Свой" и для выбранного шаблона) ==================== -->
-            <div id="motion_controls_block" style="display: none;">
-                
-                <!-- Одиночное превью шаблона (Показывается ТОЛЬКО когда кликнули по карточке) -->
-                <div id="motion_preset_preview_block" style="display: none; justify-content: center; margin-bottom: 12px;">
-                    <div class="preview-card-box" style="position: relative; width: 45%; max-width: 150px; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
-                        <video id="motion_large_preview_video" style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay>
-                            <source src="" type="video/mp4">
-                        </video>
-                    </div>
+            <!-- 2. КОНТЕЙНЕР ДЛЯ ПРЕВЬЮ ШАБЛОНОВ (9:16 видео вместо картинки) -->
+            <div id="motion_preset_preview_block" style="display: none; justify-content: center; margin-bottom: 15px;">
+                <div class="text-image-compact-preview" style="width: 45%; max-width: 150px; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; background: #000;">
+                    <video id="motion_large_preview_video" style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay>
+                        <source src="" type="video/mp4">
+                    </video>
                 </div>
+            </div>
 
-                <div id="motion_subtitle_text" class="menu-desc" style="text-align: center; margin-bottom: 10px !important; font-size: 12px !important; opacity: 0.8;">
-                    Настройте параметры вашей генерации:
+            <!-- РАСПОРКА (ВЫДАВЛИВАЕТ КНОПКИ ВНИЗ) -->
+            <div class="mode-spacer" style="height: calc(100vh - 430px); display: none;" id="motion_spacer"></div>
+
+            <!-- Текст-подсказка про цену/тариф -->
+            <div id="motion_price_notice" style="font-size: 12px; margin-bottom: 12px; color: rgba(255,255,255,0.6); text-align: center;">
+                Цена зависит от выбранной длительности
+            </div>
+
+            <!-- НИЖНЯЯ ПЛАШКА С КНОПКАМИ (Длительность + Старт) -->
+            <div class="single-row-controls">
+                <!-- Кнопка Длительности (Показывается/скрывается динамически) -->
+                <div id="motion_duration_btn_wrapper" class="control-col" style="flex: 1;">
+                    <button id="btn_motion_duration" class="capsule-btn" style="width: 100%;" onclick="openUniversalDurationSheetMotion()">⏱️ 5 сек</button>
                 </div>
-                
-                <!-- Тексты шагов инструкции -->
-                <div id="motion_steps_text" style="font-size: 13px; line-height: 1.5; padding: 0 5px; color: rgba(255, 255, 255, 0.6) !important;">
-                    <b style="color: #ffffff;">Шаг 1:</b> <span id="motion_step_1_text">Настройте длительность видео кнопкой ниже.</span><br>
-                    <b style="color: #ffffff;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
-                    <span id="motion_step_3_row"><b style="color: #ffffff;">Шаг 3:</b> Затем отправьте <b>видео-референс</b> с движениями.<br></span>
-                    <span style="color: #ff7300;">*️⃣ Бот автоматически посчитает длительность вашего видео и назовёт итоговую стоимость генерации в монетах перед стартом!</span>
+                <!-- Кнопка запуска START -->
+                <div class="control-col control-col-btn" style="flex: 1.5;">
+                    <button id="neo_motion_submit_btn" class="neo-start-btn" style="width: 100%;" onclick="sendMotionControlData()">
+                        Start 3 🪙
+                    </button>
                 </div>
+            </div>
 
-                <!-- Лазерная линия-разделитель -->
-                <div class="neon-divider" style="margin: 15px auto 12px auto !important; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5); height: 1px;"></div>
-
-                <!-- Текст про списание / цену -->
-                <div id="motion_price_notice" style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center; margin-bottom: 15px !important; color: #ffffff !important;">
-                    <b>Списание монет происходит посекундно, исходя из длины присланного вами видео.</b>
-                </div>
-
-                <!-- Компактные кнопки управления в самом низу -->
-                <div class="single-row-controls" style="display: flex; gap: 8px; align-items: center; width: 100%; padding: 0 2px; margin-bottom: 5px;">  
-                    <!-- Кнопка Длительности -->
-                    <div id="motion_duration_btn_wrapper" class="control-col" style="flex: 1; display: block;">
-                        <button id="btn_motion_duration" class="capsule-btn" style="width: 100%; padding: 12px 2px; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openUniversalDurationSheetMotion()">⏱️ 5 сек</button>
-                    </div>
-                    <!-- Главная кнопка START -->
-                    <div class="control-col-btn" style="flex: 2;">
-                        <button id="neo_motion_submit_btn" class="neo-start-btn" style="width: 100%; height: 46px; font-size: 13px; font-weight: bold;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendMotionControlData()">Start 3 🪙</button>
-                    </div>
-                </div>
-                
-            </div> <!-- Конец пульта управления -->
-
-        </div> <!-- Конец блока настроек -->
-    </div> <!-- Конец главного контейнера экрана -->
+        </div>
+    </div>
 
 
 
@@ -1173,95 +1154,93 @@ function closePreviewVideo() {
 
 
 
-    // 1. ФУНКЦИЯ КЛИКА ПО ВИДЕО-ШАБЛОНУ
-    function selectMotionTemplate(styleName, videoUrl) {
-        isMotionStyleSelected = true;
-        selectedMotionStyleName = styleName;
-        selectedMotionVideoUrl = videoUrl;
-
-        // Меняем заголовок экрана на название стиля
-        document.getElementById('video_motion_main_title').innerText = styleName;
-        document.getElementById('motion_subtitle_text').innerText = "Выбран готовый шаблон. Нажмите START для запуска:";
-
-        // Скрываем галерею шаблонов и переключатели вкладок
-        document.getElementById('motion_gallery_block').style.display = "none";
-        document.getElementById('motion_tabs_row').style.display = "none";
-        
-        // Показываем блок пульта управления
-        document.getElementById('motion_controls_block').style.display = "block";
-        
-        // Скрываем кнопку длительности (для готового шаблона она не нужна, длина фиксирована)
-        document.getElementById('motion_duration_btn_wrapper').style.display = "none";
-        document.getElementById('motion_step_1_text').innerText = "Ознакомьтесь с примером шаблона.";
-
-        // Показываем компактное вертикальное превью выбранного видео
-        const previewBlock = document.getElementById('motion_preset_preview_block');
-        const previewVideo = document.getElementById('motion_large_preview_video');
-        
-        if (previewBlock && previewVideo) {
-            previewBlock.style.display = 'flex';
-            previewVideo.src = videoUrl;
-            previewVideo.load(); // Перезагружаем видео-плеер под новую ссылку
-        }
-
-        // 🔥 ИСПРАВЛЕНО: Убран двойной .style
-        const step3Row = document.getElementById('motion_step_3_row');
-        if (step3Row) step3Row.style.display = 'none';
-        
-        document.getElementById('motion_price_notice').innerHTML = "<b>Итоговая цена генерации по шаблону отобразится в боте перед стартом!</b>";
-    }
-
-    // 2. УПРАВЛЕНИЕ ВКЛАДКАМИ ("Шаблоны" / "Свой")
+// ====================================================================================
+// УПРАВЛЕНИЕ ВКЛАДКАМИ ("Шаблоны" / "Свой")
+// ====================================================================================
     function switchMotionTab(category, element) {
-        // 🔥 ИСПРАВЛЕНО: Защита на случай автоматического вызова без передачи кнопки (element)
-        const tabs = document.querySelectorAll('.motion-subtabs-row .tab-btn');
+        const tabs = document.querySelectorAll('#video_motion_tabs .tab-btn');
         tabs.forEach(tab => tab.classList.remove('active'));
-        
-        if (element) {
-            element.classList.add('active');
-        } else {
-            // Если элемент не передан, принудительно подсвечиваем нужную кнопку по ID/порядку
-            const targetIndex = (category === 'custom') ? 1 : 0;
-            if (tabs[targetIndex]) tabs[targetIndex].classList.add('active');
-        }
+        if (element) element.classList.add('active');
 
-        const gallery = document.getElementById('motion_gallery_block');          
-        const controlsBlock = document.getElementById('motion_controls_block');    
-        const presetPreviewBlock = document.getElementById('motion_preset_preview_block'); 
+        const gallery = document.getElementById('video_motion_gallery');
+        const controlsBlock = document.getElementById('motion_controls_block');
+        const customInstruction = document.getElementById('motion_custom_instruction');
+        const presetPreviewBlock = document.getElementById('motion_preset_preview_block');
+        const spacer = document.getElementById('motion_spacer');
 
         if (category === 'custom') {
             currentGenerationMode = 'custom'; 
             isMotionStyleSelected = true;  
             selectedMotionStyleName = "Свой референс";
 
-            document.getElementById('video_motion_main_title').innerText = "Оживление по видео";
-            document.getElementById('motion_subtitle_text').innerText = "Настройте параметры вашей персональной генерации:";
+            // СБРОС В ДЕФОЛТ ПРИ ВХОДЕ В "СВОЙ" (Ставим твои 5 секунд по умолчанию)
+            motionGenDuration = 5; 
+            document.getElementById('btn_motion_duration').innerHTML = `⏱️ 5 сек`;
 
-            // Показываем кнопку длительности и шаг 3 для вкладки "Свой"
-            document.getElementById('motion_duration_btn_wrapper').style.display = "block";
-            document.getElementById('motion_step_1_text').innerText = "Настройте длительность видео кнопкой ниже.";
-            if (document.getElementById('motion_step_3_row')) document.getElementById('motion_step_3_row').style.display = 'inline';
-            
-            document.getElementById('motion_price_notice').innerHTML = "<b>Списание монет происходит посекундно, исходя из длины присланного вами видео.</b>";
+            document.getElementById('video_motion_main_title').innerText = "Свой референс";
+            document.getElementById('video_motion_subtitle').innerText = "Настройте параметры вашей персональной генерации:";
+            document.getElementById('motion_price_notice').innerText = "Списание монет происходит посекундно, исходя из длины видео.";
 
-            if (gallery) gallery.style.display = 'none';            
-            if (controlsBlock) controlsBlock.style.display = 'block';      
-            if (presetPreviewBlock) presetPreviewBlock.style.display = 'none'; 
-            
+            if (gallery) gallery.style.display = 'none';               
+            if (controlsBlock) controlsBlock.style.display = 'block';        
+            if (customInstruction) customInstruction.style.display = 'block'; 
+            if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';  
+            if (document.getElementById('motion_duration_btn_wrapper')) {
+                document.getElementById('motion_duration_btn_wrapper').style.display = 'block'; 
+            }
+            if (spacer) spacer.style.display = 'block';   
         } else {
             currentGenerationMode = 'preset'; 
             isMotionStyleSelected = false; 
 
             document.getElementById('video_motion_main_title').innerText = "Оживление по видео";
-            document.getElementById('motion_subtitle_text').innerText = "Выберите готовый шаблон для настройки:";
+            document.getElementById('video_motion_subtitle').innerText = "Выберите готовый шаблон для настройки:";
 
-            if (gallery) gallery.style.display = 'block';           
-            if (controlsBlock) controlsBlock.style.display = 'none';      
-            if (presetPreviewBlock) presetPreviewBlock.style.display = 'none'; 
+            if (gallery) gallery.style.display = 'grid';               
+            if (controlsBlock) controlsBlock.style.display = 'none';         
+            if (customInstruction) customInstruction.style.display = 'none';
+            if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';
+            if (spacer) spacer.style.display = 'none';     
         }
     }
 
+    // ====================================================================================
+    // ФУНКЦИЯ КЛИКА ПО КАРТОЧКЕ ВИДЕО-ШАБЛОНА
+    // ====================================================================================
+    function selectMotionTemplate(styleName, videoUrl) {
+        isMotionStyleSelected = true;
+        selectedMotionStyleName = styleName;
+        selectedMotionVideoUrl = videoUrl;
+
+        // ДЛЯ ГОТОВЫХ ШАБЛОНОВ ДЛИТЕЛЬНОСТЬ ФИКСИРОВАНА (Например, ставим 5 сек или берем из базы)
+        motionGenDuration = 5; 
+
+        document.getElementById('video_motion_main_title').innerText = styleName;
+        document.getElementById('video_motion_subtitle').innerText = "Выбран готовый шаблон. Нажмите START для запуска:";
+        document.getElementById('motion_price_notice').innerText = "Итоговая цена генерации по шаблону отобразится в боте!";
+
+        if (document.getElementById('video_motion_gallery')) document.getElementById('video_motion_gallery').style.display = "none"; 
+        if (document.getElementById('motion_controls_block')) document.getElementById('motion_controls_block').style.display = "block"; 
+        
+        if (document.getElementById('motion_spacer')) document.getElementById('motion_spacer').style.display = 'none'; 
+        if (document.getElementById('motion_custom_instruction')) document.getElementById('motion_custom_instruction').style.display = 'none'; 
+        
+        const previewBlock = document.getElementById('motion_preset_preview_block');
+        const previewVideo = document.getElementById('motion_large_preview_video');
+        if (previewBlock && previewVideo) {
+            previewBlock.style.display = 'flex';
+            previewVideo.src = videoUrl;
+            previewVideo.load();
+        }
+
+        if (document.getElementById('motion_duration_btn_wrapper')) {
+            document.getElementById('motion_duration_btn_wrapper').style.display = 'none';
+        }
+    }
+
+// ====================================================================================
     // 3. ОБРАБОТКА НАЖАТИЯ КНОПКИ «НАЗАД» В ШАПКЕ
+// ====================================================================================
     function handleMotionBackClick() {
         const controlsBlock = document.getElementById('motion_controls_block');
 
@@ -1301,6 +1280,23 @@ function closePreviewVideo() {
         }
     }
 
+// ====================================================================================
+    // функцию в JS
+// ====================================================================================
+function selectMotionDurationValue(seconds) {
+    // 1. Перезаписываем твою глобальную переменную 3-го режима
+    motionGenDuration = seconds; 
+    
+    // 2. Сразу меняем текст на кнопке, чтобы юзер видел выбранное время
+    const btn = document.getElementById('btn_motion_duration');
+    if (btn) btn.innerHTML = `⏱️ ${seconds} сек`;
+    
+    // 3. Автоматически закрываем шторку (скрываем её с экрана)
+    const sheet = document.getElementById('universal_duration_sheet');
+    if (sheet) {
+        sheet.style.display = 'none';
+    }
+}
 
 // ====================================================================================
 // 2.5 ФУНКЦИИ ВОЗВРАТА НАЗАД (СТРОГО НАШИ ВИДЕО РЕЖИМЫ)

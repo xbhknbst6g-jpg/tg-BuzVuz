@@ -857,25 +857,33 @@ body {
             </div>
 
 
-            <!-- ПУЛЬТ УПРАВЛЕНИЯ -->
-            <div class="single-row-controls">
-                <div class="control-col">
-                    <div class="control-label">Голос ИИ</div>
-                    <button id="btn_voice_select" class="capsule-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openUniversalVoiceSheet()">🧑 Голос 1</button>
+                    <!-- 🔥 ОБНОВЛЕННЫЙ ПУЛЬТ УПРАВЛЕНИЯ РЕЖИМА 2 (Четыре колонки с длительностью) -->
+            <div class="single-row-controls" style="display: flex; gap: 10px; align-items: flex-end; width: 100%; padding: 0 5px;">
+                <!-- 1. Колонка Длительности (Добавлена самой левой) -->
+                <div class="control-col" style="flex: 1;">
+                    <div class="control-label" style="font-size: 11px; white-space: nowrap;">Длительность</div>
+                    <button id="btn_video_sound_duration" class="capsule-btn" style="width: 100%; padding: 8px 4px; font-size: 12px;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openUniversalDurationSheetSound()">⏱️ 4 сек</button>
+                </div>
+
+                <!-- 2. Колонка Выбора Голос ИИ -->
+                <div class="control-col" style="flex: 1;">
+                    <div class="control-label" style="font-size: 11px; white-space: nowrap;">Голос ИИ</div>
+                    <button id="btn_voice_select" class="capsule-btn" style="width: 100%; padding: 8px 4px; font-size: 12px;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openUniversalVoiceSheet()">🧑 Голос 1</button>
                 </div>
                 
-                <div class="control-col">
-                    <div class="control-label">Формат кадра</div>
-                    <button id="btn_video_sound_ratio" class="capsule-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openUniversalRatioSheet()">🤖 Авто</button>
+                <!-- 3. Колонка Формата -->
+                <div class="control-col" style="flex: 1;">
+                    <div class="control-label" style="font-size: 11px; white-space: nowrap;">Формат кадра</div>
+                    <button id="btn_video_sound_ratio" class="capsule-btn" style="width: 100%; padding: 8px 4px; font-size: 12px;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openUniversalRatioSheet()">🤖 Авто</button>
                 </div>
                 
-                <div class="control-col-btn">
-                    <div class="control-label">Запуск ИИ</div>
-                    <button id="neo_video_sound_submit_btn" class="neo-start-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendVideoSoundGenData()">Start 3 🪙</button>
+                <!-- 4. Кнопка запуска -->
+                <div class="control-col-btn" style="flex: 1.3;">
+                    <div class="control-label" style="font-size: 11px; white-space: nowrap;">Запуск ИИ</div>
+                    <button id="neo_video_sound_submit_btn" class="neo-start-btn" style="width: 100%; padding: 8px 4px;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendVideoSoundGenData()">Start 3 🪙</button>
                 </div>
             </div>
-
-        </div> <!-- Закрыли блок настроек video_sound_settings_block -->
+        </div>
     </div> <!-- Закрыли главный контейнер экрана animate_sound -->
 
 

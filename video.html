@@ -887,19 +887,17 @@ body {
 <!-- ЭКРАН 3: ОЖИВЛЕНИЕ ПО ВИДЕО (MOTION CONTROL) -->
 <!-- ========================================== -->
     <div id="video_motion_control" class="screen">
-                
+                    
         <!-- Фирменный контейнер вкладок с кнопкой назад -->
         <div class="tabs-container">
-            <!-- 🔥 ИСПРАВЛЕНО: Вызываем handleMotionBackClick() -->
             <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); handleMotionBackClick()"></button>
             <div id="video_motion_main_title" style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;">
                 Оживление по видео
             </div>
         </div>
 
-
-        <!-- Переключатели вкладок (Обновлено под класс .tab-btn) -->
-        <div class="motion-subtabs-row" style="display: flex; gap: 8px; justify-content: center; padding: 0 10px; margin-top: 12px; margin-bottom: 12px;">
+        <!-- Переключатели вкладок (Связанные с твоей JS-функцией) -->
+        <div id="motion_tabs_row" class="motion-subtabs-row" style="display: flex; gap: 8px; justify-content: center; padding: 0 10px; margin-top: 12px; margin-bottom: 12px;">
             <!-- Вкладка «Шаблоны» (Активна по умолчанию) -->
             <button class="tab-btn active" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); switchMotionTab('templates', this)" 
                 style="flex: 1; height: 36px; border-radius: 18px; font-size: 12px; font-weight: bold; border: none; outline: none; cursor: pointer;">
@@ -912,17 +910,16 @@ body {
             </button>
         </div>
 
-
         <!-- Основной блок настроек -->
         <div id="video_motion_settings_block" class="custom-prompt-container" style="padding: 10px 8px 12px 8px !important;">                
             
             <!-- ==================== ЧАСТЬ 1: ГАЛЕРЕЯ ШАБЛОНОВ ==================== -->
             <div id="motion_gallery_block" style="display: block;">
-                <div class="menu-desc" style="text-align: center; margin-bottom: 8px !important; font-size: 12px !important; opacity: 0.8;">Выберите готовый шаблон для оживления:</div>
+                <div id="motion_gallery_title" class="menu-desc" style="text-align: center; margin-bottom: 8px !important; font-size: 12px !important; opacity: 0.8;">Выберите готовый шаблон для оживления:</div>
                 
                 <div class="example-preview-container" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; justify-content: center; margin: 0 auto !important; width: 95%; max-width: 340px;">
                     
-                    <!-- Шаблон 1 (При клике вызываем нашу новую функцию) -->
+                    <!-- Шаблон 1 (Замени ссылки на реальные mp4 при необходимости) -->
                     <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 4px; align-items: center;">
                         <div class="preview-card-box" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); selectMotionTemplate('Outside the city', 'https://imgur.com')" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15); background: #000; cursor: pointer;">
                             <video style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay>
@@ -947,14 +944,27 @@ body {
                 </div>
             </div>
 
-           <!-- ==================== ВКЛАДКА 2: СВОЙ (ТЕКСТ, КНОПКА ДЛИТЕЛЬНОСТИ И СТАРТ) ==================== -->
-            <div id="content_motion_custom" style="display: none;">
+            <!-- ==================== ЧАСТЬ 2: ЕДИНЫЙ ПУЛЬТ УПРАВЛЕНИЯ ДЛЯ ШАБЛОНОВ И ВКЛАДКИ "СВОЙ" ==================== -->
+            <div id="motion_controls_block" style="display: none;">
+                
+                <!-- Блок динамического превью (Показывается только когда выбран шаблон из галереи) -->
+                <div id="motion_preset_preview_block" style="display: none; justify-content: center; margin-bottom: 12px;">
+                    <div class="preview-card-box" style="position: relative; width: 45%; max-width: 150px; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
+                        <video id="motion_large_preview_video" style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay>
+                            <source src="" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+
+                <div id="motion_subtitle_text" class="menu-desc" style="text-align: center; margin-bottom: 10px !important; font-size: 12px !important; opacity: 0.8;">
+                    Настройте параметры вашей генерации:
+                </div>
                 
                 <!-- Текстовые инструкции режима -->
-                <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; color: rgba(255, 255, 255, 0.6) !important;">
-                    <b style="color: #ffffff;">Шаг 1:</b> Настройте длительность видео кнопкой ниже.<br>
+                <div id="motion_steps_text" style="font-size: 13px; line-height: 1.5; padding: 0 5px; color: rgba(255, 255, 255, 0.6) !important;">
+                    <b style="color: #ffffff;">Шаг 1:</b> <span id="motion_step_1_text">Настройте длительность видео кнопкой ниже.</span><br>
                     <b style="color: #ffffff;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
-                    <b style="color: #ffffff;">Шаг 3:</b> Далее в ТГ боте следуйте инструкциям.<br>
+                    <span id="motion_step_3_row"><b style="color: #ffffff;">Шаг 3:</b> Далее в ТГ боте следуйте инструкциям.<br></span>
                     <span style="color: #ff7300;">*️⃣ Бот автоматически посчитает длительность вашего видео и назовёт итоговую стоимость генерации в монетах перед стартом!</span>
                 </div>
 
@@ -962,26 +972,24 @@ body {
                 <div class="neon-divider" style="margin: 15px auto 12px auto !important; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5); height: 1px;"></div>
 
                 <!-- Строка про цену кадра (Ярко-белая, жирная) -->
-                <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center; margin-bottom: 15px !important; color: #ffffff !important;">
+                <div id="motion_price_notice" style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center; margin-bottom: 15px !important; color: #ffffff !important;">
                     <b>Итоговая цена зависит от выбранной длительности и отображается на кнопке START</b>
                 </div>
 
-                <!-- 🔥 ИСПРАВЛЕНО: Ряд всего из двух элементов (Длительность + Старт) -->
-                <div class="single-row-controls" style="display: flex; gap: 8px; align-items: center; width: 100%; padding: 0 2px; margin-bottom: 15px;">  
-                    
-                    <!-- 1. Кнопка Длительности (привязана к motionGenDuration) -->
-                    <div class="control-col" style="flex: 1;">
+                <!-- Ряд кнопок управления -->
+                <div class="single-row-controls" style="display: flex; gap: 8px; align-items: center; width: 100%; padding: 0 2px; margin-bottom: 5px;">  
+                    <!-- Блок кнопки длительности (Скрывается/показывается динамически) -->
+                    <div id="motion_duration_btn_wrapper" class="control-col" style="flex: 1; display: block;">
                         <button id="btn_motion_duration" class="capsule-btn" style="width: 100%; padding: 12px 2px; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openUniversalDurationSheetMotion()">⏱️ 5 сек</button>
                     </div>
                     
-                    <!-- 2. Главная кнопка запуска START (Шире, чтобы выделяться) -->
+                    <!-- Главная кнопка запуска START -->
                     <div class="control-col-btn" style="flex: 2;">
                         <button id="neo_motion_submit_btn" class="neo-start-btn" style="width: 100%; padding: 12px 2px; font-size: 13px; font-weight: bold;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendMotionControlData()">Start 3 🪙</button>
                     </div>
                 </div>
                 
             </div>
-
 
         </div> <!-- Закрыли блок настроек video_motion_settings_block -->
     </div> <!-- Закрыли главный контейнер экрана video_motion_control -->

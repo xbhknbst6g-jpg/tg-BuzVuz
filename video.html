@@ -899,7 +899,7 @@ body {
         <!-- Переключатели вкладок (Связанные с твоей JS-функцией) -->
         <div id="motion_tabs_row" class="motion-subtabs-row" style="display: flex; gap: 8px; justify-content: center; padding: 0 10px; margin-top: 12px; margin-bottom: 12px;">
             <!-- Вкладка «Шаблоны» (Активна по умолчанию) -->
-            <button class="tab-btn active" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); switchMotionTab('templates', this)" 
+            <button class="tab-btn active" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); switchMotionTab('preset', this)" 
                 style="flex: 1; height: 36px; border-radius: 18px; font-size: 12px; font-weight: bold; border: none; outline: none; cursor: pointer;">
                 Шаблоны
             </button>
@@ -1299,7 +1299,7 @@ function closePreviewVideo() {
             if (document.getElementById('motion_gallery_block')) document.getElementById('motion_gallery_block').style.display = "block"; 
 
             // 🔥 ИСПРАВЛЕНО: Передаем null, чтобы функция не ломалась без объекта кнопки
-            switchMotionTab('templates', null);
+            switchMotionTab('preset', null);
         } else {
             // Если просто смотрели галерею шаблонов — уходим в главное меню
             openScreen('video_menu');

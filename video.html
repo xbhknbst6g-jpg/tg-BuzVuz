@@ -792,7 +792,6 @@ body {
 
         <!-- Основной блок настроек -->
         <div id="video_sound_settings_block" class="custom-prompt-container">                
-            <div class="menu-title">Примеры говорящих аватаров:</div>
             <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">Что можно получить по вашему тексту с аудиодорожкой</div>
             
             <!-- 🔥 КОМПАКТНЫЙ ГОРИЗОНТАЛЬНЫЙ РЯД ДЛЯ ДВУХ КАРТОЧЕК -->
@@ -828,16 +827,16 @@ body {
                         </div>
 
                     </div>
-                    <div style="font-size: 11px; font-weight: 800; color: #ff7300; text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">🗣️ Аватар ИИ</div>
+                    <div style="font-size: 11px; font-weight: 800; color: #ff7300; text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">🔥 Результат</div>
                 </div>
 
             </div> <!-- Закрыли контейнер карточек -->
 
                         <!-- Текст пошаговой инструкции -->
             <div style="font-size: 13px; line-height: 1.5; margin-top: 25px !important; padding: 0 5px; color: rgba(255, 255, 255, 0.6) !important;">
-                <b>Шаг 1:</b> Настройте параметры видео и выберите AI-голос ниже.<br>
+                <b>Шаг 1:</b> Настройте параметры видео кнопками ниже.<br>
                 <b>Шаг 2:</b> Нажмите кнопку запуска START.<br>
-                <b>Шаг 3:</b> Бот создаст говорящего ИИ-аватара по вашему запросу!                
+                <b>Шаг 3:</b> Далее в ТГ боте следуйте инструкциями                
             </div>
 
             <!-- Наша лазерная линия-разделитель (Оранжевый неон) -->
@@ -861,25 +860,25 @@ body {
             <div class="single-row-controls" style="display: flex; gap: 10px; align-items: flex-end; width: 100%; padding: 0 5px;">
                 <!-- 1. Колонка Длительности (Добавлена самой левой) -->
                 <div class="control-col" style="flex: 1;">
-                    <div class="control-label" style="font-size: 11px; white-space: nowrap;">Длительность</div>
+                    <div class="control-label" style="font-size: 11px; white-space: nowrap;"></div>
                     <button id="btn_video_sound_duration" class="capsule-btn" style="width: 100%; padding: 8px 4px; font-size: 12px;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openUniversalDurationSheetSound()">⏱️ 4 сек</button>
                 </div>
 
                 <!-- 2. Колонка Выбора Голос ИИ -->
                 <div class="control-col" style="flex: 1;">
-                    <div class="control-label" style="font-size: 11px; white-space: nowrap;">Голос ИИ</div>
+                    <div class="control-label" style="font-size: 11px; white-space: nowrap;"></div>
                     <button id="btn_voice_select" class="capsule-btn" style="width: 100%; padding: 8px 4px; font-size: 12px;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openUniversalVoiceSheet()">🧑 Голос 1</button>
                 </div>
                 
                 <!-- 3. Колонка Формата -->
                 <div class="control-col" style="flex: 1;">
-                    <div class="control-label" style="font-size: 11px; white-space: nowrap;">Формат кадра</div>
+                    <div class="control-label" style="font-size: 11px; white-space: nowrap;"></div>
                     <button id="btn_video_sound_ratio" class="capsule-btn" style="width: 100%; padding: 8px 4px; font-size: 12px;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openUniversalRatioSheet()">🤖 Авто</button>
                 </div>
                 
                 <!-- 4. Кнопка запуска -->
                 <div class="control-col-btn" style="flex: 1.3;">
-                    <div class="control-label" style="font-size: 11px; white-space: nowrap;">Запуск ИИ</div>
+                    <div class="control-label" style="font-size: 11px; white-space: nowrap;"></div>
                     <button id="neo_video_sound_submit_btn" class="neo-start-btn" style="width: 100%; padding: 8px 4px;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendVideoSoundGenData()">Start 3 🪙</button>
                 </div>
             </div>

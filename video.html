@@ -833,28 +833,17 @@ body {
 
             </div> <!-- Закрыли контейнер карточек -->
 
-            <!-- Текст пошаговой инструкции -->
+                        <!-- Текст пошаговой инструкции -->
             <div style="font-size: 13px; line-height: 1.5; margin-top: 25px !important; padding: 0 5px; color: rgba(255, 255, 255, 0.6) !important;">
                 <b>Шаг 1:</b> Настройте параметры видео и выберите AI-голос ниже.<br>
                 <b>Шаг 2:</b> Нажмите кнопку запуска START.<br>
                 <b>Шаг 3:</b> Бот создаст говорящего ИИ-аватара по вашему запросу!                
             </div>
 
-            <!-- Оранжевый неон -->
+            <!-- Наша лазерная линия-разделитель (Оранжевый неон) -->
             <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
 
-            <!-- ТУМБЛЕР ВКЛЮЧЕНИЯ ОЗВУЧКИ -->
-            <div style="padding: 10px 5px; margin-bottom: 10px;">
-                <label style="display: flex; align-items: center; font-weight: bold; font-size: 14px; cursor: pointer; user-select: none; color: #ffffff;">
-                    <input type="checkbox" id="use_audio_toggle" checked onchange="Telegram.WebApp.HapticFeedback.impactOccurred('light'); toggleVoiceSelector()" style="width: 18px; height: 18px; margin-right: 12px; cursor: pointer; accent-color: #ff7300;">
-                    Включить AI-озвучку текста (Голос)
-                </label>
-                <div style="font-size: 12px; color: rgba(255, 255, 255, 0.5); margin-top: 6px; padding-left: 30px;">
-                    Если выключено, видео создастся только с фоновыми шумами окружения, но без речи персонажа.
-                </div>
-            </div>
-
-            <!-- БЛОК ВЫБОРА ГОЛОСА И ПОДСКАЗКА -->
+            <!-- 🔥 ОПТИМИЗИРОВАНО: Тумблер убран, осталась только чистая и важная подсказка для пользователя -->
             <div id="voice_selector_block" style="margin-bottom: 25px; padding: 0 5px;">
                 <div style="font-size: 12px; line-height: 1.4; color: rgba(255, 255, 255, 0.8); background: rgba(255, 115, 0, 0.1); border: 1px solid rgba(255, 115, 0, 0.3); padding: 10px; border-radius: 8px; box-shadow: inset 0 0 10px rgba(255, 115, 0, 0.05);">
                     💡 <b style="color: #ff7300;">Чтобы персонаж заговорил:</b> в тексте описания для бота обязательно укажите его прямую речь в кавычках.<br>
@@ -862,10 +851,11 @@ body {
                 </div>
             </div>
 
-            <!-- Строка про итог -->
-            <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center;">
+            <!-- Строка про итог (Белая и жирная) -->
+            <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center; margin-bottom: 20px;">
                 <b>Итоговая цена зависит от выбранных настроек и отображается на кнопке START</b>
             </div>
+
 
             <!-- ПУЛЬТ УПРАВЛЕНИЯ -->
             <div class="single-row-controls">
@@ -1280,13 +1270,6 @@ function closePreviewVideo() {
                 if (screenName === 'animate_sound') {
                     const soundSettings = document.getElementById('video_sound_settings_block');
                     if (soundSettings) soundSettings.style.display = "block";
-                    
-                    // Твой оригинальный сброс тумблера озвучки в дефолтное "Включено" при каждом входе в режим со звуком
-                    const toggleAudio = document.getElementById('use_audio_toggle');
-                    if (toggleAudio) {
-                        toggleAudio.checked = true;
-                        if (typeof toggleVoiceSelector === 'function') toggleVoiceSelector();
-                    }
                 }
 
                 // 🔥 МГНОВЕННОЕ ВКЛЮЧЕНИЕ БЛОКА НАСТРОЕК ДЛЯ РЕЖИМА 3 (Оживление по видео)
@@ -1542,9 +1525,7 @@ function openUniversalVoiceSheet() {
 function sendVideoSoundGenData() {
     if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
     
-    const toggle = document.getElementById("use_audio_toggle");
-    const isAudioActive = (toggle && toggle.checked);
-    
+    const isAudioActive = true;    
     const dataToSend = {
         mode_trigger: "video_menu",
         video_type: "pro",                    // Сигнал для ветки elif (Sora-2)

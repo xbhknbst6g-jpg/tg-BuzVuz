@@ -854,13 +854,15 @@ body {
             <div class="neon-divider" style="margin: 0 auto 12px auto !important; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5); height: 1px;"></div>
 
             <!-- ДВУХСТРОЧНАЯ НАДПИСЬ ИЗ ПРИМЕРА -->
-            <!-- 🔥 ИСПРАВЛЕНО: margin-bottom сжат до 2px, чтобы кнопки подтянулись вплотную к буквам и поднялись выше -->
-            <div style="font-size: 12px; line-height: 1.4; padding: 0 5px; text-align: center; margin-bottom: 2px !important; font-weight: bold; color: rgba(255,255,255,0.9);">
-                Итоговая цена зависит от выбранных настроек и<br>отображается на кнопке START
-            </div>
+                    <!-- ДВУХСТРОЧНАЯ НАДПИСЬ ИЗ ПРИМЕРА -->
+        <!-- 🔥 ИСПРАВЛЕНО: Убрали margin-bottom полностью (0px), чтобы кнопки подтянулись максимально близко -->
+        <div style="font-size: 12px; line-height: 1.4; padding: 0 5px; text-align: center; margin-bottom: 0px !important; font-weight: bold; color: rgba(255,255,255,0.9);">
+            Итоговая цена зависит от выбранных настроек и<br>отображается на кнопке START
+        </div>
 
-            <!-- 4-колонный пульт управления: подтянулся выше вслед за текстом -->
-            <div class="single-row-controls" style="display: flex; gap: 6px; align-items: center; width: 100%; padding: 0 2px; margin-top: 2px;">
+            <!-- 4-колонный пульт управления -->
+            <!-- 🔥 ИСПРАВЛЕНО: Добавлен отрицательный margin-top (-6px) для жесткого подъема кнопок наверх -->
+            <div class="single-row-controls" style="display: flex; gap: 6px; align-items: center; width: 100%; padding: 0 2px; margin-top: -6px !important;">
                 
                 <!-- 1. Кнопка Длительности -->
                 <div class="control-col" style="flex: 1;">
@@ -882,7 +884,6 @@ body {
                     <button id="neo_video_sound_submit_btn" class="neo-start-btn" style="width: 100%; padding: 10px 2px; font-size: 12px;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendVideoSoundGenData()">Start 3 🪙</button>
                 </div>
             </div>
-
         </div> <!-- Закрыли блок настроек video_sound_settings_block -->
     </div> <!-- Закрыли главный контейнер экрана animate_sound -->
 

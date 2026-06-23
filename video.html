@@ -834,30 +834,31 @@ body {
 
             </div> <!-- Закрыли контейнер карточек -->
 
-            <!-- 🔥 ОПТИМИЗИРОВАНО: Сжали margin-top инструкции с 25px до 10px -->
+                    <!-- Текст пошаговой инструкции (Сжаты отступы для экономии высоты) -->
             <div style="font-size: 12px; line-height: 1.4; margin-top: 10px !important; padding: 0 5px; color: rgba(255, 255, 255, 0.5) !important;">
                 <b>Шаг 1:</b> Настройте параметры видео кнопками ниже.<br>
                 <b>Шаг 2:</b> Нажмите кнопку запуска START.<br>
                 <b>Шаг 3:</b> Далее в ТГ боте следуйте инструкциями                
             </div>
 
-            <!-- 🔥 ОПТИМИЗИРОВАНО: Текст подсказки сжали по вертикали -->
-            <div id="voice_selector_block" style="margin-top: 10px; margin-bottom: 12px; padding: 0 5px;">
+            <!-- 🔥 ОПТИМИЗИРОВАНО: Возвращенная лазерная линия-разделитель с минимальными отступами -->
+            <div class="neon-divider" style="margin: 8px auto !important; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5); height: 1px;"></div>
+
+            <!-- БЛОК ВЫБОРА ГОЛОСА И ПОДСКАЗКА -->
+            <div id="voice_selector_block" style="margin-bottom: 8px; padding: 0 5px;">
                 <div style="font-size: 11px; line-height: 1.3; color: rgba(255, 255, 255, 0.8); background: rgba(255, 115, 0, 0.08); border: 1px solid rgba(255, 115, 0, 0.25); padding: 6px 8px; border-radius: 8px;">
                     💡 <b style="color: #ff7300;">Чтобы персонаж заговорил:</b> в описании укажите его прямую речь в кавычках.<br>
                     <i style="color: rgba(255, 255, 255, 0.5)">Пример: Девушка говорит: "Всем привет!".</i>
                 </div>
             </div>
-            <!-- Фирменная лазерная линия-разделитель (Оранжевый неон) -->
-            <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
 
-            <!-- 🔥 ОПТИМИЗИРОВАНО: Сжали отступ снизу у цены -->
-            <div style="font-size: 12px; line-height: 1.3; padding: 0 5px; text-align: center; margin-bottom: 14px !important; font-weight: bold; color: rgba(255,255,255,0.9);">
+            <!-- 🔥 ИСПРАВЛЕНО: Убран margin-bottom, чтобы кнопки пульта подтянулись выше -->
+            <div style="font-size: 12px; line-height: 1.3; padding: 0 5px; text-align: center; margin-bottom: 6px !important; font-weight: bold; color: rgba(255,255,255,0.9);">
                 Итоговая цена отображается на кнопке START
             </div>
 
-                    <!-- 🔥 ОПТИМИЗИРОВАНО: 4-колонный пульт управления БЕЗ надписей над кнопками -->
-            <div class="single-row-controls" style="display: flex; gap: 6px; align-items: center; width: 100%; padding: 0 2px; margin-top: 10px;">
+            <!-- 4-колонный пульт управления БЕЗ надписей над кнопками -->
+            <div class="single-row-controls" style="display: flex; gap: 6px; align-items: center; width: 100%; padding: 0 2px; margin-top: 4px;">
                 
                 <!-- 1. Кнопка Длительности (Крайняя левая) -->
                 <div class="control-col" style="flex: 1;">
@@ -879,6 +880,7 @@ body {
                     <button id="neo_video_sound_submit_btn" class="neo-start-btn" style="width: 100%; padding: 10px 2px; font-size: 12px;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendVideoSoundGenData()">Start 3 🪙</button>
                 </div>
             </div>
+
         </div> <!-- Закрыли блок настроек video_sound_settings_block -->
     </div> <!-- Закрыли главный контейнер экрана animate_sound -->
 

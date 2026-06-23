@@ -807,18 +807,18 @@ body {
                         </div>
                         <div style="font-size: 11px; font-weight: 800; color: rgba(255, 255, 255, 0.5); text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">📸 Исходное фото</div>
                     </div>
-
                     <!-- 2. Карточка Говорящего ИИ-аватара (Правая сторона) -->
                     <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;">
                         <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
-                            <!-- 🔥 ИСПРАВЛЕНО: Ссылка теперь ведет точно на mp4-файл -->
-                            <video id="preview_sound_video" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo('https://i.imgur.com/Q6GrKyK.mp4')" style="width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer;" loop playsinline>
+                            
+                            <!-- 🔥 ИСПРАВЛЕНО: Убрали лишний onclick, видео теперь просто играет в фоне, не конфликтуя с кликами -->
+                            <video id="preview_sound_video" style="width: 100%; height: 100%; object-fit: cover; display: block;" loop playsinline>
                                 <source src="https://i.imgur.com/Q6GrKyK.mp4" type="video/mp4">
                                 Ваш браузер не поддерживает видео.
                             </video>
 
-                            <!-- 🔥 ИСПРАВЛЕНО: В оверлей тоже передается прямая рабочая ссылка на видео -->
-                            <div id="video_sound_play_overlay" onclick="toggleSoundVideo(); Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo('https://i.imgur.com/Q6GrKyK.mp4')" 
+                            <!-- 🔥 ИСПРАВЛЕНО: Теперь оверлей передает СНАЧАЛА команду на полный экран для самого видеоплеера -->
+                            <div id="video_sound_play_overlay" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); document.getElementById('preview_sound_video').webkitEnterFullscreen?.() || document.getElementById('preview_sound_video').requestFullscreen?.();" 
                                 style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; cursor: pointer;">
                                 <div style="background: #ff7300; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px #ff7300;">
                                     <!-- Чистый белый треугольник -->
@@ -829,8 +829,9 @@ body {
                             </div>
 
                         </div>
-                    <div style="font-size: 11px; font-weight: 800; color: #ff7300; text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">🗣️ Аватар ИИ</div>
-                </div>
+                        <div style="font-size: 11px; font-weight: 800; color: #ff7300; text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">🗣️ Аватар ИИ</div>
+                    </div>
+                 </div>
 
             </div> <!-- 🔥 ИСПРАВЛЕНО: Жёстко закрыли контейнер с карточками! Теперь низ не улетит -->
 

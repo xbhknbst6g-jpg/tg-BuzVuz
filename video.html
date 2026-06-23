@@ -625,6 +625,20 @@ body {
             to { opacity: 1; transform: scale(1); } 
         }
 
+            /* Базовый стиль для неактивной кнопки вкладки  свой или шаблоны*/
+    .motion-subtabs-row .tab-btn {
+        background: rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.6);
+        transition: all 0.2s ease;
+    }
+
+    /* Стиль для активной (нажатой) вкладки */
+    .motion-subtabs-row .tab-btn.active {
+        background: #ff7300;
+        color: #ffffff;
+    }
+
+
     </style>
 </head>
 <body>
@@ -873,81 +887,111 @@ body {
 <!-- ЭКРАН 3: ОЖИВЛЕНИЕ ПО ВИДЕО (MOTION CONTROL) -->
 <!-- ========================================== -->
     <div id="video_motion_control" class="screen">
-            
+                
         <!-- Фирменный контейнер вкладок с кнопкой назад -->
         <div class="tabs-container">
-            <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openScreen('video_menu')"></button>
-            <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;">
+            <!-- 🔥 ИСПРАВЛЕНО: Вызываем handleMotionBackClick() -->
+            <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); handleMotionBackClick()"></button>
+            <div id="video_motion_main_title" style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;">
                 Оживление по видео
             </div>
         </div>
 
-        <!-- Основной блок настроек -->
-        <div id="video_motion_settings_block" class="custom-prompt-container">                
-            <div class="menu-title">Примеры генерации:</div>
-            <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">Управление мимикой и точный перенос движений лица</div>
-            
-                    <!-- Горизонтальная сетка для МНОЖЕСТВА видео-карточек (9:16) -->
-            <div class="example-preview-container" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; justify-content: center; margin: 6px auto !important; width: 95%; max-width: 340px;">
-                
-                <!-- Карточка 1 -->
-                <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 4px; align-items: center;">
-                    <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
-                        <video style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline>
-                            <source src="https://imgur.com" type="video/mp4">
-                        </video>
-                        <div class="video-overlay" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo('https://imgur.com')" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                            <div style="background: #ff7300; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px #ff7300;">
-                                <svg width="10" height="12" viewBox="0 0 24 28" fill="white" style="margin-left: 2px;"><path d="M4 24.5V3.5L20 14L4 24.5Z" /></svg>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="font-size: 10px; font-weight: 800; color: #ff7300; text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">🔥 Пример 1</div>
-                </div>
 
-                <!-- Карточка 2 -->
-                <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 4px; align-items: center;">
-                    <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
-                        <video style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline>
-                            <source src="https://imgur.com" type="video/mp4">
-                        </video>
-                        <div class="video-overlay" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo('https://imgur.com')" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                            <div style="background: #ff7300; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px #ff7300;">
-                                <svg width="10" height="12" viewBox="0 0 24 28" fill="white" style="margin-left: 2px;"><path d="M4 24.5V3.5L20 14L4 24.5Z" /></svg>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="font-size: 10px; font-weight: 800; color: #ff7300; text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">🔥 Пример 2</div>
-                </div>
-
-                <!-- Сюда можно добавлять Карточку 3, 4 и т.д., они сами встанут на новый ряд -->
-            </div>
-                    <!-- 🔥 ОБНОВЛЕННЫЙ ПУЛЬТ УПРАВЛЕНИЯ РЕЖИМА 3 (Без кнопок длительности и формата) -->
-            <div style="font-size: 13px; line-height: 1.5; margin-top: 25px !important; padding: 0 5px; color: rgba(255, 255, 255, 0.6) !important;">
-                <b>Шаг 1:</b> Нажмите кнопку запуска START.<br>
-                <b>Шаг 2:</b> Бот попросит вас отправить <b>фотографию лица</b>.<br>
-                <b>Шаг 3:</b> Затем отправьте <b>видео-референс</b> с движениями.<br>
-                <span style="color: #ff7300;">*️⃣ Бот автоматически посчитает длительность вашего видео и назовёт итоговую стоимость генерации в монетах перед стартом!</span>
-            </div>
-
-            <!-- Наша лазерная линия-разделитель (Оранжевый неон) -->
-            <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
-
-            <!-- Строка про итог (Посекундный тариф) -->
-            <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center; margin-bottom: 20px;">
-                <b>Списание монет происходит посекундно, исходя из длины присланного вами видео.</b>
-            </div>
-
-            <!-- 🔥 ОДНА ЧИСТАЯ КНОПКА START ДЛЯ ПЕРЕХОДА В БОТ -->
-            <div style="padding: 0 5px; margin-bottom: 10px;">
-                <button id="neo_motion_submit_btn" class="neo-start-btn" style="width: 100%; height: 50px; font-size: 16px; font-weight: bold; letter-spacing: 1px;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendMotionControlData()">
-                    START 🪙
-                </button>
-            </div>
+        <!-- Переключатели вкладок (Обновлено под класс .tab-btn) -->
+        <div class="motion-subtabs-row" style="display: flex; gap: 8px; justify-content: center; padding: 0 10px; margin-top: 12px; margin-bottom: 12px;">
+            <!-- Вкладка «Шаблоны» (Активна по умолчанию) -->
+            <button class="tab-btn active" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); switchMotionTab('templates', this)" 
+                style="flex: 1; height: 36px; border-radius: 18px; font-size: 12px; font-weight: bold; border: none; outline: none; cursor: pointer;">
+                Шаблоны
+            </button>
+            <!-- Вкладка «Свой» -->
+            <button class="tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); switchMotionTab('custom', this)" 
+                style="flex: 1; height: 36px; border-radius: 18px; font-size: 12px; font-weight: bold; border: none; outline: none; cursor: pointer;">
+                Свой
+            </button>
         </div>
-    </div>
 
-   <!-- ПОЛНОЭКРАННЫЙ ПЛЕЕР ПРЕВЬЮ (УНИВЕРСАЛЬНЫЙ) -->
+
+        <!-- Основной блок настроек -->
+        <div id="video_motion_settings_block" class="custom-prompt-container" style="padding: 10px 8px 12px 8px !important;">                
+            
+            <!-- ==================== ЧАСТЬ 1: ГАЛЕРЕЯ ШАБЛОНОВ ==================== -->
+            <div id="motion_gallery_block" style="display: block;">
+                <div class="menu-desc" style="text-align: center; margin-bottom: 8px !important; font-size: 12px !important; opacity: 0.8;">Выберите готовый шаблон для оживления:</div>
+                
+                <div class="example-preview-container" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; justify-content: center; margin: 0 auto !important; width: 95%; max-width: 340px;">
+                    
+                    <!-- Шаблон 1 (При клике вызываем нашу новую функцию) -->
+                    <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 4px; align-items: center;">
+                        <div class="preview-card-box" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); selectMotionTemplate('Outside the city', 'https://imgur.com')" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15); background: #000; cursor: pointer;">
+                            <video style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay>
+                                <source src="https://imgur.com" type="video/mp4">
+                            </video>
+                            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.15);"></div>
+                        </div>
+                        <div style="font-size: 10px; font-weight: 800; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">Outside the city</div>
+                    </div>
+
+                    <!-- Шаблон 2 -->
+                    <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 4px; align-items: center;">
+                        <div class="preview-card-box" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); selectMotionTemplate('The Dark Soul', 'https://imgur.com')" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15); background: #000; cursor: pointer;">
+                            <video style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay>
+                                <source src="https://imgur.com" type="video/mp4">
+                            </video>
+                            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.15);"></div>
+                        </div>
+                        <div style="font-size: 10px; font-weight: 800; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">The Dark Soul</div>
+                    </div>
+
+                </div>
+            </div>
+
+           <!-- ==================== ВКЛАДКА 2: СВОЙ (ТЕКСТ, КНОПКА ДЛИТЕЛЬНОСТИ И СТАРТ) ==================== -->
+            <div id="content_motion_custom" style="display: none;">
+                
+                <!-- Текстовые инструкции режима -->
+                <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; color: rgba(255, 255, 255, 0.6) !important;">
+                    <b style="color: #ffffff;">Шаг 1:</b> Настройте длительность видео кнопкой ниже.<br>
+                    <b style="color: #ffffff;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
+                    <b style="color: #ffffff;">Шаг 3:</b> Далее в ТГ боте следуйте инструкциям.<br>
+                    <span style="color: #ff7300;">*️⃣ Бот автоматически посчитает длительность вашего видео и назовёт итоговую стоимость генерации в монетах перед стартом!</span>
+                </div>
+
+                <!-- Неоновая лазерная линия-разделитель -->
+                <div class="neon-divider" style="margin: 15px auto 12px auto !important; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5); height: 1px;"></div>
+
+                <!-- Строка про цену кадра (Ярко-белая, жирная) -->
+                <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center; margin-bottom: 15px !important; color: #ffffff !important;">
+                    <b>Итоговая цена зависит от выбранной длительности и отображается на кнопке START</b>
+                </div>
+
+                <!-- 🔥 ИСПРАВЛЕНО: Ряд всего из двух элементов (Длительность + Старт) -->
+                <div class="single-row-controls" style="display: flex; gap: 8px; align-items: center; width: 100%; padding: 0 2px; margin-bottom: 15px;">  
+                    
+                    <!-- 1. Кнопка Длительности (привязана к motionGenDuration) -->
+                    <div class="control-col" style="flex: 1;">
+                        <button id="btn_motion_duration" class="capsule-btn" style="width: 100%; padding: 12px 2px; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openUniversalDurationSheetMotion()">⏱️ 5 сек</button>
+                    </div>
+                    
+                    <!-- 2. Главная кнопка запуска START (Шире, чтобы выделяться) -->
+                    <div class="control-col-btn" style="flex: 2;">
+                        <button id="neo_motion_submit_btn" class="neo-start-btn" style="width: 100%; padding: 12px 2px; font-size: 13px; font-weight: bold;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendMotionControlData()">Start 3 🪙</button>
+                    </div>
+                </div>
+                
+            </div>
+
+
+        </div> <!-- Закрыли блок настроек video_motion_settings_block -->
+    </div> <!-- Закрыли главный контейнер экрана video_motion_control -->
+
+
+
+<!-- ========================================== -->
+<!-- ПОЛНОЭКРАННЫЙ ПЛЕЕР ПРЕВЬЮ (УНИВЕРСАЛЬНЫЙ) -->
+ <!-- ========================================== -->
+
     <div id="videoPlayerModal" class="video-modal" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); closePreviewVideo()">
         <div class="video-modal-content" onclick="event.stopPropagation()">
             
@@ -1001,6 +1045,11 @@ body {
     // 👤 НАСТРОЙКИ ДЛЯ 3-ГО РЕЖИМА: «Оживление по видео» (Motion Control, Kling v2.6)
     let motionGenDuration = 5;
     let motionGenRatio = 'auto';
+    // Глобальные переменные для отслеживания состояния режима 3
+    let isMotionStyleSelected = false;
+    let selectedMotionStyleName = "";
+    let selectedMotionVideoUrl = "";
+    let currentMotionTab = "templates"; // Текущая активная вкладка
 
 
     // ====================================================================================
@@ -1120,6 +1169,93 @@ function closePreviewVideo() {
     }
 }
 
+
+
+    // 1. ФУНКЦИЯ КЛИКА ПО ВИДЕО-ШАБЛОНУ (Твоя логика)
+    function selectMotionTemplate(styleName, videoUrl) {
+        isMotionStyleSelected = true;
+        selectedMotionStyleName = styleName;
+        selectedMotionVideoUrl = videoUrl;
+
+        // Меням заголовок экрана на название стиля (как у тебя text_image_title)
+        document.getElementById('video_motion_main_title').innerText = styleName;
+        document.getElementById('motion_subtitle_text').innerText = "Выбран готовый шаблон. Нажмите START для запуска:";
+
+        // Скрываем галерею шаблонов и переключатели вкладок
+        document.getElementById('motion_gallery_block').style.display = "none";
+        document.getElementById('motion_tabs_row').style.display = "none";
+        
+        // Показываем блок пульта управления
+        document.getElementById('motion_controls_block').style.display = "block";
+        
+        // Показываем компактное вертикальное превью выбранного видео
+        const previewBlock = document.getElementById('motion_preset_preview_block');
+        const previewVideo = document.getElementById('motion_large_preview_video');
+        previewBlock.style.display = 'flex';
+        previewVideo.src = videoUrl;
+        previewVideo.load(); // Перезагружаем видео-плеер под новую ссылку
+
+        // Корректируем шаги: для шаблона Шаг 3 (видео-референс) слать НЕ НАДО, бот сам его знает!
+        document.getElementById('motion_step_3_row').style.style.display = 'none';
+        document.getElementById('motion_price_notice').innerHTML = "<b>Итоговая цена генерации по шаблону отобразится в боте перед стартом!</b>";
+    }
+
+    // 2. УПРАВЛЕНИЕ ВКЛАДКАМИ ("Шаблоны" / "Свой")
+    function switchMotionTab(category, element) {
+        // 1. Сбрасываем класс active у всех кнопок вкладок нашего 3-го режима и ставим нажатой текущей
+        const tabs = document.querySelectorAll('.motion-subtabs-row .tab-btn');
+        tabs.forEach(tab => tab.classList.remove('active'));
+        element.classList.add('active');
+
+        // 2. Получаем ссылки на все блоки экрана Режима 3
+        const gallery = document.getElementById('motion_gallery_block');          // Сетка шаблонов видео
+        const controlsBlock = document.getElementById('motion_controls_block');    // Нижний пульт (кнопки и текст)
+        const presetPreviewBlock = document.getElementById('motion_preset_preview_block'); // Превью выбранного видео
+
+        if (category === 'custom') {
+            currentGenerationMode = 'custom'; 
+            isMotionStyleSelected = true;  
+            selectedMotionStyleName = "Свой референс";
+
+            // 🔥 МЕНЯЕМ ЗАГОЛОВКИ СТРОГО ДЛЯ ВКЛАДКИ "СВОЙ"
+            document.getElementById('video_motion_main_title').innerText = "Оживление по видео";
+            document.getElementById('motion_subtitle_text').innerText = "Настройте параметры вашей персональной генерации:";
+
+            // Показываем шаг 3 (отправку своего видео), который скрывается в шаблонах
+            document.getElementById('motion_step_3_row').style.display = 'inline';
+            document.getElementById('motion_price_notice').innerHTML = "<b>Списание монет происходит посекундно, исходя из длины присланного вами видео.</b>";
+
+            gallery.style.display = 'none';            // Прячем сетку шаблонов видео
+            controlsBlock.style.display = 'block';      // Открываем пульт управления (кнопку секунд и START)
+            if (presetPreviewBlock) presetPreviewBlock.style.display = 'none'; // НАГЛУХО ПРЯЧЕМ ПРЕВЬЮ ВИДЕО ШАБЛОНА
+            
+        } else {
+            currentGenerationMode = 'preset'; 
+            isMotionStyleSelected = false; 
+
+            // 🔥 ВОЗВРАЩАЕМ СТАНДАРТНЫЕ ЗАГОЛОВКИ ДЛЯ ГАЛЕРЕИ ШАБЛОНОВ
+            document.getElementById('video_motion_main_title').innerText = "Оживление по видео";
+            document.getElementById('motion_subtitle_text').innerText = "Выберите готовый шаблон для настройки:";
+
+            gallery.style.display = 'block';           // Показываем сетку шаблонов обратно
+            controlsBlock.style.display = 'none';      // Скрываем нижний пульт с кнопкой старт
+            if (presetPreviewBlock) presetPreviewBlock.style.display = 'none'; // Скрываем превью шаблона
+        }
+    }
+
+    // 3. ОБРАБОТКА НАЖАТИЯ КНОПКИ «НАЗАД» В ШАПКЕ
+    function handleMotionBack() {
+        // Если был выбран какой-то шаблон — сбрасываем его и возвращаемся к сетке шаблонов
+        if (isMotionStyleSelected) {
+            isMotionStyleSelected = false;
+            document.getElementById('video_motion_main_title').innerText = "Оживление по видео";
+            document.getElementById('motion_tabs_row').style.display = "flex";
+            switchMotionTab('templates');
+        } else {
+            // Если шаблоны не были выбраны, просто уходим на главный экран меню видео
+            openScreen('video_menu');
+        }
+    }
 // ====================================================================================
 // 2.5 ФУНКЦИИ ВОЗВРАТА НАЗАД (СТРОГО НАШИ ВИДЕО РЕЖИМЫ)
 // ====================================================================================
@@ -1137,6 +1273,53 @@ function closePreviewVideo() {
         function handleMotionControlBackClick() {
             openScreen('video_menu'); // Возвращает в главное меню видеостудии
         }
+
+
+// ====================================================================================
+// 3. УМНАЯ ФУНКЦИЯ ВОЗВРАТА НАЗАД К ГАЛЕРЕЕ КАРТОЧЕК (РЕЖИМ 3)
+// ====================================================================================
+    function handleMotionBackClick() {
+        const gallery = document.getElementById('motion_gallery_block');
+        const controlsBlock = document.getElementById('motion_controls_block');
+        const presetPreviewBlock = document.getElementById('motion_preset_preview_block');
+
+        // 1. Проверяем, горит ли сейчас оранжевым вкладка "Свой"
+        // Ищем активную кнопку внутри нашего контейнера вкладок 3-го режима
+        const activeTabButton = document.querySelector('.motion-subtabs-row .tab-btn.active');
+        const isCustomTab = activeTabButton && activeTabButton.innerText.trim() === 'Свой';
+
+        // 🔥 Если мы находимся во вкладке "Свой" — СРАЗУ с первого клика улетаем в меню видеостудии
+        if (isCustomTab) {
+            isMotionStyleSelected = false;
+            selectedMotionStyleName = "";
+            if (controlsBlock) controlsBlock.style.display = "none";
+            openScreen('video_menu'); // Возврат в главное меню видеостудии
+            return; // Останавливаем выполнение функции
+        }
+
+        // 2. Обычная логика возврата для готовых шаблонов видео
+        if (isMotionStyleSelected) {
+            isMotionStyleSelected = false;
+            selectedMotionStyleName = "";
+
+            // Возвращаем стандартные заголовки для галереи шаблонов
+            document.getElementById('video_motion_main_title').innerText = "Оживление по видео";
+            document.getElementById('motion_subtitle_text').innerText = "Выберите готовый шаблон для настройки:";
+
+            // Показываем обратно контейнер с кнопками-вкладками (в шаблонах при клике на видео мы его скрывали)
+            document.getElementById('motion_tabs_row').style.display = "flex";
+
+            if (controlsBlock) controlsBlock.style.display = "none"; 
+            if (presetPreviewBlock) presetPreviewBlock.style.display = "none";
+            
+            if (gallery) gallery.style.display = "block"; // Возвращаем сетку видео-карточек обратно
+
+            if (tg && tg.MainButton) tg.MainButton.hide();
+        } else {
+            // Если мы и так просто смотрели галерею шаблонов — уходим в главное меню видеостудии
+            openScreen('video_menu');
+        }
+    }
 
 
 // ====================================================================================

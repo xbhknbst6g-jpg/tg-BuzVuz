@@ -931,11 +931,6 @@ body {
 
             <!-- НИЖНЯЯ ПЛАШКА С КНОПКАМИ (Длительность + Старт) -->
             <div class="single-row-controls">
-                <!-- Кнопка Длительности (Показывается/скрывается динамически) -->
-                <div id="motion_duration_btn_wrapper" class="control-col" style="flex: 1;">
-                    <button id="btn_motion_duration" class="capsule-btn" style="width: 100%;" onclick="openUniversalDurationSheetMotion()">⏱️ 5 сек</button>
-                </div>
-                <!-- Кнопка запуска START -->
                 <div class="control-col control-col-btn" style="flex: 1.5;">
                     <button id="neo_motion_submit_btn" class="neo-start-btn" style="width: 100%;" onclick="sendMotionControlData()">
                         Start 3 🪙
@@ -1214,30 +1209,38 @@ function switchMotionTab(category, element) {
         selectedMotionStyleName = "Свой референс";
         selectedMotionVideoUrl = "";
 
-        // 🔥 НАГЛУХО СКРЫВАЕМ НАДПИСЬ НА ВКЛАДКЕ "СВОЙ"
         const subtitle = document.getElementById('video_motion_subtitle');
         if (subtitle) subtitle.style.display = 'none';
 
-        if (gallery) gallery.style.display = 'none';                  // Скрываем карточки примеров
-        if (controlsBlock) controlsBlock.style.display = 'block';         // Показываем блок настроек
-        if (customInstruction) customInstruction.style.display = 'block';   // Показываем пошаговую инструкцию
+        if (gallery) gallery.style.display = 'none';                  
+        if (controlsBlock) controlsBlock.style.display = 'block';         
+        if (customInstruction) customInstruction.style.display = 'block';   
         if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';  
-        if (spacer) spacer.style.display = 'block';   
         
-        // Скрываем кнопку времени (для режима "Свой" она не нужна)
-        if (document.getElementById('motion_duration_btn_wrapper')) {
-            document.getElementById('motion_duration_btn_wrapper').style.display = 'none';
+        // Наглухо выключаем пустую распорку, она нам больше не нужна
+        if (spacer) spacer.style.display = 'none';   
+        
+        // 🔥 НАПРЯМУЮ МЕНЯЕМ ОТСТУП У КНОПОК: Поднимаем кнопку START повыше во вкладке "Свой"
+        const controlsPanel = document.querySelector('#video_motion_control .single-row-controls');
+        if (controlsPanel) {
+            controlsPanel.style.setProperty('margin-top', '35px', 'important');
         }
     } else {
         currentGenerationMode = 'preset'; 
         isMotionStyleSelected = false; 
 
-        // 🔥 ВОЗВРАЩАЕМ НАДПИСЬ ОБРАТНО ДЛЯ ШАБЛОНОВ
         const subtitle = document.getElementById('video_motion_subtitle');
         if (subtitle) subtitle.style.display = 'block';
 
-        if (gallery) gallery.style.display = 'grid';                  // Возвращаем сетку карточек
-        if (controlsBlock) controlsBlock.style.display = 'none';            // Прячем блок настроек
+        if (gallery) gallery.style.display = 'grid';                  
+        if (controlsBlock) controlsBlock.style.display = 'none';            
+        if (spacer) spacer.style.display = 'none';     
+        
+        // 🔥 ВОЗВРАЩАЕМ СТАНДАРТНЫЙ ОТСТУП ДЛЯ ШАБЛОНОВ (чтобы дизайн не съехал в галерее)
+        const controlsPanel = document.querySelector('#video_motion_control .single-row-controls');
+        if (controlsPanel) {
+            controlsPanel.style.setProperty('margin-top', '55px', 'important');
+        }
     }
 }
 

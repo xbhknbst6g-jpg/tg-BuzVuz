@@ -879,10 +879,10 @@ body {
             </div>
         </div>
             
-       <!-- Вкладки 3-го режима: чистый класс по твоему рабочему образцу -->
-        <div class="tabs-container" id="video_motion_tabs" style="margin-bottom: 12px; border-bottom: none !important;">
-            <button class="tab-btn active" onclick="switchMotionTab('preset', this)">Шаблоны</button>
-            <button class="tab-btn" onclick="switchMotionTab('custom', this)">Свой</button>
+       <!-- Вкладки 3-го режима: обе используют твой готовый capsule-btn, чтобы форма не ломалась -->
+        <div class="tabs-container" id="video_motion_tabs" style="display: flex !important; gap: 10px !important; margin-bottom: 15px !important; border-bottom: none !important;">
+            <button class="tab-btn capsule-btn active" onclick="switchMotionTab('preset', this)" style="flex: 1 !important; margin: 0 !important; font-size: 13px !important; text-transform: uppercase;">Шаблоны</button>
+            <button class="tab-btn capsule-btn" onclick="switchMotionTab('custom', this)" style="flex: 1 !important; margin: 0 !important; font-size: 13px !important; text-transform: uppercase; background: #111111 !important; color: rgba(255,255,255,0.5) !important; border: 2px solid rgba(255, 102, 0, 0.2) !important; box-shadow: none !important;">Свой</button>
         </div>
 
 
@@ -1145,10 +1145,26 @@ function closePreviewVideo() {
 // УПРАВЛЕНИЕ ВКЛАДКАМИ ("Шаблоны" / "Свой")
 // ====================================================================================
 function switchMotionTab(category, element) {
-    const tabs = document.querySelectorAll('#video_motion_tabs .tab-btn');
-    tabs.forEach(tab => tab.classList.remove('active'));
-    element.classList.add('active');
+    if (!element) return;
 
+    // 1. СБРОС: Делаем все кнопки темными капсулами, чтобы они не теряли высоту и скругление
+    const tabs = document.querySelectorAll('#video_motion_tabs .tab-btn');
+    tabs.forEach(tab => {
+        tab.classList.remove('active');
+        tab.style.setProperty('background', '#111111', 'important');
+        tab.style.setProperty('color', 'rgba(255, 255, 255, 0.5)', 'important');
+        tab.style.setProperty('border', '2px solid rgba(255, 102, 0, 0.2)', 'important');
+        tab.style.setProperty('box-shadow', 'none', 'important');
+    });
+
+    // 2. ПОДСВЕТКА: Делаем нажатую кнопку оранжевой, как твоя родная капсула
+    element.classList.add('active');
+    element.style.setProperty('background', '#ff6600', 'important');
+    element.style.setProperty('color', '#ffffff', 'important');
+    element.style.setProperty('border', '2px solid #ff1e00', 'important');
+    element.style.setProperty('box-shadow', '0 4px 12px rgba(255, 30, 0, 0.3)', 'important');
+
+    // 3. ПЕРЕКЛЮЧЕНИЕ ЭКРАНОВ (Один в один по твоей логике)
     const gallery = document.getElementById('motion_gallery_block');
     const settingsBlock = document.getElementById('motion_controls_block');
     const presetPreviewBlock = document.getElementById('motion_preset_preview_block');
@@ -1160,39 +1176,33 @@ function switchMotionTab(category, element) {
         selectedMotionStyleName = "Свой референс";
         selectedMotionVideoUrl = "";
 
-        // 🔥 МЕНЯЕМ ЗАГОЛОВКИ СТРОГО ДЛЯ ВКЛАДКИ "СВОЙ"
+        // Меняем заголовки строго для вкладки "Свой"
         document.getElementById('video_motion_main_title').innerText = "Свой референс";
         document.getElementById('video_motion_subtitle').innerText = "Настройте параметры вашей персональной генерации:";
         document.getElementById('motion_price_notice').innerText = "Расчет стоимости происходит посекундно, исходя из длины вашего видео.";
 
         if (gallery) gallery.style.display = 'none';               // Прячем сетку шаблонов
         if (settingsBlock) settingsBlock.style.display = 'block';      // Открываем блок с кнопками
-        if (presetPreviewBlock) presetPreviewBlock.style.display = 'none'; // НАГЛУХО ПРЯЧЕМ ПРЕВЬЮ ШАБЛОНОВ
+        if (presetPreviewBlock) presetPreviewBlock.style.display = 'none'; // Прячем превью шаблонов
         if (instructionText) instructionText.style.display = 'block';      // Показываем инструкцию
         
-        // ВКЛЮЧАЕМ РАСПОРКУ ВО ВКЛАДКЕ "СВОЙ"
         if (document.getElementById('motion_spacer')) document.getElementById('motion_spacer').style.display = 'block';
-        
-        // Скрываем кнопку длительности (бот сам всё посчитает в чате)
         if (document.getElementById('motion_duration_btn_wrapper')) document.getElementById('motion_duration_btn_wrapper').style.display = 'none';
     } else {
         currentGenerationMode = 'preset'; 
         isMotionStyleSelected = false; 
 
-        // 🔥 ВОЗВРАЩАЕМ СТАНДАРТНЫЕ ЗАГОЛОВКИ ДЛЯ ШАБЛОНОВ С ГАЛЕРЕЕЙ
+        // Возвращаем стандартные заголовки для Шаблонов
         document.getElementById('video_motion_main_title').innerText = "Оживление по видео";
         document.getElementById('video_motion_subtitle').innerText = "Выберите готовый шаблон для настройки:";
 
         if (gallery) gallery.style.display = 'grid';               // Показываем сетку шаблонов обратно
-        if (settingsBlock) settingsBlock.style.display = 'none';      // Скрываем нижний block
+        if (settingsBlock) settingsBlock.style.display = 'none';      // Скрываем нижний блок
         if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';
         if (instructionText) instructionText.style.display = 'none';
-        
-        // ВЫКЛЮЧАЕМ РАСПОРКУ В ОСТАЛЬНЫХ ТАБАХ
         if (document.getElementById('motion_spacer')) document.getElementById('motion_spacer').style.display = 'none';
     }
 
-    // Обновляем текст на кнопке START внизу экрана
     if (typeof updateMotionSubmitButton === 'function') {
         updateMotionSubmitButton();
     }

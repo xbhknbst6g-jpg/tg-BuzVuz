@@ -517,6 +517,50 @@
             border-color: #e61b00 !important;
         }
 
+        /* 🎬 СТИЛИ ДЛЯ ПОЛНОЭКРАННОГО ПЛЕЕРА-ПРОСМОТРЩИКА */
+.video-modal {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.85); /* Глубокое красивое затемнение */
+    backdrop-filter: blur(8px); /* Размытие заднего фона */
+    z-index: 999999;
+    display: none; /* Изначально скрыт */
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.video-modal.active {
+    display: block;
+    opacity: 1;
+}
+
+.video-modal-content {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%); /* Идеальное центрирование */
+    width: 100%;
+    max-width: 360px; /* Чтобы на больших экранах фотка стояла аккуратным блоком */
+    aspect-ratio: 9 / 16;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+}
+
+.video-modal-close {
+    position: absolute;
+    top: 12px; right: 12px;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    backdrop-filter: blur(4px);
+}
+
 
 
     </style>
@@ -590,7 +634,8 @@
             </div>
 
             <div id="text_image_settings_block" class="custom-prompt-container" style="display: none;">                
-                <div class="menu-title">Примеры генерации:</div>
+                <div class="menu-title" style="text-align: center;">Примеры генерации:</div>
+
                 <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">Что можно получить по простому текстовому запросу</div>
                 
                 <!-- 🔥 НАШ ДВУХКАРТОЧНЫЙ РЯД 9:16 С ОРАНЖЕВЫМ НЕОНОМ И КЛИКОМ НА ВЕСЬ ЭКРАН -->
@@ -657,8 +702,9 @@
 
             <div id="direct_gen_settings_block" class="custom-prompt-container" style="display: none;">
                 
-                <div class="menu-title">Примеры генерации:</div>
-                <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">What can be obtained by a simple text query</div>
+                <div class="menu-title" style="text-align: center;">Примеры генерации:</div>
+
+                <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">Что можно получить по простому текстовому запросу</div>
                 
                 <!-- 🔥 НАШ ДВУХКАРТОЧНЫЙ РЯД 9:16 С ОРАНЖЕВЫМ НЕОНОМ И КЛИКОМ НА ВЕСЬ ЭКРАН -->
                 <div class="example-preview-container" style="display: flex; flex-direction: row; gap: 15px; justify-content: center; margin: 15px auto; width: 90%; max-width: 340px;">
@@ -726,6 +772,30 @@
             </div>
         </div>
 
+<!-- ========================================== -->
+<!-- ПОЛНОЭКРАННЫЙ ПРОСМОТРЩИК КАРТИНОК И ВИДЕО -->
+<!-- ========================================== -->
+        <div id="videoPlayerModal" class="video-modal" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); closePreviewVideo()">
+            <div class="video-modal-content" onclick="event.stopPropagation()">
+                
+                <!-- Кнопка закрыть (Крестик) -->
+                <button class="video-modal-close" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); closePreviewVideo()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+
+                <!-- Тег для видео (скрыт по дефолту) -->
+                <video id="previewVideoPlayer" playsinline loop autoplay muted style="width: 100%; height: 100%; object-fit: cover; display: none;"></video>
+                
+                <!-- Тег для картинок (скрыт по дефолту) -->
+                <img id="previewImagePlayer" style="width: 100%; height: 100%; object-fit: cover; display: none;" alt="Превью фото">
+                
+            </div>
+        </div>
+
+
 
        
     <script>
@@ -783,6 +853,35 @@
             }
         })();
 
+// ====================================================================================
+// Функция плавного закрытия полноэкранного просмотра
+// ====================================================================================
+
+function closePreviewVideo() {
+    if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light');
+    
+    const modal = document.getElementById('videoPlayerModal');
+    const playerVideo = document.getElementById('previewVideoPlayer');
+    const playerImage = document.getElementById('previewImagePlayer');
+    
+    if (modal) {
+        modal.classList.remove('active');
+        if (playerVideo) playerVideo.pause();
+        
+        // Ждем пока анимация затухания (0.25s) отыграет, и полностью выключаем элементы
+        setTimeout(function() {
+            modal.style.display = "none";
+            if (playerVideo) {
+                playerVideo.style.display = "none";
+                playerVideo.src = "";
+            }
+            if (playerImage) {
+                playerImage.style.display = "none";
+                playerImage.src = ""; // Стираем ссылку, очищая память смартфона
+            }
+        }, 250); 
+    }
+}
 
 // ====================================================================================
 // 2.5 ФУНКЦИИ ВОЗВРАТА НАЗАД (СТРОГО ДВА НАШИХ РЕЖИМА)

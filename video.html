@@ -1147,7 +1147,7 @@ function closePreviewVideo() {
 function switchMotionTab(category, element) {
     if (!element) return;
 
-    // 1. СБРОС: Делаем все кнопки темными капсулами, чтобы они не теряли высоту и скругление
+    // 1. СБРОС СТИЛЕЙ: Возвращаем обеим кнопкам красивую круглую форму капсулы (темную)
     const tabs = document.querySelectorAll('#video_motion_tabs .tab-btn');
     tabs.forEach(tab => {
         tab.classList.remove('active');
@@ -1157,52 +1157,46 @@ function switchMotionTab(category, element) {
         tab.style.setProperty('box-shadow', 'none', 'important');
     });
 
-    // 2. ПОДСВЕТКА: Делаем нажатую кнопку оранжевой, как твоя родная капсула
+    // 2. ПОДСВЕТКА: Делаем нажатую вкладку оранжевой, как твоя родная капсула
     element.classList.add('active');
     element.style.setProperty('background', '#ff6600', 'important');
     element.style.setProperty('color', '#ffffff', 'important');
     element.style.setProperty('border', '2px solid #ff1e00', 'important');
     element.style.setProperty('box-shadow', '0 4px 12px rgba(255, 30, 0, 0.3)', 'important');
 
-    // 3. ПЕРЕКЛЮЧЕНИЕ ЭКРАНОВ (Один в один по твоей логике)
+    // 3. НАХОДИМ БЛОКИ (Строго те, что есть в HTML!)
     const gallery = document.getElementById('motion_gallery_block');
-    const settingsBlock = document.getElementById('motion_controls_block');
+    const controlsBlock = document.getElementById('motion_controls_block');
+    const customInstruction = document.getElementById('motion_custom_instruction');
     const presetPreviewBlock = document.getElementById('motion_preset_preview_block');
-    const instructionText = document.getElementById('motion_custom_instruction');
+    const spacer = document.getElementById('motion_spacer');
 
+    // 4. ЧИСТАЯ ЛОГИКА ПЕРЕКЛЮЧЕНИЯ (Без трогания заголовков шапки)
     if (category === 'custom') {
         currentGenerationMode = 'custom'; 
         isMotionStyleSelected = true;  
         selectedMotionStyleName = "Свой референс";
         selectedMotionVideoUrl = "";
 
-        // Меняем заголовки строго для вкладки "Свой"
-        document.getElementById('video_motion_main_title').innerText = "Свой референс";
-        document.getElementById('video_motion_subtitle').innerText = "Настройте параметры вашей персональной генерации:";
-        document.getElementById('motion_price_notice').innerText = "Расчет стоимости происходит посекундно, исходя из длины вашего видео.";
-
-        if (gallery) gallery.style.display = 'none';               // Прячем сетку шаблонов
-        if (settingsBlock) settingsBlock.style.display = 'block';      // Открываем блок с кнопками
-        if (presetPreviewBlock) presetPreviewBlock.style.display = 'none'; // Прячем превью шаблонов
-        if (instructionText) instructionText.style.display = 'block';      // Показываем инструкцию
+        if (gallery) gallery.style.display = 'none';                  // Скрываем карточки примеров
+        if (controlsBlock) controlsBlock.style.display = 'block';         // Показываем блок настроек
+        if (customInstruction) customInstruction.style.display = 'block';   // Показываем пошаговую инструкцию
+        if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';  
+        if (spacer) spacer.style.display = 'block';   
         
-        if (document.getElementById('motion_spacer')) document.getElementById('motion_spacer').style.display = 'block';
-        if (document.getElementById('motion_duration_btn_wrapper')) document.getElementById('motion_duration_btn_wrapper').style.display = 'none';
+        // Скрываем кнопку времени (для режима "Свой" она не нужна)
+        if (document.getElementById('motion_duration_btn_wrapper')) {
+            document.getElementById('motion_duration_btn_wrapper').style.display = 'none';
+        }
     } else {
         currentGenerationMode = 'preset'; 
         isMotionStyleSelected = false; 
 
-        // Возвращаем стандартные заголовки для Шаблонов
-        document.getElementById('video_motion_main_title').innerText = "Оживление по видео";
-        document.getElementById('video_motion_subtitle').innerText = "Выберите готовый шаблон для настройки:";
-
-        if (gallery) gallery.style.display = 'grid';               // Показываем сетку шаблонов обратно
-        if (settingsBlock) settingsBlock.style.display = 'none';      // Скрываем нижний блок
-        if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';
-        if (instructionText) instructionText.style.display = 'none';
-        if (document.getElementById('motion_spacer')) document.getElementById('motion_spacer').style.display = 'none';
+        if (gallery) gallery.style.display = 'grid';                  // Возвращаем сетку карточек
+        if (controlsBlock) controlsBlock.style.display = 'none';            // Прячем блок настроек
     }
 
+    // Обновляем текст на нижней кнопке START
     if (typeof updateMotionSubmitButton === 'function') {
         updateMotionSubmitButton();
     }

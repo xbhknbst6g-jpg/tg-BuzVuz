@@ -1110,22 +1110,24 @@ function openUniversalDurationSheet() {
     sheetEl.classList.add('active');
 }
 
-// УМНЫЙ ОБРАБОТЧИК КЛИКА ПО СЕКУНДАМ
+// Умный обработчик длительности: полностью синхронизирован с твоим движком шторок
 function selectDurationFromSheet(seconds, text) {
     if (currentActiveMode === 'animate_nosound') {
         currentKlingDuration = seconds; // Меняем переменную 1-го режима
         const btn1 = document.getElementById('btn_video_duration');
-        if (btn1) btn1.innerHTML = text;
+        if (btn1) btn1.innerHTML = text; // Подставляем текст ("⏱️ 5 сек")
     } else if (currentActiveMode === 'animate_sound') {
         currentSoraDuration = seconds;  // Меняем переменную 2-го режима
         const btn2 = document.getElementById('btn_sora_duration');
-        if (btn2) btn2.innerHTML = text;
+        if (btn2) btn2.innerHTML = text; // Подставляем текст ("⏱️ 4 сек")
     }
     
-    // Вызываем твои системные функции обновления цены на кнопках START и закрываем шторку
-    if (typeof updateStartButtonsPrice === 'function') updateStartButtonsPrice();
-    if (typeof updateNeoStartButtonText === 'function') updateNeoStartButtonText();
+    // Твоя родная системная функция пересчета текста и монет на кнопках START!
+    if (typeof updateNeoStartButtonText === 'function') {
+        updateNeoStartButtonText();
+    }
     
+    // Твое родное закрытие шторки
     closeCustomSheet();
 }
 

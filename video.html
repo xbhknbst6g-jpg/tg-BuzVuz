@@ -889,21 +889,21 @@ body {
         <!-- ШАГ 1: ГАЛЕРЕЯ АККУРАТНЫХ КАРТОЧКЕК (Показывается по умолчанию) -->
         <div class="phone-presets-grid" id="motion_gallery_block" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 10px; margin-bottom: 15px;">
             
-            <!-- Карточка 1 -->
+            <!-- Карточка 1 (Оптимизирована для моментального запуска видео на телефонах) -->
             <div class="phone-template-card" onclick="selectMotionTemplate('Outside the city', 'https://i.imgur.com/2mcdE9J.mp4', 5)" style="position: relative; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15); background: #000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer;">
-                <video style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay>
-                    <source src="https://i.imgur.com/2mcdE9J.mp4" type="video/mp4">
-                </video>
+                <video src="https://i.imgur.com/2mcdE9J.mp4" style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay preload="auto"></video>          
                 <div class="card-overlay" style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 8px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: #fff; font-size: 11px; font-weight: bold; text-align: center;">Outside the city</div>
             </div>
+
             
-            <!-- Карточка 2 -->
+            <!-- 🔥 Карточка 2 (УБРАЛИ ЛИШНИЙ ПАРАМЕТР ИЗ SKOBOK) -->
             <div class="phone-template-card" onclick="selectMotionTemplate('The Dark Soul', 'https://i.imgur.com/h6370oz.mp4', 5)" style="position: relative; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15); background: #000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer;">
-                <video style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay>
+                <video style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay preload="auto">
                     <source src="https://i.imgur.com/h6370oz.mp4" type="video/mp4">
                 </video>
                 <div class="card-overlay" style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 8px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: #fff; font-size: 11px; font-weight: bold; text-align: center;">The Dark Soul</div>
             </div>
+
 
         </div>
 
@@ -1381,14 +1381,15 @@ function switchMotionTab(category, element) {
 // ====================================================================================
 // ФУНКЦИЯ КЛИКА ПО КАРТОЧКЕ ВИДЕО-ШАБЛОНА (Теперь принимает реальную длительность)
 // ====================================================================================
-function selectMotionTemplate(styleName, videoUrl) {
+// 🔥 ТЕПЕРЬ ФУНКЦИЯ ПРИНИМАЕТ ТРИ ПАРАМЕТРА И ПЕРЕДАЕТ СЕКУНДЫ БОТУ!
+function selectMotionTemplate(styleName, videoUrl, duration) {
     if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light');
 
-    // 1. Запоминаем выбор для отправки на бэкенд бота
+    // 1. Запоминаем выбор ДЛЯ БЭКЕНДА БОТА (Берем переданные секунды, либо 5 по дефолту)
     isMotionStyleSelected = true;
     selectedMotionStyleName = styleName;
     selectedMotionVideoUrl = videoUrl;
-    motionGenDuration = 5;
+    motionGenDuration = duration || 5; // 🔥 Записали реальные секунды из HTML!
 
     // 2. Находим элементы твоего родного универсального плеера
     const modal = document.getElementById('videoPlayerModal');
@@ -1398,33 +1399,29 @@ function selectMotionTemplate(styleName, videoUrl) {
     const muteBtn = document.getElementById('btn_modal_mute');
 
     if (modal && videoPlayer) {
-        // Прячем картинку, включаем видео-тег
         if (imagePlayer) imagePlayer.style.display = 'none';
         videoPlayer.style.display = 'block';
         
-        // 🛠️ ЖЕСТКИЕ НАСТРОЙКИ ДЛЯ СМАРТФОНОВ: Глушим звук и разрешаем инлайн-плеер
+        // Мобильные настройки
         videoPlayer.muted = true;
         videoPlayer.setAttribute('playsinline', 'true');
         videoPlayer.setAttribute('webkit-playsinline', 'true');
         videoPlayer.setAttribute('preload', 'auto');
         
-        // Подгружаем видео
         videoPlayer.src = videoUrl;
         if (muteBtn) muteBtn.innerHTML = "🔊 Включить звук";
 
-        // Показываем плеер и оранжевую панель кнопок снизу
         modal.style.display = 'block';
         modal.classList.add('active'); 
         if (controlsPanel) controlsPanel.style.display = 'flex';
 
-        // 🔄 ДВУХЭТАПНЫЙ ЗАПУСК ДЛЯ СМАРТФОНОВ: Ждем подгрузки данных ролика
+        // Двухэтапный чистый запуск видео на смартфонах
         videoPlayer.load();
-        
         videoPlayer.onloadeddata = function() {
             const playPromise = videoPlayer.play();
             if (playPromise !== undefined) {
                 playPromise.catch(e => {
-                    console.log("Телефон заблокировал автоплей, толкаем повторно через muted:", e);
+                    console.log("Повторный толчок плеера телефона:", e);
                     videoPlayer.muted = true;
                     videoPlayer.play();
                 });

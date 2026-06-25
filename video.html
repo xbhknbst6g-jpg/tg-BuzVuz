@@ -1088,7 +1088,6 @@ function openUniversalDurationSheet() {
 
     titleEl.innerText = "ДЛИТЕЛЬНОСТЬ ВИДЕО";
     
-    // Сами на лету собираем правильные кнопки в зависимости от 1-го или 2-го режима
     if (currentActiveMode === 'animate_nosound') {
         // Режим 1: Оживление фото (5 и 10 сек)
         listEl.innerHTML = `
@@ -1106,7 +1105,6 @@ function openUniversalDurationSheet() {
         `;
     }
 
-    // Включаем твою рабочую шторку через класс active
     sheetEl.classList.add('active');
 }
 
@@ -1132,14 +1130,9 @@ function selectDurationFromSheet(seconds, text) {
 }
 
 // 2. ФУНКЦИЯ ЗАКРЫТИЯ ШТОРКИ
-function closeUniversalDurationSheet() {
-    if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light');
-    
-    const sheet = document.getElementById('universal_duration_sheet');
-    if (sheet) {
-        sheet.classList.remove('active');
-        setTimeout(() => sheet.style.display = 'none', 250);
-    }
+function closeCustomSheet() {
+    const sheet = document.getElementById('custom_action_sheet');
+    if (sheet) sheet.classList.remove('active');
 }
 
 // 3. ЛОГИКА СОХРАНЕНИЯ ВЫБРАННОГО ВРЕМЕНИ

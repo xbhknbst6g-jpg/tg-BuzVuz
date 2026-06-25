@@ -923,11 +923,6 @@ body {
             <!-- РАСПОРКА (ВЫДАВЛИВАЕТ КНОПКИ ВНИЗ) -->
             <div class="mode-spacer" style="height: calc(100vh - 430px); display: none;" id="motion_spacer"></div>
 
-            <!-- Текст-подсказка про цену/тариф -->
-            <div id="motion_price_notice" style="font-size: 12px; margin-bottom: 12px; color: rgba(255,255,255,0.6); text-align: center;">
-                Цена зависит от выбранной длительности
-            </div>
-
             <!-- НИЖНЯЯ ПЛАШКА С КНОПКАМИ (Длительность + Старт) -->
             <div class="single-row-controls">
                 <!-- Кнопка Длительности (Показывается/скрывается динамически) -->
@@ -1205,21 +1200,13 @@ function switchMotionTab(category, element) {
     const customInstruction = document.getElementById('motion_custom_instruction');
     const presetPreviewBlock = document.getElementById('motion_preset_preview_block');
     const spacer = document.getElementById('motion_spacer');
-    
-    // Находим элемент нижней надписи
-    const priceNotice = document.getElementById('motion_price_notice');
 
-    // 4. ЧИСТАЯ ЛОГИКА ПЕРЕКЛЮЧЕНИЯ (Без трогания заголовков шапки)
+    // 4. ЧИСТАЯ ЛОГИКА ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ
     if (category === 'custom') {
         currentGenerationMode = 'custom'; 
         isMotionStyleSelected = true;  
         selectedMotionStyleName = "Свой референс";
         selectedMotionVideoUrl = "";
-
-        // 🔥 МЕНЯЕМ НАДПИСЬ ДЛЯ ВКЛАДКИ "СВОЙ"
-        if (priceNotice) {
-            priceNotice.innerText = "Расчет стоимости происходит посекундно, исходя из длины вашего видео.";
-        }
 
         if (gallery) gallery.style.display = 'none';                  // Скрываем карточки примеров
         if (controlsBlock) controlsBlock.style.display = 'block';         // Показываем блок настроек
@@ -1235,18 +1222,8 @@ function switchMotionTab(category, element) {
         currentGenerationMode = 'preset'; 
         isMotionStyleSelected = false; 
 
-        // 🔥 ВОЗВРАЩАЕМ СТАНДАРТНУЮ НАДПИСЬ ДЛЯ ВКЛАДКИ "ШАБЛОНЫ"
-        if (priceNotice) {
-            priceNotice.innerText = "Цена зависит от выбранной длительности";
-        }
-
         if (gallery) gallery.style.display = 'grid';                  // Возвращаем сетку карточек
         if (controlsBlock) controlsBlock.style.display = 'none';            // Прячем блок настроек
-        
-        // Показываем кнопку времени обратно, если вернулись в шаблоны
-        if (document.getElementById('motion_duration_btn_wrapper')) {
-            document.getElementById('motion_duration_btn_wrapper').style.display = 'block';
-        }
     }
 
     // Обновляем текст на нижней кнопке START

@@ -581,7 +581,7 @@
 <!-- ЭКРАН 1: ФЛЮКС (ЦИФРОВАЯ ОПТИКА)           -->
 <!-- ========================================== -->
         <div id="text_image" class="screen">
-            
+                    
             <div class="tabs-container">
                 <button class="back-tab-btn" onclick="handleTextBackClick()"></button>
                 <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;">
@@ -593,10 +593,29 @@
                 <div class="menu-title">Примеры генерации:</div>
                 <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">Что можно получить по простому текстовому запросу</div>
                 
-                <div class="swap-steps-grid">
-                    <div class="phone-template-card"><img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg"></div>
-                    <div class="phone-template-card"><img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg"></div>
-                    <div class="phone-template-card"><img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg"></div>
+                <!-- 🔥 НАШ ДВУХКАРТОЧНЫЙ РЯД 9:16 С ОРАНЖЕВЫМ НЕОНОМ И КЛИКОМ НА ВЕСЬ ЭКРАН -->
+                <div class="example-preview-container" style="display: flex; flex-direction: row; gap: 15px; justify-content: center; margin: 15px auto; width: 90%; max-width: 340px;">
+                    
+                    <!-- Карточка 1 -->
+                    <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;">
+                        <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
+                            <!-- Укажи здесь реальную ссылку на 1-ю картинку-пример -->
+                            <img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg" 
+                                onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo(this.src)"
+                                style="width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer;" alt="Пример 1">
+                        </div>
+                    </div>
+
+                    <!-- Карточка 2 -->
+                    <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;">
+                        <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
+                            <!-- Укажи здесь реальную ссылку на 2-ю картинку-пример -->
+                            <img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg" 
+                                onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo(this.src)"
+                                style="width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer;" alt="Пример 2">
+                        </div>
+                    </div>
+
                 </div>
 
                 <!-- Текст инструкции первого экрана -->
@@ -611,12 +630,11 @@
 
                 <!-- Строка про итог (Белая и жирная) -->
                 <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center;">
-                    <b>Итоговая цена  зависит от выбранного качества и будет отображаться на кнопке START</b>
+                    <b>Итоговая цена зависит от выбранного качества и будет отображаться на кнопке START</b>
                 </div>
 
-
-                <!-- 🔥 ПЕРЕНЕСЛИ ВНУТРЬ БЛОКА НАСТРОЕК -->
-                <div class="single-row-controls" style="margin-top: 110px !important; margin-bottom: 15px;">
+                <!-- Ряд управления -->
+                <div class="single-row-controls" style="margin-top: 40px !important; margin-bottom: 15px;">
                     <div class="control-col" style="flex: 1;"><button id="btn_text_quality" class="capsule-btn" onclick="openUniversalQualitySheet()" style="width: 100%;">⚡ Standard</button></div>
                     <div class="control-col" style="flex: 1;"><button id="btn_text_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()" style="width: 100%;">9:16</button></div>
                     <div class="control-col control-col-btn" style="flex: 1.2;"><button id="neo_text_submit_btn" class="neo-start-btn" onclick="sendTextGenData()" style="width: 100%;">Start 1 🪙</button></div>
@@ -629,7 +647,7 @@
 <!-- ЭКРАН 2: НАНУ БАНАНА (УМНЫЙ ФОКУС)         -->
 <!-- ========================================== -->
         <div id="image_generation_direct" class="screen">
-            
+                    
             <div class="tabs-container">
                 <button class="back-tab-btn" onclick="handleTextBackClick()"></button>
                 <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;">
@@ -640,12 +658,31 @@
             <div id="direct_gen_settings_block" class="custom-prompt-container" style="display: none;">
                 
                 <div class="menu-title">Примеры генерации:</div>
-                <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">Что можно получить по простому текстовому запросу</div>
+                <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">What can be obtained by a simple text query</div>
                 
-                <div class="swap-steps-grid">
-                    <div class="phone-template-card"><img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg"></div>
-                    <div class="phone-template-card"><img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg"></div>
-                    <div class="phone-template-card"><img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg"></div>
+                <!-- 🔥 НАШ ДВУХКАРТОЧНЫЙ РЯД 9:16 С ОРАНЖЕВЫМ НЕОНОМ И КЛИКОМ НА ВЕСЬ ЭКРАН -->
+                <div class="example-preview-container" style="display: flex; flex-direction: row; gap: 15px; justify-content: center; margin: 15px auto; width: 90%; max-width: 340px;">
+                    
+                    <!-- Карточка 1 -->
+                    <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;">
+                        <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
+                            <!-- Укажи здесь реальную ссылку на 1-ю картинку-пример для второго экрана -->
+                            <img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg" 
+                                onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo(this.src)"
+                                style="width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer;" alt="Пример 1">
+                        </div>
+                    </div>
+
+                    <!-- Карточка 2 -->
+                    <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;">
+                        <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
+                            <!-- Укажи здесь реальную ссылку на 2-ю картинку-пример для второго экрана -->
+                            <img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg" 
+                                onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo(this.src)"
+                                style="width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer;" alt="Пример 2">
+                        </div>
+                    </div>
+
                 </div>
 
                 <!-- Текст инструкции второго экрана -->
@@ -663,9 +700,8 @@
                     <b>Итоговая цена зависит от выбранного качества и будет отображаться на кнопке START</b>
                 </div>
 
-
-                <!-- 🔥 ПЕРЕНЕСЛИ ВНУТРЬ БЛОКА НАСТРОЕК -->
-                <div class="single-row-controls" style="margin-top: 110px !important; margin-bottom: 15px;">
+                <!-- Ряд управления (Отступ margin-top оптимизирован, чтобы кнопки не улетали вниз) -->
+                <div class="single-row-controls" style="margin-top: 40px !important; margin-bottom: 15px;">
                     <div class="control-col" style="flex: 1;"><button id="btn_direct_quality" class="capsule-btn" onclick="openUniversalQualitySheet()" style="width: 100%;">⚡ Standard</button></div>
                     <div class="control-col" style="flex: 1;"><button id="btn_direct_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()" style="width: 100%;">1:1</button></div>
                     <div class="control-col control-col-btn" style="flex: 1.2;"><button id="neo_direct_submit_btn" class="neo-start-btn" onclick="sendDirectGenData()" style="width: 100%;">Start 1 🪙</button></div>

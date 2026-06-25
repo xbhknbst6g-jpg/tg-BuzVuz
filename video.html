@@ -870,6 +870,14 @@ body {
 <!-- ЭКРАН 3: ОЖИВЛЕНИЕ ПО ВИДЕО (MOTION CONTROL) -->
 <!-- ========================================== -->
     <div id="video_motion_control" class="screen">
+
+        <!-- Фирменный контейнер вкладок с кнопкой назад -->
+        <div class="tabs-container">
+            <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openScreen('video_menu')"></button>
+            <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;">
+                Оживление по видео
+            </div>
+        </div>
             
        <!-- Вкладки 3-го режима: привязались к твоим готовым стилям кнопок -->
         <div class="tabs-container" id="video_motion_tabs" style="display: flex !important; gap: 10px !important; margin-bottom: 15px !important; border-bottom: none !important;">
@@ -877,16 +885,6 @@ body {
             <button class="tab-btn capsule-btn" onclick="switchMotionTab('preset', this)" style="flex: 1 !important; margin: 0 !important; font-size: 13px !important; text-transform: uppercase;">Шаблоны</button>
             <!-- Неактивная кнопка пока темная, без класса капсулы -->
             <button class="tab-btn" onclick="switchMotionTab('custom', this)" style="flex: 1 !important; height: 43px !important; background: #111; color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 30px; font-weight: 800; font-size: 13px; text-transform: uppercase;">Свой</button>
-        </div>
-
-        <!-- Вкладки подмодов: Шаблоны и Свой (Стильный оранжевый неон) -->
-        <div class="tabs-container" id="video_motion_tabs" style="display: flex; gap: 10px; justify-content: center; margin-bottom: 15px; width: 100%; padding: 0 10px; box-sizing: border-box;">
-            <button class="tab-btn active" onclick="switchMotionTab('preset', this)" style="flex: 1; height: 38px; background: #1a1a1a; color: #ff7300; border: 1px solid #ff7300; border-radius: 20px; font-weight: bold; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 0 10px rgba(255, 115, 0, 0.2); cursor: pointer; transition: all 0.3s ease;">
-                Шаблоны
-            </button>
-            <button class="tab-btn" onclick="switchMotionTab('custom', this)" style="flex: 1; height: 38px; background: #111; color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; font-weight: bold; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; transition: all 0.3s ease;">
-                Свой
-            </button>
         </div>
 
         <div class="header" style="margin-bottom: 15px; text-align: center;">

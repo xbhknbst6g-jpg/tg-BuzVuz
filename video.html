@@ -1208,6 +1208,10 @@ function switchMotionTab(category, element) {
         selectedMotionStyleName = "Свой референс";
         selectedMotionVideoUrl = "";
 
+        // 🔥 НАГЛУХО СКРЫВАЕМ НАДПИСЬ НА ВКЛАДКЕ "СВОЙ"
+        const subtitle = document.getElementById('video_motion_subtitle');
+        if (subtitle) subtitle.style.display = 'none';
+
         if (gallery) gallery.style.display = 'none';                  // Скрываем карточки примеров
         if (controlsBlock) controlsBlock.style.display = 'block';         // Показываем блок настроек
         if (customInstruction) customInstruction.style.display = 'block';   // Показываем пошаговую инструкцию
@@ -1222,13 +1226,12 @@ function switchMotionTab(category, element) {
         currentGenerationMode = 'preset'; 
         isMotionStyleSelected = false; 
 
+        // 🔥 ВОЗВРАЩАЕМ НАДПИСЬ ОБРАТНО ДЛЯ ШАБЛОНОВ
+        const subtitle = document.getElementById('video_motion_subtitle');
+        if (subtitle) subtitle.style.display = 'block';
+
         if (gallery) gallery.style.display = 'grid';                  // Возвращаем сетку карточек
         if (controlsBlock) controlsBlock.style.display = 'none';            // Прячем блок настроек
-    }
-
-    // Обновляем текст на нижней кнопке START
-    if (typeof updateMotionSubmitButton === 'function') {
-        updateMotionSubmitButton();
     }
 }
 

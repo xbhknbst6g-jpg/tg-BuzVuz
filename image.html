@@ -634,7 +634,7 @@
             </div>
 
             <div id="text_image_settings_block" class="custom-prompt-container" style="display: none;">                
-                <div class="menu-title" style="text-align: center;">Примеры генерации:</div>
+                <div class="menu-title" style="text-align: center !important;">Примеры генерации:</div>
 
                 <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">Что можно получить по простому текстовому запросу</div>
                 
@@ -702,7 +702,7 @@
 
             <div id="direct_gen_settings_block" class="custom-prompt-container" style="display: none;">
                 
-                <div class="menu-title" style="text-align: center;">Примеры генерации:</div>
+                <div class="menu-title" style="text-align: center !important;">Примеры генерации:</div>
 
                 <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">Что можно получить по простому текстовому запросу</div>
                 
@@ -854,9 +854,52 @@
         })();
 
 // ====================================================================================
-// Функция плавного закрытия полноэкранного просмотра
+// Функция для открытия картинок на весь экран
 // ====================================================================================
+// 🔥 УНИВЕРСАЛЬНАЯ ФУНКЦИЯ ОТКРЫТИЯ ПЛЕЕРА ДЛЯ ВИДЕО И ДЛЯ КАРТИНОК
+function openPreviewVideo(url) {
+    if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light');
 
+    const modal = document.getElementById('videoPlayerModal');
+    const videoPlayer = document.getElementById('previewVideoPlayer');
+    const imagePlayer = document.getElementById('previewImagePlayer');
+
+    if (!modal) return;
+
+    // Проверяем расширение ссылки: картинка это или видео
+    const isImage = url.toLowerCase().match(/\.(jpeg|jpg|gif|png|webp)$/) || url.includes('postimg') || url.includes('imgbb');
+
+    if (isImage) {
+        // 📸 ЕСЛИ КАРТИНКА: тушим видео, зажигаем картинку
+        if (videoPlayer) {
+            videoPlayer.pause();
+            videoPlayer.style.display = 'none';
+        }
+        if (imagePlayer) {
+            imagePlayer.src = url;
+            imagePlayer.style.display = 'block';
+        }
+    } else {
+        // 🎬 ЕСЛИ ВИДЕО: тушим картинку, зажигаем видео-плеер
+        if (imagePlayer) {
+            imagePlayer.style.display = 'none';
+        }
+        if (videoPlayer) {
+            videoPlayer.src = url;
+            videoPlayer.style.display = 'block';
+            videoPlayer.muted = true;
+            videoPlayer.load();
+            videoPlayer.play().catch(e => console.log("Автоплей заблокирован:", e));
+        }
+    }
+
+    // Плавно открываем модальное окно через твой класс active
+    modal.style.display = 'block';
+    setTimeout(() => modal.classList.add('active'), 10);
+}
+
+
+// Функция плавного закрытия полноэкранного просмотра
 function closePreviewVideo() {
     if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light');
     

@@ -985,6 +985,24 @@ body {
            
         </div>
     </div>
+<!-- ========================================== -->
+<!-- 🔥 ЕДИНАЯ КОМПАКТНАЯ ШТОРКА ДЛИТЕЛЬНОСТИ ДЛЯ 1-ГО И 2-ГО РЕЖИМОВ -->
+<!-- ========================================== -->
+
+    <div id="universal_duration_sheet" class="custom-sheet-overlay" onclick="closeUniversalDurationSheet()">
+        <div class="custom-sheet-panel" onclick="event.stopPropagation()">
+            
+            <!-- Заголовок шторки -->
+            <div class="custom-sheet-title">Длительность видео</div>
+            
+            <!-- Динамический список элементов шторки (заполняется через JS) -->
+            <ul class="custom-sheet-list" id="universal_duration_list">
+                <!-- Кнопки секунд будут генерироваться автоматически -->
+            </ul>
+            
+        </div>
+    </div>
+
 
 
     <script>
@@ -1055,6 +1073,96 @@ body {
             }, 150);
         }
     })();
+
+
+// ====================================================================================
+// ФУНКЦИИ ШТОРКИ ВЫБОРА ДЛИТЕЛЬНОСТИ
+// ====================================================================================
+
+// 1. ФУНКЦИЯ ОТКРЫТИЯ ШТОРКИ С АВТО-ПОДСТАНОВКОЙ СЕКУНД (20 СЕКУНД ВЕРНУЛИ!)
+function openUniversalDurationSheet() {
+    if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light');
+    
+    const sheet = document.getElementById('universal_duration_sheet');
+    const listContainer = document.getElementById('universal_duration_list');
+    
+    if (sheet && listContainer) {
+        // Очищаем старые кнопки перед сборкой новых
+        listContainer.innerHTML = '';
+        
+        let options = [];
+        
+        // Проверяем, какой режим сейчас активен, и берем нужные секунды
+        if (currentActiveMode === 'animate_nosound') {
+            // Сетка для 1-го режима: строго 5 и 10 сек
+            options = [
+                { sec: 5, text: '⏱️ 5 сек', label: '5 секунд', price: '2 🪙' },
+                { sec: 10, text: '⏱️ 10 сек', label: '10 секунд', price: '4 🪙' }
+            ];
+        } else if (currentActiveMode === 'animate_sound') {
+            // Сетка для 2-го режима: 4, 8, 12, 16 и 20 сек!
+            options = [
+                { sec: 4, text: '⏱️ 4 сек', label: '4 секунды', price: '3 🪙' },
+                { sec: 8, text: '⏱️ 8 сек', label: '8 секунд', price: '6 🪙' },
+                { sec: 12, text: '⏱️ 12 сек', label: '12 секунд', price: '9 🪙' },
+                { sec: 16, text: '⏱️ 16 сек', label: '16 секунд', price: '12 🪙' },
+                { sec: 20, text: '⏱️ 20 сек', label: '20 секунд', price: '15 🪙' } // 🔥 ВОТ ОНИ!
+            ];
+        }
+        
+        // Собираем кнопки из массива в твоем фирменном HTML-стиле
+        options.forEach(opt => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <button class="custom-sheet-item" onclick="selectUniversalDuration(${opt.sec}, '${opt.text}')">
+                    <span>${opt.label}</span>
+                    <span class="coin-price">${opt.price}</span>
+                </button>
+            `;
+            listContainer.appendChild(li);
+        });
+        
+        // Включаем шторку и запускаем твою красивую CSS-анимацию выезда
+        sheet.style.display = 'block';
+        setTimeout(() => sheet.classList.add('active'), 10);
+    }
+}
+
+// 2. ФУНКЦИЯ ЗАКРЫТИЯ ШТОРКИ
+function closeUniversalDurationSheet() {
+    if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light');
+    
+    const sheet = document.getElementById('universal_duration_sheet');
+    if (sheet) {
+        sheet.classList.remove('active');
+        setTimeout(() => sheet.style.display = 'none', 250);
+    }
+}
+
+// 3. ЛОГИКА СОХРАНЕНИЯ ВЫБРАННОГО ВРЕМЕНИ
+function selectUniversalDuration(seconds, buttonText) {
+    if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+    
+    // Записываем данные в нужную глобальную переменную твоего бота
+    if (currentActiveMode === 'animate_nosound') {
+        currentKlingDuration = seconds; // Меняем время для 1-го режима
+        const btn1 = document.getElementById('btn_video_duration');
+        if (btn1) btn1.innerText = buttonText;
+    } else if (currentActiveMode === 'animate_sound') {
+        currentSoraDuration = seconds;  // Меняем время для 2-го режима
+        const btn2 = document.getElementById('btn_sora_duration');
+        if (btn2) btn2.innerText = buttonText;
+    }
+    
+    // Закрываем шторку
+    closeUniversalDurationSheet();
+    
+    // Обновляем ценник на неоновых кнопках START внизу экрана
+    if (typeof updateStartButtonsPrice === 'function') {
+        updateStartButtonsPrice();
+    }
+}
+
 
 // ====================================================================================
 // Функция для управления вашим плеером videoPlayerModal

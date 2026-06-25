@@ -879,32 +879,39 @@ body {
             </div>
         </div>
 
-        <!-- Вкладки подмодов: Шаблоны и Свой -->
-        <div class="tabs-container" id="video_motion_tabs" style="margin-bottom: 12px;">
-            <button class="tab-btn active" onclick="switchMotionTab('preset', this)">Шаблоны</button>
-            <button class="tab-btn" onclick="switchMotionTab('custom', this)">Свой</button>
+        <!-- Вкладки подмодов: Шаблоны и Свой (Стильный оранжевый неон) -->
+        <div class="tabs-container" id="video_motion_tabs" style="display: flex; gap: 10px; justify-content: center; margin-bottom: 15px; width: 100%; padding: 0 10px; box-sizing: border-box;">
+            <button class="tab-btn active" onclick="switchMotionTab('preset', this)" style="flex: 1; height: 38px; background: #1a1a1a; color: #ff7300; border: 1px solid #ff7300; border-radius: 20px; font-weight: bold; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 0 10px rgba(255, 115, 0, 0.2); cursor: pointer; transition: all 0.3s ease;">
+                Шаблоны
+            </button>
+            <button class="tab-btn" onclick="switchMotionTab('custom', this)" style="flex: 1; height: 38px; background: #111; color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; font-weight: bold; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; transition: all 0.3s ease;">
+                Свой
+            </button>
         </div>
 
         <div class="header" style="margin-bottom: 15px; text-align: center;">
             <p id="video_motion_subtitle" style="font-size: 13px; margin: 4px 0 0 0; color: rgba(255,255,255,0.6);">Выберите готовый шаблон для настройки:</p>
         </div>
 
-        <!-- ШАГ 1: ГАЛЕРЕЯ КАРТОЧЕК ШАБЛОНОВ (ВИДЕО) -->
-        <div class="phone-presets-grid" id="motion_gallery_block" style="display: grid;">
-            <!-- Карточка 1 (после ссылки на видио указывается длинна видио в карточке)-->
-            <div class="phone-template-card" onclick="selectMotionTemplate('Outside the city', 'https://imgur.com', 6)">
+        <!-- ШАГ 1: ГАЛЕРЕЯ АККУРАТНЫХ КАРТОЧКЕК (Показывается по умолчанию) -->
+        <div class="phone-presets-grid" id="motion_gallery_block" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 10px; margin-bottom: 15px;">
+            
+            <!-- Карточка 1 -->
+            <div class="phone-template-card" onclick="selectMotionTemplate('Outside the city', 'https://imgur.com', 5)" style="position: relative; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15); background: #000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer;">
                 <video style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay>
                     <source src="https://imgur.com" type="video/mp4">
                 </video>
-                <div class="card-overlay">Outside the city</div>
+                <div class="card-overlay" style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 8px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: #fff; font-size: 11px; font-weight: bold; text-align: center;">Outside the city</div>
             </div>
+            
             <!-- Карточка 2 -->
-            <div class="phone-template-card" onclick="selectMotionTemplate('The Dark Soul', 'https://imgur.com')">
+            <div class="phone-template-card" onclick="selectMotionTemplate('The Dark Soul', 'https://imgur.com', 5)" style="position: relative; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15); background: #000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer;">
                 <video style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay>
                     <source src="https://imgur.com" type="video/mp4">
                 </video>
-                <div class="card-overlay">The Dark Soul</div>
+                <div class="card-overlay" style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 8px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: #fff; font-size: 11px; font-weight: bold; text-align: center;">The Dark Soul</div>
             </div>
+
         </div>
 
         <!-- ШАГ 2: БЛОК НАСТРОЕК (Изначально скрыт, как в твоем примере!) -->

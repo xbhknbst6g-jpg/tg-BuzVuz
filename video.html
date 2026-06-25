@@ -1402,18 +1402,34 @@ function selectMotionTemplate(styleName, videoUrl) {
         if (imagePlayer) imagePlayer.style.display = 'none';
         videoPlayer.style.display = 'block';
         
-        // Подгружаем видео и принудительно гасим звук (требование автоплея у браузеров)
-        videoPlayer.src = videoUrl;
+        // 🛠️ ЖЕСТКИЕ НАСТРОЙКИ ДЛЯ СМАРТФОНОВ: Глушим звук и разрешаем инлайн-плеер
         videoPlayer.muted = true;
+        videoPlayer.setAttribute('playsinline', 'true');
+        videoPlayer.setAttribute('webkit-playsinline', 'true');
+        videoPlayer.setAttribute('preload', 'auto');
+        
+        // Подгружаем видео
+        videoPlayer.src = videoUrl;
         if (muteBtn) muteBtn.innerHTML = "🔊 Включить звук";
 
         // Показываем плеер и оранжевую панель кнопок снизу
         modal.style.display = 'block';
-        modal.classList.add('active'); // Если у тебя переключение на классах
+        modal.classList.add('active'); 
         if (controlsPanel) controlsPanel.style.display = 'flex';
 
+        // 🔄 ДВУХЭТАПНЫЙ ЗАПУСК ДЛЯ СМАРТФОНОВ: Ждем подгрузки данных ролика
         videoPlayer.load();
-        videoPlayer.play().catch(e => console.log("Автоплей заблокирован браузером: ", e));
+        
+        videoPlayer.onloadeddata = function() {
+            const playPromise = videoPlayer.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(e => {
+                    console.log("Телефон заблокировал автоплей, толкаем повторно через muted:", e);
+                    videoPlayer.muted = true;
+                    videoPlayer.play();
+                });
+            }
+        };
     }
 }
 

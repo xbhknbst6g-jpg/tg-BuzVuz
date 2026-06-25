@@ -908,8 +908,8 @@ body {
 
         <!-- ШАГ 1: ГАЛЕРЕЯ КАРТОЧЕК ШАБЛОНОВ (ВИДЕО) -->
         <div class="phone-presets-grid" id="motion_gallery_block" style="display: grid;">
-            <!-- Карточка 1 -->
-            <div class="phone-template-card" onclick="selectMotionTemplate('Outside the city', 'https://imgur.com')">
+            <!-- Карточка 1 (после ссылки на видио указывается длинна видио в карточке)-->
+            <div class="phone-template-card" onclick="selectMotionTemplate('Outside the city', 'https://imgur.com', 6)">
                 <video style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay>
                     <source src="https://imgur.com" type="video/mp4">
                 </video>
@@ -1157,128 +1157,132 @@ function closePreviewVideo() {
 // ====================================================================================
 // УПРАВЛЕНИЕ ВКЛАДКАМИ ("Шаблоны" / "Свой")
 // ====================================================================================
-    function switchMotionTab(category, element) {
-        const tabs = document.querySelectorAll('#video_motion_tabs .tab-btn');
-        tabs.forEach(tab => tab.classList.remove('active'));
-        if (element) element.classList.add('active');
+function switchMotionTab(category, element) {
+    const tabs = document.querySelectorAll('#video_motion_tabs .tab-btn');
+    tabs.forEach(tab => tab.classList.remove('active'));
+    if (element) element.classList.add('active');
 
-        const gallery = document.getElementById('video_motion_gallery');
-        const controlsBlock = document.getElementById('motion_controls_block');
-        const customInstruction = document.getElementById('motion_custom_instruction');
-        const presetPreviewBlock = document.getElementById('motion_preset_preview_block');
-        const spacer = document.getElementById('motion_spacer');
+    const gallery = document.getElementById('motion_gallery_block');
+    const controlsBlock = document.getElementById('motion_controls_block');
+    const customInstruction = document.getElementById('motion_custom_instruction');
+    const presetPreviewBlock = document.getElementById('motion_preset_preview_block');
+    const spacer = document.getElementById('motion_spacer');
+    const durationWrapper = document.getElementById('motion_duration_btn_wrapper');
 
-        if (category === 'custom') {
-            currentGenerationMode = 'custom'; 
-            isMotionStyleSelected = true;  
-            selectedMotionStyleName = "Свой референс";
+    if (category === 'custom') {
+        currentGenerationMode = 'custom'; 
+        isMotionStyleSelected = true;  
+        selectedMotionStyleName = "Свой референс";
+        selectedMotionVideoUrl = "";
 
-            // СБРОС В ДЕФОЛТ ПРИ ВХОДЕ В "СВОЙ" (Ставим твои 5 секунд по умолчанию)
-            motionGenDuration = 5; 
-            document.getElementById('btn_motion_duration').innerHTML = `⏱️ 5 сек`;
+        document.getElementById('video_motion_main_title').innerText = "Свой референс";
+        document.getElementById('video_motion_subtitle').innerText = "Настройте параметры вашей персональной генерации:";
+        document.getElementById('motion_price_notice').innerText = "Расчет стоимости происходит посекундно, исходя из длины вашего видео.";
 
-            document.getElementById('video_motion_main_title').innerText = "Свой референс";
-            document.getElementById('video_motion_subtitle').innerText = "Настройте параметры вашей персональной генерации:";
-            document.getElementById('motion_price_notice').innerText = "Списание монет происходит посекундно, исходя из длины видео.";
-
-            if (gallery) gallery.style.display = 'none';               
-            if (controlsBlock) controlsBlock.style.display = 'block';        
-            if (customInstruction) customInstruction.style.display = 'block'; 
-            if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';  
-            if (document.getElementById('motion_duration_btn_wrapper')) {
-                document.getElementById('motion_duration_btn_wrapper').style.display = 'block'; 
-            }
-            if (spacer) spacer.style.display = 'block';   
-        } else {
-            currentGenerationMode = 'preset'; 
-            isMotionStyleSelected = false; 
-
-            document.getElementById('video_motion_main_title').innerText = "Оживление по видео";
-            document.getElementById('video_motion_subtitle').innerText = "Выберите готовый шаблон для настройки:";
-
-            if (gallery) gallery.style.display = 'grid';               
-            if (controlsBlock) controlsBlock.style.display = 'none';         
-            if (customInstruction) customInstruction.style.display = 'none';
-            if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';
-            if (spacer) spacer.style.display = 'none';     
-        }
-    }
-
-    // ====================================================================================
-    // ФУНКЦИЯ КЛИКА ПО КАРТОЧКЕ ВИДЕО-ШАБЛОНА
-    // ====================================================================================
-    function selectMotionTemplate(styleName, videoUrl) {
-        isMotionStyleSelected = true;
-        selectedMotionStyleName = styleName;
-        selectedMotionVideoUrl = videoUrl;
-
-        // ДЛЯ ГОТОВЫХ ШАБЛОНОВ ДЛИТЕЛЬНОСТЬ ФИКСИРОВАНА (Например, ставим 5 сек или берем из базы)
-        motionGenDuration = 5; 
-
-        document.getElementById('video_motion_main_title').innerText = styleName;
-        document.getElementById('video_motion_subtitle').innerText = "Выбран готовый шаблон. Нажмите START для запуска:";
-        document.getElementById('motion_price_notice').innerText = "Итоговая цена генерации по шаблону отобразится в боте!";
-
-        if (document.getElementById('video_motion_gallery')) document.getElementById('video_motion_gallery').style.display = "none"; 
-        if (document.getElementById('motion_controls_block')) document.getElementById('motion_controls_block').style.display = "block"; 
+        if (gallery) gallery.style.display = 'none';               
+        if (controlsBlock) controlsBlock.style.display = 'block';        
+        if (customInstruction) customInstruction.style.display = 'block'; 
+        if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';  
+        if (spacer) spacer.style.display = 'block';   
         
-        if (document.getElementById('motion_spacer')) document.getElementById('motion_spacer').style.display = 'none'; 
-        if (document.getElementById('motion_custom_instruction')) document.getElementById('motion_custom_instruction').style.display = 'none'; 
-        
-        const previewBlock = document.getElementById('motion_preset_preview_block');
-        const previewVideo = document.getElementById('motion_large_preview_video');
-        if (previewBlock && previewVideo) {
-            previewBlock.style.display = 'flex';
-            previewVideo.src = videoUrl;
-            previewVideo.load();
-        }
+        // 🔥 СКРЫВАЕМ КНОПКУ ДЛИТЕЛЬНОСТИ (она не нужна, бот сам все посчитает в чате)
+        if (durationWrapper) durationWrapper.style.display = 'none'; 
+    } else {
+        currentGenerationMode = 'preset'; 
+        isMotionStyleSelected = false; 
 
-        if (document.getElementById('motion_duration_btn_wrapper')) {
-            document.getElementById('motion_duration_btn_wrapper').style.display = 'none';
-        }
+        document.getElementById('video_motion_main_title').innerText = "Оживление по видео";
+        document.getElementById('video_motion_subtitle').innerText = "Выберите готовый шаблон для настройки:";
+
+        if (gallery) gallery.style.display = 'grid';               
+        if (controlsBlock) controlsBlock.style.display = 'none';         
+        if (customInstruction) customInstruction.style.display = 'none';
+        if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';
+        if (spacer) spacer.style.display = 'none';     
     }
+    
+    // Обновляем текст на кнопке START
+    updateMotionSubmitButton();
+}
+
 
 // ====================================================================================
-    // 3. ОБРАБОТКА НАЖАТИЯ КНОПКИ «НАЗАД» В ШАПКЕ
+// ФУНКЦИЯ КЛИКА ПО КАРТОЧКЕ ВИДЕО-ШАБЛОНА (Теперь принимает реальную длительность)
 // ====================================================================================
-    function handleMotionBackClick() {
-        const controlsBlock = document.getElementById('motion_controls_block');
+function selectMotionTemplate(styleName, videoUrl, templateSeconds) {
+    isMotionStyleSelected = true;
+    selectedMotionStyleName = styleName;
+    selectedMotionVideoUrl = videoUrl;
 
-        // 1. Проверяем, активна ли сейчас вкладка "Свой"
-        const activeTabButton = document.querySelector('.motion-subtabs-row .tab-btn.active');
-        const isCustomTab = activeTabButton && activeTabButton.innerText.trim() === 'Свой';
+    // 🔥 ИСПРАВЛЕНО: Вместо жестких 5 секунд берем реальную длину видео из карточки!
+    // Если в HTML забыли указать секунды, сработает защита на 5 сек по дефолту
+    motionGenDuration = templateSeconds || 5; 
 
-        // Если мы во вкладке "Свой" — сразу вылетаем в главное меню видеостудии
-        if (isCustomTab) {
-            isMotionStyleSelected = false;
-            selectedMotionStyleName = "";
-            if (controlsBlock) controlsBlock.style.display = "none";
+    document.getElementById('video_motion_main_title').innerText = styleName;
+    document.getElementById('video_motion_subtitle').innerText = "Выбран готовый шаблон. Нажмите START для запуска:";
+    document.getElementById('motion_price_notice').innerText = `Длительность шаблона: ${motionGenDuration} сек. Итоговая цена отобразится в боте!`;
+
+    if (document.getElementById('motion_gallery_block')) document.getElementById('motion_gallery_block').style.display = "none"; 
+    if (document.getElementById('motion_controls_block')) document.getElementById('motion_controls_block').style.display = "block"; 
+    
+    if (document.getElementById('motion_spacer')) document.getElementById('motion_spacer').style.display = 'none'; 
+    if (document.getElementById('motion_custom_instruction')) document.getElementById('motion_custom_instruction').style.display = 'none'; 
+    
+    const previewBlock = document.getElementById('motion_preset_preview_block');
+    const previewVideo = document.getElementById('motion_large_preview_video');
+    if (previewBlock && previewVideo) {
+        previewBlock.style.display = 'flex';
+        previewVideo.src = videoUrl;
+        previewVideo.load();
+    }
+
+    if (document.getElementById('motion_duration_btn_wrapper')) {
+        document.getElementById('motion_duration_btn_wrapper').style.display = 'none';
+    }
+
+    updateMotionSubmitButton();
+}
+
+// ====================================================================================
+// ФУНКЦИЯ КНОПКИ "НАЗАД" (Для стрелочки вверху экрана)
+// ====================================================================================
+function handleMotionBackClick() {
+    const gallery = document.getElementById('motion_gallery_block');
+    
+    // Если мы зашли внутрь настроек шаблона — возвращаемся обратно к списку шаблонов
+    if (currentGenerationMode === 'preset' && gallery && gallery.style.display === 'none') {
+        isMotionStyleSelected = false;
+        document.getElementById('video_motion_main_title').innerText = "Оживление по видео";
+        document.getElementById('video_motion_subtitle').innerText = "Выберите готовый шаблон для настройки:";
+        
+        gallery.style.display = 'grid';
+        document.getElementById('motion_controls_block').style.display = 'none';
+    } else {
+        // Если мы в корне вкладки — возвращаем в главное меню видеостудии (как в твоих первых двух режимах)
+        if (typeof openScreen === 'function') {
             openScreen('video_menu'); 
-            return; 
-        }
-
-        // 2. Логика возврата из выбранного готового шаблона к сетке
-        if (isMotionStyleSelected) {
-            isMotionStyleSelected = false;
-            selectedMotionStyleName = "";
-
-            document.getElementById('video_motion_main_title').innerText = "Оживление по видео";
-            document.getElementById('motion_subtitle_text').innerText = "Выберите готовый шаблон для настройки:";
-
-            // Возвращаем на место строку вкладок
-            document.getElementById('motion_tabs_row').style.display = "flex";
-
-            if (controlsBlock) controlsBlock.style.display = "none"; 
-            if (document.getElementById('motion_preset_preview_block')) document.getElementById('motion_preset_preview_block').style.display = "none";
-            if (document.getElementById('motion_gallery_block')) document.getElementById('motion_gallery_block').style.display = "block"; 
-
-            // 🔥 ИСПРАВЛЕНО: Передаем null, чтобы функция не ломалась без объекта кнопки
-            switchMotionTab('preset', null);
         } else {
-            // Если просто смотрели галерею шаблонов — уходим в главное меню
-            openScreen('video_menu');
+            tg.close(); // Дефолтный фоллбэк, если роутер называется иначе
         }
     }
+}
+
+// ====================================================================================
+// УПРАВЛЕНИЕ ДЛИТЕЛЬНОСТЬЮ И ЦЕНОЙ НА КНОПКЕ START
+// ====================================================================================
+
+function updateMotionSubmitButton() {
+    const startBtn = document.getElementById('neo_motion_submit_btn');
+    if (!startBtn) return;
+
+    if (currentGenerationMode === 'preset') {
+        // Для готовых шаблонов из галереи цена фиксированная
+        startBtn.innerHTML = `Start 3 🪙`; 
+    } else {
+        // Для вкладки "Свой" пишем просто START (цена определится в боте)
+        startBtn.innerHTML = `Start 🚀`; 
+    }
+}
 
 // ====================================================================================
     // функцию в JS
@@ -1296,7 +1300,13 @@ function selectMotionDurationValue(seconds) {
     if (sheet) {
         sheet.style.display = 'none';
     }
+
+    // 🔥 ДОБАВЛЕНО: Сразу пересчитываем цену на кнопке START под новые секунды!
+    if (typeof updateMotionSubmitButton === 'function') {
+        updateMotionSubmitButton();
+    }
 }
+
 
 // ====================================================================================
 // 2.5 ФУНКЦИИ ВОЗВРАТА НАЗАД (СТРОГО НАШИ ВИДЕО РЕЖИМЫ)
@@ -1320,48 +1330,47 @@ function selectMotionDurationValue(seconds) {
 // ====================================================================================
 // 3. УМНАЯ ФУНКЦИЯ ВОЗВРАТА НАЗАД К ГАЛЕРЕЕ КАРТОЧЕК (РЕЖИМ 3)
 // ====================================================================================
-    function handleMotionBackClick() {
-        const gallery = document.getElementById('motion_gallery_block');
-        const controlsBlock = document.getElementById('motion_controls_block');
-        const presetPreviewBlock = document.getElementById('motion_preset_preview_block');
+function handleMotionBackClick() {
+    const controlsBlock = document.getElementById('motion_controls_block');
 
-        // 1. Проверяем, горит ли сейчас оранжевым вкладка "Свой"
-        // Ищем активную кнопку внутри нашего контейнера вкладок 3-го режима
-        const activeTabButton = document.querySelector('.motion-subtabs-row .tab-btn.active');
-        const isCustomTab = activeTabButton && activeTabButton.innerText.trim() === 'Свой';
+    const activeTabButton = document.querySelector('#video_motion_tabs .tab-btn.active');
+    const isCustomTab = activeTabButton && activeTabButton.innerText.trim() === 'Свой';
 
-        // 🔥 Если мы находимся во вкладке "Свой" — СРАЗУ с первого клика улетаем в меню видеостудии
-        if (isCustomTab) {
-            isMotionStyleSelected = false;
-            selectedMotionStyleName = "";
-            if (controlsBlock) controlsBlock.style.display = "none";
-            openScreen('video_menu'); // Возврат в главное меню видеостудии
-            return; // Останавливаем выполнение функции
-        }
-
-        // 2. Обычная логика возврата для готовых шаблонов видео
-        if (isMotionStyleSelected) {
-            isMotionStyleSelected = false;
-            selectedMotionStyleName = "";
-
-            // Возвращаем стандартные заголовки для галереи шаблонов
-            document.getElementById('video_motion_main_title').innerText = "Оживление по видео";
-            document.getElementById('motion_subtitle_text').innerText = "Выберите готовый шаблон для настройки:";
-
-            // Показываем обратно контейнер с кнопками-вкладками (в шаблонах при клике на видео мы его скрывали)
-            document.getElementById('motion_tabs_row').style.display = "flex";
-
-            if (controlsBlock) controlsBlock.style.display = "none"; 
-            if (presetPreviewBlock) presetPreviewBlock.style.display = "none";
-            
-            if (gallery) gallery.style.display = "block"; // Возвращаем сетку видео-карточек обратно
-
-            if (tg && tg.MainButton) tg.MainButton.hide();
-        } else {
-            // Если мы и так просто смотрели галерею шаблонов — уходим в главное меню видеостудии
-            openScreen('video_menu');
-        }
+    if (isCustomTab) {
+        isMotionStyleSelected = false;
+        selectedMotionStyleName = "";
+        if (controlsBlock) controlsBlock.style.display = "none";
+        openScreen('video_menu'); 
+        return; 
     }
+
+    if (isMotionStyleSelected) {
+        isMotionStyleSelected = false;
+        selectedMotionStyleName = "";
+
+        if (document.getElementById('video_motion_main_title')) {
+            document.getElementById('video_motion_main_title').innerText = "Оживление по видео";
+        }
+        if (document.getElementById('video_motion_subtitle')) {
+            document.getElementById('video_motion_subtitle').innerText = "Выберите готовый шаблон для настройки:";
+        }
+        if (document.getElementById('video_motion_tabs')) {
+            document.getElementById('video_motion_tabs').style.display = "flex";
+        }
+
+        if (controlsBlock) controlsBlock.style.display = "none"; 
+        if (document.getElementById('motion_preset_preview_block')) {
+            document.getElementById('motion_preset_preview_block').style.display = "none";
+        }
+        if (document.getElementById('motion_gallery_block')) {
+            document.getElementById('motion_gallery_block').style.display = "grid"; 
+        }
+
+        switchMotionTab('preset', null);
+    } else {
+        openScreen('video_menu');
+    }
+}
 
 
 // ====================================================================================
@@ -1638,40 +1647,22 @@ document.getElementById('video_motion_play_overlay').addEventListener('mouseente
 // 7. УПРАВЛЕНИЕ УНИВЕРСАЛЬНОЙ КАСТОМНОЙ ШТОРКОЙ ДЛЯ ТРЕХ ВИДЕО-РЕЖИМОВ (СИНХРОНИЗИРОВАНО)
 // ====================================================================================
 
-// ⏱️ 1. ШТОРКА ВЫБОРА ДЛИТЕЛЬНОСТИ (Для Режима 1 и Режима 3)
+// ⏱️ ШТОРКА ВЫБОРА ДЛИТЕЛЬНОСТИ (Теперь строго для Режима 1, без конфликтов с Режимом 3)
 function openUniversalDurationSheet() {
     const durationOptions = [
         { label: "⏱️ 5 секунд", value: 5, price: "2" },
         { label: "⏱️ 10 секунд", value: 10, price: "4" }
     ];
     
-    // Исправлено: правильно меняем цены внутри массива по индексам [0] и [1]
-    if (currentActiveMode === 'video_motion_control') {
-        durationOptions[0].price = "1";
-        durationOptions[1].price = "2";
-    }
-    
     openCustomSheet("ВЫБОР ДЛИТЕЛЬНОСТИ ВИДЕО", durationOptions, function(value, label) {
-        
-        // Исправлено: разделяем сохранение данных под каждый режим в свою переменную
         if (currentActiveMode === 'animate_nosound') {
             currentKlingDuration = value; // Запись для Режима 1
-        } 
-        else if (currentActiveMode === 'video_motion_control') {
-            motionGenDuration = value;    // Запись для Режима 3
-        } 
-        
-        // Синхронно находим активную капсулу на текущем экране и меняем ей текст
-        if (currentActiveMode === 'animate_nosound') {
+            
             const el = document.getElementById('btn_video_duration');
             if (el) el.innerText = label;
         } 
-        else if (currentActiveMode === 'video_motion_control') {
-            const el = document.getElementById('btn_motion_duration');
-            if (el) el.innerText = label;
-        }
         
-        // Пересчитываем цены монет на кнопках запуска START (теперь всё сработает корректно)
+        // Пересчитываем цену монет только для первого режима
         updateStartButtonsPrice();
     });
 }
@@ -1757,12 +1748,20 @@ function sendVideoSoundGenData() {
 
 // 👤 3. Отправка для Режима 3: Оживление по видео (Motion Control)
 function sendMotionControlData() {
+    if (!isMotionStyleSelected) {
+        tg.showAlert("Пожалуйста, выберите шаблон или перейдите во вкладку 'Свой'!");
+        return;
+    }
+
     if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
     
     const dataToSend = {
         mode_trigger: "video_menu",
         video_type: "motion_control", 
-        action: "start_file_waiting" // Сигнал боту: переходи к сценарию запроса фото и видео в чате
+        action: "start_file_waiting", // Сигнал боту переходить к сценарию запроса файлов
+        generation_mode: currentGenerationMode, // 'preset' или 'custom'
+        template_name: selectedMotionStyleName, // Название шаблона или "Свой референс"
+        video_url: selectedMotionVideoUrl      // Ссылка на mp4-шаблон (если выбран preset)
     };
     
     if (tg) {
@@ -1770,7 +1769,6 @@ function sendMotionControlData() {
         tg.close();
     }
 }
-
 
 
 

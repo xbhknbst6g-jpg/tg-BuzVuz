@@ -796,65 +796,65 @@ body {
         <div class="tabs-container">
             <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openScreen('video_menu')"></button>
             <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;">
-                Оживление со звуком
+                Оживление фото со звуком
             </div>
         </div>
 
         <!-- Основной блок настроек -->
         <div id="video_sound_settings_block" class="custom-prompt-container">                
-            <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">Пример готовой генерации говорящего аватара</div>
+            <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">Пример готовой генерации</div>
             
-            <!-- Ряд для карточек примера Sora-2 -->
+            <!-- Твой оригинальный компактный горизонтальный ряд для двух карточек -->
             <div class="example-preview-container" style="display: flex; flex-direction: row; gap: 15px; justify-content: center; margin: 15px auto; width: 90%; max-width: 340px;">
                 
-                <!-- Исходное фото аватара -->
+                <!-- 1. Карточка Фото-оригинала -->
                 <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;">
                     <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15); background: #000;">
                         <img src="https://postimg.cc" 
                             onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo(this.src)"
-                            style="width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer;" alt="Фото для Sora">
+                            style="width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer;" alt="Фото оригинал">
                     </div>
                     <div style="font-size: 11px; font-weight: 800; color: rgba(255, 255, 255, 0.5); text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">📸 Исходное фото</div>
                 </div>
 
-                <!-- Итоговое видео со звуком губ -->
+                <!-- 2. Карточка Видео-результата -->
                 <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;">
-                    <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #b624ff; box-shadow: 0 0 15px rgba(182, 36, 255, 0.15); background: #000;">
+                    <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
                         <video id="preview_sound_video" style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline>
                             <source src="https://imgur.com" type="video/mp4">
                         </video>
                         
                         <div id="video_sound_play_overlay" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo('https://imgur.com')" 
                             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                            <div style="background: #b624ff; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px #b624ff;">
+                            <div style="background: #ff7300; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px #ff7300;">
                                 <svg width="12" height="14" viewBox="0 0 24 28" fill="white" style="margin-left: 3px;">
                                     <path d="M4 24.5V3.5L20 14L4 24.5Z" />
                                 </svg>
                             </div>
                         </div>
                     </div>
-                    <div style="font-size: 11px; font-weight: 800; color: #b624ff; text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">🔥 Результат</div>
+                    <div style="font-size: 11px; font-weight: 800; color: #ff7300; text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">🔥 Результат</div>
                 </div>
 
             </div>
 
-            <!-- Пошаговая инструкция Sora-2 -->
+            <!-- Твоя оригинальная пошаговая инструкция под авто-формат -->
             <div style="font-size: 13px; line-height: 1.5; margin-top: 25px !important; padding: 0 5px; color: rgba(255, 255, 255, 0.6) !important;">
-                <b>Шаг 1:</b> Выберите шаг длительности видео (4/8/12/16/20 сек) кнопкой ниже.<br>
+                <b>Шаг 1:</b> Выберите длительность видео на кнопке ниже.<br>
                 <b>Шаг 2:</b> Нажмите кнопку запуска START.<br>
-                <b>Шаг 3:</b> Бот в чате попросит вас отправить фото и аудиофайл/текст для озвучки.<br>
+                <b>Шаг 3:</b> Далее в ТГ боте следуйте инструкциями<br>
             </div>
 
-            <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #b624ff, transparent); box-shadow: 0 0 10px rgba(182, 36, 255, 0.5);"></div>
+            <!-- Твой фирменный оранжевый разделитель -->
+            <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
 
             <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center; margin-bottom: 60px !important;">
-                <b>Цена генерации зависит от выбранного шага секунд (Sora-2)</b>
+                <b>Итоговая цена зависит от выбранной длительности и отображается на кнопке START</b>
             </div>
 
-            <!-- Пульт управления Режима 2 -->
+            <!-- Твой оригинальный пульт управления -->
             <div class="single-row-controls" style="display: flex; gap: 15px; align-items: flex-end; margin-top: -12px !important; position: relative; z-index: 10;">
                 <div class="control-col" style="flex: 1;">
-                    <!-- При клике открываем твою шторку, она отработает по сетке Sora-2 -->
                     <button id="btn_sora_duration" class="capsule-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openUniversalDurationSheet()">⏱️ 4 сек</button>
                 </div>
                 
@@ -865,7 +865,6 @@ body {
 
         </div>
     </div> <!-- ТУТ СТРОГО ЗАКРЫЛСЯ ВТОРОЙ РЕЖИМ -->
-
 
 <!-- ========================================== -->
 <!-- ЭКРАН 3: ОЖИВЛЕНИЕ ПО ВИДЕО (MOTION CONTROL) -->

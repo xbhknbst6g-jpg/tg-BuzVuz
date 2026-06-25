@@ -1079,53 +1079,54 @@ body {
 // ФУНКЦИИ ШТОРКИ ВЫБОРА ДЛИТЕЛЬНОСТИ
 // ====================================================================================
 
-// 1. ФУНКЦИЯ ОТКРЫТИЯ ШТОРКИ С АВТО-ПОДСТАНОВКОЙ СЕКУНД (20 СЕКУНД ВЕРНУЛИ!)
+// 🔥 ОТКРЫТИЕ ШТОРКИ ДЛИТЕЛЬНОСТИ ДЛЯ ВИДЕОСТУДИИ
 function openUniversalDurationSheet() {
-    if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light');
+    const titleEl = document.getElementById('custom_sheet_title');
+    const listEl = document.getElementById('custom_sheet_list');
+    const sheetEl = document.getElementById('custom_action_sheet');
+    if (!titleEl || !listEl || !sheetEl) return;
+
+    titleEl.innerText = "ДЛИТЕЛЬНОСТЬ ВИДЕО";
     
-    const sheet = document.getElementById('universal_duration_sheet');
-    const listContainer = document.getElementById('universal_duration_list');
-    
-    if (sheet && listContainer) {
-        // Очищаем старые кнопки перед сборкой новых
-        listContainer.innerHTML = '';
-        
-        let options = [];
-        
-        // Проверяем, какой режим сейчас активен, и берем нужные секунды
-        if (currentActiveMode === 'animate_nosound') {
-            // Сетка для 1-го режима: строго 5 и 10 сек
-            options = [
-                { sec: 5, text: '⏱️ 5 сек', label: '5 секунд', price: '2 🪙' },
-                { sec: 10, text: '⏱️ 10 сек', label: '10 секунд', price: '4 🪙' }
-            ];
-        } else if (currentActiveMode === 'animate_sound') {
-            // Сетка для 2-го режима: 4, 8, 12, 16 и 20 сек!
-            options = [
-                { sec: 4, text: '⏱️ 4 сек', label: '4 секунды', price: '3 🪙' },
-                { sec: 8, text: '⏱️ 8 сек', label: '8 секунд', price: '6 🪙' },
-                { sec: 12, text: '⏱️ 12 сек', label: '12 секунд', price: '9 🪙' },
-                { sec: 16, text: '⏱️ 16 сек', label: '16 секунд', price: '12 🪙' },
-                { sec: 20, text: '⏱️ 20 сек', label: '20 секунд', price: '15 🪙' } // 🔥 ВОТ ОНИ!
-            ];
-        }
-        
-        // Собираем кнопки из массива в твоем фирменном HTML-стиле
-        options.forEach(opt => {
-            const li = document.createElement('li');
-            li.innerHTML = `
-                <button class="custom-sheet-item" onclick="selectUniversalDuration(${opt.sec}, '${opt.text}')">
-                    <span>${opt.label}</span>
-                    <span class="coin-price">${opt.price}</span>
-                </button>
-            `;
-            listContainer.appendChild(li);
-        });
-        
-        // Включаем шторку и запускаем твою красивую CSS-анимацию выезда
-        sheet.style.display = 'block';
-        setTimeout(() => sheet.classList.add('active'), 10);
+    // Сами на лету собираем правильные кнопки в зависимости от 1-го или 2-го режима
+    if (currentActiveMode === 'animate_nosound') {
+        // Режим 1: Оживление фото (5 и 10 сек)
+        listEl.innerHTML = `
+            <li><button class="custom-sheet-item" onclick="selectDurationFromSheet(5, '⏱️ 5 сек')"><span>5 секунд</span><span class="coin-price">2 🪙</span></button></li>
+            <li><button class="custom-sheet-item" onclick="selectDurationFromSheet(10, '⏱️ 10 сек')"><span>10 секунд</span><span class="coin-price">4 🪙</span></button></li>
+        `;
+    } else if (currentActiveMode === 'animate_sound') {
+        // Режим 2: Оживление со звуком (4, 8, 12, 16, 20 сек)
+        listEl.innerHTML = `
+            <li><button class="custom-sheet-item" onclick="selectDurationFromSheet(4, '⏱️ 4 сек')"><span>4 секунды</span><span class="coin-price">3 🪙</span></button></li>
+            <li><button class="custom-sheet-item" onclick="selectDurationFromSheet(8, '⏱️ 8 сек')"><span>8 секунд</span><span class="coin-price">6 🪙</span></button></li>
+            <li><button class="custom-sheet-item" onclick="selectDurationFromSheet(12, '⏱️ 12 сек')"><span>12 секунд</span><span class="coin-price">9 🪙</span></button></li>
+            <li><button class="custom-sheet-item" onclick="selectDurationFromSheet(16, '⏱️ 16 сек')"><span>16 секунд</span><span class="coin-price">12 🪙</span></button></li>
+            <li><button class="custom-sheet-item" onclick="selectDurationFromSheet(20, '⏱️ 20 сек')"><span>20 секунд</span><span class="coin-price">15 🪙</span></button></li>
+        `;
     }
+
+    // Включаем твою рабочую шторку через класс active
+    sheetEl.classList.add('active');
+}
+
+// УМНЫЙ ОБРАБОТЧИК КЛИКА ПО СЕКУНДАМ
+function selectDurationFromSheet(seconds, text) {
+    if (currentActiveMode === 'animate_nosound') {
+        currentKlingDuration = seconds; // Меняем переменную 1-го режима
+        const btn1 = document.getElementById('btn_video_duration');
+        if (btn1) btn1.innerHTML = text;
+    } else if (currentActiveMode === 'animate_sound') {
+        currentSoraDuration = seconds;  // Меняем переменную 2-го режима
+        const btn2 = document.getElementById('btn_sora_duration');
+        if (btn2) btn2.innerHTML = text;
+    }
+    
+    // Вызываем твои системные функции обновления цены на кнопках START и закрываем шторку
+    if (typeof updateStartButtonsPrice === 'function') updateStartButtonsPrice();
+    if (typeof updateNeoStartButtonText === 'function') updateNeoStartButtonText();
+    
+    closeCustomSheet();
 }
 
 // 2. ФУНКЦИЯ ЗАКРЫТИЯ ШТОРКИ

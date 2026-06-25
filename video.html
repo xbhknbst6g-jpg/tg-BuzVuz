@@ -847,7 +847,7 @@ body {
                 </div>
                 
                 <div class="control-col-btn" style="flex: 1.5;">
-                    <button id="neo_sora_submit_btn" class="neo-start-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendSoraGenData()">Start 3 🪙</button>
+                    <button id="neo_sora_submit_btn" class="neo-start-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendVideoSoundGenData()">Start 3 🪙</button>
                 </div>
             </div>
 
@@ -1925,16 +1925,19 @@ function openUniversalVoiceSheet() {
         }
     }
 
-// 🔊 2. Отправка для Режима 2: Оживление со звуком
+// 🔊 2. Отправка для Режима 2: Оживление со звуком (ОБНОВЛЕННАЯ СЕКУНДАМИ)
 function sendVideoSoundGenData() {
     if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
+    
+    // 🔥 Берем выбранное из шторки время. Если оно еще не выбрано, ставим 4 сек по умолчанию
+    const finalDuration = typeof currentSoraDuration !== 'undefined' ? currentSoraDuration : 4;
     
     const isAudioActive = true;    
     const dataToSend = {
         mode_trigger: "video_menu",
         video_type: "pro",                    // Сигнал для ветки elif (Sora-2)
-        video_duration: 5,                    // Фиксированно 5 сек
-        chosen_ratio: soundGenRatio || "auto", // 🔥 Если переменная пустая, отправит "auto"
+        video_duration: finalDuration,        // 🔥 Теперь отправляются РЕАЛЬНЫЕ секунды!
+        chosen_ratio: soundGenRatio || "auto", // Если переменная пустая, отправит "auto"
         selected_voice: isAudioActive ? selectedVoiceId : "none", 
         cost: 3                               
     };

@@ -638,14 +638,6 @@ body {
         color: #ffffff;
     }
 
-        /* Фикс для сетки шаблонов, который вернет всё окно в центр чата на ПК */
-    .phone-presets-grid {
-        margin: 0 auto !important;
-        max-width: 100% !important;
-        box-sizing: border-box !important;
-    }
-
-
 
     </style>
 </head>
@@ -776,6 +768,9 @@ body {
             <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center; margin-bottom: 60px !important;">
                 <b>Итоговая цена зависит от выбранной длительности и отображается на кнопке START</b>
             </div>
+            <!-- 🔥 ЭТА РАСПОРКА УДЕРЖИТ ОКНО ПО ЦЕНТРУ НА ПК 🔥 -->
+            <div class="mode-spacer" style="height: calc(100vh - 470px); display: none;" id="motion_spacer"></div>
+
             <!-- 🔥 ОБНОВЛЕННЫЙ ПУЛЬТ УПРАВЛЕНИЯ РЕЖИМА 1 (Две колонки) -->
             <div class="single-row-controls" style="display: flex; gap: 15px; align-items: flex-end; margin-top: -12px !important; position: relative; z-index: 10;">
                 <!-- Колонка Длительности -->

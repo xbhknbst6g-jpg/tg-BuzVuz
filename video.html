@@ -880,8 +880,8 @@ body {
             
         <!-- 🔥 ИСПРАВЛЕНО: Убрали класс tabs-container, который ломал геометрию окна на ПК. Теперь структура чистая! -->
         <div id="video_motion_tabs" style="display: flex !important; gap: 10px !important; margin-bottom: 15px !important; padding: 0 10px;">
-            <button class="tab-btn capsule-btn active" onclick="switchMotionTab('preset', this)" style="flex: 1 !important; margin: 0 !important; font-size: 13px !important; text-transform: uppercase;">Шаблоны</button>
-            <button class="tab-btn capsule-btn" onclick="switchMotionTab('custom', this)" style="flex: 1 !important; margin: 0 !important; font-size: 13px !important; text-transform: uppercase; background: #111111 !important; color: rgba(255,255,255,0.5) !important; border: 2px solid rgba(255, 102, 0, 0.2) !important; box-shadow: none !important;">Свой</button>
+            <button class="tab-btn capsule-btn active" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); switchMotionTab('preset', this)" style="flex: 1 !important; margin: 0 !important; font-size: 13px !important; text-transform: uppercase;">Шаблоны</button>
+            <button class="tab-btn capsule-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); switchMotionTab('custom', this)" style="flex: 1 !important; margin: 0 !important; font-size: 13px !important; text-transform: uppercase; background: #111111 !important; color: rgba(255,255,255,0.5) !important; border: 2px solid rgba(255, 102, 0, 0.2) !important; box-shadow: none !important;">Свой</button>
         </div>
 
         <div class="header" style="margin-bottom: 15px; text-align: center;">
@@ -1309,11 +1309,6 @@ function submitFromModal() {
 // ====================================================================================
 function switchMotionTab(category, element) {
     if (!element) return;
-
-    // 🔥 ДОБАВЛЕНО: Железобетонный виброотклик срабатывает до тяжелой перерисовки CSS
-    if (window.Telegram?.WebApp?.HapticFeedback) {
-        Telegram.WebApp.HapticFeedback.impactOccurred('medium');
-    }
 
     const tabs = document.querySelectorAll('#video_motion_tabs .tab-btn');
     tabs.forEach(tab => {

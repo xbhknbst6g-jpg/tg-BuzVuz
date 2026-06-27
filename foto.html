@@ -1838,22 +1838,21 @@
             });
         }
 
-        // Автоматический виброотклик для всего интерфейса
+// Автоматический виброотклик для всего интерфейса (ВКЛЮЧАЯ ПУНКТЫ ВНУТРИ ШТОРКИ)
 document.addEventListener('DOMContentLoaded', () => {
-    // Проверяем, что мы внутри Telegram и haptic доступен
     const hasHaptic = window.Telegram?.WebApp?.HapticFeedback;
 
     if (hasHaptic) {
         document.addEventListener('click', (event) => {
-            // Ищем, кликнул ли юзер на кнопку, карточку, элемент шторки или кнопку назад
-            const target = event.target.closest('button, .menu-card, .phone-template-card, .custom-sheet-item, li, .back-tab-btn, .tab-btn');
+            // 🔥 ДОБАВЛЕНО: Дописали '.custom-sheet-list li' и '.custom-sheet-item', чтобы ловить клики внутри списков шторок
+            const target = event.target.closest('button, .menu-card, .phone-template-card, .custom-sheet-item, .custom-sheet-list li, li, .back-tab-btn, .tab-btn');
             
             if (target) {
                 // Если у элемента уже прописан свой haptic в HTML, не дублируем его
                 if (target.getAttribute('onclick') && target.getAttribute('onclick').includes('HapticFeedback')) {
                     return; 
                 }
-                // Выдаем четкий средний отклик на любое нажатие
+                // Выдаем четкий средний отклик
                 Telegram.WebApp.HapticFeedback.impactOccurred('medium');
             }
         });

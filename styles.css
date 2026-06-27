@@ -226,26 +226,17 @@ body {
 /* ========================================================================== */
 /* Родоначальник сетки — делает 2 колонки */
 .isolated-photo-text-grid {
-    display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 12px !important;
-    padding: 16px !important;
-    box-sizing: border-box !important;
-    width: 100% !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 12px !important;
+  padding: 16px !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
 }
-
-/* ⚠️ СЕКРЕТ ТУТ: Используем знак ">". 
-   Это заставит CSS применять пропорции 9:16 ТОЛЬКО к карточкам, 
-   которые изначально прописаны в HTML внутри этой сетки. 
-   Любые новые окна и блоки, которые JS дописывает внутрь галереи, 
-   CSS-сетка БУДЕТ ПОЛНОСТЬЮ ИГНОРИРОВАТЬ! */
 .isolated-photo-text-grid > .phone-template-card {
-    position: relative !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    aspect-ratio: 9 / 16 !important; 
-    border-radius: 12px !important; 
-    overflow: hidden !important; 
+  width: 100% !important;
+  max-width: 100% !important;
+  aspect-ratio: 9 / 16 !important;
 }
 
 .swap-steps-grid {

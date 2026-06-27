@@ -381,8 +381,14 @@ function closePreviewVideo() {
                 playerImage.src = ""; // Стираем ссылку, очищая память смартфона
             }
         }, 250); 
+        setTimeout(function() {
+            if (playerImage && modal.style.display === "none") {
+                playerImage.src = ""; 
+            }
+        }, 300);
     }
 }
+
 
 // ====================================================================================
 // 2.5 ФУНКЦИИ ВОЗВРАТА НАЗАД (СТРОГО ДВА НАШИХ РЕЖИМА)

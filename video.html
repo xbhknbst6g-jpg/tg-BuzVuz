@@ -638,6 +638,14 @@ body {
         color: #ffffff;
     }
 
+        /* Фикс для сетки шаблонов, который вернет всё окно в центр чата на ПК */
+    .phone-presets-grid {
+        margin: 0 auto !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+
 
     </style>
 </head>
@@ -941,9 +949,6 @@ body {
                 </div>
             </div>
         </div>
-
-        <!-- Твой рабочий 1px фиксатор потока верстки -->
-        <div style="clear: both; display: block; width: 100%; height: 1px;"></div>
 
     </div> <!-- Намертво закрыли экран -->
     

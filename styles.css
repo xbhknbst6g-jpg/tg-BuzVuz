@@ -952,3 +952,21 @@ body {
     transform: scale(0.95) !important;
 }
 
+/* ========================================================================== */
+/* Фикс для блока настроек первого экрана */
+/* ========================================================================== */
+#text_image_settings_block {
+    width: 100% !important;
+    display: none; /* JS сам переключит на block при клике */
+    box-sizing: border-box !important;
+}
+
+/* Защита картинки превью внутри блока настроек */
+#text_image_large_preview {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 9 / 16 !important; /* Удерживаем формат 9:16 для превью */
+    object-fit: cover !important;
+    border-radius: 12px !important;
+}

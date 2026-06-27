@@ -873,9 +873,9 @@
             <div id="custom_instruction_text" class="custom-prompt-container" style="display: none; margin-bottom: 15px;">
                 <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Как работает режим:</div>
                 <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.4;">
-                    Шаг 1: Настройте формат и качество кадра внизу.<br>
-                    Шаг 2: Нажмите кнопку START.<br>
-                    Шаг 3: Бот в чате Telegram попросит вас отправить селфи и написать ваш текст задумки!
+                    <b style="color: #ffffff;">Шаг 1:</b> Настройте формат и качество кадра внизу.<br>
+                    <b style="color: #ffffff;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
+                    <b style="color: #ffffff;">Шаг 3:</b> Следуйте дальнейшим указаниям бота!
                 </div>
             </div>
 
@@ -953,9 +953,9 @@
 
                 <!-- 🔥 УВЕЛИЧИЛИ ОТСТУП СВЕРХУ ДО 40px -->
                 <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
-                    Шаг 1: Настройте формат кадра и качество генерации на кнопках внизу.<br>
-                    Шаг 2: Нажмите огненную кнопку START.<br>
-                    Шаг 3: Веб-сайт закроется, и бот в чате Telegram по очереди попросит вас отправить сначала ваше Селфи, а затем Шаблон для замены лица!
+                    <b style="color: #ffffff;">Шаг 1:</b> Настройте формат и качество кадра внизу.<br>
+                    <b style="color: #ffffff;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
+                    <b style="color: #ffffff;">Шаг 3:</b> Следуйте дальнейшим указаниям бота!
                 </div>
 
             </div>
@@ -1014,9 +1014,9 @@
 
                 <!-- ИНСТРУКЦИЯ (Увеличен отступ до 40px) -->
                 <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
-                    Шаг 1: Настройте формат кадра и качество генерации на кнопках внизу.<br>
-                    Шаг 2: Нажмите огненную кнопку START.<br>
-                    Шаг 3: Веб-сайт закроется, и бот в чате Telegram по очереди попросит вас отправить сначала ваше фото (в полный рост), а затем картинку Одежды или человека в ней, чтобы примерить вещь на себя!
+                    <b style="color: #ffffff;">Шаг 1:</b> Настройте формат и качество кадра внизу.<br>
+                    <b style="color: #ffffff;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
+                    <b style="color: #ffffff;">Шаг 3:</b> Следуйте дальнейшим указаниям бота!
                 </div>
 
             </div>
@@ -1088,9 +1088,9 @@
 
                 <!-- 🔥 ИНСТРУКЦИЯ (Увеличен отступ сверху до 40px) -->
                 <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
-                    Шаг 1: Настройте формат кадра и качество генерации на кнопках внизу.<br>
-                    Шаг 2: Нажмите огненную кнопку START.<br>
-                    Шаг 3: Веб-сайт закроется, и бот в чате Telegram попросит вас сначала отправить фото, а затем написать текстом, какой фон вы хотите получить!
+                    <b style="color: #ffffff;">Шаг 1:</b> Настройте формат и качество кадра внизу.<br>
+                    <b style="color: #ffffff;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
+                    <b style="color: #ffffff;">Шаг 3:</b> Следуйте дальнейшим указаниям бота!
                 </div>
 
             </div>
@@ -1539,10 +1539,6 @@
 
         // ОТКРЫТИЕ ШТОРКИ КАЧЕСТВА ДЛЯ ЛЮБОГО АКТИВНОГО ЭКРАНА
         function openUniversalQualitySheet() {
-            // 🔥 ДОБАВЛЯЕМ СЮДА: Железобетонный виброотклик при выборе качества
-            if (window.Telegram?.WebApp?.HapticFeedback) {
-                Telegram.WebApp.HapticFeedback.impactOccurred('medium');
-            }
             const titleEl = document.getElementById('custom_sheet_title');
             const listEl = document.getElementById('custom_sheet_list');
             if (!titleEl || !listEl) return;

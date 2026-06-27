@@ -865,22 +865,46 @@ body {
 }
 
 /* ========================================================================== */
-/* 🔥 СЕТКА ДЛЯ ПРЕСЕТОВ И СТИЛЕЙ ГЕНЕРАЦИИ (СТРОГО 2 КОЛОНКИ 9:16)          */
+/* 🔥 СЕТКА ДЛЯ ПРЕСЕТОВ И СТИЛЕЙ ГЕНЕРАЦИИ (УНИВЕРСАЛЬНАЯ ЗАЩИТА 9:16)      */
 /* ========================================================================== */
+.phone-templates-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important; /* Ровно 2 колонки */
+    gap: 12px !important; /* Зазор между карточками */
+    margin: 15px 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* 🔥 ИСПРАВЛЕНО: Теперь ЛЮБОЙ элемент внутри сетки намертво зажмется в 9:16 и получит кант */
+.phone-templates-grid > *,
 .phone-templates-grid .phone-template-card {
     position: relative !important;
-    aspect-ratio: 9 / 16 !important; /* Вертикальные пропорции смартфона */
+    aspect-ratio: 9 / 16 !important; /* Твои любимые вытянутые вертикальные карточки */
     border-radius: 12px !important;
     overflow: hidden !important;
     display: block !important;
     width: 100% !important;
-    background-color: #111424 !important;    
+    background-color: #111424 !important;
+    box-sizing: border-box !important;
+    
+    /* НАШ ФИРМЕННЫЙ ОРАНЖЕВЫЙ НЕОНОВЫЙ КАНТ С СВЕЧЕНИЕМ */
     border: 1px solid #ff7300 !important;
     box-shadow: 0 0 15px rgba(255, 115, 0, 0.35) !important;
+    transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease !important;
 }
 
-/* Мягкое сжатие и усиление свечения при тапе по стилю */
-.phone-templates-grid .phone-template-card:active {
+/* Принудительно заставляем картинку или видео внутри занять 100% пространства */
+.phone-templates-grid > * img,
+.phone-templates-grid > * video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important; /* Картинка заполняет рамку без черных дыр */
+    display: block !important;
+}
+
+/* Эффект при нажатии на карточку */
+.phone-templates-grid > *:active {
     transform: scale(0.96) !important;
     box-shadow: 0 0 25px rgba(255, 115, 0, 0.6) !important;
     border-color: #ff1e00 !important;

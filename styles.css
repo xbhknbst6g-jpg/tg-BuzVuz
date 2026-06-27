@@ -283,7 +283,7 @@ body {
 }
 
 /* ========================================================================== */
-/* 💊 КРУГЛЫЕ КНОПКИ-КАПСУЛЫ (ОРАНЖЕВАЯ КИБЕРПАНК-ЗАЛИВКА ДЛЯ ПАРАМЕТРОВ)       */
+/* 💊 КРУГЛЫЕ КНОПКИ-КАПСУЛЫ (ТЁМНЫЙ СТИЛЬНЫЙ ДИЗАЙН ПАРАМЕТРОВ)              */
 /* ========================================================================== */
 .capsule-btn {
     -webkit-appearance: none !important; 
@@ -297,12 +297,14 @@ body {
     display: flex !important; 
     align-items: center !important; 
     justify-content: center !important; 
-    gap: 4px !important;    
-    background-color: #ff6600 !important; 
-    border: 2px solid #ff1e00 !important;     
+    gap: 4px !important;
+    
+    /* 🔥 ИСПРАВЛЕНО: Тёмный фон и тонкий кант, чтобы параметры не сливались со START */
+    background-color: #111111 !important; 
+    border: 2px solid rgba(255, 102, 0, 0.3) !important;     
     color: #ffffff !important;            
-    box-shadow: 0 4px 12px rgba(255, 30, 0, 0.25) !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) !important;
+    box-shadow: none !important;
+    
     border-radius: 30px !important; 
     cursor: pointer;
     white-space: nowrap !important;
@@ -316,9 +318,8 @@ body {
 /* Аккуратный отклик при нажатии на параметр */
 .capsule-btn:active {
     transform: scale(0.96) !important;
-    background-color: #e65c00 !important; 
-    border-color: #e61b00 !important;
-    box-shadow: 0 2px 8px rgba(255, 30, 0, 0.4) !important;
+    background-color: rgba(255, 102, 0, 0.15) !important; 
+    border-color: #ff6600 !important;
 }
 
 /* ========================================================================== */
@@ -406,19 +407,17 @@ body {
 /* ========================================== */
 .video-modal {
     display: none; 
-    position: fixed !important; 
-    top: 0 !important; 
-    left: 0 !important; 
-    right: 0 !important;
-    bottom: 0 !important;
-    width: 100vw !important; /* На всю ширину вьюпорта */
-    height: 100vh !important; /* На всю высоту вьюпорта */
-    background: rgba(0, 0, 0, 0.85) !important; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85); 
     backdrop-filter: blur(10px); /* Матовое размытие интерфейса сзади */
-    -webkit-backdrop-filter: blur(10px);    
-    z-index: 999999 !important; 
-    align-items: center !important; 
-    justify-content: center !important;
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 2000; 
+    align-items: center; 
+    justify-content: center;
     animation: fadeIn 0.25s ease-out; /* Плавное появление плеера */
 }
 
@@ -867,19 +866,18 @@ body {
 }
 
 /* ========================================================================== */
-/* 🔥 СЕТКА ДЛЯ ПРЕСЕТОВ И СТИЛЕЙ ГЕНЕРАЦИИ (УНИВЕРСАЛЬНАЯ ЗАЩИТА 9:16)      */
+/* 🔥 СЕТКА ДЛЯ ПРЕСЕТОВ И СТИЛЕЙ ГЕНЕРАЦИИ (СТРОГО 2 КОЛОНКИ 9:16)          */
 /* ========================================================================== */
 .phone-templates-grid {
     display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important; /* Ровно 2 колонки */
-    gap: 12px !important; /* Зазор между карточками */
+    grid-template-columns: repeat(2, 1fr) !important; /* Намертво делим экран на 2 ровные колонки */
+    gap: 12px !important; /* Аккуратный зазор между карточками */
     margin: 15px 0 !important;
     width: 100% !important;
     box-sizing: border-box !important;
 }
 
-/* 🔥 ИСПРАВЛЕНО: Теперь ЛЮБОЙ элемент внутри сетки намертво зажмется в 9:16 и получит кант */
-.phone-templates-grid > *,
+/* Принудительно заставляем карточки внутри этой сетки вытянуться в 9:16 */
 .phone-templates-grid .phone-template-card {
     position: relative !important;
     aspect-ratio: 9 / 16 !important; /* Твои любимые вытянутые вертикальные карточки */
@@ -887,27 +885,5 @@ body {
     overflow: hidden !important;
     display: block !important;
     width: 100% !important;
-    background-color: #111424 !important;
-    box-sizing: border-box !important;
-    
-    /* НАШ ФИРМЕННЫЙ ОРАНЖЕВЫЙ НЕОНОВЫЙ КАНТ С СВЕЧЕНИЕМ */
-    border: 1px solid #ff7300 !important;
-    box-shadow: 0 0 15px rgba(255, 115, 0, 0.35) !important;
-    transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease !important;
 }
 
-/* Принудительно заставляем картинку или видео внутри занять 100% пространства */
-.phone-templates-grid > * img,
-.phone-templates-grid > * video {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important; /* Картинка заполняет рамку без черных дыр */
-    display: block !important;
-}
-
-/* Эффект при нажатии на карточку */
-.phone-templates-grid > *:active {
-    transform: scale(0.96) !important;
-    box-shadow: 0 0 25px rgba(255, 115, 0, 0.6) !important;
-    border-color: #ff1e00 !important;
-}

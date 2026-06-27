@@ -864,3 +864,30 @@ body {
     transform: scale(0.95) !important;
 }
 
+/* ========================================================================== */
+/* 🔥 СЕТКА ДЛЯ ПРЕСЕТОВ И СТИЛЕЙ ГЕНЕРАЦИИ (ТОЛЬКО 2 КОЛОНКИ БЕЗ ХАКОВ)     */
+/* ========================================================================== */
+.phone-templates-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important; /* Делим экран ровно на 2 колонки */
+    gap: 12px !important; /* Красивый зазор между карточками */
+    margin: 15px 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+/* 🔥 БЕЗОПАСНЫЙ ОРАНЖЕВЫЙ НЕОН ДЛЯ КАРТОЧЕК ГАЛЕРЕИ */
+.phone-templates-grid > * {
+    /* Твой фирменный оранжевый кант с сочным неоновым свечением */
+    border: 1.5px solid #ff7300 !important;
+    box-shadow: 0 0 12px rgba(255, 115, 0, 0.3) !important;
+    border-radius: 12px !important;
+    box-sizing: border-box !important;
+    transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+/* Эффект усиления неона и мягкого сжатия при нажатии пальцем на пресет */
+.phone-templates-grid > *:active {
+    transform: scale(0.96) !important;
+    border-color: #ff1e00 !important;
+    box-shadow: 0 0 20px rgba(255, 115, 0, 0.55) !important;
+}

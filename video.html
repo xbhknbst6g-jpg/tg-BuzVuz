@@ -903,8 +903,8 @@ body {
             </div>
         </div>
 
-        <!-- ШАГ 2: БЛОК НАСТРОЕК -->
-        <div id="motion_controls_block" style="display: none; width: 100%;">
+        <!-- ШАГ 2: БЛОК НАСТРОЕК (Исправлен сдвиг окна на ПК) -->
+        <div id="motion_controls_block" style="display: block; visibility: hidden; opacity: 0; height: 0; width: 100%;">
             
             <!-- 1. ИНСТРУКЦИЯ ДЛЯ ВКЛАДКИ "СВОЙ" -->
             <div id="motion_custom_instruction" class="custom-prompt-container" style="display: none; margin-bottom: 15px; padding: 10px 8px;">
@@ -1331,7 +1331,7 @@ function switchMotionTab(category, element) {
     const presetPreviewBlock = document.getElementById('motion_preset_preview_block');
     const spacer = document.getElementById('motion_spacer');
 
-    // 4. ЧИСТАЯ ЛОГИКА ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ
+    // 4. ЛОГИКА ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ
     if (category === 'custom') {
         currentGenerationMode = 'custom'; 
         isMotionStyleSelected = true;  
@@ -1342,14 +1342,19 @@ function switchMotionTab(category, element) {
         if (subtitle) subtitle.style.display = 'none';
 
         if (gallery) gallery.style.display = 'none';                  
-        if (controlsBlock) controlsBlock.style.display = 'block';         
         if (customInstruction) customInstruction.style.display = 'block';   
         if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';  
         
-        // Наглухо выключаем пустую распорку, она нам больше не нужна
+        // Включаем блок настроек и делаем его видимым
+        if (controlsBlock) {
+            controlsBlock.style.setProperty('display', 'block', 'important');
+            controlsBlock.style.setProperty('visibility', 'visible', 'important');
+            controlsBlock.style.setProperty('opacity', '1', 'important');
+            controlsBlock.style.setProperty('height', 'auto', 'important');
+        }
+        
         if (spacer) spacer.style.display = 'none';   
         
-        // 🔥 НАПРЯМУЮ МЕНЯЕМ ОТСТУП У КНОПОК: Поднимаем кнопку START повыше во вкладке "Свой"
         const controlsPanel = document.querySelector('#video_motion_control .single-row-controls');
         if (controlsPanel) {
             controlsPanel.style.setProperty('margin-top', '35px', 'important');
@@ -1362,10 +1367,17 @@ function switchMotionTab(category, element) {
         if (subtitle) subtitle.style.display = 'block';
 
         if (gallery) gallery.style.display = 'grid';                  
-        if (controlsBlock) controlsBlock.style.display = 'none';            
+        
+        // 🔥 ВМЕСТО display='none' ДЕЛАЕМ КРАСИВОЕ СКРЫТИЕ ДЛЯ ИСПРАВЛЕНИЯ СДВИГА ОКНА НА ПК
+        if (controlsBlock) {
+            controlsBlock.style.setProperty('display', 'block', 'important');
+            controlsBlock.style.setProperty('visibility', 'hidden', 'important'); 
+            controlsBlock.style.setProperty('opacity', '0', 'important');
+            controlsBlock.style.setProperty('height', '0', 'important'); 
+        }
+        
         if (spacer) spacer.style.display = 'none';     
         
-        // 🔥 ВОЗВРАЩАЕМ СТАНДАРТНЫЙ ОТСТУП ДЛЯ ШАБЛОНОВ (чтобы дизайн не съехал в галерее)
         const controlsPanel = document.querySelector('#video_motion_control .single-row-controls');
         if (controlsPanel) {
             controlsPanel.style.setProperty('margin-top', '55px', 'important');
@@ -1431,6 +1443,7 @@ function selectMotionTemplate(styleName, videoUrl, duration) {
 // ====================================================================================
 function handleMotionBackClick() {
     const gallery = document.getElementById('motion_gallery_block');
+    const controlsBlock = document.getElementById('motion_controls_block');
     
     // Если мы зашли внутрь настроек шаблона — возвращаемся обратно к списку шаблонов
     if (currentGenerationMode === 'preset' && gallery && gallery.style.display === 'none') {
@@ -1439,13 +1452,20 @@ function handleMotionBackClick() {
         document.getElementById('video_motion_subtitle').innerText = "Выберите готовый шаблон для настройки:";
         
         gallery.style.display = 'grid';
-        document.getElementById('motion_controls_block').style.display = 'none';
+        
+        // 🔥 ИСПРАВЛЕНО: Вместо display = 'none' скрываем красиво, удерживая каркас окна на ПК
+        if (controlsBlock) {
+            controlsBlock.style.setProperty('display', 'block', 'important');
+            controlsBlock.style.setProperty('visibility', 'hidden', 'important'); 
+            controlsBlock.style.setProperty('opacity', '0', 'important');
+            controlsBlock.style.setProperty('height', '0', 'important'); 
+        }
     } else {
-        // Если мы в корне вкладки — возвращаем в главное меню видеостудии (как в твоих первых двух режимах)
+        // Если мы в корне вкладки — возвращаем в главное меню видеостудии
         if (typeof openScreen === 'function') {
             openScreen('video_menu'); 
         } else {
-            tg.close(); // Дефолтный фоллбэк, если роутер называется иначе
+            tg.close(); 
         }
     }
 }

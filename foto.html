@@ -123,33 +123,47 @@
             <p id="text_image_subtitle" style="font-size: 13px; margin: 4px 0 0 0; color: var(--tg-theme-hint-color, #666);">Выберите желаемый стиль для настройки:</p>
         </div>
 
-        <!-- ДАЛЬШЕ ТВОЙ ШАГ 1 (ГАЛЕРЕЯ КАРТОЧЕК) БЕЗ ИЗМЕНЕНИЙ! -->
+        <!-- 🔥 НАШ ШАГ 1 (ГАЛЕРЕЯ КАРТОЧЕК) С ДВОЙНЫМ КЛИКОМ КАК В РИСОВАНИИ -->
         <div class="isolated-photo-text-grid" id="text_image_gallery">
-            <div class="phone-template-card" data-category="women" onclick="selectTextImageStyle('Outside the cityе', 'https://i.postimg.cc/cHRZDY1c/sai-t.jpg')">
+            
+            <!-- Карточка 1 -->
+            <div class="phone-template-card" data-category="women" onclick="selectTextImageStyle('Outside the cityе', 'https://i.postimg.cc/cHRZDY1c/sai-t.jpg'); Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo('https://i.postimg.cc/cHRZDY1c/sai-t.jpg')">
                 <img src="https://i.postimg.cc/cHRZDY1c/sai-t.jpg" alt="Outside the cityе">
-                <div class="card-overlay">Outside the cityе</div>
+                <div class="card-overlay" style="pointer-events: none;">Outside the cityе</div>
             </div>
-            <div class="phone-template-card" data-category="men" onclick="selectTextImageStyle('The Dark Soul', 'https://i.postimg.cc/W4DLvXqk/02.pngc')">
-                <img src="https://i.postimg.cc/W4DLvXqk/02.pngc" alt="The Dark Soul">
-                <div class="card-overlay">The Dark Soul</div>
+
+            <!-- Карточка 2 -->
+            <div class="phone-template-card" data-category="men" onclick="selectTextImageStyle('The Dark Soul', 'https://i.postimg.cc/W4DLvXqk/02.png'); Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo('https://i.postimg.cc/W4DLvXqk/02.png')">
+                <img src="https://i.postimg.cc/W4DLvXqk/02.png" alt="The Dark Soul">
+                <div class="card-overlay" style="pointer-events: none;">The Dark Soul</div>
             </div>
-            <div class="phone-template-card" data-category="men" onclick="selectTextImageStyle('On sports', 'https://i.postimg.cc/W4DLvXqk/02.png')">
+
+            <!-- Карточка 3 -->
+            <div class="phone-template-card" data-category="men" onclick="selectTextImageStyle('On sports', 'https://i.postimg.cc/W4DLvXqk/02.png'); Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo('https://i.postimg.cc/W4DLvXqk/02.png')">
                 <img src="https://i.postimg.cc/W4DLvXqk/02.png" alt="On sports">
-                <div class="card-overlay">On sports</div>
+                <div class="card-overlay" style="pointer-events: none;">On sports</div>
             </div>
-            <div class="phone-template-card" data-category="women" onclick="selectTextImageStyle('In the centre', 'https://i.postimg.cc/cHRZDY1c/sai-t.jpg')">
+
+            <!-- Карточка 4 -->
+            <div class="phone-template-card" data-category="women" onclick="selectTextImageStyle('In the centre', 'https://i.postimg.cc/cHRZDY1c/sai-t.jpg'); Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo('https://i.postimg.cc/cHRZDY1c/sai-t.jpg')">
                 <img src="https://i.postimg.cc/cHRZDY1c/sai-t.jpg" alt="In the centre">
-                <div class="card-overlay">In the centre</div>
+                <div class="card-overlay" style="pointer-events: none;">In the centre</div>
             </div>
-            <div class="phone-template-card" data-category="common" onclick="selectTextImageStyle('Group Style', 'https://i.postimg.cc/FH5y1J8S/5844728862795828808.jpg', 2)">
+
+            <!-- Карточка 5 -->
+            <div class="phone-template-card" data-category="common" onclick="selectTextImageStyle('Group Style', 'https://i.postimg.cc/FH5y1J8S/5844728862795828808.jpg', 2); Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo('https://i.postimg.cc/FH5y1J8S/5844728862795828808.jpg')">
                 <img src="https://i.postimg.cc/FH5y1J8S/5844728862795828808.jpg" alt="Group Style">
-                <div class="card-overlay">Family Vibe (2 чел.)</div>
+                <div class="card-overlay" style="pointer-events: none;">Family Vibe (2 чел.)</div>
             </div>
-            <div class="phone-template-card" data-category="kids" onclick="selectTextImageStyle('Evening vibe', 'https://i.postimg.cc/L8D378Qf/GEM3Nqu-I43e3gq-Wz5j-Ol-E-L2YT0AJ8.png')">
+
+            <!-- Карточка 6 -->
+            <div class="phone-template-card" data-category="kids" onclick="selectTextImageStyle('Evening vibe', 'https://i.postimg.cc/L8D378Qf/GEM3Nqu-I43e3gq-Wz5j-Ol-E-L2YT0AJ8.png'); Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo('https://i.postimg.cc/L8D378Qf/GEM3Nqu-I43e3gq-Wz5j-Ol-E-L2YT0AJ8.png')">
                 <img src="https://i.postimg.cc/L8D378Qf/GEM3Nqu-I43e3gq-Wz5j-Ol-E-L2YT0AJ8.png" alt="Evening vibe">
-                <div class="card-overlay">Evening vibe</div>
+                <div class="card-overlay" style="pointer-events: none;">Evening vibe</div>
             </div>
+
         </div>
+
 
 
         <!-- ШАГ 2: БЛОК НАСТРОЕК (Полностью разделенный) -->

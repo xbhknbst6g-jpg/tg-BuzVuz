@@ -865,7 +865,7 @@ body {
 <!-- ========================================== -->
 <!-- ЭКРАН 3: ОЖИВЛЕНИЕ ПО ВИДЕО (MOTION CONTROL) -->
 <!-- ========================================== -->
-    <div id="video_motion_control" class="screen">
+    <div id="video_motion_control" class="screen" style="width: 100%; max-width: 100%; margin: 0 auto; box-sizing: border-box;">
 
         <!-- Фирменный контейнер вкладок с кнопкой назад -->
         <div class="tabs-container">
@@ -875,49 +875,46 @@ body {
             </div>
         </div>
             
-       <!-- Вкладки 3-го режима: обе используют твой готовый capsule-btn, чтобы форма не ломалась -->
+        <!-- Вкладки 3-го режима -->
         <div class="tabs-container" id="video_motion_tabs" style="display: flex !important; gap: 10px !important; margin-bottom: 15px !important; border-bottom: none !important;">
             <button class="tab-btn capsule-btn active" onclick="switchMotionTab('preset', this)" style="flex: 1 !important; margin: 0 !important; font-size: 13px !important; text-transform: uppercase;">Шаблоны</button>
             <button class="tab-btn capsule-btn" onclick="switchMotionTab('custom', this)" style="flex: 1 !important; margin: 0 !important; font-size: 13px !important; text-transform: uppercase; background: #111111 !important; color: rgba(255,255,255,0.5) !important; border: 2px solid rgba(255, 102, 0, 0.2) !important; box-shadow: none !important;">Свой</button>
         </div>
 
-
         <div class="header" style="margin-bottom: 15px; text-align: center;">
             <p id="video_motion_subtitle" style="font-size: 13px; margin: 4px 0 0 0; color: rgba(255,255,255,0.6);">Выберите готовый шаблон для настройки:</p>
         </div>
 
-        <!-- ШАГ 1: ГАЛЕРЕЯ АККУРАТНЫХ КАРТОЧКЕК (Показывается по умолчанию) -->
-        <div class="phone-presets-grid" id="motion_gallery_block" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 10px; margin: 0 auto 15px auto; max-width: 100%; box-sizing: border-box;">
-
-            <!-- Карточка 1 (Оптимизирована для моментального запуска видео на телефонах) -->
+        <!-- ШАГ 1: ГАЛЕРЕЯ АККУРАТНЫХ КАРТОЧКЕК -->
+        <div class="phone-presets-grid" id="motion_gallery_block" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 10px; margin-bottom: 15px; width: 100%; box-sizing: border-box;">
+            
+            <!-- Карточка 1 -->
             <div class="phone-template-card" onclick="selectMotionTemplate('Outside the city', 'https://i.imgur.com/2mcdE9J.mp4', 5)" style="position: relative; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15); background: #000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer;">
                 <video src="https://i.imgur.com/2mcdE9J.mp4" style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay preload="auto"></video>          
                 <div class="card-overlay" style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 8px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: #fff; font-size: 11px; font-weight: bold; text-align: center;">Outside the city</div>
             </div>
 
-            
-            <!-- 🔥 Карточка 2 (УБРАЛИ ЛИШНИЙ ПАРАМЕТР ИЗ SKOBOK) -->
+            <!-- Карточка 2 -->
             <div class="phone-template-card" onclick="selectMotionTemplate('The Dark Soul', 'https://i.imgur.com/h6370oz.mp4', 5)" style="position: relative; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15); background: #000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer;">
                 <video style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay preload="auto">
                     <source src="https://i.imgur.com/h6370oz.mp4" type="video/mp4">
                 </video>
                 <div class="card-overlay" style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 8px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: #fff; font-size: 11px; font-weight: bold; text-align: center;">The Dark Soul</div>
             </div>
-
-
         </div>
 
-        <!-- ШАГ 2: БЛОК НАСТРОЕК (Изначально скрыт, как в твоем примере!) -->
-        <div id="motion_controls_block" style="display: none;">
+        <!-- ШАГ 2: БЛОК НАСТРОЕК -->
+        <div id="motion_controls_block" style="display: none; width: 100%;">
             
             <!-- 1. ИНСТРУКЦИЯ ДЛЯ ВКЛАДКИ "СВОЙ" -->
             <div id="motion_custom_instruction" class="custom-prompt-container" style="display: none; margin-bottom: 15px; padding: 10px 8px;">
                 <div style="font-size: 13px; color: rgba(255, 255, 255, 0.6); line-height: 1.5;">
-                    <b style="color: #ffffff;">Шаг 1:</b> Подготовте фотографию для оживления и пример (видеоролик)с которого ИИ скопирует движения для фото.<br>
+                    <b style="color: #ffffff;">Шаг 1:</b> Подготовьте фотографию для оживления и пример (видеоролик), с которого ИИ скопирует движения для фото.<br>
                     <b style="color: #ffffff;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
                     <b style="color: #ffffff;">Шаг 3:</b> Следуйте дальнейшим указаниям бота!
                 </div>
             </div>
+
             <!-- Твой фирменный оранжевый разделитель -->
             <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
 
@@ -925,7 +922,7 @@ body {
                 <b>Честная посекундная оплата. Точная стоимость генерации зависит от финальной длительности ролика и отобразится перед запуском</b>
             </div>
 
-            <!-- 2. КОНТЕЙНЕР ДЛЯ ПРЕВЬЮ ШАБЛОНОВ (9:16 видео вместо картинки) -->
+            <!-- 2. КОНТЕЙНЕР ДЛЯ ПРЕВЬЮ ШАБЛОНОВ -->
             <div id="motion_preset_preview_block" style="display: none; justify-content: center; margin-bottom: 15px;">
                 <div class="text-image-compact-preview" style="width: 45%; max-width: 150px; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; background: #000;">
                     <video id="motion_large_preview_video" style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay>
@@ -933,7 +930,7 @@ body {
                     </video>
                 </div>
             </div>
-            <!-- НИЖНЯЯ ПЛАШКА С КНОПКАМИ  -->
+            <!-- НИЖНЯЯ ПЛАШКА С КНОПКАМИ -->
             <div class="single-row-controls">
                 <div class="control-col control-col-btn" style="flex: 1.5;">
                     <button id="neo_motion_submit_btn" class="neo-start-btn" style="width: 100%;" onclick="sendMotionControlData()">
@@ -941,10 +938,9 @@ body {
                     </button>
                 </div>
             </div>
-
         </div>
-    </div>
 
+    </div> <!-- СТРОГО ЗАКРЫЛИ ЭКРАН "video_motion_control" -->
 
 
 <!-- ========================================== -->

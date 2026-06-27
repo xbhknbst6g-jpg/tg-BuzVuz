@@ -1065,26 +1065,25 @@
                 <!-- 🔥 ИДЕАЛЬНО СИММЕТРИЧНЫЙ КОНТЕЙНЕР -->
                 <div class="swap-steps-grid" style="display: flex !important; justify-content: center !important; gap: 24px !important; width: 100%; box-sizing: border-box; padding: 0 10px;">
                     
-                    <!-- Карточка 1: Исходное фото -->
-                    <div style="flex: 1; max-width: 125px; text-align: center; display: flex; flex-direction: column; align-items: center;">
-                        <div class="phone-template-card" style="width: 100%;">
-                            <img src="https://i.postimg.cc/t7GbBDxL/itog-smeny-odezdy.jpg" alt="1. Исходное фото" style="width: 100%; display: block;">
-                        </div>
-                        <!-- Вынесли подпись под карточку: теперь она никогда не скроется! -->
-                        <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 6px; white-space: nowrap;">1. Исходное фото</div>
+                   <!-- Карточка 1: Исходное фото -->
+                <div style="flex: 1; max-width: 125px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                    <div class="phone-template-card" style="width: 100%;">
+                        <!-- 🔥 ИСПРАВЛЕНО: Добавили высоту 100% и object-fit: cover, чтобы картинка не схлопывалась -->
+                        <img src="https://i.postimg.cc/t7GbBDxL/itog-smeny-odezdy.jpg" alt="1. Исходное фото" style="width: 100%; height: 100% !important; object-fit: cover !important; display: block;">
                     </div>
-                    
-                    <!-- Карточка 2: Результат -->
-                    <div style="flex: 1; max-width: 125px; text-align: center; display: flex; flex-direction: column; align-items: center;">
-                        <div class="phone-template-card" style="width: 100%; border: 2px solid #ff1e00 !important;">
-                            <img src="https://i.postimg.cc/x1j67KTC/5860519473268330113.jpg" alt="2. Результат" style="width: 100%; display: block;">
-                        </div>
-                        <!-- Вынесли подпись под карточку: теперь она никогда не скроется! -->
-                        <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 6px; white-space: nowrap;">2. Результат 🔥</div>
-                    </div>
-
+                    <!-- Вынесли подпись под карточку -->
+                    <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 6px; white-space: nowrap;">1. Исходное фото</div>
                 </div>
 
+                <!-- Карточка 2: Результат -->
+                <div style="flex: 1; max-width: 125px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                    <div class="phone-template-card" style="width: 100%; border: 2px solid #ff1e00 !important;">
+                        <!-- 🔥 ИСПРАВЛЕНО: Добавили высоту 100% и object-fit: cover -->
+                        <img src="https://i.postimg.cc/x1j67KTC/5860519473268330113.jpg" alt="2. Результат" style="width: 100%; height: 100% !important; object-fit: cover !important; display: block;">
+                    </div>
+                    <!-- Вынесли подпись под карточку -->
+                    <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 6px; white-space: nowrap;">2. Результат 🔥</div>
+                </div>
 
                 <!-- 🔥 ИНСТРУКЦИЯ (Увеличен отступ сверху до 40px) -->
                 <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">

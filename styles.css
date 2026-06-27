@@ -185,6 +185,18 @@ body {
   box-sizing: border-box !important;
   width: 100% !important;
 }
+/* Фикс для карточек, чтобы они всегда оставались элементами сетки */
+.phone-templates-grid .phone-template-card {
+    display: block !important; /* Или flex, смотря как у вас JS включает карточки */
+    width: 100% !important;
+}
+
+/* Принудительно заставляем сетку перебивать любые стили контейнера */
+#text_image_gallery {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+}
+
 
 .swap-steps-grid {
     display: grid !important;

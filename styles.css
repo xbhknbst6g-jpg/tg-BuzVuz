@@ -180,6 +180,7 @@ body {
     display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important; 
     gap: 8px !important; 
+    padding: 16px !important;
     margin-bottom: 25px !important;
     width: 100% !important;
     box-sizing: border-box !important;

@@ -331,16 +331,22 @@
         align-items: center !important;
         overflow: hidden !important;
         border-radius: 16px !important;
-        background: #000000 !important; /* Черная подложка, если пропорции фото не на весь экран */
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+        background: #000000 !important; /* Черная подложка */
         box-sizing: border-box !important;
+
+        /* 🔥 ДОБАВЛЕНО: ТВОЙ ФИРМЕННЫЙ ОРАНЖЕВЫЙ НЕОНОВЫЙ КАНТ С СВЕЧЕНИЕМ */
+        border: 1px solid #ff7300 !important;
+        box-shadow: 0 0 15px rgba(255, 115, 0, 0.35) !important;
     }
 
     /* Сама картинка внутри контейнера */
     .text-image-compact-preview img {
         width: 100% !important;
         height: 100% !important;
-        object-fit: contain !important; /* Картинка полностью помещается без обрезки голов и ног */
+        
+        /* 🔥 ИСПРАВЛЕНО: Меняем contain на cover, чтобы фото аккуратно сидело внутри рамки без щелей */
+        object-fit: cover !important; 
+        
         display: block !important;
     }
 

@@ -186,8 +186,11 @@ body {
     box-sizing: border-box !important;
 }
 
+/* Сама карточка — жестко задает пропорции 9:16 для всех сеток */
 .phone-template-card {
     position: relative !important;
+    width: 100% !important;        /* Добавили: чтобы сжималась в сетке на 3 картинки */
+    max-width: 100% !important;    /* Добавили: защита от растягивания */
     aspect-ratio: 9 / 16 !important; 
     border-radius: 12px !important; 
     overflow: hidden !important; 
@@ -196,12 +199,18 @@ body {
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    
+    /* Обновленный благородный оранжевый кант (менее едкий) */
+    border: 2px solid #FF6A00 !important; 
+    box-sizing: border-box !important;   /* Добавили: чтобы рамка не ломала размер */
 }
 
+/* Эффект при нажатии на карточку на телефоне */
 .phone-template-card:active { 
     transform: scale(0.96) !important; 
 }
 
+/* Картинка и Видео внутри карточки */
 .phone-template-card img,
 .phone-template-card video {
     width: 100% !important;
@@ -210,6 +219,7 @@ body {
     display: block !important;
 }
 
+/* Плавная тёмная подложка внизу карточки под текст */
 .phone-template-card::after {
     content: "" !important;
     position: absolute !important;
@@ -218,6 +228,26 @@ body {
     background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent) !important; 
     pointer-events: none !important; 
     z-index: 1 !important;
+}
+
+/* Стили для текста поверх картинки */
+.card-overlay {
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    color: #ffffff !important;
+    padding: 10px !important;
+    font-size: 13px !important;
+    text-align: center !important;
+    font-weight: bold !important;
+    z-index: 2 !important; /* Добавили: чтобы текст был строго поверх подложки ::after */
+}
+
+/* Уменьшаем шрифт текста ТОЛЬКО для узких карточек (3 в ряд) в Face Swap */
+.swap-steps-grid .card-overlay {
+    font-size: 10px !important;
+    padding: 6px 4px !important;
 }
 
 /* ========================================================================== */
@@ -865,47 +895,3 @@ body {
     transform: scale(0.95) !important;
 }
 
-/* ========================================================================== */
-/* Родоначальник сетки — делает 2 колонки */
-/* ========================================================================== */
-.phone-templates-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Ровно две колонки */
-  gap: 12px;                             /* Расстояние между карточками */
-  padding: 16px;                         /* Отступы от краев экрана Telegram */
-  box-sizing: border-box;
-  width: 100%;
-}
-
-/* Сама карточка — задает пропорции 9:16 */
-.phone-template-card {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 9 / 16;                  /* Жестко держит формат 9:16 */
-  border-radius: 12px;                   /* Красивое скругление углов */
-  overflow: hidden;                      /* Прячет лишнее, если картинка вылезает */
-  cursor: pointer;
-  border: 2px solid #FF5500;
-  box-sizing: border-box; 
-}
-
-/* Картинка внутри карточки */
-.phone-template-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;                     /* Заполняет всю карточку без искажений */
-  display: block;
-}
-
-/* Стили для текста поверх картинки (черное размытие снизу) */
-.card-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
-  color: #fff;
-  padding: 10px;
-  font-size: 14px;
-  text-align: center;
-}

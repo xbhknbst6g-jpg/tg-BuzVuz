@@ -928,10 +928,9 @@ body {
 
             <!-- 2. КОНТЕЙНЕР ДЛЯ ПРЕВЬЮ ШАБЛОНОВ -->
             <div id="motion_preset_preview_block" style="display: none; justify-content: center; margin-bottom: 15px;">
-                <div class="text-image-compact-preview" style="width: 45%; max-width: 150px; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; background: #000;">
-                    <video id="motion_large_preview_video" style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay>
-                        <source src="" type="video/mp4">
-                    </video>
+                <video id="motion_large_preview_video" style="width: 100%; height: 100%; object-fit: cover; display: block; cursor: zoom-in;" loop muted playsinline autoplay onclick="openPreviewVideo(this.src || this.currentSrc || (this.querySelector('source') ? this.querySelector('source').src : ''))">
+                    <source src="" type="video/mp4">
+                </video>
                 </div>
             </div>
 
@@ -1209,7 +1208,7 @@ function openPreviewVideo(mediaUrl) {
     const urlLower = mediaUrl.toLowerCase();
     
     // Проверяем тип медиафайла
-    if (urlLower.includes('.mp4') || urlLower.includes('video') || urlLower.includes('mixkit')) {
+    if (urlLower.includes('.mp4') || urlLower.includes('video') || urlLower.includes('mixkit') || urlLower.includes('.mov') || urlLower.includes('.webm')) {
         // Включаем видео-режим
         if (playerImage) {
             playerImage.style.display = "none";
@@ -1565,6 +1564,28 @@ function selectMotionTemplate(styleName, videoUrl, duration) {
     selectedMotionVideoUrl = videoUrl;
     motionGenDuration = duration || 5;
 
+    // --- СТАБИЛЬНЫЙ ПЕРЕХОД НА ШАГ 2 ПОД МОДАЛКОЙ ---
+    // Скрываем галерею шаблонов и ее заголовок
+    const galleryBlock = document.getElementById('motion_gallery_block');
+    const subtitle = document.getElementById('video_motion_subtitle');
+    if (galleryBlock) galleryBlock.style.display = 'none';
+    if (subtitle) subtitle.style.display = 'none';
+    
+    // Показываем блок настроек и превью на Шаге 2 (чтобы они были видны, когда закроется плеер)
+    const controlsBlock = document.getElementById('motion_controls_block');
+    const presetPreviewBlock = document.getElementById('motion_preset_preview_block');
+    if (controlsBlock) controlsBlock.style.display = 'block';
+    if (presetPreviewBlock) presetPreviewBlock.style.display = 'flex';
+
+    // Обновляем источник у маленького видео-превью на Шаге 2
+    const compactVideo = document.getElementById('motion_large_preview_video');
+    if (compactVideo) {
+        compactVideo.src = videoUrl;
+        compactVideo.load();
+    }
+    // --------------------------------------------------
+
+    // Открытие полноэкранной модалки (Твой оригинальный код без изменений)
     const modal = document.getElementById('videoPlayerModal');
     const videoPlayer = document.getElementById('previewVideoPlayer');
     const imagePlayer = document.getElementById('previewImagePlayer');
@@ -1583,7 +1604,7 @@ function selectMotionTemplate(styleName, videoUrl, duration) {
         videoPlayer.src = videoUrl;
         if (muteBtn) muteBtn.innerHTML = "🔊 Включить звук";
 
-        modal.style.display = 'block';
+        modal.style.display = 'flex'; // Поставил flex для лучшего центрирования, как в openPreviewVideo
         modal.classList.add('active'); 
         if (controlsPanel) controlsPanel.style.display = 'flex';
 

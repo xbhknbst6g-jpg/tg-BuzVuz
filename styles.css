@@ -226,17 +226,28 @@ body {
 /* ========================================================================== */
 /* Родоначальник сетки — делает 2 колонки */
 .isolated-photo-text-grid {
-  display: grid !important;
-  grid-template-columns: repeat(2, 1fr) !important;
-  gap: 12px !important;
-  padding: 16px !important;
-  box-sizing: border-box !important;
-  width: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+    padding: 16px !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
 }
+
+/* ⚠️ СЕКРЕТ ТУТ: Если JS скрывает галерею (меняет стиль), 
+   мы принудительно убираем свойства Grid-сетки, чтобы она не мешала блоку настроек! */
+.isolated-photo-text-grid[style*="display: none"] {
+    display: none !important;
+}
+
+/* Принудительно держим 9:16 только для карточек внутри этой сетки */
 .isolated-photo-text-grid > .phone-template-card {
-  width: 100% !important;
-  max-width: 100% !important;
-  aspect-ratio: 9 / 16 !important;
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    aspect-ratio: 9 / 16 !important; 
+    border-radius: 12px !important; 
+    overflow: hidden !important; 
 }
 
 .swap-steps-grid {
@@ -952,21 +963,3 @@ body {
     transform: scale(0.95) !important;
 }
 
-/* ========================================================================== */
-/* Фикс для блока настроек первого экрана */
-/* ========================================================================== */
-#text_image_settings_block {
-    width: 100% !important;
-    display: none; /* JS сам переключит на block при клике */
-    box-sizing: border-box !important;
-}
-
-/* Защита картинки превью внутри блока настроек */
-#text_image_large_preview {
-    width: 100% !important;
-    max-width: 100% !important;
-    height: auto !important;
-    aspect-ratio: 9 / 16 !important; /* Удерживаем формат 9:16 для превью */
-    object-fit: cover !important;
-    border-radius: 12px !important;
-}

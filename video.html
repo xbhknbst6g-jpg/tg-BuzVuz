@@ -737,6 +737,7 @@ body {
                     </div>
                     <div style="font-size: 11px; font-weight: 800; color: rgba(255, 255, 255, 0.5); text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">📸 Исходное фото</div>
                 </div>
+                
                 <!-- 2. Карточка Видео-результата (Правая сторона) -->
                 <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;">
                     <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
@@ -768,20 +769,19 @@ body {
             <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center; margin-bottom: 60px !important;">
                 <b>Итоговая цена зависит от выбранной длительности и отображается на кнопке START</b>
             </div>
-            <!-- 🔥 ЭТА РАСПОРКА УДЕРЖИТ ОКНО ПО ЦЕНТРУ НА ПК 🔥 -->
-            <div class="mode-spacer" style="height: calc(100vh - 470px); display: none;" id="motion_spacer"></div>
+            
+            <!-- 🔥 УНИКАЛЬНЫЙ ID ДЛЯ РАСПОРКИ РЕЖИМА 1 🔥 -->
+            <div class="mode-spacer" style="height: calc(100vh - 470px); display: none;" id="nosound_spacer"></div>
 
             <!-- 🔥 ОБНОВЛЕННЫЙ ПУЛЬТ УПРАВЛЕНИЯ РЕЖИМА 1 (Две колонки) -->
             <div class="single-row-controls" style="display: flex; gap: 15px; align-items: flex-end; margin-top: -12px !important; position: relative; z-index: 10;">
                 <!-- Колонка Длительности -->
                 <div class="control-col" style="flex: 1;">
-                    <div class="control-label"></div>
                     <button id="btn_video_duration" class="capsule-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openUniversalDurationSheet()">⏱️ 5 сек</button>
                 </div>
                 
                 <!-- Кнопка запуска -->
                 <div class="control-col-btn" style="flex: 1.5;">
-                    <div class="control-label"></div>
                     <button id="neo_video_submit_btn" class="neo-start-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendVideoGenData()">Start 2 🪙</button>
                 </div>
             </div>
@@ -811,7 +811,7 @@ body {
                 
                 <!-- 1. Карточка Фото-оригинала -->
                 <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;">
-                    <!-- 🔥 Рамка фото на втором экране тоже загорелась оранжевым неон-стилем -->
+                    <!-- 🔥 Оранжевая неоновая рамка (как в оригинале) -->
                     <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
                         <img src="https://i.postimg.cc/Kv5FrNzq/b-Lx-N-n-XBzkt-Aah-Ej-Tr-YFf.png" 
                             onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo(this.src)"
@@ -822,12 +822,12 @@ body {
 
                 <!-- 2. Карточка Видео-результата -->
                 <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;">
+                    <!-- 🔥 Оранжевая неоновая рамка -->
                     <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
                         <video id="preview_sound_video" style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay>
                             <source src="https://i.imgur.com/Q6GrKyK.mp4" type="video/mp4">
                         </video>
 
-                        
                         <div id="video_sound_play_overlay" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo('https://i.imgur.com/Q6GrKyK.mp4')" 
                             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; cursor: pointer;">
                         </div>
@@ -844,12 +844,15 @@ body {
                 <b>Шаг 3:</b> Далее в ТГ боте следуйте инструкциями<br>
             </div>
 
-            <!-- Твой фирменный оранжевый разделитель -->
+            <!-- 🔥 Фирменный оранжевый разделитель -->
             <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
 
             <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center; margin-bottom: 60px !important;">
                 <b>Итоговая цена зависит от выбранной длительности и отображается на кнопке START</b>
             </div>
+
+            <!-- 🔥 ДОБАВЛЕНО: РАСПОРКА ДЛЯ ВТОРОГО РЕЖИМА (Связана с JS функцией openScreen) -->
+            <div class="mode-spacer" style="height: calc(100vh - 470px); display: none;" id="sound_spacer"></div>
 
             <!-- Твой оригинальный пульт управления -->
             <div class="single-row-controls" style="display: flex; gap: 15px; align-items: flex-end; margin-top: -12px !important; position: relative; z-index: 10;">
@@ -863,8 +866,8 @@ body {
             </div>
 
         </div>
-    </div> <!-- ТУТ СТРОГО ЗАКРЫЛСЯ ВТОРОЙ РЕЖИМ -->
-
+    </div>
+    
 <!-- ========================================== -->
 <!-- ЭКРАН 3: ОЖИВЛЕНИЕ ПО ВИДЕО (MOTION CONTROL) -->
 <!-- ========================================== -->
@@ -872,23 +875,24 @@ body {
 
         <!-- Фирменный контейнер вкладок с кнопкой назад -->
         <div class="tabs-container">
-            <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); handleMotionBackClick()"></button>
+            <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openScreen('video_menu')"></button>
             <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;" id="video_motion_main_title">
                 Создание видео
             </div>
         </div>
             
-        <!-- 🔥 ИСПРАВЛЕНО: Убрали класс tabs-container, который ломал геометрию окна на ПК. Теперь структура чистая! -->
+        <!-- Переключатель вкладок -->
         <div id="video_motion_tabs" style="display: flex !important; gap: 10px !important; margin-bottom: 15px !important; padding: 0 10px;">
-            <button class="tab-btn capsule-btn active" onclick="switchMotionTab('preset', this)" style="flex: 1 !important; margin: 0 !important; font-size: 13px !important; text-transform: uppercase;">Шаблоны</button>
-            <button class="tab-btn capsule-btn" onclick="switchMotionTab('custom', this)" style="flex: 1 !important; margin: 0 !important; font-size: 13px !important; text-transform: uppercase; background: #111111 !important; color: rgba(255,255,255,0.5) !important; border: 2px solid rgba(255, 102, 0, 0.2) !important; box-shadow: none !important;">Свой</button>
+            <button class="tab-btn capsule-btn active" id="tab_motion_preset" onclick="switchMotionTab('preset', this)" style="flex: 1 !important; margin: 0 !important; font-size: 13px !important; text-transform: uppercase;">Шаблоны</button>
+            <button class="tab-btn capsule-btn" id="tab_motion_custom" onclick="switchMotionTab('custom', this)" style="flex: 1 !important; margin: 0 !important; font-size: 13px !important; text-transform: uppercase; background: #111111 !important; color: rgba(255,255,255,0.5) !important; border: 2px solid rgba(255, 102, 0, 0.2) !important; box-shadow: none !important;">Свой</button>
         </div>
 
-        <div class="header" style="margin-bottom: 15px; text-align: center;">
+        <!-- Подзаголовок для галереи -->
+        <div class="header" id="video_motion_header_subtitle" style="margin-bottom: 15px; text-align: center;">
             <p id="video_motion_subtitle" style="font-size: 13px; margin: 4px 0 0 0; color: rgba(255,255,255,0.6);">Выберите готовый шаблон для настройки:</p>
         </div>
 
-        <!-- ШАГ 1: ГАЛЕРЕЯ АККУРАТНЫХ КАРТОЧКЕК -->
+        <!-- ШАГ 1: ГАЛЕРЕЯ ШАБЛОНОВ (Для вкладки "Шаблоны") -->
         <div class="phone-presets-grid" id="motion_gallery_block" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 10px; margin-bottom: 15px;">
             
             <!-- Карточка 1 -->
@@ -907,11 +911,11 @@ body {
 
         </div>
 
-        <!-- ШАГ 2: БЛОК НАСТРОЕК (Твой оригинальный скрытый блок) -->
+        <!-- ШАГ 2: БЛОК ДЛЯ ВКЛАДКИ "СВОЙ" (Показывается только когда переключили вкладку) -->
         <div id="motion_controls_block" style="display: none; width: 100%;">
             
-            <!-- 1. ИНСТРУКЦИЯ ДЛЯ ВКЛАДКИ "СВОЙ" -->
-            <div id="motion_custom_instruction" class="custom-prompt-container" style="display: none; margin-bottom: 15px; padding: 10px 8px;">
+            <!-- Инструкция для режима "Свой" -->
+            <div id="motion_custom_instruction" class="custom-prompt-container" style="margin-bottom: 15px; padding: 10px 8px;">
                 <div style="font-size: 13px; color: rgba(255, 255, 255, 0.6); line-height: 1.5;">
                     <b style="color: #ffffff;">Шаг 1:</b> Подготовьте фотографию для оживления и пример (видеоролик), с которого ИИ скопирует движения для фото.<br>
                     <b style="color: #ffffff;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
@@ -919,34 +923,28 @@ body {
                 </div>
             </div>
 
-            <!-- Твой фирменный оранжевый разделитель -->
+            <!-- Линия-разделитель (Оранжевый неон) -->
             <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
 
             <div style="font-size: 15px; line-height: 1.5; padding: 0 5px; text-align: center; margin-bottom: 60px !important;">
                 <b>Честная посекундная оплата. Точная стоимость генерации зависит от финальной длительности ролика и отобразится перед запуском</b>
             </div>
 
-            <!-- 2. КОНТЕЙНЕР ДЛЯ ПРЕВЬЮ ШАБЛОНОВ -->
-            <div id="motion_preset_preview_block" style="display: none; justify-content: center; margin-bottom: 15px;">
-                <div class="text-image-compact-preview" style="width: 45%; max-width: 150px; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; background: #000;">
-                    <video id="motion_large_preview_video" style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay>
-                        <source src="" type="video/mp4">
-                    </video>
-                </div>
-            </div>
+            <!-- Распорка для ПК -->
+            <div class="mode-spacer" style="height: calc(100vh - 470px); display: none;" id="motion_spacer"></div>
 
-            <!-- НИЖНЯЯ ПЛАШКА С КНОПКАМИ -->
-            <div class="single-row-controls">
+            <!-- Пульт запуска для режима "СВОЙ" -->
+            <div class="single-row-controls" style="padding: 0 10px; position: relative; z-index: 10;">
                 <div class="control-col control-col-btn" style="flex: 1.5;">
                     <button id="neo_motion_submit_btn" class="neo-start-btn" style="width: 100%;" onclick="sendMotionControlData()">
                         Start 3 🪙
                     </button>
                 </div>
             </div>
-        </div>
+        </div> 
 
     </div> <!-- Намертво закрыли экран -->
-    
+        
 
 <!-- ========================================== -->
 <!-- ПОЛНОЭКРАННЫЙ ПЛЕЕР ПРЕВЬЮ (УНИВЕРСАЛЬНЫЙ) -->
@@ -975,7 +973,7 @@ body {
                 </button>
                 <!-- Твоя неоновая кнопка запуска -->
                 <button class="neo-start-btn" style="width: 100% !important; padding: 12px 4px !important; font-size: 14px !important; margin: 0 !important;" onclick="submitFromModal()">
-                    Сгенерировать 3 🪙
+                    Start 3 🪙
                 </button>
             </div>
             
@@ -1332,6 +1330,7 @@ function switchMotionTab(category, element) {
     const customInstruction = document.getElementById('motion_custom_instruction');
     const presetPreviewBlock = document.getElementById('motion_preset_preview_block');
     const spacer = document.getElementById('motion_spacer');
+    const subtitle = document.getElementById('video_motion_subtitle');
 
     if (category === 'custom') {
         currentGenerationMode = 'custom'; 
@@ -1339,14 +1338,11 @@ function switchMotionTab(category, element) {
         selectedMotionStyleName = "Свой референс";
         selectedMotionVideoUrl = "";
 
-        const subtitle = document.getElementById('video_motion_subtitle');
         if (subtitle) subtitle.style.display = 'none';
-
         if (gallery) gallery.style.display = 'none';                  
         if (controlsBlock) controlsBlock.style.display = 'block';         
         if (customInstruction) customInstruction.style.display = 'block';   
         if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';  
-        
         if (spacer) spacer.style.display = 'none';   
         
         const controlsPanel = document.querySelector('#video_motion_control .single-row-controls');
@@ -1357,10 +1353,12 @@ function switchMotionTab(category, element) {
         currentGenerationMode = 'preset'; 
         isMotionStyleSelected = false; 
 
-        const subtitle = document.getElementById('video_motion_subtitle');
         if (subtitle) subtitle.style.display = 'block';
-
         if (gallery) gallery.style.display = 'grid';                  
+        
+        // 🔥 ИСПРАВЛЕНО: Скрываем только инструкцию, а блок настроекcontrolsBlock переключаем в зависимости от того, выбран ли шаблон
+        if (customInstruction) customInstruction.style.display = 'none';
+        if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';  
         if (controlsBlock) controlsBlock.style.display = 'none';            
         if (spacer) spacer.style.display = 'none';     
         
@@ -1753,6 +1751,25 @@ function openScreen(screenName) {
             video2.currentTime = 0; // Сбрасываем на начало
             video2.play().catch(e => console.log("Автозапуск ожидает клика 2:", e));
         }
+    }
+
+    // 🔥 ИСПРАВЛЕНО: УПРАВЛЕНИЕ РАСПОРКАМИ ДЛЯ РАЗНЫХ РЕЖИМОВ
+    // Сначала скрываем распорки на всех трех экранах
+    const nsSpacer = document.getElementById('nosound_spacer');
+    const sSpacer = document.getElementById('sound_spacer'); // проверь, чтобы во 2-м режиме в HTML стоял этот ID
+    const mSpacer = document.getElementById('motion_spacer'); // проверь, чтобы в 3-м режиме в HTML стоял этот ID
+
+    if (nsSpacer) nsSpacer.style.display = 'none';
+    if (sSpacer) sSpacer.style.display = 'none';
+    if (mSpacer) mSpacer.style.display = 'none';
+
+    // Включаем нужную распорку в зависимости от выбранного экрана (если интерфейс на ПК)
+    if (screenName === 'animate_nosound' && nsSpacer) {
+        nsSpacer.style.display = 'block'; 
+    } else if (screenName === 'animate_sound' && sSpacer) {
+        sSpacer.style.display = 'block';
+    } else if (screenName === 'video_motion_control' && mSpacer) {
+        mSpacer.style.display = 'block';
     }
 }
 

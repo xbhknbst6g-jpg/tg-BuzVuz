@@ -1582,9 +1582,10 @@ function selectMotionTemplate(styleName, videoUrl, duration) {
         
         videoPlayer.src = videoUrl;
         if (muteBtn) muteBtn.innerHTML = "🔊 Включить звук";
-
-        modal.style.display = 'block';
-        modal.classList.add('active'); 
+        modal.style.display = 'flex';
+        setTimeout(() => {
+            modal.classList.add('active'); 
+        }, 10);
         if (controlsPanel) controlsPanel.style.display = 'flex';
 
         videoPlayer.load();

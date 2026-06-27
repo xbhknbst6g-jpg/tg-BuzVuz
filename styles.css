@@ -540,33 +540,41 @@ body {
 
 
 /* ПОЛНОЭКРАННЫЙ СТИЛЬНЫЙ МОБИЛЬНЫЙ ПЛЕЕР ПРЕВЬЮ */
-        .video-modal {
-            display: none; 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85); 
-            backdrop-filter: blur(10px); /* Матовое размытие интерфейса сзади */
-            -webkit-backdrop-filter: blur(10px);
-            z-index: 2000; 
-            align-items: center; 
-            justify-content: center;
-            animation: fadeIn 0.25s ease-out; /* Плавное появление плеера */
-        }
+    .video-modal {
+        display: none; 
+        position: fixed; 
+        top: 0; 
+        left: 0; 
+        width: 100%; 
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85); 
+        backdrop-filter: blur(10px); /* Матовое размытие интерфейса сзади */
+        -webkit-backdrop-filter: blur(10px);
+        z-index: 2000; 
+        align-items: center; 
+        justify-content: center;
+        animation: fadeIn 0.25s ease-out; /* Плавное появление плеера */
+    }
 
-        .video-modal-content { 
-            position: relative; 
-            width: 90%; 
-            max-width: 400px; 
-            aspect-ratio: 9 / 16; 
-            background: #111116; 
-            border-radius: 16px; 
-            overflow: hidden; 
-            border: 1px solid rgba(255, 115, 0, 0.3); /* Фирменная неоновая обводка */
-            box-shadow: 0 0 30px rgba(255, 115, 0, 0.15); /* Мягкое оранжевое свечение */
-        }
+    /* 🔥 ДОБАВЛЕНО: Гарантирует, что при добавлении класса active модалка ВСЕГДА будет flex, а не block */
+    .video-modal.active {
+        display: flex !important;
+    }
+
+    .video-modal-content { 
+        position: relative; 
+        width: 90%; 
+        max-width: 400px; 
+        aspect-ratio: 9 / 16; 
+        background: #111116; 
+        border-radius: 16px; 
+        overflow: hidden; 
+        border: 1px solid rgba(255, 115, 0, 0.3); /* Фирменная неоновая обводка */
+        box-shadow: 0 0 30px rgba(255, 115, 0, 0.15); /* Мягкое оранжевое свечение */
+        
+        /* 🔥 ДОБАВЛЕНО: Автоматические отступы намертво зажмут рамку по центру экрана на ПК */
+        margin: auto !important;
+    }
 
         .video-modal-content video { 
             width: 100%; 

@@ -283,7 +283,7 @@ body {
 }
 
 /* ========================================================================== */
-/* 💊 КРУГЛЫЕ КНОПКИ-КАПСУЛЫ (ТЁМНЫЙ СТИЛЬНЫЙ ДИЗАЙН ПАРАМЕТРОВ)              */
+/* 💊 КРУГЛЫЕ КНОПКИ-КАПСУЛЫ (ОРАНЖЕВАЯ КИБЕРПАНК-ЗАЛИВКА ДЛЯ ПАРАМЕТРОВ)       */
 /* ========================================================================== */
 .capsule-btn {
     -webkit-appearance: none !important; 
@@ -297,14 +297,12 @@ body {
     display: flex !important; 
     align-items: center !important; 
     justify-content: center !important; 
-    gap: 4px !important;
-    
-    /* 🔥 ИСПРАВЛЕНО: Тёмный фон и тонкий кант, чтобы параметры не сливались со START */
-    background-color: #111111 !important; 
-    border: 2px solid rgba(255, 102, 0, 0.3) !important;     
+    gap: 4px !important;    
+    background-color: #ff6600 !important; 
+    border: 2px solid #ff1e00 !important;     
     color: #ffffff !important;            
-    box-shadow: none !important;
-    
+    box-shadow: 0 4px 12px rgba(255, 30, 0, 0.25) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) !important;
     border-radius: 30px !important; 
     cursor: pointer;
     white-space: nowrap !important;
@@ -318,8 +316,9 @@ body {
 /* Аккуратный отклик при нажатии на параметр */
 .capsule-btn:active {
     transform: scale(0.96) !important;
-    background-color: rgba(255, 102, 0, 0.15) !important; 
-    border-color: #ff6600 !important;
+    background-color: #e65c00 !important; 
+    border-color: #e61b00 !important;
+    box-shadow: 0 2px 8px rgba(255, 30, 0, 0.4) !important;
 }
 
 /* ========================================================================== */

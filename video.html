@@ -638,12 +638,22 @@ body {
         color: #ffffff;
     }
 
-    /* Фикс центрирования для третьего режима на десктопе */
+/* Ровно центрируем сам экран бота на ПК для отображения окна в 3 режиме с видио по центру */
     #video_motion_control {
         margin-left: auto !important;
         margin-right: auto !important;
         left: 0 !important;
         right: 0 !important;
+    }
+
+    /* Идеально центрируем окно всплывающего плеера на ПК */
+    #videoPlayerModal {
+        margin-left: auto !important;
+        margin-right: auto !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 440px !important; /* Здесь укажите стандартную ширину вашего WebApp, если она отличается */
     }
 
 

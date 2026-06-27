@@ -172,10 +172,10 @@ body {
     display: none !important; 
 }
 
-/* ========================================================================== */
-/* 1. Сетка для 2 картинок в ряд (Фото+Текст) */
-/* ========================================================================== */
 
+/* ========================================================================== */
+/* РЕЖИМ 1: СЕТКА НА 2 КОЛОНКИ (Обычные режимы, Фото+Текст) */
+/* ========================================================================== */
 .phone-templates-grid {
   display: grid !important;
   grid-template-columns: repeat(2, 1fr) !important;
@@ -185,26 +185,111 @@ body {
   width: 100% !important;
 }
 
-/* 2. Сетка для Face Swap на 3 картинки в ряд */
-.swap-steps-grid {
-  display: grid !important;
-  grid-template-columns: repeat(3, 1fr) !important; 
-  gap: 8px !important; 
-  padding: 0 16px !important; 
-  margin-bottom: 25px !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
+.phone-template-card {
+    position: relative !important;
+    width: 100% !important;
+    aspect-ratio: 9 / 16 !important; 
+    border-radius: 12px !important; 
+    overflow: hidden !important; 
+    background-color: #111424 !important;
+    animation: neonPulse 4s infinite ease-in-out;
+    cursor: pointer;
+    border: 2px solid #FF5500 !important; /* Старый яркий оранжевый */
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* 3. Задаем пропорции 9:16 КАРТОЧКАМ ТОЛЬКО ТОГДА, КОГДА ОНИ ВНУТРИ СЕТОК */
-.phone-templates-grid .phone-template-card,
-.swap-steps-grid .phone-template-card {
-  position: relative !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  aspect-ratio: 9 / 16 !important; 
-  border-radius: 12px !important; 
-  overflow: hidden !important; 
+.phone-template-card:active { 
+    transform: scale(0.96) !important; 
+}
+
+.phone-template-card img,
+.phone-template-card video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+}
+
+.phone-template-card::after {
+    content: "" !important;
+    position: absolute !important;
+    bottom: 0 !important; left: 0 !important; right: 0 !important;
+    height: 45px !important; 
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent) !important; 
+    pointer-events: none !important; 
+    z-index: 1 !important;
+}
+
+/* ========================================================================== */
+/* РЕЖИМ 2: СЕТКА НА 3 КОЛОНКИ (Новый Face Swap) */
+/* ========================================================================== */
+.swap-steps-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important; 
+    gap: 8px !important; 
+    padding: 0 16px !important;
+    margin-bottom: 25px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.swap-template-card {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    aspect-ratio: 9 / 16 !important; 
+    border-radius: 12px !important; 
+    overflow: hidden !important; 
+    background-color: #111424 !important;
+    animation: neonPulse 4s infinite ease-in-out;
+    cursor: pointer;
+    border: 2px solid #FF6A00 !important; /* Мягкий благородный оранжевый */
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box !important;
+}
+
+.swap-template-card:active { 
+    transform: scale(0.96) !important; 
+}
+
+.swap-template-card img,
+.swap-template-card video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+}
+
+.swap-template-card::after {
+    content: "" !important;
+    position: absolute !important;
+    bottom: 0 !important; left: 0 !important; right: 0 !important;
+    height: 45px !important; 
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent) !important; 
+    pointer-events: none !important; 
+    z-index: 1 !important;
+}
+
+/* ========================================================================== */
+/* ОБЩИЕ СТИЛИ ДЛЯ ТЕКСТА (Для обеих сеток) */
+/* ========================================================================== */
+.card-overlay {
+    position: absolute !important;
+    bottom: 0 !important; left: 0 !important; right: 0 !important;
+    color: #ffffff !important;
+    padding: 10px !important;
+    font-size: 13px !important;
+    text-align: center !important;
+    font-weight: bold !important;
+    z-index: 2 !important; /* Текст ложится поверх тени */
+}
+
+/* Уменьшаем текст только внутри тройной сетки, чтобы не вылезал */
+.swap-steps-grid .card-overlay {
+    font-size: 10px !important;
+    padding: 6px 4px !important;
 }
 
 /* ========================================================================== */

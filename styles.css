@@ -176,6 +176,16 @@ body {
 /* ========================================================================== */
 /* СЕТКА И КАРТОЧКИ ШАБЛОНОВ (9:16 ДЛЯ ВСЕХ РЕЖИМОВ ) */
 /* ========================================================================== */
+/*  сетка на 2 колонки для обычных режимов */
+.phone-templates-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important; /* Ровно две колонки */
+  gap: 12px !important;                             /* Расстояние между карточками */
+  padding: 16px !important;                         /* Отступы от краев экрана Telegram */
+  box-sizing: border-box !important;
+  width: 100% !important;
+}
+
 .swap-steps-grid {
     display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important; 

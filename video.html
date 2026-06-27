@@ -869,14 +869,14 @@ body {
 
         <!-- Фирменный контейнер вкладок с кнопкой назад -->
         <div class="tabs-container">
-            <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openScreen('video_menu')"></button>
-            <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;">
+            <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); handleMotionBackClick()"></button>
+            <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;" id="video_motion_main_title">
                 Создание видео
             </div>
         </div>
             
-        <!-- Вкладки 3-го режима -->
-        <div id="video_motion_tabs" style="display: flex !important; gap: 10px !important; margin-bottom: 15px !important; border-bottom: none !important;">
+        <!-- 🔥 ИСПРАВЛЕНО: Убрали класс tabs-container, который ломал геометрию окна на ПК. Теперь структура чистая! -->
+        <div id="video_motion_tabs" style="display: flex !important; gap: 10px !important; margin-bottom: 15px !important; padding: 0 10px;">
             <button class="tab-btn capsule-btn active" onclick="switchMotionTab('preset', this)" style="flex: 1 !important; margin: 0 !important; font-size: 13px !important; text-transform: uppercase;">Шаблоны</button>
             <button class="tab-btn capsule-btn" onclick="switchMotionTab('custom', this)" style="flex: 1 !important; margin: 0 !important; font-size: 13px !important; text-transform: uppercase; background: #111111 !important; color: rgba(255,255,255,0.5) !important; border: 2px solid rgba(255, 102, 0, 0.2) !important; box-shadow: none !important;">Свой</button>
         </div>
@@ -886,7 +886,7 @@ body {
         </div>
 
         <!-- ШАГ 1: ГАЛЕРЕЯ АККУРАТНЫХ КАРТОЧКЕК -->
-        <div class="phone-presets-grid" id="motion_gallery_block" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 10px; margin-bottom: 15px; width: 100%; box-sizing: border-box;">
+        <div class="phone-presets-grid" id="motion_gallery_block" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 10px; margin-bottom: 15px;">
             
             <!-- Карточка 1 -->
             <div class="phone-template-card" onclick="selectMotionTemplate('Outside the city', 'https://i.imgur.com/2mcdE9J.mp4', 5)" style="position: relative; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15); background: #000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer;">
@@ -901,9 +901,10 @@ body {
                 </video>
                 <div class="card-overlay" style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 8px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: #fff; font-size: 11px; font-weight: bold; text-align: center;">The Dark Soul</div>
             </div>
+
         </div>
 
-        <!-- ШАГ 2: БЛОК НАСТРОЕК -->
+        <!-- ШАГ 2: БЛОК НАСТРОЕК (Твой оригинальный скрытый блок) -->
         <div id="motion_controls_block" style="display: none; width: 100%;">
             
             <!-- 1. ИНСТРУКЦИЯ ДЛЯ ВКЛАДКИ "СВОЙ" -->
@@ -940,10 +941,12 @@ body {
                 </div>
             </div>
         </div>
+
+        <!-- Твой рабочий 1px фиксатор потока верстки -->
         <div style="clear: both; display: block; width: 100%; height: 1px;"></div>
 
-    </div> <!-- СТРОГО ЗАКРЫЛИ ЭКРАН "video_motion_control" -->
-
+    </div> <!-- Намертво закрыли экран -->
+    
 
 <!-- ========================================== -->
 <!-- ПОЛНОЭКРАННЫЙ ПЛЕЕР ПРЕВЬЮ (УНИВЕРСАЛЬНЫЙ) -->

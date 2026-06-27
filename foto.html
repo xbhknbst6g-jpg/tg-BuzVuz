@@ -218,7 +218,8 @@
         
        <!-- ЛЕНТА ВЕРХУШКИ С НАШЕЙ КРУГЛОЙ КНОПКОЙ НАЗАД (Добавили стили и position: relative) -->
         <div class="tabs-container" id="swap_tabs" style="display: flex; align-items: center; padding: 5px 0; position: relative;">
-            <button class="back-tab-btn" onclick="handleSwapBackClick()"></button>            
+            <button class="back-tab-btn" onclick="handleSwapBackClick()"></button>  
+            <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;"></div>          
             <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%; position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 1; pointer-events: none;">Настройка Face Swap</div>
         </div>
         <!-- СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (Изначально полностью скрыт, как в твоих других режимах) -->
@@ -286,7 +287,8 @@
         
        <!-- ЛЕНТА ВЕРХУШКИ С НАШЕЙ КРУГЛОЙ КНОПКОЙ НАЗАД (Добавили position: relative) -->
         <div class="tabs-container" id="tryon_tabs" style="display: flex; align-items: center; padding: 5px 0; position: relative;">
-            <button class="back-tab-btn" onclick="handleTryOnBackClick()"></button>    
+            <button class="back-tab-btn" onclick="handleTryOnBackClick()"></button> 
+            <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;"></div>   
             <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%; position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 1; pointer-events: none;">Настройка примерки одежды</div>
         </div>
         <!-- СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (Управляется твоим роутером openScreen) -->
@@ -356,6 +358,7 @@
         <div class="tabs-container" id="bg_change_tabs" style="display: flex; align-items: center; padding: 5px 0; position: relative;">
             <!-- Фиксированная круглая стрелка назад -->
             <button class="back-tab-btn" onclick="openScreen('foto')"></button>
+            <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;"></div>
             
             <!-- Заголовок теперь намертво привязан к шапке и встанет идеально по центру экрана -->
             <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%; position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 1; pointer-events: none;">Настройка смены фона</div>

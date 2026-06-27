@@ -224,24 +224,30 @@ body {
 /* ========================================================================== */
 /* ИЗОЛИРОВАННАЯ СЕТКА ДЛЯ ПЕРВОГО ЭКРАНА (ФОТО + ТЕКСТ) */
 /* ========================================================================== */
+/* Родоначальник сетки — делает 2 колонки */
 .isolated-photo-text-grid {
     display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important; /* Строго 2 колонки */
-    gap: 12px !important;                             /* Расстояние между карточками */
-    padding: 16px !important;                         /* Отступы от краев экрана Telegram */
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+    padding: 16px !important;
     box-sizing: border-box !important;
     width: 100% !important;
 }
 
-/* Принудительно держим 9:16 только для карточек внутри этой сетки */
-.isolated-photo-text-grid .phone-template-card {
+/* ⚠️ СЕКРЕТ ТУТ: Используем знак ">". 
+   Это заставит CSS применять пропорции 9:16 ТОЛЬКО к карточкам, 
+   которые изначально прописаны в HTML внутри этой сетки. 
+   Любые новые окна и блоки, которые JS дописывает внутрь галереи, 
+   CSS-сетка БУДЕТ ПОЛНОСТЬЮ ИГНОРИРОВАТЬ! */
+.isolated-photo-text-grid > .phone-template-card {
     position: relative !important;
     width: 100% !important;
     max-width: 100% !important;
-    aspect-ratio: 9 / 16 !important; /* Намертво фиксируем пропорции 9:16 */
+    aspect-ratio: 9 / 16 !important; 
     border-radius: 12px !important; 
     overflow: hidden !important; 
 }
+
 .swap-steps-grid {
     display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important; 

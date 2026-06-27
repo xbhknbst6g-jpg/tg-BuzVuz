@@ -283,7 +283,7 @@ body {
 }
 
 /* ========================================================================== */
-/* 💊 КРУГЛЫЕ КНОПКИ-КАПСУЛЫ (ТЁМНЫЙ СТИЛЬНЫЙ ДИЗАЙН ПАРАМЕТРОВ)              */
+/* 💊 КРУГЛЫЕ КНОПКИ-КАПСУЛЫ (ОРАНЖЕВАЯ КИБЕРПАНК-ЗАЛИВКА ДЛЯ ПАРАМЕТРОВ)       */
 /* ========================================================================== */
 .capsule-btn {
     -webkit-appearance: none !important; 
@@ -297,14 +297,12 @@ body {
     display: flex !important; 
     align-items: center !important; 
     justify-content: center !important; 
-    gap: 4px !important;
-    
-    /* 🔥 ИСПРАВЛЕНО: Тёмный фон и тонкий кант, чтобы параметры не сливались со START */
-    background-color: #111111 !important; 
-    border: 2px solid rgba(255, 102, 0, 0.3) !important;     
+    gap: 4px !important;    
+    background-color: #ff6600 !important; 
+    border: 2px solid #ff1e00 !important;     
     color: #ffffff !important;            
-    box-shadow: none !important;
-    
+    box-shadow: 0 4px 12px rgba(255, 30, 0, 0.25) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) !important;
     border-radius: 30px !important; 
     cursor: pointer;
     white-space: nowrap !important;
@@ -318,8 +316,9 @@ body {
 /* Аккуратный отклик при нажатии на параметр */
 .capsule-btn:active {
     transform: scale(0.96) !important;
-    background-color: rgba(255, 102, 0, 0.15) !important; 
-    border-color: #ff6600 !important;
+    background-color: #e65c00 !important; 
+    border-color: #e61b00 !important;
+    box-shadow: 0 2px 8px rgba(255, 30, 0, 0.4) !important;
 }
 
 /* ========================================================================== */
@@ -868,22 +867,21 @@ body {
 /* ========================================================================== */
 /* 🔥 СЕТКА ДЛЯ ПРЕСЕТОВ И СТИЛЕЙ ГЕНЕРАЦИИ (СТРОГО 2 КОЛОНКИ 9:16)          */
 /* ========================================================================== */
-.phone-templates-grid {
-    display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important; /* Намертво делим экран на 2 ровные колонки */
-    gap: 12px !important; /* Аккуратный зазор между карточками */
-    margin: 15px 0 !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-}
-
-/* Принудительно заставляем карточки внутри этой сетки вытянуться в 9:16 */
 .phone-templates-grid .phone-template-card {
     position: relative !important;
-    aspect-ratio: 9 / 16 !important; /* Твои любимые вытянутые вертикальные карточки */
+    aspect-ratio: 9 / 16 !important; /* Вертикальные пропорции смартфона */
     border-radius: 12px !important;
     overflow: hidden !important;
     display: block !important;
     width: 100% !important;
+    background-color: #111424 !important;    
+    border: 1px solid #ff7300 !important;
+    box-shadow: 0 0 15px rgba(255, 115, 0, 0.35) !important;
 }
 
+/* Мягкое сжатие и усиление свечения при тапе по стилю */
+.phone-templates-grid .phone-template-card:active {
+    transform: scale(0.96) !important;
+    box-shadow: 0 0 25px rgba(255, 115, 0, 0.6) !important;
+    border-color: #ff1e00 !important;
+}

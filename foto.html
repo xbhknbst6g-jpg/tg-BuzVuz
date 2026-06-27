@@ -1539,6 +1539,10 @@
 
         // ОТКРЫТИЕ ШТОРКИ КАЧЕСТВА ДЛЯ ЛЮБОГО АКТИВНОГО ЭКРАНА
         function openUniversalQualitySheet() {
+            // 🔥 ДОБАВЛЯЕМ СЮДА: Железобетонный виброотклик при выборе качества
+            if (window.Telegram?.WebApp?.HapticFeedback) {
+                Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+            }
             const titleEl = document.getElementById('custom_sheet_title');
             const listEl = document.getElementById('custom_sheet_list');
             if (!titleEl || !listEl) return;

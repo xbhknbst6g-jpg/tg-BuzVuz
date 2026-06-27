@@ -357,35 +357,39 @@ function openPreviewVideo(url) {
 }
 
 
+// Закрытие универсального полноэкранного плеера (ИСПРАВЛЕНО И ИЗОЛИРОВАНО)
 function closePreviewVideo() {
-    if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light');
-    
     const modal = document.getElementById('videoPlayerModal');
     const playerVideo = document.getElementById('previewVideoPlayer');
     const playerImage = document.getElementById('previewImagePlayer');
     
-    if (modal) {
-        // 1. Сначала ТОЛЬКО запускаем анимацию затухания окна (убираем active)
-        modal.classList.remove('active');
-        if (playerVideo) playerVideo.pause();
-        
-        // 🔥 ФИКС СКАЧКА: Мы вообще не трогаем стили самой картинки (playerImage) здесь!
-        // Она должна оставаться видимой внутри закрывающегося окна, чтобы держать его форму.
+    // Находим панель кнопок 3-го режима
+    const controlsPanel = document.getElementById('modal_controls_panel');
 
-        // 2. Ждем 250мс, пока окно ПОЛНОСТЬЮ не исчезнет из поля зрения
+    if (modal) {
+        modal.classList.remove('active');
+        
+        // Мгновенно убираем кнопки, чтобы они не мелькали в 1-м и 2-м режимах
+        if (controlsPanel) controlsPanel.style.display = "none";
+        
+        // Гасим видео мгновенно, если оно играло
+        if (playerVideo) {
+            playerVideo.pause();
+            playerVideo.src = "";
+        }
+
+        // 🔥 ЖЕЛЕЗОБЕТОННЫЙ ФИКС ПРЫЖКА: Мгновенно тушим и очищаем картинку!
+        // Теперь она не будет ломать высоту модалки во время анимации скрытия
+        if (playerImage) {
+            playerImage.style.display = "none";
+            playerImage.src = ""; 
+        }
+        
+        // Ждем анимацию исчезновения и полностью скрываем контейнер модалки
         setTimeout(function() {
             modal.style.display = "none";
-            
-            // 3. И только когда всё окно закрылось и скрыто, мы мгновенно тушим и очищаем плееры
-            if (playerVideo) {
-                playerVideo.style.display = "none";
-                playerVideo.src = "";
-            }
-            if (playerImage) {
-                playerImage.style.display = "none"; // Потушили только сейчас
-                playerImage.src = "";               // Очистили память
-            }
-        }, 250); 
+            if (playerVideo) playerVideo.style.display = "none";
+        }, 300); 
     }
 }
 

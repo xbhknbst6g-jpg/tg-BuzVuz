@@ -638,17 +638,6 @@ body {
         color: #ffffff;
     }
 
-    /* Бронебойный фикс центрирования для третьего режима на ПК */
-    #video_motion_control.screen {
-        display: block !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
-        left: 0 !important;
-        right: 0 !important;
-        float: none !important;
-    }
-
-
 
     </style>
 </head>
@@ -1697,10 +1686,13 @@ function openScreen(screenName) {
     // НАШИ ЧЕТЫРЕ ЭКРАНА: Главное видео-меню и 3 экрана настройки генерации
     const screens = ['video_menu', 'animate_nosound', 'animate_sound', 'video_motion_control'];
     
-    // Перебираем экраны и начисто затираем у них класс active
+    // Перебираем экраны: начисто затираем класс active И НАГЛУХО СКРЫВАЕМ ИХ С ТЕЛЕФОНА И ПК
     screens.forEach(s => {
         const el = document.getElementById(s);
-        if (el) el.classList.remove('active');
+        if (el) {
+            el.classList.remove('active');
+            el.style.display = 'none'; // 🔥 ИСПРАВЛЕНО: Скрываем старые экраны, чтобы они не торчали сверху!
+        }
     });
     
     // Логика сброса параметров при возврате пользователя в Главное Меню Видеостудии
@@ -1717,25 +1709,28 @@ function openScreen(screenName) {
     // Находим тот экран, на который переходит пользователь
     const activeScreenEl = document.getElementById(screenName);
     if (activeScreenEl) {
+        // 🔥 ИСПРАВЛЕНО: Включаем физическое отображение активного экрана
+        activeScreenEl.style.display = 'block';
+        
         // Накатываем на него класс active, запускающий твою красивую CSS-анимацию fadeIn
         activeScreenEl.classList.add('active');
         
         // Вызываем проверку главной кнопки, если она используется у тебя в боте
         if (typeof updateVideoMainButton === 'function') updateVideoMainButton(); 
         
-        // 🔥 МГНОВЕННОЕ ВКЛЮЧЕНИЕ БЛОКА НАСТРОЕК ДЛЯ РЕЖИМА 1 (Оживление фото)
+        // МГНОВЕННОЕ ВКЛЮЧЕНИЕ БЛОКА НАСТРОЕК ДЛЯ РЕЖИМА 1 (Оживление фото)
         if (screenName === 'animate_nosound') {
             const nosoundSettings = document.getElementById('video_nosound_settings_block');
             if (nosoundSettings) nosoundSettings.style.display = "block";
         }
 
-        // 🔥 МГНОВЕННОЕ ВКЛЮЧЕНИЕ БЛОКА НАСТРОЕК ДЛЯ РЕЖИМА 2 (Оживление со звуком)
+        // МГНОВЕННОЕ ВКЛЮЧЕНИЕ БЛОКА НАСТРОЕК ДЛЯ РЕЖИМА 2 (Оживление со звуком)
         if (screenName === 'animate_sound') {
             const soundSettings = document.getElementById('video_sound_settings_block');
             if (soundSettings) soundSettings.style.display = "block";
         }
 
-        // 🔥 МГНОВЕННОЕ ВКЛЮЧЕНИЕ БЛОКА НАСТРОЕК ДЛЯ РЕЖИМА 3 (Оживление по видео)
+        // МГНОВЕННОЕ ВКЛЮЧЕНИЕ БЛОКА НАСТРОЕК ДЛЯ РЕЖИМА 3 (Оживление по видео)
         if (screenName === 'video_motion_control') {
             const motionSettings = document.getElementById('video_motion_settings_block');
             if (motionSettings) motionSettings.style.display = "block";
@@ -1745,7 +1740,7 @@ function openScreen(screenName) {
     // Мгновенно обновляем текст стоимости монет на встроенных неоновых кнопках START под выбранные секунды
     if (typeof updateStartButtonsPrice === 'function') updateStartButtonsPrice();
 
-    // 🔥 ДОБАВЛЕНО: Оживление мини-плееров 1-го и 2-го режимов при входе на экраны
+    // ДОБАВЛЕНО: Оживление мини-плееров 1-го и 2-го режимов при входе на экраны
     if (screenName === 'animate_nosound') {
         const video1 = document.getElementById('preview_nosound_video');
         if (video1) {

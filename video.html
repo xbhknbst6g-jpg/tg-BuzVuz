@@ -1441,29 +1441,6 @@ function switchMotionTab(category, element) {
     }
 }
 
-// ====================================================================================
-// ФУНКЦИЯ КНОПКИ "НАЗАД" (Для стрелочки вверху экрана)
-// ====================================================================================
-function handleMotionBackClick() {
-    const gallery = document.getElementById('motion_gallery_block');
-    
-    // Если мы зашли внутрь настроек шаблона — возвращаемся обратно к списку шаблонов
-    if (currentGenerationMode === 'preset' && gallery && gallery.style.display === 'none') {
-        isMotionStyleSelected = false;
-        document.getElementById('video_motion_main_title').innerText = "Оживление по видео";
-        document.getElementById('video_motion_subtitle').innerText = "Выберите готовый шаблон для настройки:";
-        
-        gallery.style.display = 'grid';
-        document.getElementById('motion_controls_block').style.display = 'none';
-    } else {
-        // Если мы в корне вкладки — возвращаем в главное меню видеостудии (как в твоих первых двух режимах)
-        if (typeof openScreen === 'function') {
-            openScreen('video_menu'); 
-        } else {
-            tg.close(); // Дефолтный фоллбэк, если роутер называется иначе
-        }
-    }
-}
 
 // ====================================================================================
 // УПРАВЛЕНИЕ ДЛИТЕЛЬНОСТЬЮ И ЦЕНОЙ НА КНОПКЕ START
@@ -1524,16 +1501,17 @@ function selectMotionDurationValue(seconds) {
             openScreen('video_menu'); // Возвращает в главное меню видеостудии
         }
 
-
 // ====================================================================================
-// 3. УМНАЯ ФУНКЦИЯ ВОЗВРАТА НАЗАД К ГАЛЕРЕЕ КАРТОЧЕК (РЕЖИМ 3)
+// ОБЪЕДИНЕННАЯ ФУНКЦИЯ КНОПКИ "НАЗАД" 
 // ====================================================================================
 function handleMotionBackClick() {
+    const gallery = document.getElementById('motion_gallery_block');
     const controlsBlock = document.getElementById('motion_controls_block');
 
     const activeTabButton = document.querySelector('#video_motion_tabs .tab-btn.active');
-    const isCustomTab = activeTabButton && activeTabButton.innerText.trim() === 'Свой';
+    const isCustomTab = activeTabButton && activeTabButton.innerText.trim().toUpperCase() === 'СВОЙ';
 
+    // 1. Если мы на вкладке "Свой" — сразу выходим в главное меню
     if (isCustomTab) {
         isMotionStyleSelected = false;
         selectedMotionStyleName = "";
@@ -1542,12 +1520,13 @@ function handleMotionBackClick() {
         return; 
     }
 
-    if (isMotionStyleSelected) {
+    // 2. Если мы внутри настроек шаблона — возвращаемся обратно к галерее карточек
+    if (currentGenerationMode === 'preset' && gallery && gallery.style.display === 'none') {
         isMotionStyleSelected = false;
         selectedMotionStyleName = "";
 
         if (document.getElementById('video_motion_main_title')) {
-            document.getElementById('video_motion_main_title').innerText = "Оживление по видео";
+            document.getElementById('video_motion_main_title').innerText = "Создание видео";
         }
         if (document.getElementById('video_motion_subtitle')) {
             document.getElementById('video_motion_subtitle').innerText = "Выберите готовый шаблон для настройки:";
@@ -1560,13 +1539,62 @@ function handleMotionBackClick() {
         if (document.getElementById('motion_preset_preview_block')) {
             document.getElementById('motion_preset_preview_block').style.display = "none";
         }
-        if (document.getElementById('motion_gallery_block')) {
-            document.getElementById('motion_gallery_block').style.display = "grid"; 
-        }
-
-        switchMotionTab('preset', null);
+        
+        gallery.style.display = 'grid';
     } else {
-        openScreen('video_menu');
+        // 3. Если мы в самом корне вкладки — уходим в меню видеостудии
+        if (typeof openScreen === 'function') {
+            openScreen('video_menu'); 
+        } else {
+            if (window.Telegram?.WebApp) Telegram.WebApp.close();
+        }
+    }
+}
+
+// ====================================================================================
+// ВОЗВРАЩЕННАЯ ФУНКЦИЯ ОТКРЫТИЯ КАРТОЧЕК НА ВЕСЬ ЭКРАН
+// ====================================================================================
+function selectMotionTemplate(styleName, videoUrl, duration) {
+    if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light');
+
+    isMotionStyleSelected = true;
+    selectedMotionStyleName = styleName;
+    selectedMotionVideoUrl = videoUrl;
+    motionGenDuration = duration || 5;
+
+    const modal = document.getElementById('videoPlayerModal');
+    const videoPlayer = document.getElementById('previewVideoPlayer');
+    const imagePlayer = document.getElementById('previewImagePlayer');
+    const controlsPanel = document.getElementById('modal_controls_panel');
+    const muteBtn = document.getElementById('btn_modal_mute');
+
+    if (modal && videoPlayer) {
+        if (imagePlayer) imagePlayer.style.display = 'none';
+        videoPlayer.style.display = 'block';
+        
+        videoPlayer.muted = true;
+        videoPlayer.setAttribute('playsinline', 'true');
+        videoPlayer.setAttribute('webkit-playsinline', 'true');
+        videoPlayer.setAttribute('preload', 'auto');
+        
+        videoPlayer.src = videoUrl;
+        if (muteBtn) muteBtn.innerHTML = "🔊 Включить звук";
+
+        modal.style.display = 'block';
+        modal.classList.add('active'); 
+        if (controlsPanel) controlsPanel.style.display = 'flex';
+
+        videoPlayer.load();
+        videoPlayer.onloadeddata = function() {
+            const playPromise = videoPlayer.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(e => {
+                    console.log("Повторный толчок плеера телефона:", e);
+                    videoPlayer.muted = true;
+                    videoPlayer.play();
+                });
+            }
+        };
     }
 }
 

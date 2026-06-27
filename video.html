@@ -865,7 +865,7 @@ body {
 <!-- ========================================== -->
 <!-- ЭКРАН 3: ОЖИВЛЕНИЕ ПО ВИДЕО (MOTION CONTROL) -->
 <!-- ========================================== -->
-    <div id="video_motion_control" class="screen" style="width: 100%; max-width: 100%; margin: 0 auto; box-sizing: border-box;">
+    <div id="video_motion_control" class="screen" style="margin: 0 auto !important; float: none !important;">
 
         <!-- Фирменный контейнер вкладок с кнопкой назад -->
         <div class="tabs-container">
@@ -1332,7 +1332,6 @@ function switchMotionTab(category, element) {
     const customInstruction = document.getElementById('motion_custom_instruction');
     const presetPreviewBlock = document.getElementById('motion_preset_preview_block');
     const spacer = document.getElementById('motion_spacer');
-    const startBtnRow = document.querySelector('#video_motion_control .single-row-controls');
 
     // 4. ЧИСТАЯ ЛОГИКА ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ
     if (category === 'custom') {
@@ -1348,12 +1347,11 @@ function switchMotionTab(category, element) {
         if (controlsBlock) controlsBlock.style.display = 'block';         
         if (customInstruction) customInstruction.style.display = 'block';   
         if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';  
-        if (startBtnRow) startBtnRow.style.display = 'flex'; // Показываем кнопку в режиме "Свой"
         
         // Наглухо выключаем пустую распорку, она нам больше не нужна
         if (spacer) spacer.style.display = 'none';   
         
-        // 🔥 НАПРЯМУЮ МЕНЯЕМ ОТСТУП У КНОПОК: Поднимаем кнопку START повыше во вкладке "Свой"
+        // НАПРЯМУЮ МЕНЯЕМ ОТСТУП У КНОПОК: Поднимаем кнопку START повыше во вкладке "Свой"
         const controlsPanel = document.querySelector('#video_motion_control .single-row-controls');
         if (controlsPanel) {
             controlsPanel.style.setProperty('margin-top', '35px', 'important');
@@ -1366,18 +1364,10 @@ function switchMotionTab(category, element) {
         if (subtitle) subtitle.style.display = 'block';
 
         if (gallery) gallery.style.display = 'grid';                  
-        
-        // 🔥 ВОТ ТУТ ИЗМЕНЕНИЯ: Блок настроек оставляем открытым (block), чтобы держать каркас как во 2-м режиме
-        if (controlsBlock) controlsBlock.style.display = 'block';            
-        if (customInstruction) customInstruction.style.display = 'none';   
-        if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';  
-        
-        // Скрываем только нижнюю кнопку старта, пока не выберут карточку
-        if (startBtnRow) startBtnRow.style.display = 'none'; 
-        
+        if (controlsBlock) controlsBlock.style.display = 'none';            
         if (spacer) spacer.style.display = 'none';     
         
-        // 🔥 ВОЗВРАЩАЕМ СТАНДАРТНЫЙ ОТСТУП ДЛЯ ШАБЛОНОВ (чтобы дизайн не съехал в галерее)
+        // ВОЗВРАЩАЕМ СТАНДАРТНЫЙ ОТСТУП ДЛЯ ШАБЛОНОВ (чтобы дизайн не съехал в галерее)
         const controlsPanel = document.querySelector('#video_motion_control .single-row-controls');
         if (controlsPanel) {
             controlsPanel.style.setProperty('margin-top', '55px', 'important');

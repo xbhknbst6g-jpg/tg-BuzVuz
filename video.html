@@ -1310,6 +1310,11 @@ function submitFromModal() {
 function switchMotionTab(category, element) {
     if (!element) return;
 
+    // 🔥 ДОБАВЛЕНО: Железобетонный виброотклик срабатывает до тяжелой перерисовки CSS
+    if (window.Telegram?.WebApp?.HapticFeedback) {
+        Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+    }
+
     const tabs = document.querySelectorAll('#video_motion_tabs .tab-btn');
     tabs.forEach(tab => {
         tab.classList.remove('active');

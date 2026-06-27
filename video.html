@@ -868,12 +868,13 @@ body {
     <div id="video_motion_control" class="screen">
 
         <!-- Фирменный контейнер вкладок с кнопкой назад -->
-        <div class="tabs-container">
-            <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openScreen('video_menu')"></button>
-            <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;">
+        <div class="tabs-container" style="position: relative; display: flex; align-items: center; justify-content: center; width: 100%;">
+            <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openScreen('video_menu')" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); z-index: 10; margin: 0;"></button>            
+            <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center;">
                 Создание видео
             </div>
         </div>
+
             
        <!-- Вкладки 3-го режима: обе используют твой готовый capsule-btn, чтобы форма не ломалась -->
         <div class="tabs-container" id="video_motion_tabs" style="display: flex !important; gap: 10px !important; margin-bottom: 15px !important; border-bottom: none !important;">

@@ -174,92 +174,104 @@ body {
 
 
 /* ========================================================================== */
-/* СЕТКА И КАРТОЧКИ ШАБЛОНОВ (9:16 ДЛЯ ВСЕХ РЕЖИМОВ ) */
+/* НАСТРОЙКА СЕТОК И КАРТОЧЕК БОТА  */
 /* ========================================================================== */
-/*  сетка на 2 колонки для обычных режимов */
+
+/* Сетка на 2 колонки (Фото + Текст, Смена фона и др.) */
 .phone-templates-grid {
   display: grid !important;
-  grid-template-columns: repeat(2, 1fr) !important; /* Ровно две колонки */
-  gap: 12px !important;                             /* Расстояние между карточками */
-  padding: 16px !important;                         /* Отступы от краев экрана Telegram */
+  grid-template-columns: repeat(2, 1fr) !important; /* Строго 2 колонки */
+  gap: 12px !important;
+  padding: 16px !important;
   box-sizing: border-box !important;
   width: 100% !important;
-  justify-items: start !important; 
 }
 
-
+/* Сетка на 3 колонки (Face Swap / Смена одежды) */
 .swap-steps-grid {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important; 
-    gap: 8px !important; 
-    padding: 16px !important;
-    margin-bottom: 25px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important; /* Строго 3 колонки */
+  gap: 8px !important; 
+  padding: 0 16px !important; 
+  margin-bottom: 25px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
-/* Сама карточка — жестко задает пропорции 9:16 для всех сеток */
+/* Общие базовые свойства для ВСЕХ карточек 9:16 */
 .phone-template-card {
-    position: relative !important;
-    width: 100% !important;        /* Добавили: чтобы сжималась в сетке на 3 картинки */
-    max-width: 100% !important;    /* Добавили: защита от растягивания */
-    aspect-ratio: 9 / 16 !important; 
-    border-radius: 12px !important; 
-    overflow: hidden !important; 
-    background-color: #111424 !important;
-    animation: neonPulse 4s infinite ease-in-out;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-    
-    /* Обновленный благородный оранжевый кант (менее едкий) */
-    border: 2px solid #FF6A00 !important; 
-    box-sizing: border-box !important;   /* Добавили: чтобы рамка не ломала размер */
+  position: relative !important;
+  aspect-ratio: 9 / 16 !important; /* Формат 9:16 */
+  border-radius: 12px !important; 
+  overflow: hidden !important; 
+  background-color: #111424 !important;
+  animation: neonPulse 4s infinite ease-in-out;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  border: 2px solid #FF6A00 !important; /* Наш новый мягкий оранжевый кант */
+  box-sizing: border-box !important;
 }
 
-/* Эффект при нажатии на карточку на телефоне */
+/* Специфичный фикс ширины карточек внутри 2-колоночной сетки */
+.phone-templates-grid .phone-template-card {
+  width: 100% !important;
+}
+
+/* Специфичный фикс ширины карточек внутри 3-колоночной сетки */
+.swap-steps-grid .phone-template-card {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Эффект при нажатии */
 .phone-template-card:active { 
-    transform: scale(0.96) !important; 
+  transform: scale(0.96) !important; 
 }
 
 /* Картинка и Видео внутри карточки */
 .phone-template-card img,
 .phone-template-card video {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-    display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
 }
 
 /* Плавная тёмная подложка внизу карточки под текст */
 .phone-template-card::after {
-    content: "" !important;
-    position: absolute !important;
-    bottom: 0 !important; left: 0 !important; right: 0 !important;
-    height: 45px !important; 
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent) !important; 
-    pointer-events: none !important; 
-    z-index: 1 !important;
+  content: "" !important;
+  position: absolute !important;
+  bottom: 0 !important; left: 0 !important; right: 0 !important;
+  height: 45px !important; 
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent) !important; 
+  pointer-events: none !important; 
+  z-index: 1 !important;
 }
 
 /* Стили для текста поверх картинки */
 .card-overlay {
-    position: absolute !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    color: #ffffff !important;
-    padding: 10px !important;
-    font-size: 13px !important;
-    text-align: center !important;
-    font-weight: bold !important;
-    z-index: 2 !important; /* Добавили: чтобы текст был строго поверх подложки ::after */
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  color: #ffffff !important;
+  padding: 10px !important;
+  font-size: 13px !important;
+  text-align: center !important;
+  font-weight: bold !important;
+  z-index: 2 !important; /* Текст ложится поверх подложки ::after */
 }
 
 /* Уменьшаем шрифт текста ТОЛЬКО для узких карточек (3 в ряд) в Face Swap */
 .swap-steps-grid .card-overlay {
-    font-size: 10px !important;
-    padding: 6px 4px !important;
+  font-size: 10px !important;
+  padding: 6px 4px !important;
+}
+
+/* Скрываем стандартный мобильный скроллбар для трехколоночной ленты */
+.swap-steps-grid::-webkit-scrollbar { 
+  display: none !important; 
 }
 
 /* ========================================================================== */

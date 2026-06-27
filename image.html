@@ -357,7 +357,6 @@ function openPreviewVideo(url) {
 }
 
 
-// Функция плавного закрытия полноэкранного просмотра (БЕЗ ПРЫЖКОВ И ДЁРГАНИЙ)
 function closePreviewVideo() {
     if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light');
     
@@ -366,22 +365,25 @@ function closePreviewVideo() {
     const playerImage = document.getElementById('previewImagePlayer');
     
     if (modal) {
-        // 1. Сначала ТОЛЬКО запускаем анимацию скрытия окна (убираем класс active)
+        // 1. Сначала ТОЛЬКО запускаем анимацию затухания окна (убираем active)
         modal.classList.remove('active');
+        if (playerVideo) playerVideo.pause();
         
-        // 2. Ждем пока анимация полностью завершится (250мс) и окно станет невидимым
+        // 🔥 ФИКС СКАЧКА: Мы вообще не трогаем стили самой картинки (playerImage) здесь!
+        // Она должна оставаться видимой внутри закрывающегося окна, чтобы держать его форму.
+
+        // 2. Ждем 250мс, пока окно ПОЛНОСТЬЮ не исчезнет из поля зрения
         setTimeout(function() {
             modal.style.display = "none";
             
-            // 🔥 ФИКС ТУТ: останавливаем видео только тогда, когда окно УЖЕ скрыто от глаз юзера!
+            // 3. И только когда всё окно закрылось и скрыто, мы мгновенно тушим и очищаем плееры
             if (playerVideo) {
-                playerVideo.pause(); 
                 playerVideo.style.display = "none";
                 playerVideo.src = "";
             }
             if (playerImage) {
-                playerImage.style.display = "none";
-                playerImage.src = ""; 
+                playerImage.style.display = "none"; // Потушили только сейчас
+                playerImage.src = "";               // Очистили память
             }
         }, 250); 
     }

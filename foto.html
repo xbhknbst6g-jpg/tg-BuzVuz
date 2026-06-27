@@ -321,20 +321,23 @@
     /* Компактный контейнер для увеличенного фото (Шаг 2) */
     /* 📸 УВЕЛИЧЕННОЕ КОМПАКТНОЕ ПРЕВЬЮ ПО ЦЕНТРУ С ПРИЖАТИЕМ КНОПОК ВНИЗ */
     .text-image-compact-preview {
-        width: 100%;
-        /* Увеличиваем высоту картинки, чтобы она занимала максимум свободного места */
-        height: calc(100vh - 230px) !important; 
-        max-height: 460px !important; /* Ограничитель для больших мониторов ПК */
-        margin: 0 auto 15px auto !important; /* Отступ снизу толкает кнопки к полу */
+        /* 🔥 ИСПРАВЛЕНО: Задаем ширину и заставляем рамку держать форму 9:16 */
+        width: 100% !important;
+        max-width: 250px !important;       /* Ограничиваем ширину, чтобы рамка вытянулась и стала узкой */
+        aspect-ratio: 9 / 16 !important;   /* Намертво держит пропорции смартфона */
+        
+        /* 🔥 УБРАЛИ height и max-height, которые раздували рамку по горизонтали */
+        margin: 0 auto 15px auto !important; /* Центрирует по горизонтали и толкает контент снизу */
+        
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
         overflow: hidden !important;
         border-radius: 16px !important;
-        background: #000000 !important; /* Черная подложка */
+        background: #000000 !important; 
         box-sizing: border-box !important;
 
-        /* 🔥 ДОБАВЛЕНО: ТВОЙ ФИРМЕННЫЙ ОРАНЖЕВЫЙ НЕОНОВЫЙ КАНТ С СВЕЧЕНИЕМ */
+        /* ТВОЙ ФИРМЕННЫЙ ОРАНЖЕВЫЙ НЕОНОВЫЙ КАНТ С СВЕЧЕНИЕМ */
         border: 1px solid #ff7300 !important;
         box-shadow: 0 0 15px rgba(255, 115, 0, 0.35) !important;
     }
@@ -343,10 +346,7 @@
     .text-image-compact-preview img {
         width: 100% !important;
         height: 100% !important;
-        
-        /* 🔥 ИСПРАВЛЕНО: Меняем contain на cover, чтобы фото аккуратно сидело внутри рамки без щелей */
-        object-fit: cover !important; 
-        
+        object-fit: cover !important; /* Фото заполняет рамку без черных дыр по бокам */
         display: block !important;
     }
 

@@ -865,7 +865,7 @@ body {
 <!-- ========================================== -->
 <!-- ЭКРАН 3: ОЖИВЛЕНИЕ ПО ВИДЕО (MOTION CONTROL) -->
 <!-- ========================================== -->
-    <div id="video_motion_control" class="screen" style="position: absolute !important; left: 50% !important; transform: translateX(-50%) !important; width: 100% !important; max-width: 440px !important; box-sizing: border-box; margin: 0 !important;">
+    <div id="video_motion_control" class="screen" style="width: 100%; max-width: 100%; margin: 0 auto; box-sizing: border-box;">
 
         <!-- Фирменный контейнер вкладок с кнопкой назад -->
         <div class="tabs-container">
@@ -940,6 +940,7 @@ body {
                 </div>
             </div>
         </div>
+        <div style="clear: both; display: block; width: 100%; height: 1px;"></div>
 
     </div> <!-- СТРОГО ЗАКРЫЛИ ЭКРАН "video_motion_control" -->
 
@@ -1331,6 +1332,90 @@ function switchMotionTab(category, element) {
     const customInstruction = document.getElementById('motion_custom_instruction');
     const presetPreviewBlock = document.getElementById('motion_preset_preview_block');
     const spacer = document.getElementById('motion_spacer');
+    const startBtnRow = document.querySelector('#video_motion_control .single-row-controls');
+
+    // 4. ЧИСТАЯ ЛОГИКА ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ
+    if (category === 'custom') {
+        currentGenerationMode = 'custom'; 
+        isMotionStyleSelected = true;  
+        selectedMotionStyleName = "Свой референс";
+        selectedMotionVideoUrl = "";
+
+        const subtitle = document.getElementById('video_motion_subtitle');
+        if (subtitle) subtitle.style.display = 'none';
+
+        if (gallery) gallery.style.display = 'none';                  
+        if (controlsBlock) controlsBlock.style.display = 'block';         
+        if (customInstruction) customInstruction.style.display = 'block';   
+        if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';  
+        if (startBtnRow) startBtnRow.style.display = 'flex'; // Показываем кнопку в режиме "Свой"
+        
+        // Наглухо выключаем пустую распорку, она нам больше не нужна
+        if (spacer) spacer.style.display = 'none';   
+        
+        // 🔥 НАПРЯМУЮ МЕНЯЕМ ОТСТУП У КНОПОК: Поднимаем кнопку START повыше во вкладке "Свой"
+        const controlsPanel = document.querySelector('#video_motion_control .single-row-controls');
+        if (controlsPanel) {
+            controlsPanel.style.setProperty('margin-top', '35px', 'important');
+        }
+    } else {
+        currentGenerationMode = 'preset'; 
+        isMotionStyleSelected = false; 
+
+        const subtitle = document.getElementById('video_motion_subtitle');
+        if (subtitle) subtitle.style.display = 'block';
+
+        if (gallery) gallery.style.display = 'grid';                  
+        
+        // 🔥 ВОТ ТУТ ИЗМЕНЕНИЯ: Блок настроек оставляем открытым (block), чтобы держать каркас как во 2-м режиме
+        if (controlsBlock) controlsBlock.style.display = 'block';            
+        if (customInstruction) customInstruction.style.display = 'none';   
+        if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';  
+        
+        // Скрываем только нижнюю кнопку старта, пока не выберут карточку
+        if (startBtnRow) startBtnRow.style.display = 'none'; 
+        
+        if (spacer) spacer.style.display = 'none';     
+        
+        // 🔥 ВОЗВРАЩАЕМ СТАНДАРТНЫЙ ОТСТУП ДЛЯ ШАБЛОНОВ (чтобы дизайн не съехал в галерее)
+        const controlsPanel = document.querySelector('#video_motion_control .single-row-controls');
+        if (controlsPanel) {
+            controlsPanel.style.setProperty('margin-top', '55px', 'important');
+        }
+    }
+}
+
+
+// ====================================================================================
+// ФУНКЦИЯ КЛИКА ПО КАРТОЧКЕ ВИДЕО-ШАБЛОНА (Теперь принимает реальную длительность)
+// ====================================================================================
+// 🔥 ТЕПЕРЬ ФУНКЦИЯ ПРИНИМАЕТ ТРИ ПАРАМЕТРА И ПЕРЕДАЕТ СЕКУНДЫ БОТУ!
+function switchMotionTab(category, element) {
+    if (!element) return;
+
+    // 1. СБРОС СТИЛЕЙ: Возвращаем обеим кнопкам красивую круглую форму капсулы (темную)
+    const tabs = document.querySelectorAll('#video_motion_tabs .tab-btn');
+    tabs.forEach(tab => {
+        tab.classList.remove('active');
+        tab.style.setProperty('background', '#111111', 'important');
+        tab.style.setProperty('color', 'rgba(255, 255, 255, 0.5)', 'important');
+        tab.style.setProperty('border', '2px solid rgba(255, 102, 0, 0.2)', 'important');
+        tab.style.setProperty('box-shadow', 'none', 'important');
+    });
+
+    // 2. ПОДСВЕТКА: Делаем нажатую вкладку оранжевой, как твоя родная капсула
+    element.classList.add('active');
+    element.style.setProperty('background', '#ff6600', 'important');
+    element.style.setProperty('color', '#ffffff', 'important');
+    element.style.setProperty('border', '2px solid #ff1e00', 'important');
+    element.style.setProperty('box-shadow', '0 4px 12px rgba(255, 30, 0, 0.3)', 'important');
+
+    // 3. НАХОДИМ БЛОКИ (Строго те, что есть в HTML!)
+    const gallery = document.getElementById('motion_gallery_block');
+    const controlsBlock = document.getElementById('motion_controls_block');
+    const customInstruction = document.getElementById('motion_custom_instruction');
+    const presetPreviewBlock = document.getElementById('motion_preset_preview_block');
+    const spacer = document.getElementById('motion_spacer');
 
     // 4. ЧИСТАЯ ЛОГИКА ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ
     if (category === 'custom') {
@@ -1350,7 +1435,7 @@ function switchMotionTab(category, element) {
         // Наглухо выключаем пустую распорку, она нам больше не нужна
         if (spacer) spacer.style.display = 'none';   
         
-        // 🔥 НАПРЯМУЮ МЕНЯЕМ ОТСТУП У КНОПОК: Поднимаем кнопку START повыше во вкладке "Свой"
+        // НАПРЯМУЮ МЕНЯЕМ ОТСТУП У КНОПОК: Поднимаем кнопку START повыше во вкладке "Свой"
         const controlsPanel = document.querySelector('#video_motion_control .single-row-controls');
         if (controlsPanel) {
             controlsPanel.style.setProperty('margin-top', '35px', 'important');
@@ -1366,64 +1451,11 @@ function switchMotionTab(category, element) {
         if (controlsBlock) controlsBlock.style.display = 'none';            
         if (spacer) spacer.style.display = 'none';     
         
-        // 🔥 ВОЗВРАЩАЕМ СТАНДАРТНЫЙ ОТСТУП ДЛЯ ШАБЛОНОВ (чтобы дизайн не съехал в галерее)
+        // ВОЗВРАЩАЕМ СТАНДАРТНЫЙ ОТСТУП ДЛЯ ШАБЛОНОВ
         const controlsPanel = document.querySelector('#video_motion_control .single-row-controls');
         if (controlsPanel) {
             controlsPanel.style.setProperty('margin-top', '55px', 'important');
         }
-    }
-}
-
-
-// ====================================================================================
-// ФУНКЦИЯ КЛИКА ПО КАРТОЧКЕ ВИДЕО-ШАБЛОНА (Теперь принимает реальную длительность)
-// ====================================================================================
-// 🔥 ТЕПЕРЬ ФУНКЦИЯ ПРИНИМАЕТ ТРИ ПАРАМЕТРА И ПЕРЕДАЕТ СЕКУНДЫ БОТУ!
-function selectMotionTemplate(styleName, videoUrl, duration) {
-    if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light');
-
-    // 1. Запоминаем выбор ДЛЯ БЭКЕНДА БОТА (Берем переданные секунды, либо 5 по дефолту)
-    isMotionStyleSelected = true;
-    selectedMotionStyleName = styleName;
-    selectedMotionVideoUrl = videoUrl;
-    motionGenDuration = duration || 5; // 🔥 Записали реальные секунды из HTML!
-
-    // 2. Находим элементы твоего родного универсального плеера
-    const modal = document.getElementById('videoPlayerModal');
-    const videoPlayer = document.getElementById('previewVideoPlayer');
-    const imagePlayer = document.getElementById('previewImagePlayer');
-    const controlsPanel = document.getElementById('modal_controls_panel');
-    const muteBtn = document.getElementById('btn_modal_mute');
-
-    if (modal && videoPlayer) {
-        if (imagePlayer) imagePlayer.style.display = 'none';
-        videoPlayer.style.display = 'block';
-        
-        // Мобильные настройки
-        videoPlayer.muted = true;
-        videoPlayer.setAttribute('playsinline', 'true');
-        videoPlayer.setAttribute('webkit-playsinline', 'true');
-        videoPlayer.setAttribute('preload', 'auto');
-        
-        videoPlayer.src = videoUrl;
-        if (muteBtn) muteBtn.innerHTML = "🔊 Включить звук";
-
-        modal.style.display = 'block';
-        modal.classList.add('active'); 
-        if (controlsPanel) controlsPanel.style.display = 'flex';
-
-        // Двухэтапный чистый запуск видео на смартфонах
-        videoPlayer.load();
-        videoPlayer.onloadeddata = function() {
-            const playPromise = videoPlayer.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(e => {
-                    console.log("Повторный толчок плеера телефона:", e);
-                    videoPlayer.muted = true;
-                    videoPlayer.play();
-                });
-            }
-        };
     }
 }
 

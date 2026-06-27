@@ -865,25 +865,3 @@ body {
     transform: scale(0.95) !important;
 }
 
-/* ========================================================================== */
-/* 🔥 СЕТКА ДЛЯ ПРЕСЕТОВ И СТИЛЕЙ ГЕНЕРАЦИИ (СТРОГО 2 КОЛОНКИ 9:16)          */
-/* ========================================================================== */
-.phone-templates-grid {
-    display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important; /* Намертво делим экран на 2 ровные колонки */
-    gap: 12px !important; /* Аккуратный зазор между карточками */
-    margin: 15px 0 !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-}
-
-/* Принудительно заставляем карточки внутри этой сетки вытянуться в 9:16 */
-.phone-templates-grid .phone-template-card {
-    position: relative !important;
-    aspect-ratio: 9 / 16 !important; /* Твои любимые вытянутые вертикальные карточки */
-    border-radius: 12px !important;
-    overflow: hidden !important;
-    display: block !important;
-    width: 100% !important;
-}
-

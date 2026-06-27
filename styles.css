@@ -788,3 +788,80 @@ body {
 .custom-sheet-item span {
     pointer-events: none !important;
 }
+
+/* ========================================================================== */
+/* 🔥 ВЕРХНИЕ БОЛЬШИЕ КНОПКИ РЕЖИМОВ (УМНЫЙ ФОКУС / ЦИФРОВАЯ ОПТИКА)          */
+/* ========================================================================== */
+/* Базовое неактивное состояние кнопки */
+.tab-btn {
+    -webkit-appearance: none !important; appearance: none !important; outline: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    
+    /* Делаем их тёмными с тонким оранжевым кантом, чтобы не перегружать экран */
+    background: #111116 !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    border: 2px solid rgba(255, 102, 0, 0.3) !important;
+    
+    border-radius: 30px !important; /* Форма круглой капсулы */
+    padding: 10px 20px !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease !important;
+    -webkit-tap-highlight-color: transparent !important;
+    box-sizing: border-box !important;
+}
+
+/* 🔥 Активное (нажатое) состояние — сочное оранжевое с алым кантом как START */
+.tab-btn.active {
+    background-color: #ff6600 !important;
+    border: 2px solid #ff1e00 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 15px rgba(255, 30, 0, 0.35) !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+}
+
+.tab-btn:active {
+    transform: scale(0.96) !important;
+}
+
+/* ========================================================================== */
+/* 🔥 ГОРИЗОНТАЛЬНЫЕ КНОПКИ-ФИЛЬТРЫ (ВСЕ, МУЖ, ЖЕН, ДЕТИ...)                  */
+/* ========================================================================== */
+/* Базовое состояние мелких вкладок фильтра */
+.tabs-scroll-line button,
+.tabs-container button:not(.back-tab-btn) {
+    -webkit-appearance: none !important; appearance: none !important; outline: none !important;
+    padding: 6px 14px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    border-radius: 20px !important; /* Капсульное скругление */
+    white-space: nowrap !important; /* Чтобы текст не переносился на вторую строку */
+    cursor: pointer !important;
+    transition: all 0.15s ease !important;
+    -webkit-tap-highlight-color: transparent !important;
+    
+    /* Тёмный благородный фон по умолчанию */
+    background: #161822 !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+    border: 1.5px solid rgba(255, 102, 0, 0.25) !important;
+}
+
+/* 🔥 Нажатый активный фильтр — загорается огненным оранжевым */
+.tabs-scroll-line button.active,
+.tabs-container button.active:not(.back-tab-btn) {
+    background-color: #ff6600 !important;
+    border-color: #ff1e00 !important;
+    color: #ffffff !important;
+    box-shadow: 0 3px 10px rgba(255, 102, 0, 0.3) !important;
+}
+
+.tabs-scroll-line button:active,
+.tabs-container button:active:not(.back-tab-btn) {
+    transform: scale(0.95) !important;
+}
+

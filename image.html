@@ -351,9 +351,11 @@ function openPreviewVideo(url) {
         }
     }
 
-    // Плавно открываем модальное окно через твой класс active
-    modal.style.display = 'block';
-    setTimeout(() => modal.classList.add('active'), 10);
+    // Включаем саму модалку на экране
+    modal.style.display = "flex";
+    setTimeout(() => {
+        modal.classList.add('active'); 
+    }, 10);
 }
 
 

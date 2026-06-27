@@ -884,6 +884,8 @@ body {
   border-radius: 12px;                   /* Красивое скругление углов */
   overflow: hidden;                      /* Прячет лишнее, если картинка вылезает */
   cursor: pointer;
+  border: 2px solid #FF5500;
+  box-sizing: border-box; 
 }
 
 /* Картинка внутри карточки */

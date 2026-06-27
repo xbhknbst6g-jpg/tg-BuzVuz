@@ -174,55 +174,35 @@ body {
 
 
 /* ========================================================================== */
-/* СЕТКА И КАРТОЧКИ ШАБЛОНОВ (9:16 ДЛЯ ВСЕХ РЕЖИМОВ ) */
+/* РЕЖИМ 1: СЕТКА НА 2 КОЛОНКИ (Обычные режимы, Фото+Текст) */
 /* ========================================================================== */
-/*  сетка на 2 колонки для обычных режимов */
 .phone-templates-grid {
   display: grid !important;
-  grid-template-columns: repeat(2, 1fr) !important; /* Ровно две колонки */
-  gap: 12px !important;                             /* Расстояние между карточками */
-  padding: 16px !important;                         /* Отступы от краев экрана Telegram */
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 12px !important;
+  padding: 16px !important;
   box-sizing: border-box !important;
   width: 100% !important;
-  justify-items: start !important; 
 }
 
-
-.swap-steps-grid {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important; 
-    gap: 8px !important; 
-    padding: 16px !important;
-    margin-bottom: 25px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-}
-
-/* Сама карточка — жестко задает пропорции 9:16 для всех сеток */
 .phone-template-card {
     position: relative !important;
-    width: 100% !important;        /* Добавили: чтобы сжималась в сетке на 3 картинки */
-    max-width: 100% !important;    /* Добавили: защита от растягивания */
+    width: 100% !important;
     aspect-ratio: 9 / 16 !important; 
     border-radius: 12px !important; 
     overflow: hidden !important; 
     background-color: #111424 !important;
     animation: neonPulse 4s infinite ease-in-out;
     cursor: pointer;
+    border: 2px solid #FF5500 !important; /* Старый яркий оранжевый */
     -webkit-tap-highlight-color: transparent;
     transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-    
-    /* Обновленный благородный оранжевый кант (менее едкий) */
-    border: 2px solid #FF6A00 !important; 
-    box-sizing: border-box !important;   /* Добавили: чтобы рамка не ломала размер */
 }
 
-/* Эффект при нажатии на карточку на телефоне */
 .phone-template-card:active { 
     transform: scale(0.96) !important; 
 }
 
-/* Картинка и Видео внутри карточки */
 .phone-template-card img,
 .phone-template-card video {
     width: 100% !important;
@@ -231,7 +211,6 @@ body {
     display: block !important;
 }
 
-/* Плавная тёмная подложка внизу карточки под текст */
 .phone-template-card::after {
     content: "" !important;
     position: absolute !important;
@@ -242,28 +221,8 @@ body {
     z-index: 1 !important;
 }
 
-/* Стили для текста поверх картинки */
-.card-overlay {
-    position: absolute !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    color: #ffffff !important;
-    padding: 10px !important;
-    font-size: 13px !important;
-    text-align: center !important;
-    font-weight: bold !important;
-    z-index: 2 !important; /* Добавили: чтобы текст был строго поверх подложки ::after */
-}
-
-/* Уменьшаем шрифт текста ТОЛЬКО для узких карточек (3 в ряд) в Face Swap */
-.swap-steps-grid .card-overlay {
-    font-size: 10px !important;
-    padding: 6px 4px !important;
-}
-
 /* ========================================================================== */
-/* Сетка для Face Swap и примерки одежды на 3 колонки */
+/* РЕЖИМ 2: СЕТКА НА 3 КОЛОНКИ (Новый Face Swap) */
 /* ========================================================================== */
 .swap-steps-grid {
     display: grid !important;
@@ -275,7 +234,6 @@ body {
     box-sizing: border-box !important;
 }
 
-/* Новая изолированная карточка для Face Swap */
 .swap-template-card {
     position: relative !important;
     width: 100% !important;
@@ -286,7 +244,7 @@ body {
     background-color: #111424 !important;
     animation: neonPulse 4s infinite ease-in-out;
     cursor: pointer;
-    border: 2px solid #FF6A00 !important; /* Новый мягкий оранжевый */
+    border: 2px solid #FF6A00 !important; /* Мягкий благородный оранжевый */
     -webkit-tap-highlight-color: transparent;
     transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     box-sizing: border-box !important;
@@ -314,7 +272,9 @@ body {
     z-index: 1 !important;
 }
 
-/* Общие стили для текста */
+/* ========================================================================== */
+/* ОБЩИЕ СТИЛИ ДЛЯ ТЕКСТА (Для обеих сеток) */
+/* ========================================================================== */
 .card-overlay {
     position: absolute !important;
     bottom: 0 !important; left: 0 !important; right: 0 !important;
@@ -323,10 +283,10 @@ body {
     font-size: 13px !important;
     text-align: center !important;
     font-weight: bold !important;
-    z-index: 2 !important;
+    z-index: 2 !important; /* Текст ложится поверх тени */
 }
 
-/* Уменьшаем текст только внутри тройной сетки */
+/* Уменьшаем текст только внутри тройной сетки, чтобы не вылезал */
 .swap-steps-grid .card-overlay {
     font-size: 10px !important;
     padding: 6px 4px !important;

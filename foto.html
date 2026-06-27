@@ -942,11 +942,11 @@
                         <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 4px;">1. Селфи</div>
                     </div>
                     <div style="text-align: center;">
-                        <img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg" alt="2. Шаблон" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo(this.src)">
+                        <img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg" alt="2. Шаблон">
                         <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 4px;">2. Шаблон</div>
                     </div>
                     <div style="text-align: center;">
-                        <img src="https://i.postimg.cc/pLrwcFTt/itog.jpg" alt="3. Итог" style="border: 2px solid #ff6600;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo(this.src)">
+                        <img src="https://i.postimg.cc/pLrwcFTt/itog.jpg" alt="3. Итог" style="border: 2px solid #ff6600;">
                         <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 4px;">3. Итог 🔥</div>
                     </div>
                 </div>
@@ -999,15 +999,15 @@
                 <!-- Сетка шагов (Фото в полный рост -> Вещь -> Итог) -->
                 <div class="swap-steps-grid">
                     <div style="text-align: center;">
-                        <img src="https://i.postimg.cc/8c2pqNq0/Vase-foto.jpg" alt="1. Ваше фото" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo(this.src)">
+                        <img src="https://i.postimg.cc/8c2pqNq0/Vase-foto.jpg" alt="1. Ваше фото">
                         <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 4px;">1. Фото во весь рост</div>
                     </div>
                     <div style="text-align: center;">
-                        <img src="https://i.postimg.cc/bwQrfSYs/Sablon-odezdy.png" alt="2. Фото вещи" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo(this.src)">
+                        <img src="https://i.postimg.cc/bwQrfSYs/Sablon-odezdy.png" alt="2. Фото вещи">
                         <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 4px;">2. Фото вещи</div>
                     </div>
                     <div style="text-align: center;">
-                        <img src="https://i.postimg.cc/t7GbBDxL/itog-smeny-odezdy.jpg" alt="3. Итог" style="border: 2px solid #ff6600;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo(this.src)">
+                        <img src="https://i.postimg.cc/t7GbBDxL/itog-smeny-odezdy.jpg" alt="3. Итог" style="border: 2px solid #ff6600;">
                         <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 4px;">3. Итог 🔥</div>
                     </div>
                 </div>
@@ -1068,7 +1068,7 @@
                     <!-- Карточка 1: Исходное фото -->
                     <div style="flex: 1; max-width: 125px; text-align: center; display: flex; flex-direction: column; align-items: center;">
                         <div class="phone-template-card" style="width: 100%;">
-                            <img src="https://i.postimg.cc/t7GbBDxL/itog-smeny-odezdy.jpg" alt="1. Исходное фото" style="width: 100%; display: block;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo(this.src)">
+                            <img src="https://i.postimg.cc/t7GbBDxL/itog-smeny-odezdy.jpg" alt="1. Исходное фото" style="width: 100%; display: block;">
                         </div>
                         <!-- Вынесли подпись под карточку: теперь она никогда не скроется! -->
                         <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 6px; white-space: nowrap;">1. Исходное фото</div>
@@ -1077,7 +1077,7 @@
                     <!-- Карточка 2: Результат -->
                     <div style="flex: 1; max-width: 125px; text-align: center; display: flex; flex-direction: column; align-items: center;">
                         <div class="phone-template-card" style="width: 100%; border: 2px solid #ff1e00 !important;">
-                            <img src="https://i.postimg.cc/x1j67KTC/5860519473268330113.jpg" alt="2. Результат" style="width: 100%; display: block;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo(this.src)">
+                            <img src="https://i.postimg.cc/x1j67KTC/5860519473268330113.jpg" alt="2. Результат" style="width: 100%; display: block;">
                         </div>
                         <!-- Вынесли подпись под карточку: теперь она никогда не скроется! -->
                         <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 6px; white-space: nowrap;">2. Результат 🔥</div>
@@ -1158,88 +1158,8 @@
 
 
 
-// ====================================================================================
-// Функция для управления вашим плеером videoPlayerModal
-// ====================================================================================
-        function openPreviewVideo(mediaUrl) {
-    const modal = document.getElementById('videoPlayerModal');
-    const playerVideo = document.getElementById('previewVideoPlayer');
-    const playerImage = document.getElementById('previewImagePlayer');
-    
-    // 🔥 НАХОДИМ ПАНЕЛЬ КНОПОК 3-ГО РЕЖИМА
-    const controlsPanel = document.getElementById('modal_controls_panel');
-    
-    if (!modal) return;
-    
-    const urlLower = mediaUrl.toLowerCase();
-    
-    if (urlLower.includes('.mp4') || urlLower.includes('video') || urlLower.includes('mixkit')) {
-        // Включаем видео-режим
-        if (playerImage) {
-            playerImage.style.display = "none";
-            playerImage.src = "";
-        }
-        if (playerVideo) {
-            playerVideo.src = mediaUrl;
-            playerVideo.style.display = "block";
-            playerVideo.muted = false;
-            playerVideo.play().catch(e => console.log("Автоплей заблокирован:", e));
-        }
-    } else {
-        // Включаем фото-режим (для Face Swap, Селфи и т.д.)
-        if (playerVideo) {
-            playerVideo.pause();
-            playerVideo.style.display = "none";
-            playerVideo.src = "";
-        }
-        if (playerImage) {
-            playerImage.src = mediaUrl;
-            playerImage.style.display = "block";
-        }
-        
-        // 🔥 ИСПРАВЛЕНО: Прячем кнопки запуска видео, когда юзер просто смотрит фотку!
-        if (controlsPanel) controlsPanel.style.display = "none";
-    }
-    
-    modal.style.display = "flex";
-    setTimeout(() => {
-        modal.classList.add('active'); 
-    }, 10);
-}
-// Закрытие универсального полноэкранного плеера (ИСПРАВЛЕНО И ИЗОЛИРОВАНО)
-function closePreviewVideo() {
-    const modal = document.getElementById('videoPlayerModal');
-    const playerVideo = document.getElementById('previewVideoPlayer');
-    const playerImage = document.getElementById('previewImagePlayer');
-    
-    // 🔥 ДОБАВЛЕНО: Находим панель кнопок 3-го режима
-    const controlsPanel = document.getElementById('modal_controls_panel');
 
-    if (modal) {
-        modal.classList.remove('active');
         
-        // 🔥 ДОБАВЛЕНО: Мгновенно убираем кнопки, чтобы они не мелькали в 1-м и 2-м режимах
-        if (controlsPanel) controlsPanel.style.display = "none";
-        
-        // Гасим видео, если оно играло
-        if (playerVideo) {
-            playerVideo.pause();
-            playerVideo.src = "";
-        }
-        
-        // Ждем анимацию исчезновения и полностью скрываем элементы
-        setTimeout(function() {
-            modal.style.display = "none";
-            if (playerVideo) playerVideo.style.display = "none";
-            if (playerImage) {
-                playerImage.style.display = "none";
-                playerImage.src = ""; // Очищаем память от фото
-            }
-        }, 300); 
-    }
-}
-
-
 // ====================================================================================
 // 2. ФУНКЦИЯ КЛИКА ПО КАРТОЧКЕ (Сброс кнопок-капсул в дефолт и показ пульта)
 // ====================================================================================
@@ -1917,6 +1837,29 @@ function closePreviewVideo() {
                 quality: selectedSwapQuality
             });
         }
+
+        // Автоматический виброотклик для всего интерфейса
+document.addEventListener('DOMContentLoaded', () => {
+    // Проверяем, что мы внутри Telegram и haptic доступен
+    const hasHaptic = window.Telegram?.WebApp?.HapticFeedback;
+
+    if (hasHaptic) {
+        document.addEventListener('click', (event) => {
+            // Ищем, кликнул ли юзер на кнопку, карточку, элемент шторки или кнопку назад
+            const target = event.target.closest('button, .menu-card, .phone-template-card, .custom-sheet-item, li, .back-tab-btn, .tab-btn');
+            
+            if (target) {
+                // Если у элемента уже прописан свой haptic в HTML, не дублируем его
+                if (target.getAttribute('onclick') && target.getAttribute('onclick').includes('HapticFeedback')) {
+                    return; 
+                }
+                // Выдаем четкий средний отклик на любое нажатие
+                Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+            }
+        });
+    }
+});
+
     </script>
 </body>
 </html>

@@ -1158,8 +1158,88 @@
 
 
 
-
+// ====================================================================================
+// Функция для управления вашим плеером videoPlayerModal
+// ====================================================================================
+        function openPreviewVideo(mediaUrl) {
+    const modal = document.getElementById('videoPlayerModal');
+    const playerVideo = document.getElementById('previewVideoPlayer');
+    const playerImage = document.getElementById('previewImagePlayer');
+    
+    // 🔥 НАХОДИМ ПАНЕЛЬ КНОПОК 3-ГО РЕЖИМА
+    const controlsPanel = document.getElementById('modal_controls_panel');
+    
+    if (!modal) return;
+    
+    const urlLower = mediaUrl.toLowerCase();
+    
+    if (urlLower.includes('.mp4') || urlLower.includes('video') || urlLower.includes('mixkit')) {
+        // Включаем видео-режим
+        if (playerImage) {
+            playerImage.style.display = "none";
+            playerImage.src = "";
+        }
+        if (playerVideo) {
+            playerVideo.src = mediaUrl;
+            playerVideo.style.display = "block";
+            playerVideo.muted = false;
+            playerVideo.play().catch(e => console.log("Автоплей заблокирован:", e));
+        }
+    } else {
+        // Включаем фото-режим (для Face Swap, Селфи и т.д.)
+        if (playerVideo) {
+            playerVideo.pause();
+            playerVideo.style.display = "none";
+            playerVideo.src = "";
+        }
+        if (playerImage) {
+            playerImage.src = mediaUrl;
+            playerImage.style.display = "block";
+        }
         
+        // 🔥 ИСПРАВЛЕНО: Прячем кнопки запуска видео, когда юзер просто смотрит фотку!
+        if (controlsPanel) controlsPanel.style.display = "none";
+    }
+    
+    modal.style.display = "flex";
+    setTimeout(() => {
+        modal.classList.add('active'); 
+    }, 10);
+}
+// Закрытие универсального полноэкранного плеера (ИСПРАВЛЕНО И ИЗОЛИРОВАНО)
+function closePreviewVideo() {
+    const modal = document.getElementById('videoPlayerModal');
+    const playerVideo = document.getElementById('previewVideoPlayer');
+    const playerImage = document.getElementById('previewImagePlayer');
+    
+    // 🔥 ДОБАВЛЕНО: Находим панель кнопок 3-го режима
+    const controlsPanel = document.getElementById('modal_controls_panel');
+
+    if (modal) {
+        modal.classList.remove('active');
+        
+        // 🔥 ДОБАВЛЕНО: Мгновенно убираем кнопки, чтобы они не мелькали в 1-м и 2-м режимах
+        if (controlsPanel) controlsPanel.style.display = "none";
+        
+        // Гасим видео, если оно играло
+        if (playerVideo) {
+            playerVideo.pause();
+            playerVideo.src = "";
+        }
+        
+        // Ждем анимацию исчезновения и полностью скрываем элементы
+        setTimeout(function() {
+            modal.style.display = "none";
+            if (playerVideo) playerVideo.style.display = "none";
+            if (playerImage) {
+                playerImage.style.display = "none";
+                playerImage.src = ""; // Очищаем память от фото
+            }
+        }, 300); 
+    }
+}
+
+
 // ====================================================================================
 // 2. ФУНКЦИЯ КЛИКА ПО КАРТОЧКЕ (Сброс кнопок-капсул в дефолт и показ пульта)
 // ====================================================================================

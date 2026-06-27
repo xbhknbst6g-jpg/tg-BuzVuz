@@ -865,13 +865,30 @@ body {
 }
 
 /* ========================================================================== */
-/* 🔥 СЕТКА ДЛЯ ПРЕСЕТОВ И СТИЛЕЙ ГЕНЕРАЦИИ (ТОЛЬКО 2 КОЛОНКИ БЕЗ ХАКОВ)     */
+/* 🔥 СЕТКА ДЛЯ ПРЕСЕТОВ И СТИЛЕЙ ГЕНЕРАЦИИ (ЗАЩИЩЕННАЯ ОТ МУТАЦИИ ПЛЕЕРА)  */
 /* ========================================================================== */
-.phone-templates-grid {
+/* Включаем сетку только если этот класс НЕ находится внутри модалки плеера */
+.phone-templates-grid:not(.video-modal):not(.video-modal-content) {
     display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important; /* Делим экран ровно на 2 колонки */
+    grid-template-columns: repeat(2, 1fr) !important; /* Ровно 2 колонки */
     gap: 12px !important; /* Красивый зазор между карточками */
     margin: 15px 0 !important;
     width: 100% !important;
     box-sizing: border-box !important;
+}
+
+/* 🔥 ОРАНЖЕВЫЙ НЕОН: Вешаем кант и свечение ТОЛЬКО на реальные карточки галереи */
+.phone-templates-grid:not(.video-modal):not(.video-modal-content) > * {
+    border: 1.5px solid #ff7300 !important;
+    box-shadow: 0 0 12px rgba(255, 115, 0, 0.3) !important;
+    border-radius: 12px !important;
+    box-sizing: border-box !important;
+    transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+/* Эффект сжатия при тапе по карточке */
+.phone-templates-grid:not(.video-modal):not(.video-modal-content) > *:active {
+    transform: scale(0.96) !important;
+    border-color: #ff1e00 !important;
+    box-shadow: 0 0 20px rgba(255, 115, 0, 0.55) !important;
 }

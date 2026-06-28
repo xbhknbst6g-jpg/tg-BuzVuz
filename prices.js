@@ -7,16 +7,19 @@
 
 async function syncPricesFromDatabase() {
     try {
-        const response = await fetch(API_URL);
+        const response = await fetch(API_URL, { cache: "no-store" }); // Добавили no-store от кэша
         const data = await response.json();
-         // 🔥 ДОБАВЛЕНА ЗАЩИТА: Если база вернула ошибку, мы берём дефолтные цены и НЕ ломаем страницу
+        
+        // 🔥 СОХРАНЯЕМ В ГЛОБАЛЬНУЮ ПАМЯТЬ БРАУЗЕРА (чтобы шторка её видела)
+        window.allPrices = data;
+        
         if (data && data.services) {
             fluxDevPrices = data.services.flux_dev;
             bananaPaintPrices = data.services.nano_banana_paint;
             fluxPulidPrices = data.services.flux_pulid;
         } else {
             console.warn("⚠️ База вернула пустые данные, используем заглушки");
-            return; // Мягко выходим из функции, оставляя дефолтную фиксу 1 коин, сайт НЕ ломается!
+            return;
         }
         
         // =========================================================================

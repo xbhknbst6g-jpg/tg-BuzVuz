@@ -1,10 +1,17 @@
 // URL-адрес вашего сервера, где запущен бот и API
         const API_URL = "https://thyself-lavish-underhand.ngrok-free.dev/api/v1/tariffs";
+        // Глобальные переменные цен (база запишет сюда цифры, а кнопка их считает)
+        let fluxDevPrices = { coins_min: 1, coins_mid: 2, coins_max: 3 };
+        let bananaPaintPrices = { coins_min: 2, coins_mid: 3, coins_max: 4 };
+        let fluxPulidPrices = { coins_min: 1, coins_mid: 2, coins_max: 3 }; // для custom режима
 
 async function syncPricesFromDatabase() {
     try {
         const response = await fetch(API_URL);
         const data = await response.json();
+        fluxDevPrices = data.services.flux_dev;
+        bananaPaintPrices = data.services.nano_banana_paint;
+        fluxPulidPrices = data.services.flux_pulid;
         
         // =========================================================================
         // 1. ДОСТАЕМ АКТУАЛЬНЫЕ ЦЕНЫ РЕЖИМОВ (Блок services из MongoDB Compass)
@@ -39,6 +46,16 @@ async function syncPricesFromDatabase() {
         if (document.getElementById("btn-start-kling5s")) document.getElementById("btn-start-kling5s").innerHTML = `Start ${kling5sPrice} 🪙`;
         if (document.getElementById("btn-start-kling10s")) document.getElementById("btn-start-kling10s").innerHTML = `Start ${kling10sPrice} 🪙`;
         if (document.getElementById("btn-start-sora")) document.getElementById("btn-start-sora").innerHTML = `Start ${soraPrice} 🪙`;
+        // Вставляем живые цены из MongoDB в шторку качества
+        if (document.getElementById("quality-flux-standard")) {
+            document.getElementById("quality-flux-standard").innerText = fluxDevPrices.coins_min;
+        }
+        if (document.getElementById("quality-flux-pro")) {
+            document.getElementById("quality-flux-pro").innerText = fluxDevPrices.coins_mid;
+        }
+        if (document.getElementById("quality-flux-ultra")) {
+            document.getElementById("quality-flux-ultra").innerText = fluxDevPrices.coins_max;
+        }
 
         console.log("✅ Все кнопки активных режимов на сайте успешно получили новые цены из MongoDB!");
     } catch (error) {

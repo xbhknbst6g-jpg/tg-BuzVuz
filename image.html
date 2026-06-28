@@ -572,21 +572,27 @@ function openUniversalQualitySheet() {
 }
 
     // ⚡ 1. УМНЫЙ ОБРАБОТЧИК КАЧЕСТВА (ДЛЯ ОБОИХ ЭКРАНОВ)
-    function selectQualityFromSheet(id, text) {
-        if (currentActiveMode === 'text_image') {
-            selectedTextQuality = id;
-            const el = document.getElementById('btn_text_quality') || document.getElementById('btn_direct_quality');
-            if (el) el.innerHTML = text;
-        } 
-        else if (currentActiveMode === 'image_generation_direct') {
-            directGenQuality = id;
-            const el = document.getElementById('btn_direct_quality_2') || document.getElementById('btn_direct_quality');
-            if (el) el.innerHTML = text;
-        }
-        
-        updateNeoStartButtonText();
-        closeCustomSheet();
+function selectQualityFromSheet(id, text) {
+    // Проверяем, какая именно кнопка START сейчас физически видна на экране
+    const btnText = document.getElementById('btn-start-flux-dev');
+    const isTextImageActive = btnText && btnText.offsetParent !== null;
+
+    if (isTextImageActive) {
+        // 🔥 ДЛЯ ПЕРВОГО ЭКРАНА (Картинки по тексту)
+        selectedTextQuality = id;
+        const el = document.getElementById('btn_text_quality');
+        if (el) el.innerHTML = text;
+    } else {
+        // 🔥 ДЛЯ ВТОРОГО ЭКРАНА (Умный Фокус / Банана)
+        directGenQuality = id;
+        const el = document.getElementById('btn_direct_quality_2') || document.getElementById('btn_direct_quality');
+        if (el) el.innerHTML = text;
     }
+    
+    // Пересчитываем цену на кнопке и закрываем шторку
+    updateNeoStartButtonText();
+    closeCustomSheet();
+}
 
     // 📐 2. УМНЫЙ ОБРАБОТЧИК ФОРМАТА (ДЛЯ ОБОИХ ЭКРАНОВ)
     function selectRatioFromSheet(id) {

@@ -118,10 +118,12 @@
                 </div>
 
                 <!-- Ряд управления -->
-                <div class="single-row-controls" style="margin-top: 40px !important; margin-bottom: 15px;">
+                <div class="single-row-controls" style="margin-top: 10px !important; margin-bottom: 15px;">
                     <div class="control-col" style="flex: 1;"><button id="btn_text_quality" class="capsule-btn" onclick="openUniversalQualitySheet()" style="width: 100%;">⚡ Standard</button></div>
                     <div class="control-col" style="flex: 1;"><button id="btn_text_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()" style="width: 100%;">9:16</button></div>
-                    <button class="neo-start-btn" onclick="sendTextGenData()" style="width: 100%;">Start <span id="price-flux-dev">1</span> 🪙</button>
+                    <div class="control-col control-col-btn" style="flex: 1.2;">
+                        <button class="neo-start-btn" onclick="sendTextGenData()" style="width: 100%;">Start <span id="price-flux-dev">1</span> 🪙</button>
+                    </div>
                 </div>
 
             </div> <!-- Закрыли блок настроек text_image_settings_block ПОСЛЕ кнопок -->

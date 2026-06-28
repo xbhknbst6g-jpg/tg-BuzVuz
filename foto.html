@@ -1,33 +1,1207 @@
-function updateNeoStartButtonText() {
-    const btnText = document.getElementById('btn-start-flux-dev');
-    // Поддерживаем оба возможных ID для кнопки бананы-красок
-    const btnDirect = document.getElementById('btn-start-banana-paint_2') || document.getElementById('btn-start-banana-paint');
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>AI Фотостудия</title>
     
-    // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ ЦИФРОВОЙ ОПТИКИ (Класс text_image на Flux)
-    if (btnText) {
-        if (selectedAiModelEngine === 'custom') {
-            // Если включен "custom", берем базовую цену Flux PuLID из базы
-            btnText.innerHTML = `Start ${fluxPulidPrices.coins_min} 🪙`; 
-        } else {
-            // Смотрим, какое качество выбрано в шторке текста (selectedTextQuality):
-            if (selectedTextQuality === 'dev') {
-                btnText.innerHTML = `Start ${fluxDevPrices.coins_mid} 🪙`; // Цена Pro из базы (2 коина)
-            } else if (selectedTextQuality === 'ultra_4k') {
-                btnText.innerHTML = `Start ${fluxDevPrices.coins_max} 🪙`; // Цена Ultra из базы (3 коина)
+    <!-- Официальный скрипт Telegram Web App -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+
+
+    <!-- ========================================== -->
+    <!-- ЭКРАН 1: ГЛАВНОЕ МЕНЮ ФОТО-СТУДИИ          -->
+    <!-- ========================================== -->
+    <div id="foto" class="screen active">
+        <div class="header"></div>
+        <h1 class="ai-studio-title">AI Studio</h1>
+        <div class="neon-divider"></div>
+
+       <p style="text-align: center; color: var(--tg-theme-hint-color, #666); font-size: 14px; margin-top: 5px;">Выберите нужный инструмент генерации ниже</p>
+
+       <div class="main-menu-grid">
+                <!-- 1. Фото + Текст с вашей новой камерой -->
+            <div class="menu-card orange" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('text_image');">
+                <div class="menu-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-camera">
+                        <path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/>
+                        <circle cx="12" cy="13" r="3"/>
+                    </svg>
+                </div>
+                <div class="menu-info">
+                    <div class="menu-title">Фото + Текст</div>
+                    <div class="menu-desc">Создание по вашему фото и описанию</div>
+                </div>
+            </div>
+
+            
+                <!-- 2. Face Swap с вашей новой иконкой стрелок обмена -->
+            <div class="menu-card purple" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('face_swap');">
+                <div class="menu-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-repeat">
+                        <path d="m17 2 4 4-4 4"/>
+                        <path d="M3 11v-1a4 4 0 0 1 4-4h14"/>
+                        <path d="m7 22-4-4 4-4"/>
+                        <path d="M21 13v1a4 4 0 0 1-4 4H3"/>
+                    </svg>
+                </div>
+                <div class="menu-info">
+                    <div class="menu-title">Face Swap</div>
+                    <div class="menu-desc">Замена лиц по шаблонам</div>
+                </div>
+            </div>
+
+
+            
+            <!-- 3. Примерка одежды (Иконка: Вешалка / Футболка) -->
+            <div class="menu-card blue" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('tryon');">
+                <div class="menu-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shirt">
+                        <path d="M6 2 3 5v4l3 1v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10l3-1V5l-3-3H6Z"/>
+                        <path d="M10 2a2 2 0 0 0 4 0"/>
+                    </svg>
+                </div>
+                <div class="menu-info">
+                    <div class="menu-title">Примерка одежды</div>
+                    <div class="menu-desc">Примерка любых вещей по вашей фигуре До / После</div>
+                </div>
+            </div>
+
+            
+            <!-- 4. Смена фона (Иконка: Изображение / Картина) -->
+            <div class="menu-card cyan" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('bg_change');">
+                <div class="menu-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layers">
+                        <path d="m12 3-10 5 10 5 10-5-10-5Z"/>
+                        <path d="m2 17 10 5 10-5"/>
+                        <path d="m2 12 10 5 10-5"/>
+                    </svg>
+                </div>
+                <div class="menu-info">
+                    <div class="menu-title">Смена фона</div>
+                    <div class="menu-desc">Умный перенос объекта на новый задний план</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- ========================================== -->
+    <!-- РЕЖИМ 1: ФОТО + ТЕКСТ (TEXT_IMAGE)        -->
+    <!-- ========================================== -->
+    <div id="text_image" class="screen">
+        
+        <!-- 🔥 ЛЕНТА ВЕРХУШКИ №1: Стрелка "Назад" и выбор моделей ИИ строго на одной линии -->
+        <div class="tabs-container" id="text_image_models_row" style="display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100%; box-sizing: border-box; margin-bottom: 8px;">
+            <!-- Наша круглая кнопка назад -->
+            <button class="back-tab-btn" onclick="handleTextBackClick()"></button>
+            
+            <!-- Две широкие кнопки ИИ-моделей делят оставшееся место поровну -->
+            <div style="display: flex; flex: 1; background: rgba(255,255,255,0.06); padding: 4px; border-radius: 14px; gap: 4px; margin-left: 8px;">
+                <button id="btn_global_model_banana" class="tab-btn active" style="flex: 1; font-size: 11px !important; padding: 7px 2px !important; margin: 0 !important; width: auto !important; min-width: 0 !important;" onclick="switchGlobalAiModel('banana', this)">Умный Фокус</button>
+                <button id="btn_global_model_pulid" class="tab-btn" style="flex: 1; font-size: 11px !important; padding: 7px 2px !important; margin: 0 !important; width: auto !important; min-width: 0 !important;" onclick="switchGlobalAiModel('pulid', this)">Цифровая Оптика</button>
+            </div>
+        </div>
+
+        <!-- 🔥 ЛЕНТА ВЕРХУШКИ №2: Твои оригинальные огненные вкладки фильтрации категорий (Опустились чуть ниже) -->
+        <div class="tabs-scroll-line" id="text_image_tabs" style="margin-bottom: 12px;">
+            <button class="tab-btn active" onclick="switchTextTab('all', this)">Все</button>
+            <button class="tab-btn" onclick="switchTextTab('men', this)">Муж</button>
+            <button class="tab-btn" onclick="switchTextTab('women', this)">Жен</button>
+            <button class="tab-btn" onclick="switchTextTab('kids', this)">Дети</button>
+            <button class="tab-btn" onclick="switchTextTab('common', this)">Общие</button>
+            <button class="tab-btn" onclick="switchTextTab('custom', this)">Свой</button>
+        </div>
+
+        <div class="header" style="margin-bottom: 15px; text-align: center;">
+            <h1 id="text_image_title" style="font-size: 15px; font-weight: 800; margin: 0; color: var(--tg-theme-text-color, #fff);">Примеры генераций Фото + Текст</h1>
+            <p id="text_image_subtitle" style="font-size: 13px; margin: 4px 0 0 0; color: var(--tg-theme-hint-color, #666);">Выберите желаемый стиль для настройки:</p>
+        </div>
+
+        <!-- 🔥 НАШ ШАГ 1 (ГАЛЕРЕЯ КАРТОЧЕК) С ДВОЙНЫМ КЛИКОМ КАК В РИСОВАНИИ -->
+        <div class="isolated-photo-text-grid" id="text_image_gallery">
+            
+            <!-- Карточка 1 -->
+            <div class="phone-template-card" data-category="women" onclick="selectTextImageStyle('Outside the cityе', 'https://i.postimg.cc/cHRZDY1c/sai-t.jpg'); Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo('https://i.postimg.cc/cHRZDY1c/sai-t.jpg')">
+                <img src="https://i.postimg.cc/cHRZDY1c/sai-t.jpg" alt="Outside the cityе">
+                <div class="card-overlay" style="pointer-events: none;">Outside the cityе</div>
+            </div>
+
+            <!-- Карточка 2 -->
+            <div class="phone-template-card" data-category="men" onclick="selectTextImageStyle('The Dark Soul', 'https://i.postimg.cc/W4DLvXqk/02.png'); Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo('https://i.postimg.cc/W4DLvXqk/02.png')">
+                <img src="https://i.postimg.cc/W4DLvXqk/02.png" alt="The Dark Soul">
+                <div class="card-overlay" style="pointer-events: none;">The Dark Soul</div>
+            </div>
+
+            <!-- Карточка 3 -->
+            <div class="phone-template-card" data-category="men" onclick="selectTextImageStyle('On sports', 'https://i.postimg.cc/W4DLvXqk/02.png'); Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo('https://i.postimg.cc/W4DLvXqk/02.png')">
+                <img src="https://i.postimg.cc/W4DLvXqk/02.png" alt="On sports">
+                <div class="card-overlay" style="pointer-events: none;">On sports</div>
+            </div>
+
+            <!-- Карточка 4 -->
+            <div class="phone-template-card" data-category="women" onclick="selectTextImageStyle('In the centre', 'https://i.postimg.cc/cHRZDY1c/sai-t.jpg'); Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo('https://i.postimg.cc/cHRZDY1c/sai-t.jpg')">
+                <img src="https://i.postimg.cc/cHRZDY1c/sai-t.jpg" alt="In the centre">
+                <div class="card-overlay" style="pointer-events: none;">In the centre</div>
+            </div>
+
+            <!-- Карточка 5 -->
+            <div class="phone-template-card" data-category="common" onclick="selectTextImageStyle('Group Style', 'https://i.postimg.cc/FH5y1J8S/5844728862795828808.jpg', 2); Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo('https://i.postimg.cc/FH5y1J8S/5844728862795828808.jpg')">
+                <img src="https://i.postimg.cc/FH5y1J8S/5844728862795828808.jpg" alt="Group Style">
+                <div class="card-overlay" style="pointer-events: none;">Family Vibe (2 чел.)</div>
+            </div>
+
+            <!-- Карточка 6 -->
+            <div class="phone-template-card" data-category="kids" onclick="selectTextImageStyle('Evening vibe', 'https://i.postimg.cc/L8D378Qf/GEM3Nqu-I43e3gq-Wz5j-Ol-E-L2YT0AJ8.png'); Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo('https://i.postimg.cc/L8D378Qf/GEM3Nqu-I43e3gq-Wz5j-Ol-E-L2YT0AJ8.png')">
+                <img src="https://i.postimg.cc/L8D378Qf/GEM3Nqu-I43e3gq-Wz5j-Ol-E-L2YT0AJ8.png" alt="Evening vibe">
+                <div class="card-overlay" style="pointer-events: none;">Evening vibe</div>
+            </div>
+
+        </div>
+
+
+
+        <!-- ШАГ 2: БЛОК НАСТРОЕК (Полностью разделенный) -->
+        <div id="text_image_settings_block" style="display: none;">
+            
+            <!-- 1. ИНСТРУКЦИЯ ДЛЯ ВКЛАДКИ "СВОЙ" (Остается вверху) -->
+            <div id="custom_instruction_text" class="custom-prompt-container" style="display: none; margin-bottom: 15px;">
+                <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Как работает режим:</div>
+                <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.4;">
+                    <b style="color: #ffffff;">Шаг 1:</b> Настройте формат и качество кадра внизу.<br>
+                    <b style="color: #ffffff;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
+                    <b style="color: #ffffff;">Шаг 3:</b> Следуйте дальнейшим указаниям бота!
+                </div>
+                <!-- Наша лазерная линия-разделитель (Оранжевый неон) -->
+                <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
+
+                <!-- Строка про итог (Белая и жирная) -->
+                <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center;">
+                    <b>Итоговая цена зависит от выбранного качества и количетсва человек, точная цыфра будет отображаться на кнопке START</b>
+                </div>
+            </div>
+
+            <!-- 2. СЛУЖЕБНЫЙ КОНТЕЙНЕР ДЛЯ ШАБЛОНОВ -->
+            <div id="preset_preview_block" style="display: none;">
+                <div class="text-image-compact-preview">
+                    <img id="text_image_large_preview" src="" alt="Выбранный стиль">
+                </div>
+            </div>
+
+            <!-- 🔥 ЭТА РАСПОРКА ВЫДАВИТ ВСЕ НАСТРОЙКИ ВНИЗ ЭКРАНА 🔥 -->
+            <div class="mode-spacer" style="height: calc(100vh - 470px); display: none;" id="text_image_spacer"></div>
+
+            <!-- 3. ТВОИ ОГНЕННЫЕ КНОПКИ УПРАВЛЕНИЯ СНИЗУ (Теперь и с выбором людей) -->
+            <!-- 🔥 ПЕРЕНЕСЛИ СЮДА: Блок встанет ровно над кнопками Standard / 9:16 / Start -->
+            <div id="faces_count_selector_row" style="margin-bottom: 12px; display: none;">
+                <div style="font-size: 12px; margin-bottom: 6px; color: var(--tg-theme-hint-color, #666); text-align: center;">Количество персонажей на фото:</div>
+                <div style="display: flex; background: rgba(255,255,255,0.06); padding: 4px; border-radius: 14px; gap: 4px; max-width: 280px; margin: 0 auto;">
+                    <button id="btn_faces_1" class="tab-btn active" style="flex: 1; font-size: 12px; padding: 6px 0;" onclick="selectFacesCount(1, this)"> 1 чел.</button>
+                    <button id="btn_faces_2" class="tab-btn" style="flex: 1; font-size: 12px; padding: 6px 0;" onclick="selectFacesCount(2, this)"> 2 чел.</button>
+                    <button id="btn_faces_3" class="tab-btn" style="flex: 1; font-size: 12px; padding: 6px 0;" onclick="selectFacesCount(3, this)"> 3 чел.</button>
+                </div>
+            </div>
+
+            <!-- Твоя оригинальная нижняя плашка с кнопками -->
+            <div class="single-row-controls">
+                <div class="control-col">
+                    <button id="btn_text_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
+                </div>
+                <div class="control-col">
+                    <button id="btn_text_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">9:16</button>
+                </div>
+                <div class="control-col control-col-btn">
+                    <button id="neo_text_submit_btn" class="neo-start-btn" onclick="sendPhotoTextData()">
+                        Start 2 🪙
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- ПОДРЕЖИМ 2: FACE SWAP                      -->
+    <!-- ========================================== -->
+    <div id="face_swap" class="screen">
+        
+       <!-- ЛЕНТА ВЕРХУШКИ С НАШЕЙ КРУГЛОЙ КНОПКОЙ НАЗАД (Добавили стили и position: relative) -->
+        <div class="tabs-container" id="swap_tabs" style="display: flex; align-items: center; padding: 5px 0; position: relative;">
+            <button class="back-tab-btn" onclick="handleSwapBackClick()"></button>  
+            <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;"></div>          
+            <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%; position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 1; pointer-events: none;">Настройка Face Swap</div>
+        </div>
+        <!-- СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (Изначально полностью скрыт, как в твоих других режимах) -->
+        <div id="face_swap_settings_block" style="display: none;">
+            
+            <!-- 🔥 КОНТЕЙНЕР-ОРИЕНТИР: Задали минимальную высоту, чтобы он работал как картинка в Фото+Текст -->
+            <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 190px); box-sizing: border-box; display: flex; flex-direction: column;">
+                
+                <div style="font-size: 14px; font-weight: bold; margin-bottom: 12px; color: var(--tg-theme-text-color, #000); text-align: center;">📍 Как это работает (Пример):</div>
+                
+                <!-- Сетка шагов (Селфи -> Шаблон -> Итог) -->
+                <div class="swap-steps-grid">
+                    
+                    <!-- Шаг 1 -->
+                    <div class="swap-template-card" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo('https://i.postimg.cc/1tDhc1zH/selfi.jpg')">
+                        <img src="https://i.postimg.cc/1tDhc1zH/selfi.jpg" alt="1. Селфи">
+                        <div class="card-overlay">1. Селфи</div>
+                    </div>
+                    
+                    <!-- Шаг 2 -->
+                    <div class="swap-template-card">
+                        <img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg" alt="2. Шаблон">
+                        <div class="card-overlay">2. Шаблон</div>
+                    </div>
+                    
+                    <!-- Шаг 3 (Итог с оранжевой рамкой) -->
+                    <div class="swap-template-card">
+                        <img src="https://i.postimg.cc/pLrwcFTt/itog.jpg" alt="3. Итог">
+                        <div class="card-overlay">3. Итог 🔥</div>
+                    </div>
+
+                </div>
+
+                <!-- 🔥 УВЕЛИЧИЛИ ОТСТУП СВЕРХУ ДО 40px -->
+                <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
+                    <b style="color: #ffffff;">Шаг 1:</b> Настройте формат и качество кадра внизу.<br>
+                    <b style="color: #ffffff;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
+                    <b style="color: #ffffff;">Шаг 3:</b> Следуйте дальнейшим указаниям бота!
+                </div>
+                <!-- Наша лазерная линия-разделитель (Оранжевый неон) -->
+                <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
+
+                <!-- Строка про итог (Белая и жирная) -->
+                <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center;">
+                    <b>Итоговая цена зависит от выбранного качества и будет отображаться на кнопке START</b>
+                </div>
+
+            </div>
+
+            <!-- 🔥 УВЕЛИЧИЛИ ОТСТУП МЕЖДУ ТЕКСТОМ И КНОПКАМИ ДО 55px -->
+            <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px;">
+                <div class="control-col">
+                    <button id="btn_swap_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
+                </div>
+                <div class="control-col">
+                    <button id="btn_swap_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">9:16</button>
+                </div>
+                <div class="control-col control-col-btn">
+                    <button id="neo_swap_submit_btn" class="neo-start-btn" onclick="sendCustomFaceSwapData()">
+                        Start 1 🪙
+                    </button>
+                </div>
+            </div>
+
+        </div> <!-- Конец служебного блока -->
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- РЕЖИМ 3: ПРИМЕРКА ОДЕЖДЫ (TRY-ON)          -->
+    <!-- ========================================== -->
+    <div id="tryon" class="screen">
+        
+       <!-- ЛЕНТА ВЕРХУШКИ С НАШЕЙ КРУГЛОЙ КНОПКОЙ НАЗАД (Добавили position: relative) -->
+        <div class="tabs-container" id="tryon_tabs" style="display: flex; align-items: center; padding: 5px 0; position: relative;">
+            <button class="back-tab-btn" onclick="handleTryOnBackClick()"></button> 
+            <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;"></div>   
+            <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%; position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 1; pointer-events: none;">Настройка примерки одежды</div>
+        </div>
+        <!-- СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (Управляется твоим роутером openScreen) -->
+        <div id="tryon_settings_block" style="display: none;">
+            
+            <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 190px); box-sizing: border-box; display: flex; flex-direction: column;">
+                
+                <div style="font-size: 14px; font-weight: bold; margin-bottom: 12px; color: var(--tg-theme-text-color, #000); text-align: center;">📍 Как это работает (Пример):</div>
+                
+                <!-- Сетка шагов (Фото в полный рост -> Вещь -> Итог) -->
+                <div class="swap-steps-grid">
+                    
+                    <!-- Шаг 1 -->
+                    <div class="swap-template-card">
+                        <img src="https://i.postimg.cc/8c2pqNq0/Vase-foto.jpg" alt="1. Ваше фото">
+                        <div class="card-overlay">1. Фото во весь рост</div>
+                    </div>
+                    
+                    <!-- Шаг 2 -->
+                    <div class="swap-template-card">
+                        <img src="https://i.postimg.cc/bwQrfSYs/Sablon-odezdy.png" alt="2. Фото вещи">
+                        <div class="card-overlay">2. Фото вещи</div>
+                    </div>
+                    
+                    <!-- Шаг 3 (Итог с оранжевой рамкой) -->
+                    <div class="swap-template-card">
+                        <img src="https://i.postimg.cc/t7GbBDxL/itog-smeny-odezdy.jpg" alt="3. Итог">
+                        <div class="card-overlay">3. Итог 🔥</div>
+                    </div>
+
+                </div>
+
+                <!-- ИНСТРУКЦИЯ (Увеличен отступ до 40px) -->
+                <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
+                    <b style="color: #ffffff;">Шаг 1:</b> Настройте формат и качество кадра внизу.<br>
+                    <b style="color: #ffffff;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
+                    <b style="color: #ffffff;">Шаг 3:</b> Следуйте дальнейшим указаниям бота!
+                </div>
+                <!-- Наша лазерная линия-разделитель (Оранжевый неон) -->
+                <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
+
+                <!-- Строка про итог (Белая и жирная) -->
+                <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center;">
+                    <b>Итоговая цена зависит от выбранного качества и будет отображаться на кнопке START</b>
+                </div>
+
+            </div>
+
+            <!-- РЯД КНОПОК УПРАВЛЕНИЯ (Возвращаем стандартные лаконичные ID под твою шторку) -->
+            <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px;">
+                <div class="control-col">
+                    <button id="btn_tryon_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
+                </div>
+                <div class="control-col">
+                    <button id="btn_tryon_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">9:16</button>
+                </div>
+                <div class="control-col control-col-btn">
+                    <button id="neo_tryon_submit_btn" class="neo-start-btn" onclick="sendTryOnData()">
+                        Start 1 🪙
+                    </button>
+                </div>
+            </div>
+
+        </div> <!-- Конец служебного блока -->
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- ПОДРЕЖИМ 4: СМЕНА ФОНА                     -->
+    <!-- ========================================== -->
+    <div id="bg_change" class="screen">
+        
+        <!-- 🔥 ЛЕНТА ВЕРХУШКИ С НАШЕЙ КРУГЛОЙ КНОПКОЙ НАЗАД -->
+        <div class="tabs-container" id="bg_change_tabs" style="display: flex; align-items: center; padding: 5px 0; position: relative;">
+            <!-- Фиксированная круглая стрелка назад -->
+            <button class="back-tab-btn" onclick="openScreen('foto')"></button>
+            <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;"></div>
+            
+            <!-- Заголовок теперь намертво привязан к шапке и встанет идеально по центру экрана -->
+            <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%; position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 1; pointer-events: none;">Настройка смены фона</div>
+        </div>
+
+        <!-- СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (Изначально полностью скрыт под логику твоего роутера) -->
+        <div id="bg_change_settings_block" style="display: none;">
+            
+            <!-- 🔥 КОНТЕЙНЕР-ОРИЕНТИР С МИНИМАЛЬНОЙ ВЫСОТОЙ -->
+            <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 190px); box-sizing: border-box; display: flex; flex-direction: column;">
+                
+                <div style="font-size: 14px; font-weight: bold; margin-bottom: 12px; color: var(--tg-theme-text-color, #000); text-align: center;">📍 Как это работает (Пример):</div>
+
+                <!-- 🔥 ИДЕАЛЬНО СИММЕТРИЧНЫЙ КОНТЕЙНЕР -->
+                <div class="swap-steps-grid" style="display: flex !important; justify-content: center !important; gap: 24px !important; width: 100%; box-sizing: border-box; padding: 0 10px;">
+                    
+                    <!-- Карточка 1: Исходное фото -->
+                    <div style="flex: 1; max-width: 125px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                        <div class="phone-template-card" style="width: 100%;">
+                            <img src="https://i.postimg.cc/t7GbBDxL/itog-smeny-odezdy.jpg" alt="1. Исходное фото" style="width: 100%; display: block;">
+                        </div>
+                        <!-- Вынесли подпись под карточку: теперь она никогда не скроется! -->
+                        <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 6px; white-space: nowrap;">1. Исходное фото</div>
+                    </div>
+                    
+                    <!-- Карточка 2: Результат -->
+                    <div style="flex: 1; max-width: 125px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                        <div class="phone-template-card" style="width: 100%; border: 2px solid #ff1e00 !important;">
+                            <img src="https://i.postimg.cc/x1j67KTC/5860519473268330113.jpg" alt="2. Результат" style="width: 100%; display: block;">
+                        </div>
+                        <!-- Вынесли подпись под карточку: теперь она никогда не скроется! -->
+                        <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 6px; white-space: nowrap;">2. Результат 🔥</div>
+                    </div>
+
+                </div>
+
+
+                <!-- ИНСТРУКЦИЯ (Увеличен отступ до 40px) -->
+                <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
+                    <b style="color: #ffffff;">Шаг 1:</b> Настройте формат и качество кадра внизу.<br>
+                    <b style="color: #ffffff;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
+                    <b style="color: #ffffff;">Шаг 3:</b> Следуйте дальнейшим указаниям бота!
+                </div>
+                <!-- Наша лазерная линия-разделитель (Оранжевый неон) -->
+                <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
+
+                <!-- Строка про итог (Белая и жирная) -->
+                <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center;">
+                    <b>Итоговая цена зависит от выбранного качества и будет отображаться на кнопке START</b>
+                </div>
+
+            </div>
+
+            <!-- 🔥 ОБНОВЛЕННЫЙ РЯД КНОПОК: Формат убран, сетка автоматически подстроится -->
+            <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px;">
+                <div class="control-col">
+                    <button id="btn_bg_quality" class="capsule-btn">⚡ Standard</button>
+                </div>
+                <div class="control-col control-col-btn">
+                    <button id="neo_bg_submit_btn" class="neo-start-btn" onclick="sendBgChangeData()">
+                        Start 1 🪙
+                    </button>
+                </div>
+            </div>
+        </div> <!-- Конец служебного блока настроек -->
+    </div>
+
+    <!-- ========================================== -->
+    <!-- УНИВЕРСАЛЬНАЯ КАСТОМНАЯ ШТОРКА (HTML ПОДЛОЖКА) -->
+    <!-- ========================================== -->
+    <div id="custom_action_sheet" class="custom-sheet-overlay" onclick="closeCustomSheet()">
+        <div class="custom-sheet-panel" onclick="event.stopPropagation()">
+            <div id="custom_sheet_title" class="custom-sheet-title">Заголовок</div>
+            <ul id="custom_sheet_list" class="custom-sheet-list">
+                <!-- Сюда JavaScript будет сам на лету подставлять нужные списки -->
+            </ul>
+           
+        </div>
+    </div>
+
+<!-- ========================================== -->
+<!-- НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ (ТАББАР) -->
+<!-- ========================================== -->
+
+    <div class="bottom-navigation-bar">
+        <!-- Кнопка ФОТО (Активная) -->
+        <button class="nav-item active">
+            <span class="nav-icon">📸</span>
+            <span class="nav-text">Фотоэффекты</span>
+        </button>
+        
+        <!-- Кнопка ВИДЕО (Ведет на video.html) -->
+        <button class="nav-item" onclick="navigateToScreen('video.html')">
+            <span class="nav-icon">🎥</span>
+            <span class="nav-text">Видеоэффекты</span>
+        </button>
+        
+        <!-- Кнопка РИСУНКИ (Ведет на art.html) -->
+        <button class="nav-item" onclick="navigateToScreen('image.html')">
+            <span class="nav-icon">🎨</span>
+            <span class="nav-text">Рисование</span>
+        </button>
+    </div>
+
+
+    <script>
+
+        // ====================================================================================
+        // 1. СИСТЕМНАЯ ИНИЦИАЛИЗАЦИЯ И ПЕРЕМЕННЫЕ
+        // ====================================================================================
+        const tg = window.Telegram.WebApp;
+
+        // Инициализация переменных настроек (Стартовый режим переименован в 'foto')
+        let currentActiveMode = 'foto';
+        let selectedTryOnRatio = '9:16';  
+        let selectedTextRatio = '9:16';   
+        let selectedSwapRatio = '9:16';   
+        let selectedBgRatio = '9:16';   
+        
+        let selectedTextQuality = 'schnell';
+        let selectedSwapQuality = 'schnell';
+        let selectedTryOnQuality = 'schnell';
+        let selectedBgQuality = 'schnell';
+
+        // Системные переменные для контроля шагов Фото + Текст
+        let isTextImageStyleSelected = false; 
+        let selectedStyleName = ""; 
+
+        // Переменная для отслеживания режима: готовый шаблон (preset) или свой текст (custom)
+        let currentGenerationMode = 'preset';
+
+        // Системная переменная для отслеживания сценария примерки одежды
+        let currentTryOnMode = 'face_swap_mode'; 
+
+        // 🔥 ИСПРАВЛЕНО: Теперь по умолчанию стартует 'banana' (Умный Фокус), так как кнопка активна при старте!
+        let selectedAiModelEngine = 'banana'; 
+
+        let selectedStyleFacesCount = 1; // По умолчанию всегда 1 человек
+
+
+
+
+        
+// ====================================================================================
+// 2. ФУНКЦИЯ КЛИКА ПО КАРТОЧКЕ (Сброс кнопок-капсул в дефолт и показ пульта)
+// ====================================================================================
+        function selectTextImageStyle(styleName, imageUrl, facesCount = 1) {
+            isTextImageStyleSelected = true;
+            selectedStyleName = styleName;
+            
+            // 🔥 СОХРАНЯЕМ: количество лиц для этой карточки в глобальную переменную
+            selectedStyleFacesCount = facesCount;
+
+            document.getElementById('text_image_title').innerText = styleName;
+            
+            // 🔥 ДИНАМИЧЕСКИЙ ТЕКСТ ПОДСКАЗКИ: информируем юзера, сколько селфи попросит бот
+            if (facesCount > 1) {
+                document.getElementById('text_image_subtitle').innerText = `Настройте параметры кадра и запустите генерацию::`;
             } else {
-                btnText.innerHTML = `Start ${fluxDevPrices.coins_min} 🪙`; // Стандартная цена (1 коин)
+                document.getElementById('text_image_subtitle').innerText = "Настройте параметры кадра и запустите генерацию:";
+            }
+
+            document.getElementById('text_image_gallery').style.display = "none"; 
+            document.getElementById('text_image_settings_block').style.display = "block"; // Открываем пульт управления
+            
+            if (document.getElementById('text_image_spacer')) document.getElementById('text_image_spacer').style.display = 'none';
+            // Показываем черную рамку с картинкой превью (только для шаблонов!)
+            if (document.getElementById('preset_preview_block')) document.getElementById('preset_preview_block').style.display = 'block';
+            if (document.getElementById('custom_instruction_text')) document.getElementById('custom_instruction_text').style.display = 'none';
+
+            document.getElementById('text_image_large_preview').src = imageUrl;
+
+            selectedTextQuality = 'schnell';
+            selectedTextRatio = '9:16';
+            document.getElementById('btn_text_quality').innerHTML = `⚡ Standard`;
+            document.getElementById('btn_text_ratio').innerHTML = `9:16`;
+
+            if (typeof updateNeoStartButtonText === 'function') updateNeoStartButtonText();
+            if (tg && tg.MainButton) tg.MainButton.hide();
+        }
+
+// ====================================================================================
+// 2. ФУНКЦИЯ переключения табов (вкладок) для текст + фото
+// ====================================================================================
+        
+        function switchTextTab(category, element) {
+            const tabs = document.querySelectorAll('#text_image_tabs .tab-btn');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            element.classList.add('active');
+
+            const gallery = document.getElementById('text_image_gallery');
+            const settingsBlock = document.getElementById('text_image_settings_block');
+            const presetPreviewBlock = document.getElementById('preset_preview_block');
+            const instructionText = document.getElementById('custom_instruction_text');
+            const facesRow = document.getElementById('faces_count_selector_row');
+
+            if (category === 'custom') {
+                currentGenerationMode = 'custom'; 
+                isTextImageStyleSelected = true;  
+                selectedStyleName = "Свой промпт";
+
+                // 🔥 МЕНЯЕМ ЗАГОЛОВКИ СТРОГО ДЛЯ ВКЛАДКИ "СВОЙ"
+                document.getElementById('text_image_title').innerText = "Свой сюжет (Фото + Текст)";
+                document.getElementById('text_image_subtitle').innerText = "Настройте параметры вашей персональной генерации:";
+
+                gallery.style.display = 'none';            // Прячем сетку шаблонов
+                settingsBlock.style.display = 'block';      // Открываем блок с кнопками
+                if (presetPreviewBlock) presetPreviewBlock.style.display = 'none'; // НАГЛУХО ПРЯЧЕМ ЧЕРНЫЙ ПРЯМОУГОЛЬНИК
+                if (instructionText) instructionText.style.display = 'block';      // Показываем инструкцию
+                
+                // Включаем выбор людей для вкладки "Свой"
+                if (facesRow) facesRow.style.display = 'block';
+                selectFacesCount(1, document.getElementById('btn_faces_1')); // Ставим 1 чел. по дефолту
+
+                // ВКЛЮЧАЕМ РАСПОРКУ ВО ВКЛАДКЕ "СВОЙ"
+                if (document.getElementById('text_image_spacer')) document.getElementById('text_image_spacer').style.display = 'block';
+            } else {
+                currentGenerationMode = 'preset'; 
+                isTextImageStyleSelected = false; 
+
+                // 🔥 ВОЗВРАЩАЕМ СТАНДАРТНЫЕ ЗАГОЛОВКИ ДЛЯ ОСТАЛЬНЫХ ТАБОВ С ГАЛЕРЕЕЙ
+                document.getElementById('text_image_title').innerText = "Примеры генераций Фото + Текст";
+                document.getElementById('text_image_subtitle').innerText = "Выберите желаемый стиль для настройки:";
+
+                gallery.style.display = 'grid';            // Показываем сетку шаблонов обратно
+                settingsBlock.style.display = 'none';      // Скрываем нижний block
+                if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';
+                if (instructionText) instructionText.style.display = 'none';
+                
+                // Наглухо прячем выбор людей, когда юзер вернулся в галерею карточек
+                if (facesRow) facesRow.style.display = 'none';
+
+                // ВЫКЛЮЧАЕМ РАСПОРКУ В ОСТАЛЬНЫХ ТАБАХ
+                if (document.getElementById('text_image_spacer')) document.getElementById('text_image_spacer').style.display = 'none';
+
+                const cards = document.querySelectorAll('.phone-template-card');
+                cards.forEach(card => {
+                    const cardCategory = card.getAttribute('data-category');
+                    if (category === 'all' || cardCategory === category) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
             }
         }
-    }
-    
-    // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ УМНОГО ФОКУСА (Класс image_generation_direct на Nano Banana)
-    if (btnDirect) {
-        if (directGenQuality === 'dev') {
-            btnDirect.innerHTML = `Start ${bananaPaintPrices.coins_mid} 🪙`; // Средняя цена бананы из базы
-        } else if (directGenQuality === 'ultra_4k') {
-            btnDirect.innerHTML = `Start ${bananaPaintPrices.coins_max} 🪙`; // Максимальная цена бананы из базы
-        } else {
-            btnDirect.innerHTML = `Start ${bananaPaintPrices.coins_min} 🪙`; // Минимальная цена бананы из базы
+
+
+// ====================================================================================
+// 2. ФУНКЦИЯ выбора количества людей на вкладке "Свой"
+// ====================================================================================
+
+        function selectFacesCount(count, element) {
+            // 1. Записываем выбранное число в глобальную переменную для отправки боту
+            selectedStyleFacesCount = count;
+
+            // 2. Ищем кнопки по их ID
+            const btn1 = document.getElementById('btn_faces_1');
+            const btn2 = document.getElementById('btn_faces_2');
+            const btn3 = document.getElementById('btn_faces_3');
+
+            // Снимаем класс подсветки 'active' со всех кнопок этого ряда
+            if (btn1 && btn2 && btn3) {
+                btn1.classList.remove('active');
+                btn2.classList.remove('active');
+                btn3.classList.remove('active');
+            }
+
+            // 3. Подсвечиваем только ту кнопку, на которую кликнули
+            if (element) {
+                element.classList.add('active');
+            }
         }
+
+
+// ====================================================================================
+// Микро-функция в JavaScript для переключения тумблера нана банана и флюкс плуид
+// ====================================================================================
+
+        function switchGlobalAiModel(modelMode, element) {
+            document.getElementById('btn_global_model_banana').classList.remove('active');
+            document.getElementById('btn_global_model_pulid').classList.remove('active');
+            element.classList.add('active');
+
+            selectedAiModelEngine = modelMode; //  ('banana' или 'pulid')!
+            console.log("Глобальный тумблер ИИ переключен на движок:", selectedAiModelEngine);
+            
+            //  принудительно пересчитываем стоимость на нижней кнопке при клике на тумблер!
+            updateNeoStartButtonText();
+        }
+
+
+// ====================================================================================
+// 2.5 ФУНКЦИИ ВОЗВРАТА НАЗАД 
+// ====================================================================================
+        // для фейс свапа
+        function handleSwapBackClick() {
+            openScreen('foto'); // Возврат в главное меню студии к 4 режимам
+        }
+        // для примерки
+        function handleTryOnBackClick() {
+            openScreen('foto'); // С первого клика возвращает в главное меню хаба
+        }
+        // 🔥 ДОБАВИЛИ: Функция назад для Смены фона
+        function handleBgBackClick() {
+            openScreen('foto'); // Возвращает обратно в главное меню хаба
+        }
+
+// ====================================================================================
+// 3. УМНАЯ ФУНКЦИЯ ВОЗВРАТА НАЗАД К ГАЛЕРЕЕ КАРТОЧЕК
+// ====================================================================================
+        
+        function handleTextBackClick() {
+            const gallery = document.getElementById('text_image_gallery');
+            const settingsBlock = document.getElementById('text_image_settings_block');
+            const instructionText = document.getElementById('custom_instruction_text');
+            const presetPreviewBlock = document.getElementById('preset_preview_block');
+
+            // 1. Проверяем, горит ли сейчас оранжевым вкладка "Свой"
+            const activeTabButton = document.querySelector('#text_image_tabs .tab-btn.active');
+            const isCustomTab = activeTabButton && activeTabButton.innerText === 'Свой';
+
+            // 🔥 Если мы находимся во вкладке "Свой" — СРАЗУ с первого клика улетаем в меню
+            if (isCustomTab) {
+                isTextImageStyleSelected = false;
+                selectedStyleName = "";
+                if (settingsBlock) settingsBlock.style.display = "none";
+                openScreen('foto'); // Твой переход на главную страницу студии
+                return; // Останавливаем выполнение функции, чтобы код ниже не срабатывал
+            }
+
+            // 2. Обычная логика возврата для готовых шаблонов (Муж, Жен, Дети, Все)
+            if (isTextImageStyleSelected) {
+                isTextImageStyleSelected = false;
+                selectedStyleName = "";
+
+                document.getElementById('text_image_title').innerText = "Примеры генераций Фото + Текст";
+                document.getElementById('text_image_subtitle').innerText = "Выберите желаемый стиль для настройки:";
+
+                if (settingsBlock) settingsBlock.style.display = "none"; 
+                if (presetPreviewBlock) presetPreviewBlock.style.display = "none";
+                if (instructionText) instructionText.style.display = "none";
+                
+                if (gallery) gallery.style.display = "grid"; // Возвращаем сетку картинок
+
+                if (tg && tg.MainButton) tg.MainButton.hide();
+            } else {
+                // Если мы и так просто смотрели галерею шаблонов — уходим в меню
+                openScreen('foto');
+            }
+        }
+
+        // ====================================================================================
+        // 4. Старт WebApp, автоматическое разворачивание шторки и привязка кнопок
+        // ====================================================================================
+        window.addEventListener('DOMContentLoaded', () => {
+            if (tg) {
+                tg.ready();  
+                tg.expand(); 
+            }
+            
+// --- 1. ПРИВЯЗКА КЛИКОВ ФОТО + ТЕКСТ ---
+            const qualityBtn = document.getElementById('btn_text_quality');
+            const ratioBtn = document.getElementById('btn_text_ratio');
+            
+            if (qualityBtn) qualityBtn.addEventListener('click', showNativeQualityPopup);
+            if (ratioBtn) ratioBtn.addEventListener('click', showNativeRatioPopup);
+
+// --- 2. ПРИВЯЗКА КЛИКОВ FACE SWAP ---
+            const swapQualityBtn = document.getElementById('btn_swap_quality');
+            const swapRatioBtn = document.getElementById('btn_swap_ratio');
+            
+            if (swapQualityBtn) swapQualityBtn.addEventListener('click', showNativeSwapQualityPopup);
+            if (swapRatioBtn) swapRatioBtn.addEventListener('click', showNativeSwapRatioPopup);
+
+// --- 3. ПРИВЯЗКА КЛИКОВ ПРИМЕРКИ ОДЕЖДЫ ---
+            const tryonQualityBtn = document.getElementById('btn_tryon_quality');
+            const tryonRatioBtn = document.getElementById('btn_tryon_ratio');
+            
+            if (tryonQualityBtn) tryonQualityBtn.addEventListener('click', showNativeTryOnQualityPopup);
+            if (tryonRatioBtn) tryonRatioBtn.addEventListener('click', showNativeTryOnRatioPopup);
+
+// --- 4. ПРИВЯЗКА КЛИКОВ СМЕНЫ ФОНА ---
+            const bgQualityBtn = document.getElementById('btn_bg_quality');
+            const bgRatioBtn = document.getElementById('btn_bg_ratio');
+            
+            if (bgQualityBtn) bgQualityBtn.addEventListener('click', showNativeBgQualityPopup);
+            if (bgRatioBtn) bgRatioBtn.addEventListener('click', showNativeBgRatioPopup);
+
+// ИСПРАВЛЕНО: Умный стартовый роутер, который спасет от кэширования Telegram!
+            const urlParams = new URLSearchParams(window.location.search);
+            const targetScreen = urlParams.get('screen');
+
+            if (targetScreen) {
+                // Если бот явно передал экран (например, ?screen=foto или ?screen=face_swap)
+                openScreen(targetScreen);
+            } else {
+                // Если зашли просто так — включаем стандартный стартовый экран фотостудии
+                openScreen('foto'); 
+            }
+        });
+
+
+        // ====================================================================================
+        // 5. РОУТЕР ЭКРАНОВ И УМНЫЙ СЧЕТЧИК МОНЕТ НА КНОПКАХ START
+        // ====================================================================================
+
+        // Безопасное переключение подэкранов внутри foto.html
+        function openScreen(screenName) {
+            currentActiveMode = screenName;
+            const screens = ['foto', 'face_swap', 'tryon', 'text_image', 'bg_change'];
+            
+            screens.forEach(s => {
+                const el = document.getElementById(s);
+                if (el) el.classList.remove('active');
+            });
+            
+            // Твой оригинальный сброс Фото+Текст и скрытие других режимов
+            if (screenName === 'foto') {
+                isTextImageStyleSelected = false;
+                selectedStyleName = "";
+                document.getElementById('text_image_title').innerText = "Примеры генераций Фото + Текст";
+                document.getElementById('text_image_subtitle').innerText = "Выберите желаемый стиль для настройки:";
+                document.getElementById('text_image_large_preview').src = "";
+                document.getElementById('text_image_settings_block').style.display = "none";
+                document.getElementById('text_image_gallery').style.display = "grid";
+                
+                // Скрываем блок Face Swap при выходе в меню
+                const swapSettings = document.getElementById('face_swap_settings_block');
+                if (swapSettings) swapSettings.style.display = "none";
+
+                // СБРОС ДЛЯ ПРИМЕРКИ: Скрываем единый служебный блок настроек при выходе в главное меню
+                const tryonSettings = document.getElementById('tryon_settings_block');
+                if (tryonSettings) tryonSettings.style.display = "none";
+
+                // Скрываем блок настроек смены фона при возврате в меню хаба
+                const bgSettings = document.getElementById('bg_change_settings_block');
+                if (bgSettings) bgSettings.style.display = "none";
+            }
+
+            if (tg && tg.MainButton) tg.MainButton.hide();
+
+            const activeScreenEl = document.getElementById(screenName);
+            if (activeScreenEl) {
+                activeScreenEl.classList.add('active');
+                if (typeof updateFotoMainButton === 'function') updateFotoMainButton(); 
+                
+                // МГНОВЕННОЕ ВКЛЮЧЕНИЕ: для Face Swap
+                if (screenName === 'face_swap') {
+                    const swapSettings = document.getElementById('face_swap_settings_block');
+                    if (swapSettings) swapSettings.style.display = "block";
+                }
+
+                // МГНОВЕННОЕ ВКЛЮЧЕНИЕ ДЛЯ ПРИМЕРКИ ОДЕЖДЫ
+                if (screenName === 'tryon') {
+                    const tryonSettings = document.getElementById('tryon_settings_block');
+                    if (tryonSettings) tryonSettings.style.display = "block";
+                    
+                    // Жестко фиксируем режим примерки вещей на фигуру для Python-бота
+                    currentTryOnMode = 'clothes_swap_mode'; 
+                }
+
+                // МГНОВЕННОЕ ВКЛЮЧЕНИЕ ДЛЯ СМЕНЫ ФОНА
+                if (screenName === 'bg_change') {
+                    const bgSettings = document.getElementById('bg_change_settings_block');
+                    if (bgSettings) bgSettings.style.display = "block";
+                }
+
+                // 🔥 ДОБАВИЛИ: Сброс тумблера ИИ на "Умный Фокус" при каждом входе в Фото + Текст
+                if (screenName === 'text_image') {
+                    const defaultModelBtn = document.getElementById('btn_global_model_banana');
+                    if (defaultModelBtn) {
+                        switchGlobalAiModel('banana', defaultModelBtn);
+                    }
+                }
+            }
+        }
+
+
+        // ====================================================================================
+        // 6. КРАТКИЙ И ЛАКОНИЧНЫЙ ОБНОВЛЯТОР ТЕКСТА ГЛАВНОЙ КНОПКИ ТЕЛЕГРАМ
+        // ====================================================================================
+        function updateFotoMainButton() {
+            if (!tg || !tg.MainButton) return;
+            
+            // ИСПРАВЛЕНО: Поскольку на всех 4 экранах подрежимов теперь работают встроенные 
+            // горизонтальные неоновые кнопки пульта, нативная синяя кнопка Telegram больше вообще 
+            // не нужна. Мы полностью выключаем её отображение, чтобы исключить дублирование на экране!
+            tg.MainButton.hide();
+        }
+
+        // УМНЫЙ ОБНОВЛЯТОР СТОИМОСТИ НА ВСТРОЕННЫХ НЕОНОВЫХ КНОПКАХ (СИНХРОНИЗИРОВАНО!)
+        function updateNeoStartButtonText() {
+            const btnText = document.getElementById('neo_text_submit_btn');
+            const btnSwap = document.getElementById('neo_swap_submit_btn');
+            const btnTryon = document.getElementById('neo_tryon_submit_btn');
+            const btnBg = document.getElementById('neo_bg_submit_btn');
+            
+            // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ ФОТО + ТЕКСТ
+            if (btnText) {
+                if (selectedAiModelEngine === 'custom') {
+                    btnText.innerHTML = `Start 2 🪙`; // Цена за премиум-обработку Flux PuLID
+                } else {
+                    btnText.innerHTML = `Start 1 🪙`; // Стандартная цена за Nano Banana
+                }
+            }
+            
+            // Остальные кнопки твоей студии остаются без изменений
+            if (btnSwap) btnSwap.innerHTML = `Start 1 🪙`;
+            if (btnTryon) btnTryon.innerHTML = `Start 1 🪙`;
+            if (btnBg) btnBg.innerHTML = `Start 1 🪙`;
+        }
+
+
+        // ====================================================================================
+        // 7. УПРАВЛЕНИЕ УНИВЕРСАЛЬНОЙ КАСТОМНОЙ ШТОРКОЙ ДЛЯ ВСЕХ ЭКРАНОВ СТУДИИ (БЕЗ ИКОНОК)
+        // ====================================================================================
+
+        // ОТКРЫТИЕ ШТОРКИ КАЧЕСТВА ДЛЯ ЛЮБОГО АКТИВНОГО ЭКРАНА
+        function openUniversalQualitySheet() {
+            const titleEl = document.getElementById('custom_sheet_title');
+            const listEl = document.getElementById('custom_sheet_list');
+            if (!titleEl || !listEl) return;
+
+            titleEl.innerText = "КАЧЕСТВО ГЕНЕРАЦИИ";
+            
+            // Чистый аккуратный список без смайликов, цены прижаты вправо
+            listEl.innerHTML = `
+                <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('schnell', '⚡ Standard')"><span>Standard</span><span class="coin-price">  1 🪙</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('dev', '💎 Pro')"><span>Pro</span><span class="coin-price">  1 🪙</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('ultra_4k', '🔥 Ultra')"><span>Ultra</span><span class="coin-price">  1 🪙</span></button></li>
+            `;
+
+            document.getElementById('custom_action_sheet').classList.add('active');
+        }
+
+        // Умный обработчик качества: определяет экран, меняет его кнопку и переменную
+        function selectQualityFromSheet(id, text) {
+            if (currentActiveMode === 'text_image') {
+                selectedTextQuality = id;
+                document.getElementById('btn_text_quality').innerHTML = text;
+            } else if (currentActiveMode === 'face_swap') {
+                selectedSwapQuality = id;
+                document.getElementById('btn_swap_quality').innerHTML = text;
+            } else if (currentActiveMode === 'tryon') {
+                selectedTryOnQuality = id;
+                const q1 = document.getElementById('btn_tryon_quality_face');
+                const q2 = document.getElementById('btn_tryon_quality');
+                if (q1) q1.innerHTML = text;
+                if (q2) q2.innerHTML = text;
+            } else if (currentActiveMode === 'bg_change') {
+                selectedBgQuality = id;
+                document.getElementById('btn_bg_quality').innerHTML = text;
+            }
+            updateNeoStartButtonText();
+            closeCustomSheet();
+        }
+
+        // ОТКРЫТИЕ ШТОРКИ ФОРМАТА ДЛЯ ЛЮБОГО АКТИВНОГО ЭКРАНА (БЕЗ ИКОНОК, ТОЛЬКО ЦИФРЫ)
+        function openUniversalRatioSheet() {
+            const titleEl = document.getElementById('custom_sheet_title');
+            const listEl = document.getElementById('custom_sheet_list');
+            if (!titleEl || !listEl) return;
+
+            titleEl.innerText = "СООТНОШЕНИЕ СТОРОН";
+            
+            // Чистые аккуратные цифры без лишних слов «Вертикальный», «Портретный»
+            listEl.innerHTML = `
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('9:16')"><span style="width: 100%; text-align: center;">9:16</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('3:4')"><span style="width: 100%; text-align: center;">3:4</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('1:1')"><span style="width: 100%; text-align: center;">1:1</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('4:3')"><span style="width: 100%; text-align: center;">4:3</span></button></li>
+                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('16:9')"><span style="width: 100%; text-align: center;">16:9</span></button></li>
+            `;
+
+            document.getElementById('custom_action_sheet').classList.add('active');
+        }
+
+        // Умный обработчик формата: определяет экран и вызывает его родную функцию синхронизации иконок
+        function selectRatioFromSheet(id) {
+            if (currentActiveMode === 'text_image') {
+                setTextRatio(id);
+            } else if (currentActiveMode === 'face_swap') {
+                setSwapRatio(id);
+            } else if (currentActiveMode === 'tryon') {
+                setTryOnRatio(id);
+            } else if (currentActiveMode === 'bg_change') {
+                setBgRatio(id);
+            }
+            updateNeoStartButtonText();
+            closeCustomSheet();
+        }
+
+        // Перенаправляем старые функции вызова из DOMContentLoaded на наш единый пульт управления шторкой
+        function showNativeQualityPopup() { openUniversalQualitySheet(); }
+        function showNativeRatioPopup() { openUniversalRatioSheet(); }
+        
+        function showNativeSwapQualityPopup() { openUniversalQualitySheet(); }
+        function showNativeSwapRatioPopup() { openUniversalRatioSheet(); }
+        
+        function showNativeTryOnQualityPopup() { openUniversalQualitySheet(); }
+        function showNativeTryOnRatioPopup() { openUniversalRatioSheet(); }
+        
+        function showNativeBgQualityPopup() { openUniversalQualitySheet(); }
+        function showNativeBgRatioPopup() { openUniversalRatioSheet(); }
+
+        // Функция закрытия шторки
+        function closeCustomSheet() {
+            const sheet = document.getElementById('custom_action_sheet');
+            if (sheet) sheet.classList.remove('active');
+        }
+
+
+        // ====================================================================================
+        // 8. ПЕРЕДАТЧИКИ JSON БОТУ И СИНХРОНИЗАЦИЯ С ПРЕСЕТАМИ ШАБЛОНОВ
+        // ====================================================================================
+
+// 2. ИСПРАВЛЕННАЯ И СТАБИЛЬНАЯ ФУНКЦИЯ ФОРМИРОВАНИЯ ССЫЛКИ
+        function sendToTelegram(payload) {
+            try {
+                const botUsername = "ChatGPT_BuzVuz_bot"; // Твой точный юзернейм бота
+
+                let mode = payload.ai_model_engine || 'pulid';
+                let quality = payload.quality || 'schnell';
+                let ratio = payload.aspect_ratio ? payload.aspect_ratio.replace(':', '-') : '1-1';
+                let faces = payload.faces_count || 1;
+                let isCustom = payload.is_custom_text_mode ? '1' : '0';
+
+                // 🔥 СЛЭШ И ЗНАК ДОЛЛАРА НА МЕСТЕ: Ссылка соберется идеально правильно!
+                let startParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}`;
+                let telegramLink = `https://t.me/${botUsername}?start=${startParam}`;
+
+                console.log("[WebApp Link] Перенаправление по ссылке:", telegramLink);
+
+                // Вызываем официальный переход Телеграма, который разблокирован на всех смартфонах
+                if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openTelegramLink === 'function') {
+                    window.Telegram.WebApp.openTelegramLink(telegramLink);
+                    window.Telegram.WebApp.close();
+                } else {
+                    // Если окружение WebApp на айфоне залагало, принудительно открываем ссылку через браузер
+                    window.location.href = telegramLink;
+                }
+
+            } catch (e) {
+                console.error("Ошибка генерации диплинка внутри sendToTelegram:", e);
+                window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
+            }
+        }
+        // Глобальная переменная для количества лиц (если еще не была объявлена выше)
+        if (typeof selectedStyleFacesCount === 'undefined') {
+            window.selectedStyleFacesCount = 1;
+        }
+
+        // 1. ИСПРАВЛЕННАЯ ФУНКЦИЯ СБОРКИ И ОТПРАВКИ (START)
+        function sendPhotoTextData() { 
+            try {
+                // Определяем вкладку "Свой" (Тут логика правильная)
+                let isCustomText = (typeof currentGenerationMode !== 'undefined' && currentGenerationMode === 'custom');
+
+                // 🔥 ИСПРАВЛЕНО: Просто берем чистое значение модели, которое записал наш тумблер ('banana' или 'pulid')
+                let currentModel = (typeof selectedAiModelEngine !== 'undefined') ? selectedAiModelEngine : 'banana';
+
+                // Определяем количество лиц
+                let facesCountToSend = isCustomText ? 1 : (window.selectedStyleFacesCount || 1);
+
+                // Безопасно считываем пропорции и качество кадра
+                let ratio = (typeof selectedTextRatio !== 'undefined') ? selectedTextRatio : '9:16';
+                let quality = (typeof selectedTextQuality !== 'undefined') ? selectedTextQuality : 'schnell';
+
+                console.log("[WebApp] Сборка пакета. Модель:", currentModel, "Кастом:", isCustomText, "Лиц:", facesCountToSend);
+
+                // Передаем управление в функцию генерации ссылки
+                sendToTelegram({ 
+                    mode_trigger: 'text_image', 
+                    aspect_ratio: ratio, 
+                    quality: quality,
+                    ai_model_engine: currentModel,         
+                    is_custom_text_mode: isCustomText,     
+                    faces_count: facesCountToSend          
+                }); 
+
+            } catch (err) {
+                console.error("Критический сбой внутри функции sendPhotoTextData:", err);
+                // Жесткая страховка: если что-то сломалось, открываем бота BuzVuz в Telegram
+                window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
+            }
+        }  
+              
+        function sendCustomFaceSwapData() { 
+            sendToTelegram({ 
+                mode_trigger: 'face_swap', 
+                is_custom_template: true, 
+                aspect_ratio: selectedSwapRatio, 
+                quality: selectedSwapQuality 
+            }); 
+        }
+        // 3. ФУНКЦИЯ СБОРА И ОТПРАВКИ ДАННЫХ ДЛЯ ПРИМЕРКИ
+        function sendTryOnData() { 
+            sendToTelegram({ 
+                mode_trigger: 'tryon', 
+                sub_mode: currentTryOnMode, // 🔥 ОБЯЗАТЕЛЬНО ДОБАВИЛИ: отправит 'face_swap_mode' или 'clothes_swap_mode'
+                aspect_ratio: selectedTryOnRatio, 
+                quality: selectedTryOnQuality 
+            }); 
+        }
+        
+        function sendBgChangeData() { 
+            sendToTelegram({ 
+                mode_trigger: 'bg_change',  
+                quality: selectedBgQuality 
+            }); 
+        }
+
+        // Переключатель классов активного качества (Quality UI)
+        // Оставлена пустой для обратной совместимости, чтобы старые вызовы не ломали логику
+        function clearAndSetActiveQuality(prefix, quality) { return; }
+
+        function setTextQuality(quality) { selectedTextQuality = quality; }
+        function setSwapQuality(quality) { selectedSwapQuality = quality; }
+        function setTryOnQuality(quality) { selectedTryOnQuality = quality; }
+        function setBgQuality(quality) { selectedBgQuality = quality; }
+
+        function setQuality(quality) {
+            if (currentActiveMode === 'text_image') setTextQuality(quality);
+            if (currentActiveMode === 'face_swap') setSwapQuality(quality);
+            if (currentActiveMode === 'tryon') setTryOnQuality(quality);
+            if (currentActiveMode === 'bg_change') setBgQuality(quality);
+        }
+
+        // Переключатель классов активного формата кадра (Ratio UI)
+        // Оставлена пустой для обратной совместимости, чтобы старые вызовы не ломали логику
+        function clearAndSetActiveRatio(prefix, ratio) { return; }
+
+        // Функции принудительной синхронизации формата (Ratio) для каждого экрана фото-студии
+        // ИСПРАВЛЕНО: Полностью убраны все иконки и смайлики, выводятся только чистые цифры!
+        function setSwapRatio(ratio) { 
+            selectedSwapRatio = ratio; 
+            const el = document.getElementById('btn_swap_ratio');
+            if (el) el.innerHTML = ratio;
+        }
+        // функция примерки
+        function setTryOnRatio(ratio) { 
+            selectedTryOnRatio = ratio; 
+            const el1 = document.getElementById('btn_tryon_ratio_face');
+            const el2 = document.getElementById('btn_tryon_ratio');
+            if (el1) el1.innerHTML = ratio;
+            if (el2) el2.innerHTML = ratio;
+        }
+
+        
+        function setTextRatio(ratio) { 
+            selectedTextRatio = ratio; 
+            const el = document.getElementById('btn_text_ratio');
+            if (el) el.innerHTML = ratio;
+        }
+        
+        function setBgRatio(ratio) { 
+            selectedBgRatio = ratio; 
+            const el = document.getElementById('btn_bg_ratio');
+            if (el) el.innerHTML = ratio;
+        }
+
+
+        // Клик по готовому пресету на экране Face Swap
+        function selectReadyTemplate(templateId, forcedRatio) {
+            // Если у готового шаблона зашит свой формат (например, 3:4), принудительно обновляем текст на капсуле
+            if (forcedRatio) {
+                setSwapRatio(forcedRatio);
+            }
+            
+            sendToTelegram({
+                mode_trigger: 'face_swap',
+                is_custom_template: false,
+                template_id: templateId, 
+                aspect_ratio: selectedSwapRatio, 
+                quality: selectedSwapQuality
+            });
+        }
+// ====================================================================================
+// Автоматический виброотклик для всего интерфейса (ВКЛЮЧАЯ ПУНКТЫ ВНУТРИ ШТОРКИ)
+// ====================================================================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    const hasHaptic = window.Telegram?.WebApp?.HapticFeedback;
+
+    if (hasHaptic) {
+        document.addEventListener('click', (event) => {
+            // 🔥 ДОБАВЛЕНО: Дописали '.custom-sheet-list li' и '.custom-sheet-item', чтобы ловить клики внутри списков шторок
+            const target = event.target.closest('button, .menu-card, .phone-template-card, .custom-sheet-item, .custom-sheet-list li, li, .back-tab-btn, .tab-btn');
+            
+            if (target) {
+                // Если у элемента уже прописан свой haptic в HTML, не дублируем его
+                if (target.getAttribute('onclick') && target.getAttribute('onclick').includes('HapticFeedback')) {
+                    return; 
+                }
+                // Выдаем четкий средний отклик
+                Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+            }
+        });
     }
+});
+// ====================================================================================
+//  ФУНКЦИЯ переключения всех моих ШТМЭЛЬ
+// ====================================================================================
+
+function navigateToScreen(fileName) {
+    if (window.Telegram?.WebApp?.HapticFeedback) {
+        Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+    }
+    // Плавно перенаправляем пользователя на другой HTML-файл внутри WebApp
+    window.location.href = fileName;
 }
+    </script>
+    <script src="prices.js"></script>
+</body>
+</html>
+

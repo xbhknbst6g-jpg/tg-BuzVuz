@@ -558,8 +558,13 @@ function openUniversalQualitySheet() {
     const isDirectPaint = document.getElementById('btn-start-banana-paint') && 
                           document.getElementById('btn-start-banana-paint').offsetParent !== null;
 
-    // Выбираем правильный набор цен из базы данных в зависимости от экрана
+    // Выбираем базовый набор цен по умолчанию (заглушки)
     let prices = isDirectPaint ? bananaPaintPrices : fluxDevPrices;
+
+    // 🔥 ЕСЛИ ДАННЫЕ ИЗ БАЗЫ УСПЕШНО СКАЧАЛИСЬ — БЕРЕМ ИХ НАПРЯМУЮ
+    if (window.allPrices && window.allPrices.services) {
+        prices = isDirectPaint ? window.allPrices.services.nano_banana_paint : window.allPrices.services.flux_dev;
+    }
 
     // 🔥 ПОДСТАВЛЯЕМ ЖИВЫЕ ЦЕНЫ ИЗ MONGODB В СТРОКИ ШТОРКИ
     listEl.innerHTML = `

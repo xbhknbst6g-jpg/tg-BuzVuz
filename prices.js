@@ -9,9 +9,15 @@ async function syncPricesFromDatabase() {
     try {
         const response = await fetch(API_URL);
         const data = await response.json();
-        fluxDevPrices = data.services.flux_dev;
-        bananaPaintPrices = data.services.nano_banana_paint;
-        fluxPulidPrices = data.services.flux_pulid;
+         // 🔥 ДОБАВЛЕНА ЗАЩИТА: Если база вернула ошибку, мы берём дефолтные цены и НЕ ломаем страницу
+        if (data && data.services) {
+            fluxDevPrices = data.services.flux_dev;
+            bananaPaintPrices = data.services.nano_banana_paint;
+            fluxPulidPrices = data.services.flux_pulid;
+        } else {
+            console.warn("⚠️ База вернула пустые данные, используем заглушки");
+            return; // Мягко выходим из функции, оставляя дефолтную фиксу 1 коин, сайт НЕ ломается!
+        }
         
         // =========================================================================
         // 1. ДОСТАЕМ АКТУАЛЬНЫЕ ЦЕНЫ РЕЖИМОВ (Блок services из MongoDB Compass)

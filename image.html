@@ -121,7 +121,7 @@
                 <div class="single-row-controls" style="margin-top: 40px !important; margin-bottom: 15px;">
                     <div class="control-col" style="flex: 1;"><button id="btn_text_quality" class="capsule-btn" onclick="openUniversalQualitySheet()" style="width: 100%;">⚡ Standard</button></div>
                     <div class="control-col" style="flex: 1;"><button id="btn_text_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()" style="width: 100%;">9:16</button></div>
-                    <div class="control-col control-col-btn" style="flex: 1.2;"><button id="neo_text_submit_btn" class="neo-start-btn" onclick="sendTextGenData()" style="width: 100%;">Start 1 🪙</button></div>
+                    <button class="neo-start-btn" onclick="sendTextGenData()" style="width: 100%;">Start <span id="price-flux-dev">1</span> 🪙</button>
                 </div>
 
             </div> <!-- Закрыли блок настроек text_image_settings_block ПОСЛЕ кнопок -->
@@ -189,7 +189,7 @@
                 <div class="single-row-controls" style="margin-top: 40px !important; margin-bottom: 15px;">
                     <div class="control-col" style="flex: 1;"><button id="btn_direct_quality" class="capsule-btn" onclick="openUniversalQualitySheet()" style="width: 100%;">⚡ Standard</button></div>
                     <div class="control-col" style="flex: 1;"><button id="btn_direct_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()" style="width: 100%;">1:1</button></div>
-                    <div class="control-col control-col-btn" style="flex: 1.2;"><button id="neo_direct_submit_btn" class="neo-start-btn" onclick="sendDirectGenData()" style="width: 100%;">Start 1 🪙</button></div>
+                    <div class="control-col control-col-btn" style="flex: 1.2;"><button id="btn-start-banana-paint" class="neo-start-btn" onclick="sendDirectGenData()" style="width: 100%;">Start <span id="price-banana-paint">1</span> 🪙</button></div>
                 </div>
 
             </div> <!-- Закрыли блок настроек direct_gen_settings_block ПОСЛЕ кнопок -->
@@ -524,8 +524,8 @@ function closePreviewVideo() {
 
         // УМНЫЙ ОБНОВЛЯТОР СТОИМОСТИ НА ВСТРОЕННЫХ НЕОНОВЫХ КНОПКАХ (СИНХРОНИЗИРОВАНО ДЛЯ ДВУХ РЕЖИМОВ!)
         function updateNeoStartButtonText() {
-            const btnText = document.getElementById('neo_text_submit_btn');     // Кнопка Цифровой Оптики
-            const btnDirect = document.getElementById('neo_direct_submit_btn'); // Кнопка Умного Фокуса
+            const btnText = document.getElementById('btn-start-flux-dev');     // Кнопка Цифровой Оптики
+            const btnDirect = document.getElementById('btn-start-banana-paint'); // Кнопка Умного Фокуса
             
             // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ ЦИФРОВОЙ ОПТИКИ (Класс text_image на Flux)
             if (btnText) {
@@ -651,9 +651,9 @@ function closePreviewVideo() {
 
     // УМНЫЙ ОБНОВЛЯТОР СТОИМОСТИ НА ВСТРОЕННЫХ КНОПКАХ (ОБЪЕДИНЕННЫЙ)
     function updateNeoStartButtonText() {
-        const btnText = document.getElementById('neo_text_submit_btn');
+        const btnText = document.getElementById('btn-start-flux-dev');
         // Находит кнопку запуска START на втором экране с любым ID
-        const btnDirect = document.getElementById('neo_direct_submit_btn_2') || document.getElementById('neo_direct_submit_btn');
+        const btnDirect = document.getElementById('btn-start-banana-paint_2') || document.getElementById('btn-start-banana-paint');
         
         if (btnText) {
             if (selectedAiModelEngine === 'custom') {
@@ -844,10 +844,8 @@ function navigateToScreen(fileName) {
     // Плавно перенаправляем пользователя на другой HTML-файл внутри WebApp
     window.location.href = fileName;
 }
-
-
-
     </script>
+        <script src="prices.js"></script>
 </body>
 </html>
 

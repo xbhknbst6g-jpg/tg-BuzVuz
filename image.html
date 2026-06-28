@@ -546,23 +546,33 @@ function closePreviewVideo() {
 // 7. УПРАВЛЕНИЕ УНИВЕРСАЛЬНОЙ КАСТОМНОЙ ШТОРКОЙ ДЛЯ ДВУХ ЭКРАНОВ (СИНХРОНИЗИРОВАНО)
 // ====================================================================================
 
-function openUniversalQualitySheet(serviceName) {
+// 🔥 АСИНХРОННАЯ ШТОРКА: САМА ХОДИТ В БАЗУ ПРИ КАЖДОМ КЛИКЕ
+async function openUniversalQualitySheet(serviceName) {
     const titleEl = document.getElementById('custom_sheet_title');
     const listEl = document.getElementById('custom_sheet_list');
     if (!titleEl || !listEl) return;
 
     titleEl.innerText = "КАЧЕСТВО ГЕНЕРАЦИИ";
     
+    // 1. Ставим дефолтные цены на случай, если ngrok отключен
     let min = 1, mid = 2, max = 3;
     const targetService = serviceName || 'flux_dev';
 
-    if (window.allPrices && window.allPrices.services && window.allPrices.services[targetService]) {
-        min = window.allPrices.services[targetService].coins_min;
-        mid = window.allPrices.services[targetService].coins_mid;
-        max = window.allPrices.services[targetService].coins_max;
+    try {
+        // 2. Силой делаем свежий запрос к твоему Макбуку прямо в момент клика на "Standard"!
+        const response = await fetch("https://ngrok-free.dev", { cache: "no-store" });
+        const data = await response.json();
+        
+        if (data && data.services && data.services[targetService]) {
+            min = data.services[targetService].coins_min;
+            mid = data.services[targetService].coins_mid;
+            max = data.services[targetService].coins_max;
+        }
+    } catch (err) {
+        console.warn("⚠️ Не удалось поймать живую базу при открытии шторки, включен хардкод:", err);
     }
 
-    // 🔥 СЛЕДИ ЗА КАВЫЧКАМИ: Строка ниже начинается и заканчивается строго на косые кавычки (буква Ё)!
+    // 3. Рисуем шторку со свежайшими ценами (Твоя 55 вылетит сюда на 1000%)
     listEl.innerHTML = `
         <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('schnell', '⚡ Standard')"><span>Standard</span><span class="coin-price">${min} 🪙</span></button></li>
         <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('dev', '💎 Pro')"><span>Pro</span><span class="coin-price">${mid} 🪙</span></button></li>

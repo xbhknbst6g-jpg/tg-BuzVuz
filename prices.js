@@ -14,6 +14,10 @@ window.dbSora16s = { coins: 12 };
 window.dbSora20s = { coins: 15 };
 // 🔥 ДОБАВЛЕНО: Заглушка для 3-го режима (посекундный тариф)
 window.dbKlingPerSec = { coins_per_sec: 2 }; 
+// 🟠 3. 🔥 ДОБАВЛЕНО: ДЕФОЛТНЫЕ ЗАГЛУШКИ ДЛЯ ФОТОСТУДИИ
+window.dbFaceSwapPrices = { coins_min: 3, coins_mid: 4, coins_max: 5 };
+window.dbClothingPrices = { coins_min: 3, coins_mid: 4, coins_max: 5 };
+window.dbBackgroundPrices = { coins_min: 2, coins_mid: 3, coins_max: 4 };
 
 async function syncPricesFromDatabase() {
     try {
@@ -36,19 +40,22 @@ async function syncPricesFromDatabase() {
         window.allPrices = data;
         
         if (data && data.services) {
-            // 🔥 Записываем новые цены из Mongo в наши безопасные переменные window.db...
+            // 🔥 1. ЗАПИСЫВАЕМ ЦЕНЫ ДЛЯ КАРТИНОК (РИСОВАНИЕ)
             window.dbFluxDevPrices.coins_min = data.services.flux_dev.coins_min;
             window.dbFluxDevPrices.coins_mid = data.services.flux_dev.coins_mid;
             window.dbFluxDevPrices.coins_max = data.services.flux_dev.coins_max;
+
+            if (data.services.flux_pulid) {
+                window.dbFluxPulidPrices.coins_min = data.services.flux_pulid.coins_min;
+                window.dbFluxPulidPrices.coins_mid = data.services.flux_pulid.coins_mid;
+                window.dbFluxPulidPrices.coins_max = data.services.flux_pulid.coins_max;
+            }
 
             window.dbBananaPaintPrices.coins_min = data.services.nano_banana_paint.coins_min;
             window.dbBananaPaintPrices.coins_mid = data.services.nano_banana_paint.coins_mid;
             window.dbBananaPaintPrices.coins_max = data.services.nano_banana_paint.coins_max;
 
-            window.dbFluxPulidPrices.coins_min = data.services.flux_pulid.coins_min;
-            window.dbFluxPulidPrices.coins_mid = data.services.flux_pulid.coins_mid;
-            window.dbFluxPulidPrices.coins_max = data.services.flux_pulid.coins_max;
-                        // 🔥 СОХРАНЯЕМ СВЕЖИЕ ЦЕНЫ ВИДЕО ИЗ MONGO
+            // 🔥 2. СОХРАНЯЕМ СВЕЖИЕ ЦЕНЫ ВИДЕО ИЗ MONGO
             if (data.services.kling_video_5s) window.dbKling5s.coins = data.services.kling_video_5s.coins;
             if (data.services.kling_video_10s) window.dbKling10s.coins = data.services.kling_video_10s.coins;
             if (data.services.sora_4s) window.dbSora4s.coins = data.services.sora_4s.coins;
@@ -57,9 +64,25 @@ async function syncPricesFromDatabase() {
             if (data.services.sora_16s) window.dbSora16s.coins = data.services.sora_16s.coins;
             if (data.services.sora_20s) window.dbSora20s.coins = data.services.sora_20s.coins;
 
-            // 🔥 ДОБАВЛЕНО: Записываем живую стоимость за 1 секунду из базы!
             if (data.services.kling_control_per_sec) {
                 window.dbKlingPerSec.coins_per_sec = data.services.kling_control_per_sec.coins_per_sec;
+            }
+
+            // 🔥 3. ДОБАВЛЕНО: СОХРАНЯЕМ СВЕЖИЕ ЦЕНЫ ФОТОСТУДИИ ИЗ MONGO
+            if (data.services.hy_wu_faceswap) {
+                window.dbFaceSwapPrices.coins_min = data.services.hy_wu_faceswap.coins_min;
+                window.dbFaceSwapPrices.coins_mid = data.services.hy_wu_faceswap.coins_mid;
+                window.dbFaceSwapPrices.coins_max = data.services.hy_wu_faceswap.coins_max;
+            }
+            if (data.services.hy_wu_clothing) {
+                window.dbClothingPrices.coins_min = data.services.hy_wu_clothing.coins_min;
+                window.dbClothingPrices.coins_mid = data.services.hy_wu_clothing.coins_mid;
+                window.dbClothingPrices.coins_max = data.services.hy_wu_clothing.coins_max;
+            }
+            if (data.services.bria_background) {
+                window.dbBackgroundPrices.coins_min = data.services.bria_background.coins_min;
+                window.dbBackgroundPrices.coins_mid = data.services.bria_background.coins_mid;
+                window.dbBackgroundPrices.coins_max = data.services.bria_background.coins_max;
             }
 
         } else {
@@ -115,9 +138,14 @@ async function syncPricesFromDatabase() {
             updateNeoStartButtonText();
         }
 
-        // 🔥 ДОБАВЛЕНО: Пинаем главную кнопку видео при загрузке страницы!
+        // 🔥 Пинаем главную кнопку видео при загрузке страницы!
         if (typeof updateMotionSubmitButton === "function") {
             updateMotionSubmitButton();
+        }
+
+        // 🔥 ДОБАВЛЕНО: Пинаем кнопки фотостудии при загрузке страницы!
+        if (typeof updateFotoSubmitButtons === "function") {
+            updateFotoSubmitButtons();
         }
 
         console.log("✅ Все кнопки активных режимов на сайте успешно получили новые цены из MongoDB!");
@@ -223,22 +251,53 @@ function openUniversalRatioSheet() {
     document.getElementById('custom_action_sheet').classList.add('active');
 }
 
-// 3. УМНЫЙ ОБРАБОТЧИК КАЧЕСТВА
+// ====================================================================================
+// УНИВЕРСАЛЬНЫЙ ОБРАБОТЧИК КЛИКА ПО КАЧЕСТВУ В ШТОРКЕ (ОБСЛУЖИВАЕТ ВСЕ 3 САЙТА)
+// ====================================================================================
 function selectQualityFromSheet(id, text) {
-    const btnText = document.getElementById('btn-start-flux-dev');
-    const isTextImageActive = btnText && btnText.offsetParent !== null;
+    // 🟢 Проверяем активный подрежим фотостудии (из photo.html)
+    const activeMode = window.currentActiveMode || (typeof currentActiveMode !== 'undefined' ? currentActiveMode : null);
 
-    if (isTextImageActive) {
-        selectedTextQuality = id;
+    if (activeMode === 'text_image') {
+        if (typeof selectedTextQuality !== 'undefined') selectedTextQuality = id;
         const el = document.getElementById('btn_text_quality');
         if (el) el.innerHTML = text;
-    } else {
-        directGenQuality = id;
-        const el = document.getElementById('btn_direct_quality_2') || document.getElementById('btn_direct_quality');
+    } else if (activeMode === 'face_swap') {
+        if (typeof selectedSwapQuality !== 'undefined') selectedSwapQuality = id;
+        const el = document.getElementById('btn_swap_quality');
         if (el) el.innerHTML = text;
+    } else if (activeMode === 'tryon') {
+        if (typeof selectedTryOnQuality !== 'undefined') selectedTryOnQuality = id;
+        // 🔥 Железно обновляем обе капсулы примерки одежды на экране фотостудии!
+        const q1 = document.getElementById('btn_tryon_quality_face');
+        const q2 = document.getElementById('btn_tryon_quality');
+        if (q1) q1.innerHTML = text;
+        if (q2) q2.innerHTML = text;
+    } else if (activeMode === 'bg_change') {
+        if (typeof selectedBgQuality !== 'undefined') selectedBgQuality = id;
+        const el = document.getElementById('btn_bg_quality');
+        if (el) el.innerHTML = text;
+    } else {
+        // 🔵 Если мы не в фотостудии — значит, мы на вкладке рисования (Flux Dev и Nano Banana)
+        const btnText = document.getElementById('btn-start-flux-dev');
+        const isTextImageActive = btnText && btnText.offsetParent !== null;
+
+        if (isTextImageActive) {
+            selectedTextQuality = id;
+            const el = document.getElementById('btn_text_quality');
+            if (el) el.innerHTML = text;
+        } else {
+            directGenQuality = id;
+            const el = document.getElementById('btn_direct_quality_2') || document.getElementById('btn_direct_quality');
+            if (el) el.innerHTML = text;
+        }
     }
     
-    updateNeoStartButtonText();
+    // 🔥 МГНОВЕННО ПИНАЕМ ВСЕ ОБНОВЛЯТОРЫ ЦЕН НА ВСЕХ САЙТАХ ПРОЕКТА!
+    if (typeof updateNeoStartButtonText === "function") updateNeoStartButtonText(); // Рисование
+    if (typeof updateMotionSubmitButton === "function") updateMotionSubmitButton(); // Видеостудия
+    if (typeof updateFotoSubmitButtons === "function") updateFotoSubmitButtons();   // Фотостудия
+    
     closeCustomSheet();
 }
 
@@ -493,3 +552,83 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+/////////////////////////// ФОТО /////////////////////////////
+// ====================================================================================
+// 12. УМНЫЙ ОБНОВЛЯТОР ЦЕН НА ВСЕХ ВСТРОЕННЫХ КНОПКАХ ФОТО (START)
+// ====================================================================================
+function updateFotoSubmitButtons() {
+    const btnText = document.getElementById('neo_text_submit_btn');   // Режим 1: Фото + Текст
+    const btnSwap = document.getElementById('neo_swap_submit_btn');   // Режим 2: Face Swap
+    const btnTryon = document.getElementById('neo_tryon_submit_btn'); // Режим 3: Примерка одежды
+    const btnBg = document.getElementById('neo_bg_submit_btn');       // Режим 4: Смена фона
+    
+    if (!btnText && !btnSwap && !btnTryon && !btnBg) return;
+
+    // 🟠 1. Считываем текст с капсулы качества для первого подэкрана (Фото + Текст)
+    let photoTextQuality = 'standard';
+    const textProtoBtn = document.getElementById('btn_text_quality');
+    if (textProtoBtn) {
+        const txt = textProtoBtn.innerText.toLowerCase();
+        if (txt.includes('pro') || txt.includes('mid') || txt.includes('dev')) photoTextQuality = 'dev';
+        if (txt.includes('ultra') || txt.includes('max') || txt.includes('4k')) photoTextQuality = 'ultra_4k';
+    }
+
+    // 🟠 2. Считываем текст с капсул остальных трех режимов фотостудии
+    let swapQuality = 'standard', tryonQuality = 'standard', bgQuality = 'standard';
+
+    const swapBtn = document.getElementById('btn_swap_quality');
+    if (swapBtn) {
+        const txt = swapBtn.innerText.toLowerCase();
+        if (txt.includes('pro') || txt.includes('mid') || txt.includes('dev')) swapQuality = 'dev';
+        if (txt.includes('ultra') || txt.includes('max') || txt.includes('4k')) swapQuality = 'ultra_4k';
+    }
+
+    const tryonBtn = document.getElementById('btn_tryon_quality');
+    if (tryonBtn) {
+        const txt = tryonBtn.innerText.toLowerCase();
+        if (txt.includes('pro') || txt.includes('mid') || txt.includes('dev')) tryonQuality = 'dev';
+        if (txt.includes('ultra') || txt.includes('max') || txt.includes('4k')) tryonQuality = 'ultra_4k';
+    }
+
+    const bgBtn = document.getElementById('btn_bg_quality');
+    if (bgBtn) {
+        const txt = bgBtn.innerText.toLowerCase();
+        if (txt.includes('pro') || txt.includes('mid') || txt.includes('dev')) bgQuality = 'dev';
+        if (txt.includes('ultra') || txt.includes('max') || txt.includes('4k')) bgQuality = 'ultra_4k';
+    }
+
+    // 🔮 РАСЧЕТ ДЛЯ РЕЖИМА 1: «Фото + Текст» (ТЕПЕРЬ 100% ДИНАМИКА НА FLUX PU-LID ИЗ БАЗЫ!)
+    if (btnText) {
+        if (photoTextQuality === 'dev') {
+            btnText.innerHTML = `Start ${window.dbFluxPulidPrices.coins_mid} 2026`; // Средняя цена PuLID из базы
+        } else if (photoTextQuality === 'ultra_4k') {
+            btnText.innerHTML = `Start ${window.dbFluxPulidPrices.coins_max} 🪙`; // Максимальная цена PuLID из базы
+        } else {
+            btnText.innerHTML = `Start ${window.dbFluxPulidPrices.coins_min} 🪙`; // Минимальная цена PuLID из базы
+        }
+    }
+    
+    // 🔮 РАСЧЕТ ДЛЯ РЕЖИМА 2: FACE SWAP (Использует hy_wu_faceswap из базы MongoDB)
+    if (btnSwap) {
+        if (swapQuality === 'dev') btnSwap.innerHTML = `Start ${window.dbFaceSwapPrices.coins_mid} 🪙`;
+        else if (swapQuality === 'ultra_4k') btnSwap.innerHTML = `Start ${window.dbFaceSwapPrices.coins_max} 🪙`;
+        else btnSwap.innerHTML = `Start ${window.dbFaceSwapPrices.coins_min} 🪙`;
+    }
+    
+    // 🔮 РАСЧЕТ ДЛЯ РЕЖИМА 3: ПРИМЕРКА ОДЕЖДЫ (Использует hy_wu_clothing из базы MongoDB)
+    if (btnTryon) {
+        if (tryonQuality === 'dev') btnTryon.innerHTML = `Start ${window.dbClothingPrices.coins_mid} 🪙`;
+        else if (tryonQuality === 'ultra_4k') btnTryon.innerHTML = `Start ${window.dbClothingPrices.coins_max} 🪙`;
+        else btnTryon.innerHTML = `Start ${window.dbClothingPrices.coins_min} 🪙`;
+    }
+    
+    // 🔮 РАСЧЕТ ДЛЯ РЕЖИМА 4: СМЕНА ФОНА (Использует bria_background из базы MongoDB)
+    if (btnBg) {
+        if (bgQuality === 'dev') btnBg.innerHTML = `Start ${window.dbBackgroundPrices.coins_mid} 🪙`;
+        else if (bgQuality === 'ultra_4k') btnBg.innerHTML = `Start ${window.dbBackgroundPrices.coins_max} 🪙`;
+        else btnBg.innerHTML = `Start ${window.dbBackgroundPrices.coins_min} 🪙`;
+    }
+}
+
+// Заглушка, чтобы роутер экранов openScreen() в HTML не ругался на удаленную функцию
+function updateFotoMainButton() { if (tg && tg.MainButton) tg.MainButton.hide(); }

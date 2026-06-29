@@ -1,28 +1,9 @@
 // URL-адрес вашего сервера, где запущен бот и API
 const API_URL = "https://thyself-lavish-underhand.ngrok-free.dev/api/v1/tariffs";
 
-// 🔥 ЖЕЛЕЗОБЕТОННОЕ ОБЪЯВЛЕНИЕ: Привязываем цены к window, чтобы HTML их сразу увидел!
-window.fluxDevPrices = window.fluxDevPrices || { coins_min: 1, coins_mid: 2, coins_max: 3 };
-window.bananaPaintPrices = window.bananaPaintPrices || { coins_min: 2, coins_mid: 3, coins_max: 4 };
-window.fluxPulidPrices = window.fluxPulidPrices || { coins_min: 1, coins_mid: 2, coins_max: 3 };
-
-// Создаем глобальные псевдонимы, чтобы функции внутри файла работали без приставки window.
-var fluxDevPrices = window.fluxDevPrices;
-var bananaPaintPrices = window.bananaPaintPrices;
-var fluxPulidPrices = window.fluxPulidPrices;
-
-// Переменные выбора состояний
-window.selectedTextQuality = window.selectedTextQuality || 'schnell';
-window.directGenQuality = window.directGenQuality || 'schnell';
-window.selectedAiModelEngine = window.selectedAiModelEngine || 'default';
-window.selectedTextRatio = window.selectedTextRatio || '1:1';
-window.directGenRatio = window.directGenRatio || '1:1';
-
-var selectedTextQuality = window.selectedTextQuality;
-var directGenQuality = window.directGenQuality;
-var selectedAiModelEngine = window.selectedAiModelEngine;
-var selectedTextRatio = window.selectedTextRatio;
-var directGenRatio = window.directGenRatio;
+window.dbFluxDevPrices = { coins_min: 1, coins_mid: 2, coins_max: 3 };
+window.dbBananaPaintPrices = { coins_min: 2, coins_mid: 3, coins_max: 4 };
+window.dbFluxPulidPrices = { coins_min: 1, coins_mid: 2, coins_max: 3 };
 
 async function syncPricesFromDatabase() {
     try {
@@ -45,18 +26,18 @@ async function syncPricesFromDatabase() {
         window.allPrices = data;
         
         if (data && data.services) {
-            // 🔥 ОБНОВЛЯЕМ ЗНАЧЕНИЯ ВНУТРИ, ЧТОБЫ ШТОРКА НЕ ТЕРЯЛА СВЯЗЬ С СЫЛКОЙ В ПАМЯТИ
-            fluxDevPrices.coins_min = data.services.flux_dev.coins_min;
-            fluxDevPrices.coins_mid = data.services.flux_dev.coins_mid;
-            fluxDevPrices.coins_max = data.services.flux_dev.coins_max;
+            // 🔥 Записываем новые цены из Mongo в наши безопасные переменные window.db...
+            window.dbFluxDevPrices.coins_min = data.services.flux_dev.coins_min;
+            window.dbFluxDevPrices.coins_mid = data.services.flux_dev.coins_mid;
+            window.dbFluxDevPrices.coins_max = data.services.flux_dev.coins_max;
 
-            bananaPaintPrices.coins_min = data.services.nano_banana_paint.coins_min;
-            bananaPaintPrices.coins_mid = data.services.nano_banana_paint.coins_mid;
-            bananaPaintPrices.coins_max = data.services.nano_banana_paint.coins_max;
+            window.dbBananaPaintPrices.coins_min = data.services.nano_banana_paint.coins_min;
+            window.dbBananaPaintPrices.coins_mid = data.services.nano_banana_paint.coins_mid;
+            window.dbBananaPaintPrices.coins_max = data.services.nano_banana_paint.coins_max;
 
-            fluxPulidPrices.coins_min = data.services.flux_pulid.coins_min;
-            fluxPulidPrices.coins_mid = data.services.flux_pulid.coins_mid;
-            fluxPulidPrices.coins_max = data.services.flux_pulid.coins_max;
+            window.dbFluxPulidPrices.coins_min = data.services.flux_pulid.coins_min;
+            window.dbFluxPulidPrices.coins_mid = data.services.flux_pulid.coins_mid;
+            window.dbFluxPulidPrices.coins_max = data.services.flux_pulid.coins_max;
         } else {
             console.warn("⚠️ База вернула пустые данные, используем заглушки");
             return;
@@ -128,25 +109,25 @@ function updateNeoStartButtonText() {
     
     if (btnText) {
         if (selectedAiModelEngine === 'custom') {
-            btnText.innerHTML = `Start ${fluxPulidPrices.coins_min} 🪙`; 
+            btnText.innerHTML = `Start ${window.dbFluxPulidPrices.coins_min} 🪙`; 
         } else {
             if (selectedTextQuality === 'dev') {
-                btnText.innerHTML = `Start ${fluxDevPrices.coins_mid} 🪙`; 
+                btnText.innerHTML = `Start ${window.dbFluxDevPrices.coins_mid} 🪙`; 
             } else if (selectedTextQuality === 'ultra_4k') {
-                btnText.innerHTML = `Start ${fluxDevPrices.coins_max} 🪙`; 
+                btnText.innerHTML = `Start ${window.dbFluxDevPrices.coins_max} 🪙`; 
             } else {
-                btnText.innerHTML = `Start ${fluxDevPrices.coins_min} 🪙`; 
+                btnText.innerHTML = `Start ${window.dbFluxDevPrices.coins_min} 🪙`; 
             }
         }
     }
     
     if (btnDirect) {
         if (directGenQuality === 'dev') {
-            btnDirect.innerHTML = `Start ${bananaPaintPrices.coins_mid} 🪙`; 
+            btnDirect.innerHTML = `Start ${window.dbBananaPaintPrices.coins_mid} 🪙`; 
         } else if (directGenQuality === 'ultra_4k') {
-            btnDirect.innerHTML = `Start ${bananaPaintPrices.coins_max} 🪙`; 
+            btnDirect.innerHTML = `Start ${window.dbBananaPaintPrices.coins_max} 🪙`; 
         } else {
-            btnDirect.innerHTML = `Start ${bananaPaintPrices.coins_min} 🪙`; 
+            btnDirect.innerHTML = `Start ${window.dbBananaPaintPrices.coins_min} 🪙`; 
         }
     }
 }
@@ -166,11 +147,17 @@ function openUniversalQualitySheet(serviceName) {
     let min = 1, mid = 2, max = 3;
     const targetService = serviceName || 'flux_dev';
 
-    // 🔥 УНИВЕРСАЛЬНЫЙ КОД: Он сам подставит и flux_dev, и nano_banana_paint в зависимости от экрана!
+    // 🔥 УНИВЕРСАЛЬНЫЙ КОД С ЗАЩИТОЙ ОТ СБОЕВ БАЗЫ
     if (window.allPrices && window.allPrices.services && window.allPrices.services[targetService]) {
         min = window.allPrices.services[targetService].coins_min;
         mid = window.allPrices.services[targetService].coins_mid;
         max = window.allPrices.services[targetService].coins_max;
+    } else {
+        // Если база недоступна или грузится, берем дефолты из нашего нового безопасного объекта
+        const backup = targetService === 'nano_banana_paint' ? window.dbBananaPaintPrices : window.dbFluxDevPrices;
+        min = backup.coins_min;
+        mid = backup.coins_mid;
+        max = backup.coins_max;
     }
 
     listEl.innerHTML = `

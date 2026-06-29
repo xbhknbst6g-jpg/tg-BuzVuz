@@ -340,9 +340,7 @@
                     🔊 Включить звук
                 </button>
                 <!-- Твоя неоновая кнопка запуска -->
-                <button class="neo-start-btn" style="width: 100% !important; padding: 12px 4px !important; font-size: 14px !important; margin: 0 !important;" onclick="submitFromModal()">
-                    Start
-                </button>
+                <button id="neo_motion_submit_btn" class="neo-start-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendVideoGenData()">Start 10 🪙</button>
             </div>
             
         </div>
@@ -853,6 +851,22 @@ function selectMotionTemplate(styleName, videoUrl, duration) {
                 });
             }
         };
+    }
+
+    // 🔥 ДОБАВЛЕНО: УМНЫЙ ОБНОВЛЯТОР ЦЕНЫ ДЛЯ КАРТОЧКИ ВНУТРИ МОДАЛКИ
+    // Ищем неоновую кнопку "Start" внутри панели управления плеера
+    if (controlsPanel) {
+        const modalStartBtn = controlsPanel.querySelector('.neo-start-btn');
+        if (modalStartBtn) {
+            // Забираем посекундный тариф из prices.js, либо берем дефолтные 2 коина, если база не загрузилась
+            const ratePerSec = (window.dbKlingPerSec && window.dbKlingPerSec.coins_per_sec) ? window.dbKlingPerSec.coins_per_sec : 2;
+            
+            // Умножаем секунды карточки (duration) на живой тариф из MongoDB
+            const totalPrice = ratePerSec * (duration || 5);
+            
+            // Мгновенно перезаписываем текст кнопки перед тем, как юзер увидит плеер!
+            modalStartBtn.innerHTML = `Start ${totalPrice} 🪙`;
+        }
     }
 }
 

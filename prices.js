@@ -4,6 +4,16 @@ const API_URL = "https://thyself-lavish-underhand.ngrok-free.dev/api/v1/tariffs"
 window.dbFluxDevPrices = { coins_min: 1, coins_mid: 2, coins_max: 3 };
 window.dbBananaPaintPrices = { coins_min: 2, coins_mid: 3, coins_max: 4 };
 window.dbFluxPulidPrices = { coins_min: 1, coins_mid: 2, coins_max: 3 };
+// 🔵 2. ДЕФОЛТНЫЕ ЗАГЛУШКИ ДЛЯ ВИДЕОСТУДИИ
+window.dbKling5s = { coins: 7 };
+window.dbKling10s = { coins: 14 };
+window.dbSora4s = { coins: 3 };
+window.dbSora8s = { coins: 6 };
+window.dbSora12s = { coins: 9 };
+window.dbSora16s = { coins: 12 };
+window.dbSora20s = { coins: 15 };
+// 🔥 ДОБАВЛЕНО: Заглушка для 3-го режима (посекундный тариф)
+window.dbKlingPerSec = { coins_per_sec: 2 }; 
 
 async function syncPricesFromDatabase() {
     try {
@@ -38,6 +48,20 @@ async function syncPricesFromDatabase() {
             window.dbFluxPulidPrices.coins_min = data.services.flux_pulid.coins_min;
             window.dbFluxPulidPrices.coins_mid = data.services.flux_pulid.coins_mid;
             window.dbFluxPulidPrices.coins_max = data.services.flux_pulid.coins_max;
+                        // 🔥 СОХРАНЯЕМ СВЕЖИЕ ЦЕНЫ ВИДЕО ИЗ MONGO
+            if (data.services.kling_video_5s) window.dbKling5s.coins = data.services.kling_video_5s.coins;
+            if (data.services.kling_video_10s) window.dbKling10s.coins = data.services.kling_video_10s.coins;
+            if (data.services.sora_4s) window.dbSora4s.coins = data.services.sora_4s.coins;
+            if (data.services.sora_8s) window.dbSora8s.coins = data.services.sora_8s.coins;
+            if (data.services.sora_12s) window.dbSora12s.coins = data.services.sora_12s.coins;
+            if (data.services.sora_16s) window.dbSora16s.coins = data.services.sora_16s.coins;
+            if (data.services.sora_20s) window.dbSora20s.coins = data.services.sora_20s.coins;
+
+            // 🔥 ДОБАВЛЕНО: Записываем живую стоимость за 1 секунду из базы!
+            if (data.services.kling_control_per_sec) {
+                window.dbKlingPerSec.coins_per_sec = data.services.kling_control_per_sec.coins_per_sec;
+            }
+
         } else {
             console.warn("⚠️ База вернула пустые данные, используем заглушки");
             return;
@@ -284,6 +308,15 @@ function openUniversalDurationSheet() {
     titleEl.innerText = "ДЛИТЕЛЬНОСТЬ ВИДЕО";
     listEl.innerHTML = ''; // Очищаем список старых кнопок
 
+    // 🍏 Берём цены из наших новых застрахованных объектов (там всегда либо база, либо дефолты)
+    const price5s = window.dbKling5s.coins;   
+    const price10s = window.dbKling10s.coins; 
+    const sora4 = window.dbSora4s.coins;
+    const sora8 = window.dbSora8s.coins;
+    const sora12 = window.dbSora12s.coins;
+    const sora16 = window.dbSora16s.coins;
+    const sora20 = window.dbSora20s.coins;
+
     // 🍏 1. Цены-заглушки для режима БЕЗ звука (Kling)
     let price5s = 7;   
     let price10s = 14; 
@@ -391,43 +424,41 @@ function updateMotionSubmitButton() {
     
     if (!startBtn1 && !startBtn2 && !startBtn3) return;
 
-    // 1. Задаем дефолтные цены-заглушки на случай, если база отвалится
-    let price5s = 7;
-    let price10s = 14;
-    let soraPrice = 20;
+    // 🟢 1. ДИНАМИЧЕСКИЕ ЦЕНЫ ДЛЯ KLING (БЕРЕМ ИЗ НАШИХ ГЛОБАЛЬНЫХ ОБЪЕКТОВ WINDOW)
+    const price5s = window.dbKling5s.coins;
+    const price10s = window.dbKling10s.coins;
 
-    // 2. Подтягиваем живые цены из MongoDB (window.allPrices), если они долетели
-    if (window.allPrices && window.allPrices.services) {
-        if (window.allPrices.services.kling_video_5s) price5s = window.allPrices.services.kling_video_5s.coins;
-        if (window.allPrices.services.kling_video_10s) price10s = window.allPrices.services.kling_video_10s.coins;
-        if (window.allPrices.services.sora_2_10s) soraPrice = window.allPrices.services.sora_2_10s.coins;
-    }
+    // 🔵 2. ДИНАМИЧЕСКИЕ ЦЕНЫ ДЛЯ SORA (ТЕПЕРЬ ТОЖЕ ИЗ СТРУКТУРЫ WINDOW!)
+    const sora4 = window.dbSora4s.coins;
+    const sora8 = window.dbSora8s.coins;
+    const sora12 = window.dbSora12s.coins;
+    const sora16 = window.dbSora16s.coins;
+    const sora20 = window.dbSora20s.coins;
 
-    // Получаем текущее выбранное количество секунд (из HTML или window)
-    const seconds = window.currentKlingDuration || currentKlingDuration || 5;
+    // 3. Получаем текущее выбранное время для Kling и Sora (из HTML-файла видео или памяти window)
+    const klingSeconds = window.currentKlingDuration || currentKlingDuration || 5;
+    const soraSeconds = window.currentSoraDuration || currentSoraDuration || 4;
 
-    // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ РЕЖИМА 1: «Оживление фото» (Kling 2.1)
+    // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ РЕЖИМА 1: «Оживление фото» (Kling)
     if (startBtn1) {
-        if (seconds === 10) {
-            startBtn1.innerHTML = `Start ${price10s} 🪙`;
-        } else {
-            startBtn1.innerHTML = `Start ${price5s} 🪙`;
-        }
+        startBtn1.innerHTML = `Start ${klingSeconds === 10 ? price10s : price5s} 🪙`;
     }
     
-    // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ РЕЖИМА 2: «Оживление со звуком» (Sora-2)
+    // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ РЕЖИМА 2: «Оживление со звуком» (Sora) -> ТЕПЕРЬ СЧИТАЕТ ВСЕ 5 ВАРНАНТОВ СЕКУНД!
     if (startBtn2) {
-        startBtn2.innerHTML = `Start ${soraPrice} 🪙`; 
+        let currentSoraPrice = sora4; // по дефолту за 4 секунды
+        if (soraSeconds === 8) currentSoraPrice = sora8;
+        if (soraSeconds === 12) currentSoraPrice = sora12;
+        if (soraSeconds === 16) currentSoraPrice = sora16;
+        if (soraSeconds === 20) currentSoraPrice = sora20;
+
+        startBtn2.innerHTML = `Start ${currentSoraPrice} 🪙`; 
     }
     
-    // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ РЕЖИМА 3: «Оживление по видео» (Motion Control)
-    // Если для Режима 3 у вас в будущем появится отдельная цена в MongoDB, вы сможете подставить её сюда. 
-    // Пока привяжем её к базовым тарифам видео.
+    // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ РЕЖИМА 3: «Оживление по видео» (Motion Control) -> УМНОЖАЕТ ТАРИФ ИЗ БАЗЫ НА СЕКУНДЫ!
     if (startBtn3) {
-        if (seconds === 10) {
-            startBtn3.innerHTML = `Start ${price10s} 🪙`;
-        } else {
-            startBtn3.innerHTML = `Start ${price5s} 🪙`;
-        }
+        const ratePerSec = window.dbKlingPerSec.coins_per_sec; 
+        const totalPrice = ratePerSec * klingSeconds; // Умножаем ставку из базы на выбранное в шторке время
+        startBtn3.innerHTML = `Start ${totalPrice} 🪙`;
     }
 }

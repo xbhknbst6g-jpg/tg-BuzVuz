@@ -132,14 +132,11 @@ function openUniversalQualitySheet(serviceName) {
     let min = 1, mid = 2, max = 3;
     const targetService = serviceName || 'flux_dev';
 
-    if (targetService === 'flux_dev') {
-        min = fluxDevPrices.coins_min;
-        mid = fluxDevPrices.coins_mid;
-        max = fluxDevPrices.coins_max;
-    } else if (targetService === 'nano_banana_paint') {
-        min = bananaPaintPrices.coins_min;
-        mid = bananaPaintPrices.coins_mid;
-        max = bananaPaintPrices.coins_max;
+    // 🔥 УНИВЕРСАЛЬНЫЙ КОД: Он сам подставит и flux_dev, и nano_banana_paint в зависимости от экрана!
+    if (window.allPrices && window.allPrices.services && window.allPrices.services[targetService]) {
+        min = window.allPrices.services[targetService].coins_min;
+        mid = window.allPrices.services[targetService].coins_mid;
+        max = window.allPrices.services[targetService].coins_max;
     }
 
     listEl.innerHTML = `

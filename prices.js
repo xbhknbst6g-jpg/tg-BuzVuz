@@ -609,15 +609,26 @@ function updateFotoSubmitButtons() {
         if (txt.includes('ultra') || txt.includes('max') || txt.includes('4k')) bgQuality = 'ultra_4k';
     }
 
-    // 🔮 РАСЧЕТ ДЛЯ РЕЖИМА 1: «Фото + Текст» (ТЕПЕРЬ 100% ДИНАМИКА НА FLUX PU-LID ИЗ БАЗЫ!)
+    // 🔮 РАСЧЕТ ДЛЯ РЕЖИМА 1: «Фото + Текст» (ТЕПЕРЬ С ИДЕАЛЬНОЙ СВЯЗКОЙ ТУМБЛЕРОВ!)
     if (btnText) {
-        if (photoTextQuality === 'dev') {
-            btnText.innerHTML = `Start ${window.dbFluxPulidPrices.coins_mid} 🪙`; // Средняя цена PuLID из базы
-        } else if (photoTextQuality === 'ultra_4k') {
-            btnText.innerHTML = `Start ${window.dbFluxPulidPrices.coins_max} 🪙`; // Максимальная цена PuLID из базы
+        // Узнаем, какое слово записал тумблер ('banana' или 'pulid')
+        const currentEngine = typeof selectedAiModelEngine !== 'undefined' ? selectedAiModelEngine : 'banana';
+        let finalPrice = 1;
+
+        if (currentEngine === 'pulid') {
+            // 🍏 Включена ЦИФРОВАЯ ОПТИКА (Flux PuLID) -> Берем цены из dbFluxPulidPrices
+            if (photoTextQuality === 'dev') finalPrice = window.dbFluxPulidPrices.coins_mid;
+            else if (photoTextQuality === 'ultra_4k') finalPrice = window.dbFluxPulidPrices.coins_max;
+            else finalPrice = window.dbFluxPulidPrices.coins_min;
         } else {
-            btnText.innerHTML = `Start ${window.dbFluxPulidPrices.coins_min} 🪙`; // Минимальная цена PuLID из базы
+            // 🍌 Включен УМНЫЙ ФОКУС (Nano Banana Edit) -> Берем цены из dbBananaEditPrices
+            if (photoTextQuality === 'dev') finalPrice = window.dbBananaEditPrices.coins_mid;
+            else if (photoTextQuality === 'ultra_4k') finalPrice = window.dbBananaEditPrices.coins_max;
+            else finalPrice = window.dbBananaEditPrices.coins_min;
         }
+
+        // Выводим правильную динамическую цену на кнопку!
+        btnText.innerHTML = `Start ${finalPrice} 🪙`;
     }
     
     // 🔮 РАСЧЕТ ДЛЯ РЕЖИМА 2: FACE SWAP (Использует hy_wu_faceswap из базы MongoDB)

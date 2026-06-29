@@ -84,3 +84,145 @@ async function syncPricesFromDatabase() {
 
 // Запуск синхронизации автоматически
 window.addEventListener("DOMContentLoaded", syncPricesFromDatabase);
+
+// ====================================================================================
+// 7. УМНЫЙ ОБНОВЛЯТОР СТОИМОСТИ НА ВСТРОЕННЫХ КНОПКАХ (ТЕПЕРЬ ТУТ!)
+// ====================================================================================
+function updateNeoStartButtonText() {
+    const btnText = document.getElementById('btn-start-flux-dev');
+    const btnDirect = document.getElementById('btn-start-banana-paint_2') || document.getElementById('btn-start-banana-paint');
+    
+    if (btnText) {
+        if (selectedAiModelEngine === 'custom') {
+            btnText.innerHTML = `Start ${fluxPulidPrices.coins_min} 🪙`; 
+        } else {
+            if (selectedTextQuality === 'dev') {
+                btnText.innerHTML = `Start ${fluxDevPrices.coins_mid} 🪙`; 
+            } else if (selectedTextQuality === 'ultra_4k') {
+                btnText.innerHTML = `Start ${fluxDevPrices.coins_max} 🪙`; 
+            } else {
+                btnText.innerHTML = `Start ${fluxDevPrices.coins_min} 🪙`; 
+            }
+        }
+    }
+    
+    if (btnDirect) {
+        if (directGenQuality === 'dev') {
+            btnDirect.innerHTML = `Start ${bananaPaintPrices.coins_mid} 🪙`; 
+        } else if (directGenQuality === 'ultra_4k') {
+            btnDirect.innerHTML = `Start ${bananaPaintPrices.coins_max} 🪙`; 
+        } else {
+            btnDirect.innerHTML = `Start ${bananaPaintPrices.coins_min} 🪙`; 
+        }
+    }
+}
+
+// ====================================================================================
+// 8. УПРАВЛЕНИЕ УНИВЕРСАЛЬНЫМИ ШТОРКАМИ И ОБРАБОТЧИКАМИ (СИНХРОНИЗИРОВАНО В PRICES.JS)
+// ====================================================================================
+
+// 1. ОТКРЫТИЕ ШТОРКИ КАЧЕСТВА
+function openUniversalQualitySheet(serviceName) {
+    const titleEl = document.getElementById('custom_sheet_title');
+    const listEl = document.getElementById('custom_sheet_list');
+    if (!titleEl || !listEl) return;
+
+    titleEl.innerText = "КАЧЕСТВО ГЕНЕРАЦИИ";
+    
+    let min = 1, mid = 2, max = 3;
+    const targetService = serviceName || 'flux_dev';
+
+    if (targetService === 'flux_dev') {
+        min = fluxDevPrices.coins_min;
+        mid = fluxDevPrices.coins_mid;
+        max = fluxDevPrices.coins_max;
+    } else if (targetService === 'nano_banana_paint') {
+        min = bananaPaintPrices.coins_min;
+        mid = bananaPaintPrices.coins_mid;
+        max = bananaPaintPrices.coins_max;
+    }
+
+    listEl.innerHTML = `
+        <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('schnell', '⚡ Standard')"><span>Standard</span><span class="coin-price">${min} 🪙</span></button></li>
+        <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('dev', '💎 Pro')"><span>Pro</span><span class="coin-price">${mid} 🪙</span></button></li>
+        <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('ultra_4k', '🔥 Ultra')"><span>Ultra</span><span class="coin-price">${max} 🪙</span></button></li>
+    `;
+
+    document.getElementById('custom_action_sheet').classList.add('active');
+}
+
+// 2. ОТКРЫТИЕ ШТОРКИ ФОРМАТА (ПЕРЕНЕСЕНА СЮДА!)
+function openUniversalRatioSheet() {
+    const titleEl = document.getElementById('custom_sheet_title');
+    const listEl = document.getElementById('custom_sheet_list');
+    if (!titleEl || !listEl) return;
+
+    titleEl.innerText = "СООТНОШЕНИЕ СТОРОН";
+    
+    listEl.innerHTML = `
+        <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('9:16')"><span style="width: 100%; text-align: center;">9:16</span></button></li>
+        <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('3:4')"><span style="width: 100%; text-align: center;">3:4</span></button></li>
+        <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('1:1')"><span style="width: 100%; text-align: center;">1:1</span></button></li>
+        <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('4:3')"><span style="width: 100%; text-align: center;">4:3</span></button></li>
+        <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('16:9')"><span style="width: 100%; text-align: center;">16:9</span></button></li>
+    `;
+
+    document.getElementById('custom_action_sheet').classList.add('active');
+}
+
+// 3. УМНЫЙ ОБРАБОТЧИК КАЧЕСТВА
+function selectQualityFromSheet(id, text) {
+    const btnText = document.getElementById('btn-start-flux-dev');
+    const isTextImageActive = btnText && btnText.offsetParent !== null;
+
+    if (isTextImageActive) {
+        selectedTextQuality = id;
+        const el = document.getElementById('btn_text_quality');
+        if (el) el.innerHTML = text;
+    } else {
+        directGenQuality = id;
+        const el = document.getElementById('btn_direct_quality_2') || document.getElementById('btn_direct_quality');
+        if (el) el.innerHTML = text;
+    }
+    
+    updateNeoStartButtonText();
+    closeCustomSheet();
+}
+
+// 4. УМНЫЙ ОБРАБОТЧИК ФОРМАТА
+function selectRatioFromSheet(id) {
+    const btnText = document.getElementById('btn-start-flux-dev');
+    const isTextImageActive = btnText && btnText.offsetParent !== null;
+
+    if (isTextImageActive) {
+        selectedTextRatio = id;
+        const el = document.getElementById('btn_text_ratio');
+        if (el) el.innerHTML = id;
+    } else {
+        directGenRatio = id;
+        const el = document.getElementById('btn_direct_ratio_2') || document.getElementById('btn_direct_ratio');
+        if (el) el.innerHTML = id;
+    }
+    
+    updateNeoStartButtonText();
+    closeCustomSheet();
+}
+
+// Функции принудительной синхронизации формата для капсул кадра на основном экране
+function setTextRatio(ratio) { 
+    selectedTextRatio = ratio; 
+    const el = document.getElementById('btn_text_ratio');
+    if (el) el.innerHTML = ratio;
+}
+
+function setDirectRatio(ratio) { 
+    directGenRatio = ratio; 
+    const el = document.getElementById('btn_direct_ratio_2') || document.getElementById('btn_direct_ratio');
+    if (el) el.innerHTML = ratio;
+}
+
+// Функция закрытия шторки
+function closeCustomSheet() {
+    const sheet = document.getElementById('custom_action_sheet');
+    if (sheet) sheet.classList.remove('active');
+}

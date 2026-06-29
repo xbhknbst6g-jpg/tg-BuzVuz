@@ -542,130 +542,20 @@ function closePreviewVideo() {
             }
         }
 
-// ====================================================================================
-// 7. УПРАВЛЕНИЕ УНИВЕРСАЛЬНОЙ КАСТОМНОЙ ШТОРКОЙ ДЛЯ ДВУХ ЭКРАНОВ (СИНХРОНИЗИРОВАНО)
-// ====================================================================================
-
-// ОТКРЫТИЕ ШТОРКИ КАЧЕСТВА БЕЗ ЛИШНИХ ЗАПРОСОВ К СЕТИ
-function openUniversalQualitySheet(serviceName) {
-    const titleEl = document.getElementById('custom_sheet_title');
-    const listEl = document.getElementById('custom_sheet_list');
-    if (!titleEl || !listEl) return;
-
-    titleEl.innerText = "КАЧЕСТВО ГЕНЕРАЦИИ";
-    
-    // 1. Дефолтные цены-заглушки на всякий случай
-    let min = 1, mid = 2, max = 3;
-    const targetService = serviceName || 'flux_dev';
-
-    // 2. Берём цены напрямую из глобальных переменных, которые УЖЕ скачались при старте страницы!
-    if (targetService === 'flux_dev') {
-        min = fluxDevPrices.coins_min;
-        mid = fluxDevPrices.coins_mid;
-        max = fluxDevPrices.coins_max;
-    } else if (targetService === 'nano_banana_paint') {
-        min = bananaPaintPrices.coins_min;
-        mid = bananaPaintPrices.coins_mid;
-        max = bananaPaintPrices.coins_max;
-    }
-
-    // 🔥 РИСУЕМ ШТОРКУ ИЗ ГОТОВЫХ ПЕРЕМЕННЫХ (Строго косые кавычки - буква Ё)
-    listEl.innerHTML = `
-        <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('schnell', '⚡ Standard')"><span>Standard</span><span class="coin-price">${min} 🪙</span></button></li>
-        <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('dev', '💎 Pro')"><span>Pro</span><span class="coin-price">${mid} 🪙</span></button></li>
-        <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('ultra_4k', '🔥 Ultra')"><span>Ultra</span><span class="coin-price">${max} 🪙</span></button></li>
-    `;
-
-    document.getElementById('custom_action_sheet').classList.add('active');
+// Перенаправляем функции вызова на наш единый пульт управления шторкой из prices.js
+function showNativeQualityPopup() { 
+    openUniversalQualitySheet('flux_dev'); // 🔥 Передает имя Оптики
+}
+function showNativeRatioPopup() { 
+    openUniversalRatioSheet(); 
 }
 
-
-    // ⚡ 1. УМНЫЙ ОБРАБОТЧИК КАЧЕСТВА (ДЛЯ ОБОИХ ЭКРАНОВ)
-function selectQualityFromSheet(id, text) {
-    // Проверяем, какая именно кнопка START сейчас физически видна на экране
-    const btnText = document.getElementById('btn-start-flux-dev');
-    const isTextImageActive = btnText && btnText.offsetParent !== null;
-
-    if (isTextImageActive) {
-        // 🔥 ДЛЯ ПЕРВОГО ЭКРАНА (Картинки по тексту)
-        selectedTextQuality = id;
-        const el = document.getElementById('btn_text_quality');
-        if (el) el.innerHTML = text;
-    } else {
-        // 🔥 ДЛЯ ВТОРОГО ЭКРАНА (Умный Фокус / Банана)
-        directGenQuality = id;
-        const el = document.getElementById('btn_direct_quality_2') || document.getElementById('btn_direct_quality');
-        if (el) el.innerHTML = text;
-    }
-    
-    // Пересчитываем цену на кнопке и закрываем шторку
-    updateNeoStartButtonText();
-    closeCustomSheet();
+function showNativeDirectQualityPopup() { 
+    openUniversalQualitySheet('nano_banana_paint'); // 🔥 Передает имя Рисования
 }
-
-    // 📐 2. УМНЫЙ ОБРАБОТЧИК ФОРМАТА (ДЛЯ ОБОИХ ЭКРАНОВ)
-    function selectRatioFromSheet(id) {
-        if (currentActiveMode === 'text_image') {
-            selectedTextRatio = id;
-            const el = document.getElementById('btn_text_ratio') || document.getElementById('btn_direct_ratio');
-            if (el) el.innerHTML = id;
-        } 
-        else if (currentActiveMode === 'image_generation_direct') {
-            directGenRatio = id;
-            const el = document.getElementById('btn_direct_ratio_2') || document.getElementById('btn_direct_ratio');
-            if (el) el.innerHTML = id;
-        }
-        
-        updateNeoStartButtonText();
-        closeCustomSheet();
-    }
-
-    // ОТКРЫТИЕ ШТОРКИ ФОРМАТА ДЛЯ ЛЮБОГО АКТИВНОГО ЭКРАНА
-    function openUniversalRatioSheet() {
-        const titleEl = document.getElementById('custom_sheet_title');
-        const listEl = document.getElementById('custom_sheet_list');
-        if (!titleEl || !listEl) return;
-
-        titleEl.innerText = "СООТНОШЕНИЕ СТОРОН";
-        
-        // 🔥 СТРОГО ТВОЯ ОРИГИНАЛЬНАЯ ЦЕНТРОВКА ВНУТРИ ТЕГОВ SPAN
-        listEl.innerHTML = `
-            <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('9:16')"><span style="width: 100%; text-align: center;">9:16</span></button></li>
-            <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('3:4')"><span style="width: 100%; text-align: center;">3:4</span></button></li>
-            <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('1:1')"><span style="width: 100%; text-align: center;">1:1</span></button></li>
-            <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('4:3')"><span style="width: 100%; text-align: center;">4:3</span></button></li>
-            <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('16:9')"><span style="width: 100%; text-align: center;">16:9</span></button></li>
-        `;
-
-        document.getElementById('custom_action_sheet').classList.add('active');
-    }
-
-    // Функции принудительной синхронизации формата для капсул кадра на основном экране
-    function setTextRatio(ratio) { 
-        selectedTextRatio = ratio; 
-        const el = document.getElementById('btn_text_ratio');
-        if (el) el.innerHTML = ratio;
-    }
-
-    function setDirectRatio(ratio) { 
-        directGenRatio = ratio; 
-        // Находит кнопку формата на втором экране, даже если у нее ID с двойкой
-        const el = document.getElementById('btn_direct_ratio_2') || document.getElementById('btn_direct_ratio');
-        if (el) el.innerHTML = ratio;
-    }
-
-    // Перенаправляем функции вызова из DOMContentLoaded на наш единый пульт управления шторкой
-    function showNativeQualityPopup() { openUniversalQualitySheet(); }
-    function showNativeRatioPopup() { openUniversalRatioSheet(); }
-
-    function showNativeDirectQualityPopup() { openUniversalQualitySheet(); }
-    function showNativeDirectRatioPopup() { openUniversalRatioSheet(); }
-
-    // Функция закрытия шторки
-    function closeCustomSheet() {
-        const sheet = document.getElementById('custom_action_sheet');
-        if (sheet) sheet.classList.remove('active');
-    }
+function showNativeDirectRatioPopup() { 
+    openUniversalRatioSheet(); 
+}
 
 // УМНЫЙ ОБНОВЛЯТОР СТОИМОСТИ НА ВСТРОЕННЫХ КНОПКАХ (ТЕПЕРЬ СИНХРОНИЗИРОВАНО С БАЗОЙ MONGODB!)
 function updateNeoStartButtonText() {
@@ -725,7 +615,7 @@ function updateNeoStartButtonText() {
                 }
 
                 // 🔥 ИСПРАВЛЕНО: Слэш / и знак доллара $ на месте, ссылка соберется идеально!
-                let telegramLink = `https://t.me{botUsername}?start=${startParam}`;
+                let telegramLink = `https://t.me/${botUsername}?start=${startParam}`;
 
                 console.log("[WebApp Link] Перенаправление по ссылке:", telegramLink);
 

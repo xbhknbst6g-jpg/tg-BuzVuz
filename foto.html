@@ -216,9 +216,7 @@
                     <button id="btn_text_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">9:16</button>
                 </div>
                 <div class="control-col control-col-btn">
-                    <button id="neo_text_submit_btn" class="neo-start-btn" onclick="sendPhotoTextData()">
-                        Start 2 🪙
-                    </button>
+                    <button id="neo_text_submit_btn" class="neo-start-btn" onclick="sendPhotoTextData()">Start 1 🪙</button>
                 </div>
             </div>
         </div>
@@ -292,9 +290,7 @@
                     <button id="btn_swap_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">9:16</button>
                 </div>
                 <div class="control-col control-col-btn">
-                    <button id="neo_swap_submit_btn" class="neo-start-btn" onclick="sendCustomFaceSwapData()">
-                        Start 1 🪙
-                    </button>
+                    <button id="neo_swap_submit_btn" class="neo-start-btn" onclick="sendCustomFaceSwapData()">Start 3 🪙</button>
                 </div>
             </div>
 
@@ -368,9 +364,7 @@
                     <button id="btn_tryon_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">9:16</button>
                 </div>
                 <div class="control-col control-col-btn">
-                    <button id="neo_tryon_submit_btn" class="neo-start-btn" onclick="sendTryOnData()">
-                        Start 1 🪙
-                    </button>
+                   <button id="neo_tryon_submit_btn" class="neo-start-btn" onclick="sendTryOnData()">Start 3 🪙</button>
                 </div>
             </div>
 
@@ -447,9 +441,7 @@
                     <button id="btn_bg_quality" class="capsule-btn">⚡ Standard</button>
                 </div>
                 <div class="control-col control-col-btn">
-                    <button id="neo_bg_submit_btn" class="neo-start-btn" onclick="sendBgChangeData()">
-                        Start 1 🪙
-                    </button>
+                    <button id="neo_bg_submit_btn" class="neo-start-btn" onclick="sendBgChangeData()">Start 2 🪙</button>
                 </div>
             </div>
         </div> <!-- Конец служебного блока настроек -->
@@ -740,60 +732,99 @@
             }
         }
 
-        // ====================================================================================
-        // 4. Старт WebApp, автоматическое разворачивание шторки и привязка кнопок
-        // ====================================================================================
-        window.addEventListener('DOMContentLoaded', () => {
-            if (tg) {
-                tg.ready();  
-                tg.expand(); 
-            }
-            
-// --- 1. ПРИВЯЗКА КЛИКОВ ФОТО + ТЕКСТ ---
-            const qualityBtn = document.getElementById('btn_text_quality');
-            const ratioBtn = document.getElementById('btn_text_ratio');
-            
-            if (qualityBtn) qualityBtn.addEventListener('click', showNativeQualityPopup);
-            if (ratioBtn) ratioBtn.addEventListener('click', showNativeRatioPopup);
-
-// --- 2. ПРИВЯЗКА КЛИКОВ FACE SWAP ---
-            const swapQualityBtn = document.getElementById('btn_swap_quality');
-            const swapRatioBtn = document.getElementById('btn_swap_ratio');
-            
-            if (swapQualityBtn) swapQualityBtn.addEventListener('click', showNativeSwapQualityPopup);
-            if (swapRatioBtn) swapRatioBtn.addEventListener('click', showNativeSwapRatioPopup);
-
-// --- 3. ПРИВЯЗКА КЛИКОВ ПРИМЕРКИ ОДЕЖДЫ ---
-            const tryonQualityBtn = document.getElementById('btn_tryon_quality');
-            const tryonRatioBtn = document.getElementById('btn_tryon_ratio');
-            
-            if (tryonQualityBtn) tryonQualityBtn.addEventListener('click', showNativeTryOnQualityPopup);
-            if (tryonRatioBtn) tryonRatioBtn.addEventListener('click', showNativeTryOnRatioPopup);
-
-// --- 4. ПРИВЯЗКА КЛИКОВ СМЕНЫ ФОНА ---
-            const bgQualityBtn = document.getElementById('btn_bg_quality');
-            const bgRatioBtn = document.getElementById('btn_bg_ratio');
-            
-            if (bgQualityBtn) bgQualityBtn.addEventListener('click', showNativeBgQualityPopup);
-            if (bgRatioBtn) bgRatioBtn.addEventListener('click', showNativeBgRatioPopup);
-
-// ИСПРАВЛЕНО: Умный стартовый роутер, который спасет от кэширования Telegram!
-            const urlParams = new URLSearchParams(window.location.search);
-            const targetScreen = urlParams.get('screen');
-
-            if (targetScreen) {
-                // Если бот явно передал экран (например, ?screen=foto или ?screen=face_swap)
-                openScreen(targetScreen);
-            } else {
-                // Если зашли просто так — включаем стандартный стартовый экран фотостудии
-                openScreen('foto'); 
-            }
+// ====================================================================================
+// 4. Старт WebApp, автоматическое разворачивание шторки и привязка кнопок
+// ====================================================================================
+window.addEventListener('DOMContentLoaded', () => {
+    if (tg) {
+        tg.ready();  
+        tg.expand(); 
+    }
+    
+    // --- 1. ПРИВЯЗКА КЛИКОВ: ФОТО + ТЕКСТ (Класс text_image) ---
+    const qualityBtn = document.getElementById('btn_text_quality');
+    const ratioBtn = document.getElementById('btn_text_ratio');
+    
+    if (qualityBtn) {
+        qualityBtn.addEventListener('click', () => {
+            tg.HapticFeedback.impactOccurred('light');
+            // 🔥 ИСПРАВЛЕНО: Теперь передаем 'flux_pulid' вместо 'flux_dev', чтобы шторка показывала правильные цены!
+            openUniversalQualitySheet('flux_pulid'); 
         });
+    }
+    if (ratioBtn) {
+        ratioBtn.addEventListener('click', () => {
+            tg.HapticFeedback.impactOccurred('light');
+            openUniversalRatioSheet();
+        });
+    }
+
+    // --- 2. ПРИВЯЗКА КЛИКОВ: FACE SWAP ---
+    const swapQualityBtn = document.getElementById('btn_swap_quality');
+    const swapRatioBtn = document.getElementById('btn_swap_ratio');
+    
+    if (swapQualityBtn) {
+        swapQualityBtn.addEventListener('click', () => {
+            tg.HapticFeedback.impactOccurred('light');
+            openUniversalQualitySheet('hy_wu_faceswap'); 
+        });
+    }
+    if (swapRatioBtn) {
+        swapRatioBtn.addEventListener('click', () => {
+            tg.HapticFeedback.impactOccurred('light');
+            openUniversalRatioSheet();
+        });
+    }
+
+    // --- 3. ПРИВЯЗКА КЛИКОВ: ПРИМЕРКИ ОДЕЖДЫ ---
+    const tryonQualityBtn = document.getElementById('btn_tryon_quality');
+    const tryonRatioBtn = document.getElementById('btn_tryon_ratio');
+    
+    if (tryonQualityBtn) {
+        tryonQualityBtn.addEventListener('click', () => {
+            tg.HapticFeedback.impactOccurred('light');
+            openUniversalQualitySheet('hy_wu_clothing'); 
+        });
+    }
+    if (tryonRatioBtn) {
+        tryonRatioBtn.addEventListener('click', () => {
+            tg.HapticFeedback.impactOccurred('light');
+            openUniversalRatioSheet();
+        });
+    }
+
+    // --- 4. ПРИВЯЗКА КЛИКОВ: СМЕНЫ ФОНА ---
+    const bgQualityBtn = document.getElementById('btn_bg_quality');
+    const bgRatioBtn = document.getElementById('btn_bg_ratio');
+    
+    if (bgQualityBtn) {
+        bgQualityBtn.addEventListener('click', () => {
+            tg.HapticFeedback.impactOccurred('light');
+            openUniversalQualitySheet('bria_background'); 
+        });
+    }
+    if (bgRatioBtn) {
+        bgRatioBtn.addEventListener('click', () => {
+            tg.HapticFeedback.impactOccurred('light');
+            openUniversalRatioSheet();
+        });
+    }
+
+    // Умный стартовый роутер (ОСТАВЛЯЕМ БЕЗ ИЗМЕНЕНИЙ)
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetScreen = urlParams.get('screen');
+
+    if (targetScreen) {
+        openScreen(targetScreen);
+    } else {
+        openScreen('foto'); 
+    }
+});
 
 
-        // ====================================================================================
-        // 5. РОУТЕР ЭКРАНОВ И УМНЫЙ СЧЕТЧИК МОНЕТ НА КНОПКАХ START
-        // ====================================================================================
+// ====================================================================================
+// 5. РОУТЕР ЭКРАНОВ И УМНЫЙ СЧЕТЧИК МОНЕТ НА КНОПКАХ START
+// ====================================================================================
 
         // Безопасное переключение подэкранов внутри foto.html
         function openScreen(screenName) {
@@ -866,306 +897,145 @@
             }
         }
 
-
-        // ====================================================================================
-        // 6. КРАТКИЙ И ЛАКОНИЧНЫЙ ОБНОВЛЯТОР ТЕКСТА ГЛАВНОЙ КНОПКИ ТЕЛЕГРАМ
-        // ====================================================================================
-        function updateFotoMainButton() {
-            if (!tg || !tg.MainButton) return;
-            
-            // ИСПРАВЛЕНО: Поскольку на всех 4 экранах подрежимов теперь работают встроенные 
-            // горизонтальные неоновые кнопки пульта, нативная синяя кнопка Telegram больше вообще 
-            // не нужна. Мы полностью выключаем её отображение, чтобы исключить дублирование на экране!
-            tg.MainButton.hide();
-        }
-
-        // УМНЫЙ ОБНОВЛЯТОР СТОИМОСТИ НА ВСТРОЕННЫХ НЕОНОВЫХ КНОПКАХ (СИНХРОНИЗИРОВАНО!)
-        function updateNeoStartButtonText() {
-            const btnText = document.getElementById('neo_text_submit_btn');
-            const btnSwap = document.getElementById('neo_swap_submit_btn');
-            const btnTryon = document.getElementById('neo_tryon_submit_btn');
-            const btnBg = document.getElementById('neo_bg_submit_btn');
-            
-            // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ ФОТО + ТЕКСТ
-            if (btnText) {
-                if (selectedAiModelEngine === 'custom') {
-                    btnText.innerHTML = `Start 2 🪙`; // Цена за премиум-обработку Flux PuLID
-                } else {
-                    btnText.innerHTML = `Start 1 🪙`; // Стандартная цена за Nano Banana
-                }
-            }
-            
-            // Остальные кнопки твоей студии остаются без изменений
-            if (btnSwap) btnSwap.innerHTML = `Start 1 🪙`;
-            if (btnTryon) btnTryon.innerHTML = `Start 1 🪙`;
-            if (btnBg) btnBg.innerHTML = `Start 1 🪙`;
-        }
-
-
-        // ====================================================================================
-        // 7. УПРАВЛЕНИЕ УНИВЕРСАЛЬНОЙ КАСТОМНОЙ ШТОРКОЙ ДЛЯ ВСЕХ ЭКРАНОВ СТУДИИ (БЕЗ ИКОНОК)
-        // ====================================================================================
-
-        // ОТКРЫТИЕ ШТОРКИ КАЧЕСТВА ДЛЯ ЛЮБОГО АКТИВНОГО ЭКРАНА
-        function openUniversalQualitySheet() {
-            const titleEl = document.getElementById('custom_sheet_title');
-            const listEl = document.getElementById('custom_sheet_list');
-            if (!titleEl || !listEl) return;
-
-            titleEl.innerText = "КАЧЕСТВО ГЕНЕРАЦИИ";
-            
-            // Чистый аккуратный список без смайликов, цены прижаты вправо
-            listEl.innerHTML = `
-                <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('schnell', '⚡ Standard')"><span>Standard</span><span class="coin-price">  1 🪙</span></button></li>
-                <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('dev', '💎 Pro')"><span>Pro</span><span class="coin-price">  1 🪙</span></button></li>
-                <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('ultra_4k', '🔥 Ultra')"><span>Ultra</span><span class="coin-price">  1 🪙</span></button></li>
-            `;
-
-            document.getElementById('custom_action_sheet').classList.add('active');
-        }
-
-        // Умный обработчик качества: определяет экран, меняет его кнопку и переменную
-        function selectQualityFromSheet(id, text) {
-            if (currentActiveMode === 'text_image') {
-                selectedTextQuality = id;
-                document.getElementById('btn_text_quality').innerHTML = text;
-            } else if (currentActiveMode === 'face_swap') {
-                selectedSwapQuality = id;
-                document.getElementById('btn_swap_quality').innerHTML = text;
-            } else if (currentActiveMode === 'tryon') {
-                selectedTryOnQuality = id;
-                const q1 = document.getElementById('btn_tryon_quality_face');
-                const q2 = document.getElementById('btn_tryon_quality');
-                if (q1) q1.innerHTML = text;
-                if (q2) q2.innerHTML = text;
-            } else if (currentActiveMode === 'bg_change') {
-                selectedBgQuality = id;
-                document.getElementById('btn_bg_quality').innerHTML = text;
-            }
-            updateNeoStartButtonText();
-            closeCustomSheet();
-        }
-
-        // ОТКРЫТИЕ ШТОРКИ ФОРМАТА ДЛЯ ЛЮБОГО АКТИВНОГО ЭКРАНА (БЕЗ ИКОНОК, ТОЛЬКО ЦИФРЫ)
-        function openUniversalRatioSheet() {
-            const titleEl = document.getElementById('custom_sheet_title');
-            const listEl = document.getElementById('custom_sheet_list');
-            if (!titleEl || !listEl) return;
-
-            titleEl.innerText = "СООТНОШЕНИЕ СТОРОН";
-            
-            // Чистые аккуратные цифры без лишних слов «Вертикальный», «Портретный»
-            listEl.innerHTML = `
-                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('9:16')"><span style="width: 100%; text-align: center;">9:16</span></button></li>
-                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('3:4')"><span style="width: 100%; text-align: center;">3:4</span></button></li>
-                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('1:1')"><span style="width: 100%; text-align: center;">1:1</span></button></li>
-                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('4:3')"><span style="width: 100%; text-align: center;">4:3</span></button></li>
-                <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('16:9')"><span style="width: 100%; text-align: center;">16:9</span></button></li>
-            `;
-
-            document.getElementById('custom_action_sheet').classList.add('active');
-        }
-
-        // Умный обработчик формата: определяет экран и вызывает его родную функцию синхронизации иконок
-        function selectRatioFromSheet(id) {
-            if (currentActiveMode === 'text_image') {
-                setTextRatio(id);
-            } else if (currentActiveMode === 'face_swap') {
-                setSwapRatio(id);
-            } else if (currentActiveMode === 'tryon') {
-                setTryOnRatio(id);
-            } else if (currentActiveMode === 'bg_change') {
-                setBgRatio(id);
-            }
-            updateNeoStartButtonText();
-            closeCustomSheet();
-        }
-
-        // Перенаправляем старые функции вызова из DOMContentLoaded на наш единый пульт управления шторкой
-        function showNativeQualityPopup() { openUniversalQualitySheet(); }
-        function showNativeRatioPopup() { openUniversalRatioSheet(); }
-        
-        function showNativeSwapQualityPopup() { openUniversalQualitySheet(); }
-        function showNativeSwapRatioPopup() { openUniversalRatioSheet(); }
-        
-        function showNativeTryOnQualityPopup() { openUniversalQualitySheet(); }
-        function showNativeTryOnRatioPopup() { openUniversalRatioSheet(); }
-        
-        function showNativeBgQualityPopup() { openUniversalQualitySheet(); }
-        function showNativeBgRatioPopup() { openUniversalRatioSheet(); }
-
-        // Функция закрытия шторки
-        function closeCustomSheet() {
-            const sheet = document.getElementById('custom_action_sheet');
-            if (sheet) sheet.classList.remove('active');
-        }
-
-
-        // ====================================================================================
-        // 8. ПЕРЕДАТЧИКИ JSON БОТУ И СИНХРОНИЗАЦИЯ С ПРЕСЕТАМИ ШАБЛОНОВ
-        // ====================================================================================
+// ====================================================================================
+// 8. ПЕРЕДАТЧИКИ JSON БОТУ И СИНХРОНИЗАЦИЯ С ПРЕСЕТАМИ ШАБЛОНОВ
+// ====================================================================================
 
 // 2. ИСПРАВЛЕННАЯ И СТАБИЛЬНАЯ ФУНКЦИЯ ФОРМИРОВАНИЯ ССЫЛКИ
-        function sendToTelegram(payload) {
-            try {
-                const botUsername = "ChatGPT_BuzVuz_bot"; // Твой точный юзернейм бота
+function sendToTelegram(payload) {
+    try {
+        const botUsername = "ChatGPT_BuzVuz_bot"; // Твой точный юзернейм бота
 
-                let mode = payload.ai_model_engine || 'pulid';
-                let quality = payload.quality || 'schnell';
-                let ratio = payload.aspect_ratio ? payload.aspect_ratio.replace(':', '-') : '1-1';
-                let faces = payload.faces_count || 1;
-                let isCustom = payload.is_custom_text_mode ? '1' : '0';
+        let mode = payload.ai_model_engine || 'pulid';
+        let quality = payload.quality || 'schnell';
+        let ratio = payload.aspect_ratio ? payload.aspect_ratio.replace(':', '-') : '1-1';
+        let faces = payload.faces_count || 1;
+        let isCustom = payload.is_custom_text_mode ? '1' : '0';
 
-                // 🔥 СЛЭШ И ЗНАК ДОЛЛАРА НА МЕСТЕ: Ссылка соберется идеально правильно!
-                let startParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}`;
-                let telegramLink = `https://t.me/${botUsername}?start=${startParam}`;
+        // 🔥 СЛЭШ И ЗНАК ДОЛЛАРА НА МЕСТЕ: Ссылка соберется идеально правильно!
+        let startParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}`;
+        let telegramLink = `https://t.me/${botUsername}?start=${startParam}`;
 
-                console.log("[WebApp Link] Перенаправление по ссылке:", telegramLink);
+        console.log("[WebApp Link] Перенаправление по ссылке:", telegramLink);
 
-                // Вызываем официальный переход Телеграма, который разблокирован на всех смартфонах
-                if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openTelegramLink === 'function') {
-                    window.Telegram.WebApp.openTelegramLink(telegramLink);
-                    window.Telegram.WebApp.close();
-                } else {
-                    // Если окружение WebApp на айфоне залагало, принудительно открываем ссылку через браузер
-                    window.location.href = telegramLink;
-                }
-
-            } catch (e) {
-                console.error("Ошибка генерации диплинка внутри sendToTelegram:", e);
-                window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
-            }
-        }
-        // Глобальная переменная для количества лиц (если еще не была объявлена выше)
-        if (typeof selectedStyleFacesCount === 'undefined') {
-            window.selectedStyleFacesCount = 1;
+        // Вызываем официальный переход Телеграма, который разблокирован на всех смартфонах
+        if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openTelegramLink === 'function') {
+            window.Telegram.WebApp.openTelegramLink(telegramLink);
+            window.Telegram.WebApp.close();
+        } else {
+            // Если окружение WebApp на айфоне залагало, принудительно открываем ссылку через браузер
+            window.location.href = telegramLink;
         }
 
-        // 1. ИСПРАВЛЕННАЯ ФУНКЦИЯ СБОРКИ И ОТПРАВКИ (START)
-        function sendPhotoTextData() { 
-            try {
-                // Определяем вкладку "Свой" (Тут логика правильная)
-                let isCustomText = (typeof currentGenerationMode !== 'undefined' && currentGenerationMode === 'custom');
+    } catch (e) {
+        console.error("Ошибка генерации диплинка внутри sendToTelegram:", e);
+        window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
+    }
+}
+// Глобальная переменная для количества лиц (если еще не была объявлена выше)
+if (typeof selectedStyleFacesCount === 'undefined') {
+    window.selectedStyleFacesCount = 1;
+}
 
-                // 🔥 ИСПРАВЛЕНО: Просто берем чистое значение модели, которое записал наш тумблер ('banana' или 'pulid')
-                let currentModel = (typeof selectedAiModelEngine !== 'undefined') ? selectedAiModelEngine : 'banana';
+// 1. ИСПРАВЛЕННАЯ ФУНКЦИЯ СБОРКИ И ОТПРАВКИ (START)
+function sendPhotoTextData() { 
+    try {
+        // Определяем вкладку "Свой" (Тут логика правильная)
+        let isCustomText = (typeof currentGenerationMode !== 'undefined' && currentGenerationMode === 'custom');
 
-                // Определяем количество лиц
-                let facesCountToSend = isCustomText ? 1 : (window.selectedStyleFacesCount || 1);
+        // 🔥 ИСПРАВЛЕНО: Просто берем чистое значение модели, которое записал наш тумблер ('banana' или 'pulid')
+        let currentModel = (typeof selectedAiModelEngine !== 'undefined') ? selectedAiModelEngine : 'banana';
 
-                // Безопасно считываем пропорции и качество кадра
-                let ratio = (typeof selectedTextRatio !== 'undefined') ? selectedTextRatio : '9:16';
-                let quality = (typeof selectedTextQuality !== 'undefined') ? selectedTextQuality : 'schnell';
+        // Определяем количество лиц
+        let facesCountToSend = isCustomText ? 1 : (window.selectedStyleFacesCount || 1);
 
-                console.log("[WebApp] Сборка пакета. Модель:", currentModel, "Кастом:", isCustomText, "Лиц:", facesCountToSend);
+        // Безопасно считываем пропорции и качество кадра
+        let ratio = (typeof selectedTextRatio !== 'undefined') ? selectedTextRatio : '9:16';
+        let quality = (typeof selectedTextQuality !== 'undefined') ? selectedTextQuality : 'schnell';
 
-                // Передаем управление в функцию генерации ссылки
-                sendToTelegram({ 
-                    mode_trigger: 'text_image', 
-                    aspect_ratio: ratio, 
-                    quality: quality,
-                    ai_model_engine: currentModel,         
-                    is_custom_text_mode: isCustomText,     
-                    faces_count: facesCountToSend          
-                }); 
+        console.log("[WebApp] Сборка пакета. Модель:", currentModel, "Кастом:", isCustomText, "Лиц:", facesCountToSend);
 
-            } catch (err) {
-                console.error("Критический сбой внутри функции sendPhotoTextData:", err);
-                // Жесткая страховка: если что-то сломалось, открываем бота BuzVuz в Telegram
-                window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
-            }
-        }  
+        // Передаем управление в функцию генерации ссылки
+        sendToTelegram({ 
+            mode_trigger: 'text_image', 
+            aspect_ratio: ratio, 
+            quality: quality,
+            ai_model_engine: currentModel,         
+            is_custom_text_mode: isCustomText,     
+            faces_count: facesCountToSend          
+        }); 
+
+    } catch (err) {
+        console.error("Критический сбой внутри функции sendPhotoTextData:", err);
+        // Жесткая страховка: если что-то сломалось, открываем бота BuzVuz в Telegram
+        window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
+    }
+}  
               
-        function sendCustomFaceSwapData() { 
-            sendToTelegram({ 
-                mode_trigger: 'face_swap', 
-                is_custom_template: true, 
-                aspect_ratio: selectedSwapRatio, 
-                quality: selectedSwapQuality 
-            }); 
-        }
-        // 3. ФУНКЦИЯ СБОРА И ОТПРАВКИ ДАННЫХ ДЛЯ ПРИМЕРКИ
-        function sendTryOnData() { 
-            sendToTelegram({ 
-                mode_trigger: 'tryon', 
-                sub_mode: currentTryOnMode, // 🔥 ОБЯЗАТЕЛЬНО ДОБАВИЛИ: отправит 'face_swap_mode' или 'clothes_swap_mode'
-                aspect_ratio: selectedTryOnRatio, 
-                quality: selectedTryOnQuality 
-            }); 
-        }
-        
-        function sendBgChangeData() { 
-            sendToTelegram({ 
-                mode_trigger: 'bg_change',  
-                quality: selectedBgQuality 
-            }); 
-        }
+// 1. ФУНКЦИЯ ОТПРАВКИ ДАННЫХ ДЛЯ FACE SWAP
+function sendCustomFaceSwapData() { 
+    // Безопасно считываем пропорции и качество кадра с подстраховкой
+    let ratio = (typeof selectedSwapRatio !== 'undefined') ? selectedSwapRatio : '9:16';
+    let quality = (typeof selectedSwapQuality !== 'undefined') ? selectedSwapQuality : 'schnell';
 
-        // Переключатель классов активного качества (Quality UI)
-        // Оставлена пустой для обратной совместимости, чтобы старые вызовы не ломали логику
-        function clearAndSetActiveQuality(prefix, quality) { return; }
+    sendToTelegram({ 
+        mode_trigger: 'face_swap', 
+        is_custom_template: true, 
+        aspect_ratio: ratio, 
+        quality: quality 
+    }); 
+}
 
-        function setTextQuality(quality) { selectedTextQuality = quality; }
-        function setSwapQuality(quality) { selectedSwapQuality = quality; }
-        function setTryOnQuality(quality) { selectedTryOnQuality = quality; }
-        function setBgQuality(quality) { selectedBgQuality = quality; }
+// 2. ФУНКЦИЯ СБОРА И ОТПРАВКИ ДАННЫХ ДЛЯ ПРИМЕРКИ
+function sendTryOnData() { 
+    let ratio = (typeof selectedTryOnRatio !== 'undefined') ? selectedTryOnRatio : '9:16';
+    let quality = (typeof selectedTryOnQuality !== 'undefined') ? selectedTryOnQuality : 'schnell';
+    let tryonMode = (typeof currentTryOnMode !== 'undefined') ? currentTryOnMode : 'clothes_swap_mode';
 
-        function setQuality(quality) {
-            if (currentActiveMode === 'text_image') setTextQuality(quality);
-            if (currentActiveMode === 'face_swap') setSwapQuality(quality);
-            if (currentActiveMode === 'tryon') setTryOnQuality(quality);
-            if (currentActiveMode === 'bg_change') setBgQuality(quality);
-        }
+    sendToTelegram({ 
+        mode_trigger: 'tryon', 
+        sub_mode: tryonMode, // 🔥 Отправит 'face_swap_mode' или 'clothes_swap_mode'
+        aspect_ratio: ratio, 
+        quality: quality 
+    }); 
+}
 
-        // Переключатель классов активного формата кадра (Ratio UI)
-        // Оставлена пустой для обратной совместимости, чтобы старые вызовы не ломали логику
-        function clearAndSetActiveRatio(prefix, ratio) { return; }
+// 3. ФУНКЦИЯ СБОРА И ОТПРАВКИ ДАННЫХ ДЛЯ СМЕНЫ ФОНА
+function sendBgChangeData() { 
+    let quality = (typeof selectedBgQuality !== 'undefined') ? selectedBgQuality : 'schnell';
 
-        // Функции принудительной синхронизации формата (Ratio) для каждого экрана фото-студии
-        // ИСПРАВЛЕНО: Полностью убраны все иконки и смайлики, выводятся только чистые цифры!
-        function setSwapRatio(ratio) { 
-            selectedSwapRatio = ratio; 
-            const el = document.getElementById('btn_swap_ratio');
-            if (el) el.innerHTML = ratio;
-        }
-        // функция примерки
-        function setTryOnRatio(ratio) { 
-            selectedTryOnRatio = ratio; 
-            const el1 = document.getElementById('btn_tryon_ratio_face');
-            const el2 = document.getElementById('btn_tryon_ratio');
-            if (el1) el1.innerHTML = ratio;
-            if (el2) el2.innerHTML = ratio;
-        }
+    sendToTelegram({ 
+        mode_trigger: 'bg_change',  
+        quality: quality 
+    }); 
+}
 
-        
-        function setTextRatio(ratio) { 
-            selectedTextRatio = ratio; 
-            const el = document.getElementById('btn_text_ratio');
-            if (el) el.innerHTML = ratio;
-        }
-        
-        function setBgRatio(ratio) { 
-            selectedBgRatio = ratio; 
-            const el = document.getElementById('btn_bg_ratio');
-            if (el) el.innerHTML = ratio;
-        }
+// ====================================================================================
+// Функция Клика по готовому пресету на экране Face Swap (ОСТАВЛЯЕМ В HTML)
+// ====================================================================================
+function selectReadyTemplate(templateId, forcedRatio) {
+    if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light');
 
+    // Если у готового шаблона зашит свой формат (например, 3:4), принудительно обновляем текст на капсуле
+    if (forcedRatio) {
+        if (typeof selectedSwapRatio !== 'undefined') selectedSwapRatio = forcedRatio;
+        const el = document.getElementById('btn_swap_ratio');
+        if (el) el.innerHTML = forcedRatio;
+    }
+    
+    // Безопасно считываем текущие настройки с подстраховкой
+    let ratio = (typeof selectedSwapRatio !== 'undefined') ? selectedSwapRatio : '9:16';
+    let quality = (typeof selectedSwapQuality !== 'undefined') ? selectedSwapQuality : 'schnell';
+    
+    sendToTelegram({
+        mode_trigger: 'face_swap',
+        is_custom_template: false,
+        template_id: templateId, 
+        aspect_ratio: ratio, 
+        quality: quality
+    });
+}
 
-        // Клик по готовому пресету на экране Face Swap
-        function selectReadyTemplate(templateId, forcedRatio) {
-            // Если у готового шаблона зашит свой формат (например, 3:4), принудительно обновляем текст на капсуле
-            if (forcedRatio) {
-                setSwapRatio(forcedRatio);
-            }
-            
-            sendToTelegram({
-                mode_trigger: 'face_swap',
-                is_custom_template: false,
-                template_id: templateId, 
-                aspect_ratio: selectedSwapRatio, 
-                quality: selectedSwapQuality
-            });
-        }
 // ====================================================================================
 // Автоматический виброотклик для всего интерфейса (ВКЛЮЧАЯ ПУНКТЫ ВНУТРИ ШТОРКИ)
 // ====================================================================================
@@ -1189,10 +1059,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
 // ====================================================================================
 //  ФУНКЦИЯ переключения всех моих ШТМЭЛЬ
 // ====================================================================================
-
 function navigateToScreen(fileName) {
     if (window.Telegram?.WebApp?.HapticFeedback) {
         Telegram.WebApp.HapticFeedback.impactOccurred('medium');

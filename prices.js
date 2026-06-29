@@ -428,16 +428,24 @@ function updateMotionSubmitButton() {
 
     // 3. Железная защита от ошибок "not defined" на разных вкладках сайта!
     const klingSeconds = (typeof currentKlingDuration !== 'undefined') ? currentKlingDuration : ((typeof window.currentKlingDuration !== 'undefined') ? window.currentKlingDuration : 5);
-    const soraSeconds = (typeof currentSoraDuration !== 'undefined') ? currentSoraDuration : ((typeof window.currentSoraDuration !== 'undefined') ? window.currentSoraDuration : 4);
+    
+    // 🔥 НАДЕЖНЫЙ ВАРИАНТ ДЛЯ SORA: Читаем секунды прямо из текста кнопки на экране!
+    let soraSeconds = 4; // по умолчанию 4
+    const soraBtnEl = document.getElementById('btn_sora_duration');
+    if (soraBtnEl) {
+        // Берем текст кнопки (например, "⏱️ 8 сек"), вытаскиваем оттуда цифру и превращаем в число 8
+        const match = soraBtnEl.innerText.match(/\d+/);
+        if (match) soraSeconds = parseInt(match, 10);
+    }
 
     // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ РЕЖИМА 1: «Оживление фото» (Kling)
     if (startBtn1) {
         startBtn1.innerHTML = `Start ${klingSeconds === 10 ? price10s : price5s} 🪙`;
     }
     
-    // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ РЕЖИМА 2: «Оживление со звуком» (Sora) -> ТЕПЕРЬ СЧИТАЕТ ВСЕ 5 ВАРНАНТОВ СЕКУНД!
+    // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ РЕЖИМА 2: «Оживление со звуком» (Sora)
     if (startBtn2) {
-        let currentSoraPrice = sora4; // по дефолту за 4 секунды
+        let currentSoraPrice = sora4; // по дефолту за 4 секунды (3 коина)
         if (soraSeconds === 8) currentSoraPrice = sora8;
         if (soraSeconds === 12) currentSoraPrice = sora12;
         if (soraSeconds === 16) currentSoraPrice = sora16;

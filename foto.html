@@ -127,37 +127,38 @@
         <div class="isolated-photo-text-grid" id="text_image_gallery">
             
             <!-- Карточка 1 -->
-            <div class="phone-template-card" data-category="women" onclick="selectTextImageStyle('Outside the cityе', 'https://i.postimg.cc/cHRZDY1c/sai-t.jpg'); Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo('https://i.postimg.cc/cHRZDY1c/sai-t.jpg')">
+            <!-- 🔥 ИСПРАВЛЕНО: Полностью удалили вызов несуществующей функции openPreviewVideo -->
+            <div class="phone-template-card" data-category="women" onclick="selectTextImageStyle('Outside the cityе', 'https://i.postimg.cc/cHRZDY1c/sai-t.jpg'); Telegram.WebApp.HapticFeedback.impactOccurred('medium');">
                 <img src="https://i.postimg.cc/cHRZDY1c/sai-t.jpg" alt="Outside the cityе">
                 <div class="card-overlay" style="pointer-events: none;">Outside the cityе</div>
             </div>
 
             <!-- Карточка 2 -->
-            <div class="phone-template-card" data-category="men" onclick="selectTextImageStyle('The Dark Soul', 'https://i.postimg.cc/W4DLvXqk/02.png'); Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo('https://i.postimg.cc/W4DLvXqk/02.png')">
+            <div class="phone-template-card" data-category="men" onclick="selectTextImageStyle('The Dark Soul', 'https://i.postimg.cc/W4DLvXqk/02.png'); Telegram.WebApp.HapticFeedback.impactOccurred('medium');">
                 <img src="https://i.postimg.cc/W4DLvXqk/02.png" alt="The Dark Soul">
                 <div class="card-overlay" style="pointer-events: none;">The Dark Soul</div>
             </div>
 
             <!-- Карточка 3 -->
-            <div class="phone-template-card" data-category="men" onclick="selectTextImageStyle('On sports', 'https://i.postimg.cc/W4DLvXqk/02.png'); Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo('https://i.postimg.cc/W4DLvXqk/02.png')">
+            <div class="phone-template-card" data-category="men" onclick="selectTextImageStyle('On sports', 'https://i.postimg.cc/W4DLvXqk/02.png'); Telegram.WebApp.HapticFeedback.impactOccurred('medium');">
                 <img src="https://i.postimg.cc/W4DLvXqk/02.png" alt="On sports">
                 <div class="card-overlay" style="pointer-events: none;">On sports</div>
             </div>
 
             <!-- Карточка 4 -->
-            <div class="phone-template-card" data-category="women" onclick="selectTextImageStyle('In the centre', 'https://i.postimg.cc/cHRZDY1c/sai-t.jpg'); Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo('https://i.postimg.cc/cHRZDY1c/sai-t.jpg')">
+            <div class="phone-template-card" data-category="women" onclick="selectTextImageStyle('In the centre', 'https://i.postimg.cc/cHRZDY1c/sai-t.jpg'); Telegram.WebApp.HapticFeedback.impactOccurred('medium');">
                 <img src="https://i.postimg.cc/cHRZDY1c/sai-t.jpg" alt="In the centre">
                 <div class="card-overlay" style="pointer-events: none;">In the centre</div>
             </div>
 
             <!-- Карточка 5 -->
-            <div class="phone-template-card" data-category="common" onclick="selectTextImageStyle('Group Style', 'https://i.postimg.cc/FH5y1J8S/5844728862795828808.jpg', 2); Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo('https://i.postimg.cc/FH5y1J8S/5844728862795828808.jpg')">
+            <div class="phone-template-card" data-category="common" onclick="selectTextImageStyle('Group Style', 'https://i.postimg.cc/FH5y1J8S/5844728862795828808.jpg', 2); Telegram.WebApp.HapticFeedback.impactOccurred('medium');">
                 <img src="https://i.postimg.cc/FH5y1J8S/5844728862795828808.jpg" alt="Group Style">
                 <div class="card-overlay" style="pointer-events: none;">Family Vibe (2 чел.)</div>
             </div>
 
             <!-- Карточка 6 -->
-            <div class="phone-template-card" data-category="kids" onclick="selectTextImageStyle('Evening vibe', 'https://i.postimg.cc/L8D378Qf/GEM3Nqu-I43e3gq-Wz5j-Ol-E-L2YT0AJ8.png'); Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo('https://i.postimg.cc/L8D378Qf/GEM3Nqu-I43e3gq-Wz5j-Ol-E-L2YT0AJ8.png')">
+            <div class="phone-template-card" data-category="kids" onclick="selectTextImageStyle('Evening vibe', 'https://i.postimg.cc/L8D378Qf/GEM3Nqu-I43e3gq-Wz5j-Ol-E-L2YT0AJ8.png'); Telegram.WebApp.HapticFeedback.impactOccurred('medium');">
                 <img src="https://i.postimg.cc/L8D378Qf/GEM3Nqu-I43e3gq-Wz5j-Ol-E-L2YT0AJ8.png" alt="Evening vibe">
                 <div class="card-overlay" style="pointer-events: none;">Evening vibe</div>
             </div>
@@ -747,14 +748,14 @@ window.addEventListener('DOMContentLoaded', () => {
     
     if (qualityBtn) {
         qualityBtn.addEventListener('click', () => {
-            tg.HapticFeedback.impactOccurred('light');
+            tg.HapticFeedback.impactOccurred('medium');
             // 🔥 ИСПРАВЛЕНО: Теперь передаем 'flux_pulid' вместо 'flux_dev', чтобы шторка показывала правильные цены!
             openUniversalQualitySheet('flux_pulid'); 
         });
     }
     if (ratioBtn) {
         ratioBtn.addEventListener('click', () => {
-            tg.HapticFeedback.impactOccurred('light');
+            tg.HapticFeedback.impactOccurred('medium');
             openUniversalRatioSheet();
         });
     }
@@ -765,13 +766,13 @@ window.addEventListener('DOMContentLoaded', () => {
     
     if (swapQualityBtn) {
         swapQualityBtn.addEventListener('click', () => {
-            tg.HapticFeedback.impactOccurred('light');
+            tg.HapticFeedback.impactOccurred('medium');
             openUniversalQualitySheet('hy_wu_faceswap'); 
         });
     }
     if (swapRatioBtn) {
         swapRatioBtn.addEventListener('click', () => {
-            tg.HapticFeedback.impactOccurred('light');
+            tg.HapticFeedback.impactOccurred('medium');
             openUniversalRatioSheet();
         });
     }
@@ -782,13 +783,13 @@ window.addEventListener('DOMContentLoaded', () => {
     
     if (tryonQualityBtn) {
         tryonQualityBtn.addEventListener('click', () => {
-            tg.HapticFeedback.impactOccurred('light');
+            tg.HapticFeedback.impactOccurred('medium');
             openUniversalQualitySheet('hy_wu_clothing'); 
         });
     }
     if (tryonRatioBtn) {
         tryonRatioBtn.addEventListener('click', () => {
-            tg.HapticFeedback.impactOccurred('light');
+            tg.HapticFeedback.impactOccurred('medium');
             openUniversalRatioSheet();
         });
     }
@@ -799,13 +800,13 @@ window.addEventListener('DOMContentLoaded', () => {
     
     if (bgQualityBtn) {
         bgQualityBtn.addEventListener('click', () => {
-            tg.HapticFeedback.impactOccurred('light');
+            tg.HapticFeedback.impactOccurred('medium');
             openUniversalQualitySheet('bria_background'); 
         });
     }
     if (bgRatioBtn) {
         bgRatioBtn.addEventListener('click', () => {
-            tg.HapticFeedback.impactOccurred('light');
+            tg.HapticFeedback.impactOccurred('medium');
             openUniversalRatioSheet();
         });
     }
@@ -1014,7 +1015,7 @@ function sendBgChangeData() {
 // Функция Клика по готовому пресету на экране Face Swap (ОСТАВЛЯЕМ В HTML)
 // ====================================================================================
 function selectReadyTemplate(templateId, forcedRatio) {
-    if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light');
+    if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('medium');
 
     // Если у готового шаблона зашит свой формат (например, 3:4), принудительно обновляем текст на капсуле
     if (forcedRatio) {

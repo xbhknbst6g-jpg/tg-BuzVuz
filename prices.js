@@ -291,9 +291,6 @@ function closeCustomSheet() {
 /////////// БЛОК ВИДИО ///////////
 
 
-// ====================================================================================
-// 9. УПРАВЛЕНИЕ ШТОРКОЙ ДЛИТЕЛЬНОСТИ ВИДЕО (ИНТЕГРИРОВАНО С ПЕРЕМЕННЫМИ РЕЖИМОВ!)
-// ====================================================================================
 
 // ====================================================================================
 // 9. ПОЛНОЕ УПРАВЛЕНИЕ ВСЕМИ ШТОРКАМИ ВИДЕОСТУДИИ (ТЕПЕРЬ 100% ДИНАМИКА ИЗ MONGO!)
@@ -308,29 +305,20 @@ function openUniversalDurationSheet() {
     titleEl.innerText = "ДЛИТЕЛЬНОСТЬ ВИДЕО";
     listEl.innerHTML = ''; // Очищаем список старых кнопок
 
-    // 🍏 Берём цены из наших новых застрахованных объектов (там всегда либо база, либо дефолты)
-    const price5s = window.dbKling5s.coins;   
-    const price10s = window.dbKling10s.coins; 
-    const sora4 = window.dbSora4s.coins;
-    const sora8 = window.dbSora8s.coins;
-    const sora12 = window.dbSora12s.coins;
-    const sora16 = window.dbSora16s.coins;
-    const sora20 = window.dbSora20s.coins;
+    // 🍏 БЕЗОПАСНО: Берём цены из наших застрахованных объектов (там всегда либо база, либо дефолты)
+    let price5s = window.dbKling5s.coins;   
+    let price10s = window.dbKling10s.coins; 
+    let sora4 = window.dbSora4s.coins;
+    let sora8 = window.dbSora8s.coins;
+    let sora12 = window.dbSora12s.coins;
+    let sora16 = window.dbSora16s.coins;
+    let sora20 = window.dbSora20s.coins;
 
-    // 🍏 1. Цены-заглушки для режима БЕЗ звука (Kling)
-    let price5s = 7;   
-    let price10s = 14; 
-
-    // 🍏 2. Цены-заглушки для режима СО звуком (Sora)
-    let sora4 = 3, sora8 = 6, sora12 = 9, sora16 = 12, sora20 = 15;
-
-    // 🔥 3. Подтягиваем ВСЕ живые цены из MongoDB, если база ответила
+    // 🔥 ПОДТЯГИВАЕМ СВЕЖИЙ JSON, ЕСЛИ ОН УЖЕ ДОЛЕТЕЛ ИЗ БАЗЫ
     if (window.allPrices && window.allPrices.services) {
-        // Загружаем цены Kling
         if (window.allPrices.services.kling_video_5s) price5s = window.allPrices.services.kling_video_5s.coins;
         if (window.allPrices.services.kling_video_10s) price10s = window.allPrices.services.kling_video_10s.coins;
         
-        // Загружаем новые цены Sora
         if (window.allPrices.services.sora_4s) sora4 = window.allPrices.services.sora_4s.coins;
         if (window.allPrices.services.sora_8s) sora8 = window.allPrices.services.sora_8s.coins;
         if (window.allPrices.services.sora_12s) sora12 = window.allPrices.services.sora_12s.coins;
@@ -348,7 +336,7 @@ function openUniversalDurationSheet() {
             { sec: 10, text: '⏱️ 10 сек', label: '10 секунд', price: `${price10s} 🪙` }
         ];
     } else if (activeMode === 'animate_sound') {
-        // Режим 2: Оживление со звуком (Sora) -> ТЕПЕРЬ ТОЖЕ ИЗ БАЗЫ!
+        // Режим 2: Оживление со звуком (Sora)
         options = [
             { sec: 4, text: '⏱️ 4 сек', label: '4 секунды', price: `${sora4} 🪙` },
             { sec: 8, text: '⏱️ 8 сек', label: '8 секунд', price: `${sora8} 🪙` },

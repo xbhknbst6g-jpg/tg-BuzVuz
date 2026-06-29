@@ -366,36 +366,39 @@ function openUniversalDurationSheet() {
 
 // 2. УМНЫЙ ОБРАБОТЧИК КЛИКА ПО СЕКУНДАМ
 function selectDurationFromSheet(seconds, text) {
-    const activeMode = window.currentActiveMode || currentActiveMode;
+    // Получаем текущие кнопки, чтобы точно знать, какой экран открыт
+    const btnKling = document.getElementById('btn_video_duration');
+    const btnSora = document.getElementById('btn_sora_duration');
+    
+    // Определяем режим: смотрим на переменную или на видимость кнопки Sora
+    let activeMode = window.currentActiveMode || currentActiveMode || 'animate_nosound';
+    if (btnSora && btnSora.offsetParent !== null) {
+        activeMode = 'animate_sound';
+    }
 
     if (activeMode === 'animate_nosound') {
         // Мягко меняем переменную 1-го режима (в HTML или window)
         if (typeof currentKlingDuration !== 'undefined') currentKlingDuration = seconds;
         if (typeof window.currentKlingDuration !== 'undefined') window.currentKlingDuration = seconds;
-        
-        const btn1 = document.getElementById('btn_video_duration');
-        if (btn1) btn1.innerHTML = text; 
+        if (btnKling) btnKling.innerHTML = text; 
     } else if (activeMode === 'animate_sound') {
-        // Мягко меняем переменную 2-го режима (в HTML или window)
+        // 🔥 ЖЕЛЕЗОБЕТОННО: Меняем переменную 2-го режима (Sora)
         if (typeof currentSoraDuration !== 'undefined') currentSoraDuration = seconds;
         if (typeof window.currentSoraDuration !== 'undefined') window.currentSoraDuration = seconds;
-        
-        const btn2 = document.getElementById('btn_sora_duration');
-        if (btn2) btn2.innerHTML = text; 
+        if (btnSora) btnSora.innerHTML = text; 
     }
     
-       // 1. Пересчет для кнопок рисования (если мы на той вкладке)
+    // 1. Пересчет для кнопок рисования (если мы на той вкладке)
     if (typeof updateNeoStartButtonText === 'function') {
         updateNeoStartButtonText();
     }
     
-    // 2. 🔥 ДОБАВЬ СЮДА: Пересчет для главной кнопки видео из MongoDB
+    // 2. Пересчет для главной кнопки видео из MongoDB
     if (typeof updateMotionSubmitButton === 'function') {
         updateMotionSubmitButton();
     }
     
     closeCustomSheet();
-
 }
 
 // 3. ПЕРЕНАПРАВЛЕНИЕ СТАРЫХ ВЫЗОВОВ ПОПАПОВ (чтобы кнопки в HTML продолжали работать)

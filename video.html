@@ -1094,10 +1094,13 @@ function toggleMotionVideo() {
     }
 }
 
-// Возвращаем видимость кнопки при тапе или наведении
-document.getElementById('video_motion_play_overlay').addEventListener('mouseenter', () => {
-    document.getElementById('video_motion_play_overlay').style.opacity = "1";
-});
+// 🔥 ИСПРАВЛЕНО: Добавили защитную проверку элемента, чтобы сайт не падал!
+const motionPlayOverlay = document.getElementById('video_motion_play_overlay');
+if (motionPlayOverlay) {
+    motionPlayOverlay.addEventListener('mouseenter', () => {
+        motionPlayOverlay.style.opacity = "1";
+    });
+}
 // 🔥 ДОБАВЛЯЕМ СЮДА: Автоматически вешаем открытие шторки на кнопки времени
 if (document.getElementById('btn_video_duration')) {
     document.getElementById('btn_video_duration').addEventListener('click', openUniversalDurationSheet);

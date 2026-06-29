@@ -220,7 +220,18 @@ function openUniversalQualitySheet(serviceName) {
     titleEl.innerText = "КАЧЕСТВО ГЕНЕРАЦИИ";
     
     let min = 1, mid = 2, max = 3;
-    const targetService = serviceName || 'flux_dev';
+    let targetService = serviceName || 'flux_dev';
+
+    // 🔥 УМНЫЙ ПЕРЕХВАТ ДЛЯ ПЕРВОГО ЭКРАНА (ФОТО + ТЕКСТ):
+    // Если вызвали шторку для первого экрана, проверяем положение верхнего тумблера!
+    if (targetService === 'flux_pulid' || targetService === 'flux_dev') {
+        const currentEngine = typeof selectedAiModelEngine !== 'undefined' ? selectedAiModelEngine : 'banana';
+        
+        // Если тумблер стоит на "Умном фокусе", принудительно меняем сервис на Банану Редактирования!
+        if (currentEngine === 'banana') {
+            targetService = 'nano_banana_edit';
+        }
+    }
 
     // 🔥 УНИВЕРСАЛЬНЫЙ КОД С ЗАЩИТОЙ ОТ СБОЕВ БАЗЫ
     if (window.allPrices && window.allPrices.services && window.allPrices.services[targetService]) {
@@ -228,23 +239,30 @@ function openUniversalQualitySheet(serviceName) {
         mid = window.allPrices.services[targetService].coins_mid;
         max = window.allPrices.services[targetService].coins_max;
     } else {
-        // Если база недоступна или грузится, берем дефолты из нашего нового безопасного объекта
-        const backup = targetService === 'nano_banana_paint' ? window.dbBananaPaintPrices : window.dbFluxDevPrices;
+        // Если база недоступна или грузится, берем дефолты из наших застрахованных объектов window.db...
+        let backup = window.dbFluxDevPrices;
+        if (targetService === 'nano_banana_paint') backup = window.dbBananaPaintPrices;
+        if (targetService === 'flux_pulid') backup = window.dbFluxPulidPrices;
+        if (targetService === 'nano_banana_edit') backup = window.dbBananaEditPrices; // Наша новая заглушка для фото-бананы
+        if (targetService === 'hy_wu_faceswap') backup = window.dbFaceSwapPrices;
+        if (targetService === 'hy_wu_clothing') backup = window.dbClothingPrices;
+        if (targetService === 'bria_background') backup = window.dbBackgroundPrices;
+
         min = backup.coins_min;
         mid = backup.coins_mid;
         max = backup.coins_max;
     }
 
     listEl.innerHTML = `
-        <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('schnell', '⚡ Standard')"><span>Standard</span><span class="coin-price">${min} 🪙</span></button></li>
-        <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('dev', '💎 Pro')"><span>Pro</span><span class="coin-price">${mid} 🪙</span></button></li>
-        <li><button class="custom-sheet-item" onclick="selectQualityFromSheet('ultra_4k', '🔥 Ultra')"><span>Ultra</span><span class="coin-price">${max} 🪙</span></button></li>
+        <li><button class="custom-sheet-item" onclick="if(window.Telegram?.WebApp?.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectQualityFromSheet('schnell', '⚡ Standard')"><span>Standard</span><span class="coin-price">${min} 🪙</span></button></li>
+        <li><button class="custom-sheet-item" onclick="if(window.Telegram?.WebApp?.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectQualityFromSheet('dev', '💎 Pro')"><span>Pro</span><span class="coin-price">${mid} 🪙</span></button></li>
+        <li><button class="custom-sheet-item" onclick="if(window.Telegram?.WebApp?.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectQualityFromSheet('ultra_4k', '🔥 Ultra')"><span>Ultra</span><span class="coin-price">${max} 🪙</span></button></li>
     `;
 
     document.getElementById('custom_action_sheet').classList.add('active');
 }
 
-// 2. ОТКРЫТИЕ ШТОРКИ ФОРМАТА (ПЕРЕНЕСЕНА СЮДА!)
+// 2. ОТКРЫТИЕ ШТОРКИ ФОРМАТА (ОСТАВЛЯЕМ БЕЗ ИЗМЕНЕНИЙ)
 function openUniversalRatioSheet() {
     const titleEl = document.getElementById('custom_sheet_title');
     const listEl = document.getElementById('custom_sheet_list');
@@ -256,7 +274,7 @@ function openUniversalRatioSheet() {
         <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('9:16')"><span style="width: 100%; text-align: center;">9:16</span></button></li>
         <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('3:4')"><span style="width: 100%; text-align: center;">3:4</span></button></li>
         <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('1:1')"><span style="width: 100%; text-align: center;">1:1</span></button></li>
-        <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('4:3')"><span style="width: 100%; text-align: center;">4:3</span></button></li>
+        <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('4:3')"><span style="width: 400%; text-align: center;">4:3</span></button></li>
         <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('16:9')"><span style="width: 100%; text-align: center;">16:9</span></button></li>
     `;
 

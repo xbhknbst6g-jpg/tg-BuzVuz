@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>AI Фотостудия</title>
-    
     <!-- Официальный скрипт Telegram Web App -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="styles.css">
@@ -510,87 +509,6 @@ function closePreviewVideo() {
             // Обновляем текст стоимости монет на встроенных неоновых кнопках при смене экрана
             if (typeof updateNeoStartButtonText === 'function') updateNeoStartButtonText();
         }
-
-
-// ====================================================================================
-// 6. КРАТКИЙ И ЛАКОНИЧНЫЙ ОБНОВЛЯТОР ТЕКСТА ГЛАВНОЙ КНОПКИ ТЕЛЕГРАМ
-// ====================================================================================
-        function updateNeoStartButtonText() {
-            const btnText = document.getElementById('btn-start-flux-dev');     // Кнопка Цифровой Оптики
-            const btnDirect = document.getElementById('btn-start-banana-paint'); // Кнопка Умного Фокуса
-            
-            // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ ЦИФРОВОЙ ОПТИКИ (Класс text_image на Flux)
-            if (btnText) {
-                if (selectedAiModelEngine === 'custom') {
-                    // Если включен "custom" (премиум), берем базовую цену Flux PuLID из базы
-                    btnText.innerHTML = `Start ${fluxPulidPrices.coins_min} 🪙`; 
-                } else {
-                    // Иначе берем базовую цену Flux Dev из базы
-                    btnText.innerHTML = `Start ${fluxDevPrices.coins_min} 🪙`; 
-                }
-            }
-            
-            // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ УМНОГО ФОКУСА (Класс image_generation_direct на Nano Banana)
-            if (btnDirect) {
-                if (directGenQuality === 'ultra_4k') {
-                    // Если выберут Ultra качество, подставляем МАКСИМАЛЬНУЮ цену бананы-красок из базы
-                    btnDirect.innerHTML = `Start ${bananaPaintPrices.coins_max} 🪙`; 
-                } else {
-                    // Стандартная МИНИМАЛЬНАЯ цена за быстрое качество из базы
-                    btnDirect.innerHTML = `Start ${bananaPaintPrices.coins_min} 🪙`; 
-                }
-            }
-        }
-
-// Перенаправляем функции вызова на наш единый пульт управления шторкой из prices.js
-function showNativeQualityPopup() { 
-    openUniversalQualitySheet('flux_dev'); // 🔥 Передает имя Оптики
-}
-function showNativeRatioPopup() { 
-    openUniversalRatioSheet(); 
-}
-
-function showNativeDirectQualityPopup() { 
-    openUniversalQualitySheet('nano_banana_paint'); // 🔥 Передает имя Рисования
-}
-function showNativeDirectRatioPopup() { 
-    openUniversalRatioSheet(); 
-}
-
-// УМНЫЙ ОБНОВЛЯТОР СТОИМОСТИ НА ВСТРОЕННЫХ КНОПКАХ (ТЕПЕРЬ СИНХРОНИЗИРОВАНО С БАЗОЙ MONGODB!)
-function updateNeoStartButtonText() {
-    const btnText = document.getElementById('btn-start-flux-dev');
-    // Поддерживаем оба возможных ID для кнопки бананы-красок
-    const btnDirect = document.getElementById('btn-start-banana-paint_2') || document.getElementById('btn-start-banana-paint');
-    
-    // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ ЦИФРОВОЙ ОПТИКИ (Класс text_image на Flux)
-    if (btnText) {
-        if (selectedAiModelEngine === 'custom') {
-            // Если включен "custom", берем базовую цену Flux PuLID из базы
-            btnText.innerHTML = `Start ${fluxPulidPrices.coins_min} 🪙`; 
-        } else {
-            // Смотрим, какое качество выбрано в шторке текста (selectedTextQuality):
-            if (selectedTextQuality === 'dev') {
-                btnText.innerHTML = `Start ${fluxDevPrices.coins_mid} 🪙`; // Цена Pro из базы (2 коина)
-            } else if (selectedTextQuality === 'ultra_4k') {
-                btnText.innerHTML = `Start ${fluxDevPrices.coins_max} 🪙`; // Цена Ultra из базы (3 коина)
-            } else {
-                btnText.innerHTML = `Start ${fluxDevPrices.coins_min} 🪙`; // Стандартная цена (1 коин)
-            }
-        }
-    }
-    
-    // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ УМНОГО ФОКУСА (Класс image_generation_direct на Nano Banana)
-    if (btnDirect) {
-        if (directGenQuality === 'dev') {
-            btnDirect.innerHTML = `Start ${bananaPaintPrices.coins_mid} 🪙`; // Средняя цена бананы из базы
-        } else if (directGenQuality === 'ultra_4k') {
-            btnDirect.innerHTML = `Start ${bananaPaintPrices.coins_max} 🪙`; // Максимальная цена бананы из базы
-        } else {
-            btnDirect.innerHTML = `Start ${bananaPaintPrices.coins_min} 🪙`; // Минимальная цена бананы из базы
-        }
-    }
-}
 
 // ====================================================================================
 // 8. СБОРКА И ОТПРАВКА ДИПЛИНКА В БОТА (ОБЪЕДИНЕННЫЙ)

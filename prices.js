@@ -1,9 +1,11 @@
 // URL-адрес вашего сервера, где запущен бот и API
 const API_URL = "https://thyself-lavish-underhand.ngrok-free.dev/api/v1/tariffs";
 
+// 🟢 1. ДЕФОЛТНЫЕ ЗАГЛУШКИ ДЛЯ КАРТИНОК (РИСОВАНИЯ)
 window.dbFluxDevPrices = { coins_min: 1, coins_mid: 2, coins_max: 3 };
 window.dbBananaPaintPrices = { coins_min: 2, coins_mid: 3, coins_max: 4 };
-window.dbFluxPulidPrices = { coins_min: 1, coins_mid: 2, coins_max: 3 };
+window.dbFluxPulidPrices = { coins_min: 1, coins_mid: 2, coins_max: 3 }; // 🍏 ТУТ лежат цены для Оптики (Flux PuLID)!
+
 // 🔵 2. ДЕФОЛТНЫЕ ЗАГЛУШКИ ДЛЯ ВИДЕОСТУДИИ
 window.dbKling5s = { coins: 7 };
 window.dbKling10s = { coins: 14 };
@@ -12,12 +14,15 @@ window.dbSora8s = { coins: 6 };
 window.dbSora12s = { coins: 9 };
 window.dbSora16s = { coins: 12 };
 window.dbSora20s = { coins: 15 };
-// 🔥 ДОБАВЛЕНО: Заглушка для 3-го режима (посекундный тариф)
 window.dbKlingPerSec = { coins_per_sec: 2 }; 
-// 🟠 3. 🔥 ДОБАВЛЕНО: ДЕФОЛТНЫЕ ЗАГЛУШКИ ДЛЯ ФОТОСТУДИИ
+
+// 🟠 3. ДЕФОЛТНЫЕ ЗАГЛУШКИ ДЛЯ ФОТОСТУДИИ
 window.dbFaceSwapPrices = { coins_min: 3, coins_mid: 4, coins_max: 5 };
 window.dbClothingPrices = { coins_min: 3, coins_mid: 4, coins_max: 5 };
 window.dbBackgroundPrices = { coins_min: 2, coins_mid: 3, coins_max: 4 };
+
+// 🍌 ДОБАВЛЕНО: Личная заглушка Умного Фокуса (Nano Banana Edit) для 1-го режима фото!
+window.dbBananaEditPrices = { coins_min: 2, coins_mid: 3, coins_max: 4 };
 
 async function syncPricesFromDatabase() {
     try {
@@ -68,7 +73,7 @@ async function syncPricesFromDatabase() {
                 window.dbKlingPerSec.coins_per_sec = data.services.kling_control_per_sec.coins_per_sec;
             }
 
-            // 🔥 3. ДОБАВЛЕНО: СОХРАНЯЕМ СВЕЖИЕ ЦЕНЫ ФОТОСТУДИИ ИЗ MONGO
+            // 🔥 3. СОХРАНЯЕМ СВЕЖИЕ ЦЕНЫ ФОТОСТУДИИ ИЗ MONGO
             if (data.services.hy_wu_faceswap) {
                 window.dbFaceSwapPrices.coins_min = data.services.hy_wu_faceswap.coins_min;
                 window.dbFaceSwapPrices.coins_mid = data.services.hy_wu_faceswap.coins_mid;
@@ -83,6 +88,13 @@ async function syncPricesFromDatabase() {
                 window.dbBackgroundPrices.coins_min = data.services.bria_background.coins_min;
                 window.dbBackgroundPrices.coins_mid = data.services.bria_background.coins_mid;
                 window.dbBackgroundPrices.coins_max = data.services.bria_background.coins_max;
+            }
+            
+            // 🔥 ДОБАВЛЕНО: Сохраняем три уровня цен для Умного Фокуса Фотостудии (nano_banana_edit)
+            if (data.services.nano_banana_edit) {
+                window.dbBananaEditPrices.coins_min = data.services.nano_banana_edit.coins_min;
+                window.dbBananaEditPrices.coins_mid = data.services.nano_banana_edit.coins_mid;
+                window.dbBananaEditPrices.coins_max = data.services.nano_banana_edit.coins_max;
             }
 
         } else {

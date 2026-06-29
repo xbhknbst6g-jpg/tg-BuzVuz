@@ -660,17 +660,19 @@
 // Микро-функция в JavaScript для переключения тумблера нана банана и флюкс плуид
 // ====================================================================================
 
-        function switchGlobalAiModel(modelMode, element) {
-            document.getElementById('btn_global_model_banana').classList.remove('active');
-            document.getElementById('btn_global_model_pulid').classList.remove('active');
-            element.classList.add('active');
+function switchGlobalAiModel(modelMode, element) {
+    document.getElementById('btn_global_model_banana').classList.remove('active');
+    document.getElementById('btn_global_model_pulid').classList.remove('active');
+    element.classList.add('active');
 
-            selectedAiModelEngine = modelMode; //  ('banana' или 'pulid')!
-            console.log("Глобальный тумблер ИИ переключен на движок:", selectedAiModelEngine);
-            
-            //  принудительно пересчитываем стоимость на нижней кнопке при клике на тумблер!
-            updateNeoStartButtonText();
-        }
+    selectedAiModelEngine = modelMode; // Записывает 'banana' или 'pulid'
+    console.log("Глобальный тумблер ИИ переключен на движок:", selectedAiModelEngine);
+    
+    // 🔥 ИСПРАВЛЕНО: Пинаем правильный обновлятор цен фотостудии из prices.js!
+    if (typeof updateFotoSubmitButtons === 'function') {
+        updateFotoSubmitButtons();
+    }
+}
 
 
 // ====================================================================================

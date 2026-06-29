@@ -1,17 +1,23 @@
 // URL-адрес вашего сервера, где запущен бот и API
 const API_URL = "https://thyself-lavish-underhand.ngrok-free.dev/api/v1/tariffs";
-// Глобальные переменные цен (база запишет сюда цифры, а кнопка их считает)
-let fluxDevPrices = { coins_min: 1, coins_mid: 2, coins_max: 3 };
-let bananaPaintPrices = { coins_min: 2, coins_mid: 3, coins_max: 4 };
-let fluxPulidPrices = { coins_min: 1, coins_mid: 2, coins_max: 3 }; // для custom режима
-// Инициализируем переменные выбора, если они не были объявлены ранее в других скриптах
+
+// 🔥 ЖЕЛЕЗОБЕТОННОЕ ОБЪЯВЛЕНИЕ: Привязываем цены к window, чтобы HTML их сразу увидел!
+window.fluxDevPrices = window.fluxDevPrices || { coins_min: 1, coins_mid: 2, coins_max: 3 };
+window.bananaPaintPrices = window.bananaPaintPrices || { coins_min: 2, coins_mid: 3, coins_max: 4 };
+window.fluxPulidPrices = window.fluxPulidPrices || { coins_min: 1, coins_mid: 2, coins_max: 3 };
+
+// Создаем глобальные псевдонимы, чтобы функции внутри файла работали без приставки window.
+var fluxDevPrices = window.fluxDevPrices;
+var bananaPaintPrices = window.bananaPaintPrices;
+var fluxPulidPrices = window.fluxPulidPrices;
+
+// Переменные выбора состояний
 window.selectedTextQuality = window.selectedTextQuality || 'schnell';
 window.directGenQuality = window.directGenQuality || 'schnell';
 window.selectedAiModelEngine = window.selectedAiModelEngine || 'default';
 window.selectedTextRatio = window.selectedTextRatio || '1:1';
 window.directGenRatio = window.directGenRatio || '1:1';
 
-// 2. Делаем их доступными для функций в этом файле без приставки window.
 var selectedTextQuality = window.selectedTextQuality;
 var directGenQuality = window.directGenQuality;
 var selectedAiModelEngine = window.selectedAiModelEngine;

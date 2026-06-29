@@ -600,7 +600,7 @@ function updateFotoSubmitButtons() {
     // 🔮 РАСЧЕТ ДЛЯ РЕЖИМА 1: «Фото + Текст» (ТЕПЕРЬ 100% ДИНАМИКА НА FLUX PU-LID ИЗ БАЗЫ!)
     if (btnText) {
         if (photoTextQuality === 'dev') {
-            btnText.innerHTML = `Start ${window.dbFluxPulidPrices.coins_mid} 2026`; // Средняя цена PuLID из базы
+            btnText.innerHTML = `Start ${window.dbFluxPulidPrices.coins_mid} 🪙`; // Средняя цена PuLID из базы
         } else if (photoTextQuality === 'ultra_4k') {
             btnText.innerHTML = `Start ${window.dbFluxPulidPrices.coins_max} 🪙`; // Максимальная цена PuLID из базы
         } else {

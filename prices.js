@@ -450,3 +450,35 @@ function updateMotionSubmitButton() {
         startBtn3.innerHTML = `Start ${totalPrice} 🪙`;
     }
 }
+
+// ====================================================================================
+// 11. АВТОМАТИЧЕСКАЯ ПРИВЯЗКА КЛИКОВ ДЛЯ КНОПОК ВИДЕО (ПЕРЕНЕСЕНО СЮДА)
+// ====================================================================================
+// Ждем, пока браузер полностью отрисует все элементы страницы
+window.addEventListener('DOMContentLoaded', () => {
+    // Автоматически вешаем открытие шторки на кнопки времени видеостудии
+    const btnKlingDuration = document.getElementById('btn_video_duration');
+    const btnSoraDuration = document.getElementById('btn_sora_duration');
+    const btnMotionDuration = document.getElementById('btn_motion_duration'); // на всякий случай для 3 режима
+
+    if (btnKlingDuration) {
+        btnKlingDuration.addEventListener('click', () => {
+            if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light');
+            openUniversalDurationSheet();
+        });
+    }
+    
+    if (btnSoraDuration) {
+        btnSoraDuration.addEventListener('click', () => {
+            if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light');
+            openUniversalDurationSheet();
+        });
+    }
+
+    if (btnMotionDuration) {
+        btnMotionDuration.addEventListener('click', () => {
+            if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light');
+            openUniversalDurationSheet();
+        });
+    }
+});

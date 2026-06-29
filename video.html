@@ -884,9 +884,9 @@ function selectMotionTemplate(styleName, videoUrl, duration) {
             }
 
             // --- 2. ПРИВЯЗКА КЛИКОВ: РЕЖИМ 2 (ОЖИВЛЕНИЕ СО ЗВУКОМ) ---
-            const voiceSelectBtn = document.getElementById('btn_voice_select');
+            // 🔥 УДАЛИЛИ ХВОСТ СТЕРТОЙ КНОПКИ ГОЛОСА! Остался только рабочий формат кадра:
             const videoSoundRatioBtn = document.getElementById('btn_video_sound_ratio');
-            
+
             if (videoSoundRatioBtn) {
                 videoSoundRatioBtn.addEventListener('click', () => {
                     tg.HapticFeedback.impactOccurred('light');

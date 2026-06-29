@@ -422,15 +422,25 @@ function closePreviewVideo() {
             const textQualityBtn = document.getElementById('btn_text_quality');
             const textRatioBtn = document.getElementById('btn_text_ratio');
             
-            if (textQualityBtn) textQualityBtn.addEventListener('click', showNativeQualityPopup);
-            if (textRatioBtn) textRatioBtn.addEventListener('click', showNativeRatioPopup);
+            // 🔥 ИСПРАВЛЕНО: Вызываем универсальную шторку напрямую и передаем имя нужного ИИ-режима
+            if (textQualityBtn) {
+                textQualityBtn.addEventListener('click', function() {
+                    openUniversalQualitySheet('flux_dev');
+                });
+            }
+            if (textRatioBtn) textRatioBtn.addEventListener('click', openUniversalRatioSheet);
 
             // --- 2. ПРИВЯЗКА КЛИКОВ: УМНЫЙ ФОКУС (Класс image_generation_direct) ---
             const directQualityBtn = document.getElementById('btn_direct_quality');
             const directRatioBtn = document.getElementById('btn_direct_ratio');
             
-            if (directQualityBtn) directQualityBtn.addEventListener('click', showNativeDirectQualityPopup);
-            if (directRatioBtn) directRatioBtn.addEventListener('click', showNativeDirectRatioPopup);
+            // 🔥 ИСПРАВЛЕНО: Вызываем универсальную шторку напрямую и передаем имя режима рисования
+            if (directQualityBtn) {
+                directQualityBtn.addEventListener('click', function() {
+                    openUniversalQualitySheet('nano_banana_paint');
+                });
+            }
+            if (directRatioBtn) directRatioBtn.addEventListener('click', openUniversalRatioSheet);
 
             // Умный стартовый роутер, который спасет от кэшивания Telegram
             const urlParams = new URLSearchParams(window.location.search);

@@ -1,13 +1,34 @@
 // URL-адрес вашего сервера, где запущен бот и API
-        const API_URL = "https://thyself-lavish-underhand.ngrok-free.dev/api/v1/tariffs";
-        // Глобальные переменные цен (база запишет сюда цифры, а кнопка их считает)
-        let fluxDevPrices = { coins_min: 1, coins_mid: 2, coins_max: 3 };
-        let bananaPaintPrices = { coins_min: 2, coins_mid: 3, coins_max: 4 };
-        let fluxPulidPrices = { coins_min: 1, coins_mid: 2, coins_max: 3 }; // для custom режима
+const API_URL = "https://thyself-lavish-underhand.ngrok-free.dev/api/v1/tariffs";
+// Глобальные переменные цен (база запишет сюда цифры, а кнопка их считает)
+let fluxDevPrices = { coins_min: 1, coins_mid: 2, coins_max: 3 };
+let bananaPaintPrices = { coins_min: 2, coins_mid: 3, coins_max: 4 };
+let fluxPulidPrices = { coins_min: 1, coins_mid: 2, coins_max: 3 }; // для custom режима
+// Инициализируем переменные выбора, если они не были объявлены ранее в других скриптах
+window.selectedTextQuality = window.selectedTextQuality || 'schnell';
+window.directGenQuality = window.directGenQuality || 'schnell';
+window.selectedAiModelEngine = window.selectedAiModelEngine || 'default';
+window.selectedTextRatio = window.selectedTextRatio || '1:1';
+window.directGenRatio = window.directGenRatio || '1:1';
+
+// 2. Делаем их доступными для функций в этом файле без приставки window.
+var selectedTextQuality = window.selectedTextQuality;
+var directGenQuality = window.directGenQuality;
+var selectedAiModelEngine = window.selectedAiModelEngine;
+var selectedTextRatio = window.selectedTextRatio;
+var directGenRatio = window.directGenRatio;
 
 async function syncPricesFromDatabase() {
     try {
-        const response = await fetch(API_URL, { cache: "no-store" }); // Добавили no-store от кэша
+        // 🔥 ИСПРАВЛЕНО: Добавили заголовок ngrok-skip-browser-warning, чтобы Ngrok пропускал запрос!
+        const response = await fetch(API_URL, { 
+            method: "GET",
+            cache: "no-store", 
+            headers: {
+                "Content-Type": "application/json",
+                "ngrok-skip-browser-warning": "true" 
+            }
+        }); 
         const data = await response.json();
         
         // 🔥 НАШИ ДЕТЕКТИВНЫЕ ЛОГИ: Увидим в консоли браузера, что шлёт Макбук
@@ -78,6 +99,9 @@ async function syncPricesFromDatabase() {
         }
         if (document.getElementById("quality-flux-ultra")) {
             document.getElementById("quality-flux-ultra").innerText = fluxDevPrices.coins_max;
+        }
+        if (typeof updateNeoStartButtonText === "function") {
+            updateNeoStartButtonText();
         }
 
         console.log("✅ Все кнопки активных режимов на сайте успешно получили новые цены из MongoDB!");
@@ -214,15 +238,21 @@ function setTextRatio(ratio) {
     selectedTextRatio = ratio; 
     const el = document.getElementById('btn_text_ratio');
     if (el) el.innerHTML = ratio;
+    
+    // 🔥 ДОБАВЛЕНО: Пересчитываем цену на кнопке "Start" при смене формата
+    if (typeof updateNeoStartButtonText === "function") updateNeoStartButtonText();
 }
 
 function setDirectRatio(ratio) { 
     directGenRatio = ratio; 
     const el = document.getElementById('btn_direct_ratio_2') || document.getElementById('btn_direct_ratio');
     if (el) el.innerHTML = ratio;
+    
+    // 🔥 ДОБАВЛЕНО: Пересчитываем цену на кнопке "Start" при смене формата
+    if (typeof updateNeoStartButtonText === "function") updateNeoStartButtonText();
 }
 
-// Функция закрытия шторки
+// Функция закрытия шторки (остается без изменений)
 function closeCustomSheet() {
     const sheet = document.getElementById('custom_action_sheet');
     if (sheet) sheet.classList.remove('active');

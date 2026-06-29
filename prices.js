@@ -84,11 +84,16 @@ async function syncPricesFromDatabase() {
         if (document.getElementById("quality-flux-pro")) {
             document.getElementById("quality-flux-pro").innerText = fluxDevPrices.coins_mid;
         }
-        if (document.getElementById("quality-flux-ultra")) {
+                if (document.getElementById("quality-flux-ultra")) {
             document.getElementById("quality-flux-ultra").innerText = fluxDevPrices.coins_max;
         }
         if (typeof updateNeoStartButtonText === "function") {
             updateNeoStartButtonText();
+        }
+
+        // 🔥 ДОБАВЛЕНО: Пинаем главную кнопку видео при загрузке страницы!
+        if (typeof updateMotionSubmitButton === "function") {
+            updateMotionSubmitButton();
         }
 
         console.log("✅ Все кнопки активных режимов на сайте успешно получили новые цены из MongoDB!");
@@ -96,6 +101,7 @@ async function syncPricesFromDatabase() {
         console.error("❌ Не удалось загрузить динамические цены с сервера бота:", error);
     }
 }
+
 
 // Запуск синхронизации автоматически
 window.addEventListener("DOMContentLoaded", syncPricesFromDatabase);
@@ -105,29 +111,34 @@ window.addEventListener("DOMContentLoaded", syncPricesFromDatabase);
 // ====================================================================================
 function updateNeoStartButtonText() {
     const btnText = document.getElementById('btn-start-flux-dev');
+    // Поддерживаем оба возможных ID для кнопки бананы-красок
     const btnDirect = document.getElementById('btn-start-banana-paint_2') || document.getElementById('btn-start-banana-paint');
     
+    // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ ЦИФРОВОЙ ОПТИКИ (Класс text_image на Flux)
     if (btnText) {
         if (selectedAiModelEngine === 'custom') {
+            // Если включен "custom", берем базовую цену Flux PuLID из безопасного объекта
             btnText.innerHTML = `Start ${window.dbFluxPulidPrices.coins_min} 🪙`; 
         } else {
+            // Смотрим, какое качество выбрано в шторке текста (selectedTextQuality):
             if (selectedTextQuality === 'dev') {
-                btnText.innerHTML = `Start ${window.dbFluxDevPrices.coins_mid} 🪙`; 
+                btnText.innerHTML = `Start ${window.dbFluxDevPrices.coins_mid} 🪙`; // Цена Pro из базы
             } else if (selectedTextQuality === 'ultra_4k') {
-                btnText.innerHTML = `Start ${window.dbFluxDevPrices.coins_max} 🪙`; 
+                btnText.innerHTML = `Start ${window.dbFluxDevPrices.coins_max} 🪙`; // Цена Ultra из базы
             } else {
-                btnText.innerHTML = `Start ${window.dbFluxDevPrices.coins_min} 🪙`; 
+                btnText.innerHTML = `Start ${window.dbFluxDevPrices.coins_min} 🪙`; // Стандартная цена
             }
         }
     }
     
+    // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ УМНОГО ФОКУСА (Класс image_generation_direct на Nano Banana)
     if (btnDirect) {
         if (directGenQuality === 'dev') {
-            btnDirect.innerHTML = `Start ${window.dbBananaPaintPrices.coins_mid} 🪙`; 
+            btnDirect.innerHTML = `Start ${window.dbBananaPaintPrices.coins_mid} 🪙`; // Средняя цена бананы
         } else if (directGenQuality === 'ultra_4k') {
-            btnDirect.innerHTML = `Start ${window.dbBananaPaintPrices.coins_max} 🪙`; 
+            btnDirect.innerHTML = `Start ${window.dbBananaPaintPrices.coins_max} 🪙`; // Максимальная цена бананы
         } else {
-            btnDirect.innerHTML = `Start ${window.dbBananaPaintPrices.coins_min} 🪙`; 
+            btnDirect.innerHTML = `Start ${window.dbBananaPaintPrices.coins_min} 🪙`; // Минимальная цена бананы
         }
     }
 }
@@ -249,4 +260,174 @@ function setDirectRatio(ratio) {
 function closeCustomSheet() {
     const sheet = document.getElementById('custom_action_sheet');
     if (sheet) sheet.classList.remove('active');
+}
+
+
+
+/////////// БЛОК ВИДИО ///////////
+
+
+// ====================================================================================
+// 9. УПРАВЛЕНИЕ ШТОРКОЙ ДЛИТЕЛЬНОСТИ ВИДЕО (ИНТЕГРИРОВАНО С ПЕРЕМЕННЫМИ РЕЖИМОВ!)
+// ====================================================================================
+
+// ====================================================================================
+// 9. ПОЛНОЕ УПРАВЛЕНИЕ ВСЕМИ ШТОРКАМИ ВИДЕОСТУДИИ (ТЕПЕРЬ 100% ДИНАМИКА ИЗ MONGO!)
+// ====================================================================================
+
+function openUniversalDurationSheet() {
+    const titleEl = document.getElementById('custom_sheet_title');
+    const listEl = document.getElementById('custom_sheet_list');
+    const sheetEl = document.getElementById('custom_action_sheet');
+    if (!titleEl || !listEl || !sheetEl) return;
+
+    titleEl.innerText = "ДЛИТЕЛЬНОСТЬ ВИДЕО";
+    listEl.innerHTML = ''; // Очищаем список старых кнопок
+
+    // 🍏 1. Цены-заглушки для режима БЕЗ звука (Kling)
+    let price5s = 7;   
+    let price10s = 14; 
+
+    // 🍏 2. Цены-заглушки для режима СО звуком (Sora)
+    let sora4 = 3, sora8 = 6, sora12 = 9, sora16 = 12, sora20 = 15;
+
+    // 🔥 3. Подтягиваем ВСЕ живые цены из MongoDB, если база ответила
+    if (window.allPrices && window.allPrices.services) {
+        // Загружаем цены Kling
+        if (window.allPrices.services.kling_video_5s) price5s = window.allPrices.services.kling_video_5s.coins;
+        if (window.allPrices.services.kling_video_10s) price10s = window.allPrices.services.kling_video_10s.coins;
+        
+        // Загружаем новые цены Sora
+        if (window.allPrices.services.sora_4s) sora4 = window.allPrices.services.sora_4s.coins;
+        if (window.allPrices.services.sora_8s) sora8 = window.allPrices.services.sora_8s.coins;
+        if (window.allPrices.services.sora_12s) sora12 = window.allPrices.services.sora_12s.coins;
+        if (window.allPrices.services.sora_16s) sora16 = window.allPrices.services.sora_16s.coins;
+        if (window.allPrices.services.sora_20s) sora20 = window.allPrices.services.sora_20s.coins;
+    }
+
+    let options = [];
+    const activeMode = window.currentActiveMode || currentActiveMode;
+
+    if (activeMode === 'animate_nosound') {
+        // Режим 1: Оживление фото (Kling)
+        options = [
+            { sec: 5, text: '⏱️ 5 сек', label: '5 секунд', price: `${price5s} 🪙` },
+            { sec: 10, text: '⏱️ 10 сек', label: '10 секунд', price: `${price10s} 🪙` }
+        ];
+    } else if (activeMode === 'animate_sound') {
+        // Режим 2: Оживление со звуком (Sora) -> ТЕПЕРЬ ТОЖЕ ИЗ БАЗЫ!
+        options = [
+            { sec: 4, text: '⏱️ 4 сек', label: '4 секунды', price: `${sora4} 🪙` },
+            { sec: 8, text: '⏱️ 8 сек', label: '8 секунд', price: `${sora8} 🪙` },
+            { sec: 12, text: '⏱️ 12 сек', label: '12 секунд', price: `${sora12} 🪙` },
+            { sec: 16, text: '⏱️ 16 сек', label: '16 секунд', price: `${sora16} 🪙` },
+            { sec: 20, text: '⏱️ 20 сек', label: '20 секунд', price: `${sora20} 🪙` }
+        ];
+    }
+
+    // Собираем кнопки шторки
+    options.forEach(opt => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.className = 'custom-sheet-item';
+        btn.innerHTML = `<span>${opt.label}</span><span class="coin-price">${opt.price}</span>`;
+        
+        btn.addEventListener('click', function() {
+            selectDurationFromSheet(opt.sec, opt.text);
+        });
+
+        li.appendChild(btn);
+        listEl.appendChild(li);
+    });
+
+    sheetEl.classList.add('active');
+}
+
+// 2. УМНЫЙ ОБРАБОТЧИК КЛИКА ПО СЕКУНДАМ
+function selectDurationFromSheet(seconds, text) {
+    const activeMode = window.currentActiveMode || currentActiveMode;
+
+    if (activeMode === 'animate_nosound') {
+        // Мягко меняем переменную 1-го режима (в HTML или window)
+        if (typeof currentKlingDuration !== 'undefined') currentKlingDuration = seconds;
+        if (typeof window.currentKlingDuration !== 'undefined') window.currentKlingDuration = seconds;
+        
+        const btn1 = document.getElementById('btn_video_duration');
+        if (btn1) btn1.innerHTML = text; 
+    } else if (activeMode === 'animate_sound') {
+        // Мягко меняем переменную 2-го режима (в HTML или window)
+        if (typeof currentSoraDuration !== 'undefined') currentSoraDuration = seconds;
+        if (typeof window.currentSoraDuration !== 'undefined') window.currentSoraDuration = seconds;
+        
+        const btn2 = document.getElementById('btn_sora_duration');
+        if (btn2) btn2.innerHTML = text; 
+    }
+    
+       // 1. Пересчет для кнопок рисования (если мы на той вкладке)
+    if (typeof updateNeoStartButtonText === 'function') {
+        updateNeoStartButtonText();
+    }
+    
+    // 2. 🔥 ДОБАВЬ СЮДА: Пересчет для главной кнопки видео из MongoDB
+    if (typeof updateMotionSubmitButton === 'function') {
+        updateMotionSubmitButton();
+    }
+    
+    closeCustomSheet();
+
+}
+
+// 3. ПЕРЕНАПРАВЛЕНИЕ СТАРЫХ ВЫЗОВОВ ПОПАПОВ (чтобы кнопки в HTML продолжали работать)
+function showNativeDurationPopup() { openUniversalDurationSheet(); }
+function showNativeSoraDurationPopup() { openUniversalDurationSheet(); }
+
+// ====================================================================================
+// 10. УМНЫЙ ОБНОВЛЯТОР ЦЕН НА ВСЕХ ВСТРОЕННЫХ КНОПКАХ ВИДЕО (START)
+// ====================================================================================
+function updateMotionSubmitButton() {
+    const startBtn1 = document.getElementById('neo_video_submit_btn');       // Режим 1 (Без звука)
+    const startBtn2 = document.getElementById('neo_video_sound_submit_btn'); // Режим 2 (Со звуком)
+    const startBtn3 = document.getElementById('neo_motion_submit_btn');      // Режим 3 (По видео)
+    
+    if (!startBtn1 && !startBtn2 && !startBtn3) return;
+
+    // 1. Задаем дефолтные цены-заглушки на случай, если база отвалится
+    let price5s = 7;
+    let price10s = 14;
+    let soraPrice = 20;
+
+    // 2. Подтягиваем живые цены из MongoDB (window.allPrices), если они долетели
+    if (window.allPrices && window.allPrices.services) {
+        if (window.allPrices.services.kling_video_5s) price5s = window.allPrices.services.kling_video_5s.coins;
+        if (window.allPrices.services.kling_video_10s) price10s = window.allPrices.services.kling_video_10s.coins;
+        if (window.allPrices.services.sora_2_10s) soraPrice = window.allPrices.services.sora_2_10s.coins;
+    }
+
+    // Получаем текущее выбранное количество секунд (из HTML или window)
+    const seconds = window.currentKlingDuration || currentKlingDuration || 5;
+
+    // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ РЕЖИМА 1: «Оживление фото» (Kling 2.1)
+    if (startBtn1) {
+        if (seconds === 10) {
+            startBtn1.innerHTML = `Start ${price10s} 🪙`;
+        } else {
+            startBtn1.innerHTML = `Start ${price5s} 🪙`;
+        }
+    }
+    
+    // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ РЕЖИМА 2: «Оживление со звуком» (Sora-2)
+    if (startBtn2) {
+        startBtn2.innerHTML = `Start ${soraPrice} 🪙`; 
+    }
+    
+    // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ РЕЖИМА 3: «Оживление по видео» (Motion Control)
+    // Если для Режима 3 у вас в будущем появится отдельная цена в MongoDB, вы сможете подставить её сюда. 
+    // Пока привяжем её к базовым тарифам видео.
+    if (startBtn3) {
+        if (seconds === 10) {
+            startBtn3.innerHTML = `Start ${price10s} 🪙`;
+        } else {
+            startBtn3.innerHTML = `Start ${price5s} 🪙`;
+        }
+    }
 }

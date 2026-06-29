@@ -423,9 +423,9 @@ function updateMotionSubmitButton() {
     const sora16 = window.dbSora16s.coins;
     const sora20 = window.dbSora20s.coins;
 
-    // 3. Получаем текущее выбранное время для Kling и Sora (из HTML-файла видео или памяти window)
-    const klingSeconds = window.currentKlingDuration || currentKlingDuration || 5;
-    const soraSeconds = window.currentSoraDuration || currentSoraDuration || 4;
+    // 3. Железная защита от ошибок "not defined" на разных вкладках сайта!
+    const klingSeconds = (typeof currentKlingDuration !== 'undefined') ? currentKlingDuration : ((typeof window.currentKlingDuration !== 'undefined') ? window.currentKlingDuration : 5);
+    const soraSeconds = (typeof currentSoraDuration !== 'undefined') ? currentSoraDuration : ((typeof window.currentSoraDuration !== 'undefined') ? window.currentSoraDuration : 4);
 
     // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ РЕЖИМА 1: «Оживление фото» (Kling)
     if (startBtn1) {

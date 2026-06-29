@@ -14,13 +14,23 @@ async function syncPricesFromDatabase() {
         window.allPrices = data;
         
         if (data && data.services) {
-            fluxDevPrices = data.services.flux_dev;
-            bananaPaintPrices = data.services.nano_banana_paint;
-            fluxPulidPrices = data.services.flux_pulid;
+            // 🔥 ОБНОВЛЯЕМ ЗНАЧЕНИЯ ВНУТРИ, ЧТОБЫ ШТОРКА НЕ ТЕРЯЛА СВЯЗЬ С СЫЛКОЙ В ПАМЯТИ
+            fluxDevPrices.coins_min = data.services.flux_dev.coins_min;
+            fluxDevPrices.coins_mid = data.services.flux_dev.coins_mid;
+            fluxDevPrices.coins_max = data.services.flux_dev.coins_max;
+
+            bananaPaintPrices.coins_min = data.services.nano_banana_paint.coins_min;
+            bananaPaintPrices.coins_mid = data.services.nano_banana_paint.coins_mid;
+            bananaPaintPrices.coins_max = data.services.nano_banana_paint.coins_max;
+
+            fluxPulidPrices.coins_min = data.services.flux_pulid.coins_min;
+            fluxPulidPrices.coins_mid = data.services.flux_pulid.coins_mid;
+            fluxPulidPrices.coins_max = data.services.flux_pulid.coins_max;
         } else {
             console.warn("⚠️ База вернула пустые данные, используем заглушки");
             return;
         }
+
         
         // =========================================================================
         // 1. ДОСТАЕМ АКТУАЛЬНЫЕ ЦЕНЫ РЕЖИМОВ (Блок services из MongoDB Compass)

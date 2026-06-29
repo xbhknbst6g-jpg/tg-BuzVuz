@@ -10,6 +10,10 @@ async function syncPricesFromDatabase() {
         const response = await fetch(API_URL, { cache: "no-store" }); // Добавили no-store от кэша
         const data = await response.json();
         
+        // 🔥 НАШИ ДЕТЕКТИВНЫЕ ЛОГИ: Увидим в консоли браузера, что шлёт Макбук
+        console.log("=== ОТВЕТ ОТ БЭКЕНДА ===");
+        console.log("Живой JSON:", data);
+        
         // 🔥 СОХРАНЯЕМ В ГЛОБАЛЬНУЮ ПАМЯТЬ БРАУЗЕРА (чтобы шторка её видела)
         window.allPrices = data;
         

@@ -940,13 +940,13 @@ if (typeof selectedStyleFacesCount === 'undefined') {
     window.selectedStyleFacesCount = 1;
 }
 
-// 1. ИСПРАВЛЕННАЯ ФУНКЦИЯ СБОРКИ И ОТПРАВКИ (START)
+// 1. ФУНКЦИЯ СБОРКИ И ОТПРАВКИ (START)
 function sendPhotoTextData() { 
     try {
-        // Определяем вкладку "Свой" (Тут логика правильная)
+        // Определяем вкладку "Свой"
         let isCustomText = (typeof currentGenerationMode !== 'undefined' && currentGenerationMode === 'custom');
 
-        // 🔥 ИСПРАВЛЕНО: Просто берем чистое значение модели, которое записал наш тумблер ('banana' или 'pulid')
+        // Чистое значение модели из тумблера ('banana' или 'pulid')
         let currentModel = (typeof selectedAiModelEngine !== 'undefined') ? selectedAiModelEngine : 'banana';
 
         // Определяем количество лиц
@@ -955,6 +955,16 @@ function sendPhotoTextData() {
         // Безопасно считываем пропорции и качество кадра
         let ratio = (typeof selectedTextRatio !== 'undefined') ? selectedTextRatio : '9:16';
         let quality = (typeof selectedTextQuality !== 'undefined') ? selectedTextQuality : 'schnell';
+
+        // 🔥 СОБИРАЕМ ДАННЫЕ СТИЛЯ (Только для шаблонов!)
+        let promptToSend = "";
+        let styleTitleToSend = "";
+
+        if (!isCustomText) {
+            // Если это готовая карточка — забираем наш длинный промпт из глобальной переменной
+            promptToSend = (typeof selectedStylePrompt !== 'undefined') ? selectedStylePrompt : "";
+            styleTitleToSend = (typeof selectedStyleName !== 'undefined') ? selectedStyleName : "Шаблон";
+        }
 
         console.log("[WebApp] Сборка пакета. Модель:", currentModel, "Кастом:", isCustomText, "Лиц:", facesCountToSend);
 
@@ -965,15 +975,17 @@ function sendPhotoTextData() {
             quality: quality,
             ai_model_engine: currentModel,         
             is_custom_text_mode: isCustomText,     
-            faces_count: facesCountToSend          
+            faces_count: facesCountToSend,
+            // 🔥 Пакет данных пополняется текстом стиля для бэкенда:
+            style_title: styleTitleToSend,
+            prompt_text: promptToSend          
         }); 
 
     } catch (err) {
         console.error("Критический сбой внутри функции sendPhotoTextData:", err);
-        // Жесткая страховка: если что-то сломалось, открываем бота BuzVuz в Telegram
         window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
     }
-}  
+}
               
 // 1. ФУНКЦИЯ ОТПРАВКИ ДАННЫХ ДЛЯ FACE SWAP
 function sendCustomFaceSwapData() { 

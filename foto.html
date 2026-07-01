@@ -95,7 +95,7 @@
     <!-- РЕЖИМ 1: ФОТО + ТЕКСТ (TEXT_IMAGE)        -->
     <!-- ========================================== -->
     <div id="text_image" class="screen">
-        
+            
         <!-- 🔥 ЛЕНТА ВЕРХУШКИ №1: Стрелка "Назад" и выбор моделей ИИ строго на одной линии -->
         <div class="tabs-container" id="text_image_models_row" style="display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100%; box-sizing: border-box; margin-bottom: 8px;">
             <!-- Наша круглая кнопка назад -->
@@ -108,8 +108,8 @@
             </div>
         </div>
 
-        <!-- 🔥 ЛЕНТА ВЕРХУШКИ №2: Твои оригинальные огненные вкладки фильтрации категорий (Опустились чуть ниже) -->
-        <div class="tabs-scroll-line" id="text_image_tabs" style="margin-bottom: 12px;">
+        <!-- 🔥 ЛЕНТА ВЕРХУШКИ №2: Твои оригинальные огненные вкладки фильтрации категорий -->
+        <div class="text_image_tabs" id="text_image_tabs" style="margin-bottom: 12px; display: flex; gap: 8px; overflow-x: auto;">
             <button class="tab-btn active" onclick="switchTextTab('all', this)">Все</button>
             <button class="tab-btn" onclick="switchTextTab('men', this)">Муж</button>
             <button class="tab-btn" onclick="switchTextTab('women', this)">Жен</button>
@@ -123,13 +123,15 @@
             <p id="text_image_subtitle" style="font-size: 13px; margin: 4px 0 0 0; color: var(--tg-theme-hint-color, #666);">Выберите желаемый стиль для настройки:</p>
         </div>
 
-        <!-- 🔥 НАШ ШАГ 1 (ГАЛЕРЕЯ КАРТОЧЕК) С ДВОЙНЫМ КЛИКОМ КАК В РИСОВАНИИ -->
+        <!-- 🔥 НАШ ШАГ 1 (ГАЛЕРЕЯ КАРТОЧЕК). ТЕПЕРЬ ОНА ЧИСТАЯ И ИЗОЛИРОВАННАЯ -->
         <div class="isolated-photo-text-grid" id="text_image_gallery">
+            <!-- Сюда ваш JS скрипт через fetch автоматически вставит карточки из файла cards-template.html -->
+        </div> <!-- 👈 МЫ ЗАКРЫЛИ ГАЛЕРЕЮ ЗДЕСЬ! Кнопки ниже теперь в безопасности -->
 
-        <!-- ШАГ 2: БЛОК НАСТРОЕК (Полностью разделенный) -->
+        <!-- ШАГ 2: БЛОК НАСТРОЕК (Полностью независимый пульт управления) -->
         <div id="text_image_settings_block" style="display: none;">
             
-            <!-- 1. ИНСТРУКЦИЯ ДЛЯ ВКЛАДКИ "СВОЙ" (Остается вверху) -->
+            <!-- 1. ИНСТРУКЦИЯ ДЛЯ ВКЛАДКИ "СВОЙ" -->
             <div id="custom_instruction_text" class="custom-prompt-container" style="display: none; margin-bottom: 15px;">
                 <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Как работает режим:</div>
                 <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.4;">
@@ -142,22 +144,21 @@
 
                 <!-- Строка про итог (Белая и жирная) -->
                 <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center;">
-                    <b>Итоговая цена зависит от выбранного качества и количетсва человек, точная цыфра будет отображаться на кнопке START</b>
+                    <b>Итоговая цена зависит от выбранного качества и количества человек, точная цифра будет отображаться на кнопке START</b>
                 </div>
             </div>
 
-            <!-- 2. СЛУЖЕБНЫЙ КОНТЕЙНЕР ДЛЯ ШАБЛОНОВ -->
+            <!-- 2. СЛУЖЕБНЫЙ КОНТЕЙНЕР ДЛЯ ШАБЛОНОВ (Большое превью картинки на весь экран) -->
             <div id="preset_preview_block" style="display: none;">
                 <div class="text-image-compact-preview">
-                    <img id="text_image_large_preview" src="" alt="Выбранный стиль">
+                    <img id="text_image_large_preview" src="" alt="Выбранный стиль" style="width: 100%; max-height: 300px; object-fit: contain;">
                 </div>
             </div>
 
             <!-- 🔥 ЭТА РАСПОРКА ВЫДАВИТ ВСЕ НАСТРОЙКИ ВНИЗ ЭКРАНА 🔥 -->
             <div class="mode-spacer" style="height: calc(100vh - 470px); display: none;" id="text_image_spacer"></div>
-            </div>
-            <!-- 3. ТВОИ ОГНЕННЫЕ КНОПКИ УПРАВЛЕНИЯ СНИЗУ (Теперь и с выбором людей) -->
-            <!-- 🔥 ПЕРЕНЕСЛИ СЮДА: Блок встанет ровно над кнопками Standard / 9:16 / Start -->
+
+            <!-- 3. ТВОИ ОГНЕННЫЕ КНОПКИ УПРАВЛЕНИЯ СНИЗУ (Выбор людей) -->
             <div id="faces_count_selector_row" style="margin-bottom: 12px; display: none;">
                 <div style="font-size: 12px; margin-bottom: 6px; color: var(--tg-theme-hint-color, #666); text-align: center;">Количество персонажей на фото:</div>
                 <div style="display: flex; background: rgba(255,255,255,0.06); padding: 4px; border-radius: 14px; gap: 4px; max-width: 280px; margin: 0 auto;">
@@ -179,8 +180,9 @@
                     <button id="neo_text_submit_btn" class="neo-start-btn" onclick="sendPhotoTextData()">Start 1 🪙</button>
                 </div>
             </div>
-        </div>
-    </div>
+
+        </div> <!-- 👈 ТЕПЕРЬ ПУЛЬТ НАСТРОЕК ЗАКРЫВАЕТСЯ СТРОГО ТУТ, КНОПКИ ВНУТРИ НЕГО! -->
+    </div> <!-- Это финал экрана text_image -->
 
 
     <!-- ========================================== -->

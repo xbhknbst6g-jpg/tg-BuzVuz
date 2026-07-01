@@ -125,47 +125,6 @@
 
         <!-- 🔥 НАШ ШАГ 1 (ГАЛЕРЕЯ КАРТОЧЕК) С ДВОЙНЫМ КЛИКОМ КАК В РИСОВАНИИ -->
         <div class="isolated-photo-text-grid" id="text_image_gallery">
-            
-            <!-- Карточка 1 -->
-            <!-- 🔥 ИСПРАВЛЕНО: Полностью удалили вызов несуществующей функции openPreviewVideo -->
-            <div class="phone-template-card" data-category="women" onclick="selectTextImageStyle('Outside the cityе', 'https://i.postimg.cc/cHRZDY1c/sai-t.jpg'); Telegram.WebApp.HapticFeedback.impactOccurred('medium');">
-                <img src="https://i.postimg.cc/cHRZDY1c/sai-t.jpg" alt="Outside the cityе">
-                <div class="card-overlay" style="pointer-events: none;">Outside the cityе</div>
-            </div>
-
-            <!-- Карточка 2 -->
-            <div class="phone-template-card" data-category="men" onclick="selectTextImageStyle('The Dark Soul', 'https://i.postimg.cc/W4DLvXqk/02.png'); Telegram.WebApp.HapticFeedback.impactOccurred('medium');">
-                <img src="https://i.postimg.cc/W4DLvXqk/02.png" alt="The Dark Soul">
-                <div class="card-overlay" style="pointer-events: none;">The Dark Soul</div>
-            </div>
-
-            <!-- Карточка 3 -->
-            <div class="phone-template-card" data-category="men" onclick="selectTextImageStyle('On sports', 'https://i.postimg.cc/W4DLvXqk/02.png'); Telegram.WebApp.HapticFeedback.impactOccurred('medium');">
-                <img src="https://i.postimg.cc/W4DLvXqk/02.png" alt="On sports">
-                <div class="card-overlay" style="pointer-events: none;">On sports</div>
-            </div>
-
-            <!-- Карточка 4 -->
-            <div class="phone-template-card" data-category="women" onclick="selectTextImageStyle('In the centre', 'https://i.postimg.cc/cHRZDY1c/sai-t.jpg'); Telegram.WebApp.HapticFeedback.impactOccurred('medium');">
-                <img src="https://i.postimg.cc/cHRZDY1c/sai-t.jpg" alt="In the centre">
-                <div class="card-overlay" style="pointer-events: none;">In the centre</div>
-            </div>
-
-            <!-- Карточка 5 -->
-            <div class="phone-template-card" data-category="common" onclick="selectTextImageStyle('Group Style', 'https://i.postimg.cc/FH5y1J8S/5844728862795828808.jpg', 2); Telegram.WebApp.HapticFeedback.impactOccurred('medium');">
-                <img src="https://i.postimg.cc/FH5y1J8S/5844728862795828808.jpg" alt="Group Style">
-                <div class="card-overlay" style="pointer-events: none;">Family Vibe (2 чел.)</div>
-            </div>
-
-            <!-- Карточка 6 -->
-            <div class="phone-template-card" data-category="kids" onclick="selectTextImageStyle('Evening vibe', 'https://i.postimg.cc/L8D378Qf/GEM3Nqu-I43e3gq-Wz5j-Ol-E-L2YT0AJ8.png'); Telegram.WebApp.HapticFeedback.impactOccurred('medium');">
-                <img src="https://i.postimg.cc/L8D378Qf/GEM3Nqu-I43e3gq-Wz5j-Ol-E-L2YT0AJ8.png" alt="Evening vibe">
-                <div class="card-overlay" style="pointer-events: none;">Evening vibe</div>
-            </div>
-
-        </div>
-
-
 
         <!-- ШАГ 2: БЛОК НАСТРОЕК (Полностью разделенный) -->
         <div id="text_image_settings_block" style="display: none;">
@@ -504,6 +463,8 @@
         let selectedSwapQuality = 'schnell';
         let selectedTryOnQuality = 'schnell';
         let selectedBgQuality = 'schnell';
+        let selectedStylePrompt = ''; 
+
 
         // Системные переменные для контроля шагов Фото + Текст
         let isTextImageStyleSelected = false; 
@@ -527,106 +488,142 @@
 // ====================================================================================
 // 2. ФУНКЦИЯ КЛИКА ПО КАРТОЧКЕ (Сброс кнопок-капсул в дефолт и показ пульта)
 // ====================================================================================
-        function selectTextImageStyle(styleName, imageUrl, facesCount = 1) {
-            isTextImageStyleSelected = true;
-            selectedStyleName = styleName;
-            
-            // 🔥 СОХРАНЯЕМ: количество лиц для этой карточки в глобальную переменную
-            selectedStyleFacesCount = facesCount;
+function selectTextImageStyle(styleName, imageUrl, facesCount = 1, promptText = '') {
+    isTextImageStyleSelected = true;
+    selectedStyleName = styleName;
+    
+    // 🔥 СОХРАНЯЕМ: промт для этой карточки в глобальную переменную
+    selectedStylePrompt = promptText;
+    
+    // 🔥 СОХРАНЯЕМ: количество лиц для этой карточки в глобальную переменную
+    selectedStyleFacesCount = facesCount;
 
-            document.getElementById('text_image_title').innerText = styleName;
-            
-            // 🔥 ДИНАМИЧЕСКИЙ ТЕКСТ ПОДСКАЗКИ: информируем юзера, сколько селфи попросит бот
-            if (facesCount > 1) {
-                document.getElementById('text_image_subtitle').innerText = `Настройте параметры кадра и запустите генерацию::`;
-            } else {
-                document.getElementById('text_image_subtitle').innerText = "Настройте параметры кадра и запустите генерацию:";
-            }
+    document.getElementById('text_image_title').innerText = styleName;
+    
+    // 🔥 ДИНАМИЧЕСКИЙ ТЕКСТ ПОДСКАЗКИ: информируем юзера, сколько селфи попросит бот
+    if (facesCount > 1) {
+        document.getElementById('text_image_subtitle').innerText = `Настройте параметры кадра и запустите генерацию::`;
+    } else {
+        document.getElementById('text_image_subtitle').innerText = "Настройте параметры кадра и запустите генерацию:";
+    }
 
-            document.getElementById('text_image_gallery').style.display = "none"; 
-            document.getElementById('text_image_settings_block').style.display = "block"; // Открываем пульт управления
-            
-            if (document.getElementById('text_image_spacer')) document.getElementById('text_image_spacer').style.display = 'none';
-            // Показываем черную рамку с картинкой превью (только для шаблонов!)
-            if (document.getElementById('preset_preview_block')) document.getElementById('preset_preview_block').style.display = 'block';
-            if (document.getElementById('custom_instruction_text')) document.getElementById('custom_instruction_text').style.display = 'none';
+    document.getElementById('text_image_gallery').style.display = "none"; 
+    document.getElementById('text_image_settings_block').style.display = "block"; // Открываем пульт управления
+    
+    if (document.getElementById('text_image_spacer')) document.getElementById('text_image_spacer').style.display = 'none';
+    // Показываем черную рамку с картинкой превью (только для шаблонов!)
+    if (document.getElementById('preset_preview_block')) document.getElementById('preset_preview_block').style.display = 'block';
+    if (document.getElementById('custom_instruction_text')) document.getElementById('custom_instruction_text').style.display = 'none';
 
-            document.getElementById('text_image_large_preview').src = imageUrl;
+    document.getElementById('text_image_large_preview').src = imageUrl;
 
-            selectedTextQuality = 'schnell';
-            selectedTextRatio = '9:16';
-            document.getElementById('btn_text_quality').innerHTML = `⚡ Standard`;
-            document.getElementById('btn_text_ratio').innerHTML = `9:16`;
+    selectedTextQuality = 'schnell';
+    selectedTextRatio = '9:16';
+    document.getElementById('btn_text_quality').innerHTML = `⚡ Standard`;
+    document.getElementById('btn_text_ratio').innerHTML = `9:16`;
 
-            if (typeof updateNeoStartButtonText === 'function') updateNeoStartButtonText();
-            if (tg && tg.MainButton) tg.MainButton.hide();
-        }
+    if (typeof updateNeoStartButtonText === 'function') updateNeoStartButtonText();
+    if (tg && tg.MainButton) tg.MainButton.hide();
+}
+
+// ====================================================================================
+// 2. ФУНКЦИЯ посредник для чтения промтов
+// ====================================================================================
+function handleCardClick(cardElement) {
+    // Включаем вибрацию Telegram
+    if (window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) {
+        Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+    }
+
+    // Достаем все данные из data-атрибутов карточки
+    const styleName = cardElement.getAttribute('data-style-name');
+    const imageUrl = cardElement.getAttribute('data-image-url');
+    const facesCount = parseInt(cardElement.getAttribute('data-faces-count')) || 1;
+    const promptText = cardElement.getAttribute('data-prompt') || '';
+
+    // Вызываем вашу родную функцию, передавая ей все данные
+    selectTextImageStyle(styleName, imageUrl, facesCount, promptText);
+}
+
+// ====================================================================================
+// 2. код подгрузки для 1 режима карточек текст + фото
+// ====================================================================================
+document.addEventListener("DOMContentLoaded", () => {
+    fetch('cards-template.html') // Укажите правильный путь к файлу с карточками
+        .then(response => {
+            if (!response.ok) throw new Error('Ошибка загрузки карточек');
+            return response.text();
+        })
+        .then(html => {
+            document.getElementById('text_image_gallery').innerHTML = html;
+        })
+        .catch(error => console.error('Не удалось загрузить галерею:', error));
+});
 
 // ====================================================================================
 // 2. ФУНКЦИЯ переключения табов (вкладок) для текст + фото
 // ====================================================================================
         
-        function switchTextTab(category, element) {
-            const tabs = document.querySelectorAll('#text_image_tabs .tab-btn');
-            tabs.forEach(tab => tab.classList.remove('active'));
-            element.classList.add('active');
+function switchTextTab(category, element) {
+    // 🔥 ДОБАВЛЯЕМ: Легкий виброотклик при переключении категорий (Муж/Жен/Свой)
+    if (window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) {
+        Telegram.WebApp.HapticFeedback.impactOccurred('light');
+    }
 
-            const gallery = document.getElementById('text_image_gallery');
-            const settingsBlock = document.getElementById('text_image_settings_block');
-            const presetPreviewBlock = document.getElementById('preset_preview_block');
-            const instructionText = document.getElementById('custom_instruction_text');
-            const facesRow = document.getElementById('faces_count_selector_row');
+    const tabs = document.querySelectorAll('#text_image_tabs .tab-btn');
+    tabs.forEach(tab => tab.classList.remove('active'));
+    element.classList.add('active');
 
-            if (category === 'custom') {
-                currentGenerationMode = 'custom'; 
-                isTextImageStyleSelected = true;  
-                selectedStyleName = "Свой промпт";
+    const gallery = document.getElementById('text_image_gallery');
+    const settingsBlock = document.getElementById('text_image_settings_block');
+    const presetPreviewBlock = document.getElementById('preset_preview_block');
+    const instructionText = document.getElementById('custom_instruction_text');
+    const facesRow = document.getElementById('faces_count_selector_row');
 
-                // 🔥 МЕНЯЕМ ЗАГОЛОВКИ СТРОГО ДЛЯ ВКЛАДКИ "СВОЙ"
-                document.getElementById('text_image_title').innerText = "Свой сюжет (Фото + Текст)";
-                document.getElementById('text_image_subtitle').innerText = "Настройте параметры вашей персональной генерации:";
+    if (category === 'custom') {
+        currentGenerationMode = 'custom'; 
+        isTextImageStyleSelected = true;  
+        selectedStyleName = "Свой промпт";
 
-                gallery.style.display = 'none';            // Прячем сетку шаблонов
-                settingsBlock.style.display = 'block';      // Открываем блок с кнопками
-                if (presetPreviewBlock) presetPreviewBlock.style.display = 'none'; // НАГЛУХО ПРЯЧЕМ ЧЕРНЫЙ ПРЯМОУГОЛЬНИК
-                if (instructionText) instructionText.style.display = 'block';      // Показываем инструкцию
-                
-                // Включаем выбор людей для вкладки "Свой"
-                if (facesRow) facesRow.style.display = 'block';
-                selectFacesCount(1, document.getElementById('btn_faces_1')); // Ставим 1 чел. по дефолту
+        document.getElementById('text_image_title').innerText = "Свой сюжет (Фото + Текст)";
+        document.getElementById('text_image_subtitle').innerText = "Настройте параметры вашей персональной генерации:";
 
-                // ВКЛЮЧАЕМ РАСПОРКУ ВО ВКЛАДКЕ "СВОЙ"
-                if (document.getElementById('text_image_spacer')) document.getElementById('text_image_spacer').style.display = 'block';
+        gallery.style.display = 'none';            
+        settingsBlock.style.display = 'block';      
+        if (presetPreviewBlock) presetPreviewBlock.style.display = 'none'; 
+        if (instructionText) instructionText.style.display = 'block';      
+        
+        if (facesRow) facesRow.style.display = 'block';
+        selectFacesCount(1, document.getElementById('btn_faces_1')); 
+
+        if (document.getElementById('text_image_spacer')) document.getElementById('text_image_spacer').style.display = 'block';
+    } else {
+        currentGenerationMode = 'preset'; 
+        isTextImageStyleSelected = false; 
+
+        document.getElementById('text_image_title').innerText = "Примеры генераций Фото + Текст";
+        document.getElementById('text_image_subtitle').innerText = "Выберите желаемый стиль для настройки:";
+
+        gallery.style.display = 'grid';            
+        settingsBlock.style.display = 'none';      
+        if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';
+        if (instructionText) instructionText.style.display = 'none';
+        
+        if (facesRow) facesRow.style.display = 'none';
+
+        if (document.getElementById('text_image_spacer')) document.getElementById('text_image_spacer').style.display = 'none';
+
+        const cards = document.querySelectorAll('.phone-template-card');
+        cards.forEach(card => {
+            const cardCategory = card.getAttribute('data-category');
+            if (category === 'all' || cardCategory === category) {
+                card.style.display = 'block';
             } else {
-                currentGenerationMode = 'preset'; 
-                isTextImageStyleSelected = false; 
-
-                // 🔥 ВОЗВРАЩАЕМ СТАНДАРТНЫЕ ЗАГОЛОВКИ ДЛЯ ОСТАЛЬНЫХ ТАБОВ С ГАЛЕРЕЕЙ
-                document.getElementById('text_image_title').innerText = "Примеры генераций Фото + Текст";
-                document.getElementById('text_image_subtitle').innerText = "Выберите желаемый стиль для настройки:";
-
-                gallery.style.display = 'grid';            // Показываем сетку шаблонов обратно
-                settingsBlock.style.display = 'none';      // Скрываем нижний block
-                if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';
-                if (instructionText) instructionText.style.display = 'none';
-                
-                // Наглухо прячем выбор людей, когда юзер вернулся в галерею карточек
-                if (facesRow) facesRow.style.display = 'none';
-
-                // ВЫКЛЮЧАЕМ РАСПОРКУ В ОСТАЛЬНЫХ ТАБАХ
-                if (document.getElementById('text_image_spacer')) document.getElementById('text_image_spacer').style.display = 'none';
-
-                const cards = document.querySelectorAll('.phone-template-card');
-                cards.forEach(card => {
-                    const cardCategory = card.getAttribute('data-category');
-                    if (category === 'all' || cardCategory === category) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
+                card.style.display = 'none';
             }
-        }
+        });
+    }
+}
 
 
 // ====================================================================================

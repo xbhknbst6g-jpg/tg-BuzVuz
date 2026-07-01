@@ -897,24 +897,11 @@ function sendToTelegram(payload) {
         let faces = payload.faces_count || 1;
         let isCustom = payload.is_custom_text_mode ? '1' : '0';
 
-        // 🔥 СУПЕР-БЕЗОПАСНЫЙ ВАРИАНТ ПАРСИНГА ССЫЛКИ
-        let shortImageId = 'none';
-        try {
-            if (!payload.is_custom_text_mode && window.selectedStyleImageUrl) {
-                // Вытаскиваем чистое имя файла из конца ссылки (все, что после последнего слэша)
-                const fullFileName = window.selectedStyleImageUrl.substring(window.selectedStyleImageUrl.lastIndexOf('/') + 1);
-                if (fullFileName) {
-                    // Отрезаем строго первые 8 символов от имени файла (например: E6AC31CA)
-                    shortImageId = fullFileName.substring(0, 8); 
-                }
-            }
-        } catch (js_err) {
-            console.error("Ошибка парсинга ссылки в WebApp:", js_err);
-            shortImageId = 'none';
-        }
+        // 🔥 ВОЗВРАЩАЕМ ТВОЙ РОДНОЙ ВАРИАНТ: Генерируем короткий ID стиля (DubaiHelicopter, RussianRoad)
+        let styleId = payload.style_title ? payload.style_title.replace(/[^a-zA-Z0-9]/g, '') : 'none';
 
-        // 🔥 Передаем универсальный короткий ID под маркером _p_
-        let startParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}_p_${shortImageId}`;
+        // Передаем короткий ID стиля в самый конец параметра start, как было у тебя изначально
+        let startParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}_s_${styleId}`;
         let telegramLink = `https://t.me/${botUsername}?start=${startParam}`;
 
         console.log("[WebApp Link] Перенаправление по ссылке:", telegramLink);
@@ -933,6 +920,7 @@ function sendToTelegram(payload) {
         window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
     }
 }
+
 
 
 // 1. ФУНКЦИЯ СБОРКИ И ОТПРАВКИ (START)

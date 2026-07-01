@@ -891,29 +891,21 @@ function sendToTelegram(payload) {
     try {
         const botUsername = "ChatGPT_BuzVuz_bot"; 
 
-        // Защита: если payload вообще не прилетел, создаем пустой объект
-        if (!payload) payload = {};
-
-        // Безопасно считываем параметры. Если пусто — ставим стандартные значения
-        let mode = payload.ai_model_engine || 'banana';
+        let mode = payload.ai_model_engine || 'pulid';
         let quality = payload.quality || 'schnell';
-        let ratio = payload.aspect_ratio ? payload.aspect_ratio.replace(':', '-') : '9-16';
+        let ratio = payload.aspect_ratio ? payload.aspect_ratio.replace(':', '-') : '1-1';
         let faces = payload.faces_count || 1;
         let isCustom = payload.is_custom_text_mode ? '1' : '0';
 
-        // 🔥 ТВОЙ РОДНОЙ РАБОЧИЙ ВАРИАНТ: Генерируем короткий ID стиля (RussianRoad, Glamour)
-        let styleId = 'none';
-        if (payload.style_title) {
-            styleId = payload.style_title.replace(/[^a-zA-Z0-9]/g, '');
-        }
+        // 🔥 ТВОЙ РОДНОЙ ЧИСТЫЙ ВАРИАНТ: Генерируем ультра-короткий ID стиля из названия карточки
+        let styleId = payload.style_title ? payload.style_title.replace(/[^a-zA-Z0-9]/g, '') : 'none';
 
-        // Собираем супер-легкую ссылку (всего около 45 символов, со свистом летит в Телеграм)
+        // Твой оригинальный рабочий параметр start
         let startParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}_s_${styleId}`;
         let telegramLink = `https://t.me/${botUsername}?start=${startParam}`;
 
         console.log("[WebApp Link] Перенаправление по ссылке:", telegramLink);
 
-        // Финальный вызов открытия бота во весь экран
         if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openTelegramLink === 'function') {
             window.Telegram.WebApp.openTelegramLink(telegramLink);
             setTimeout(() => {
@@ -924,11 +916,10 @@ function sendToTelegram(payload) {
         }
 
     } catch (e) {
-        console.error("Критическая ошибка генерации диплинка внутри sendToTelegram:", e);
+        console.error("Ошибка генерации диплинка внутри sendToTelegram:", e);
         window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
     }
 }
-
 
 
 // 1. ФУНКЦИЯ СБОРКИ И ОТПРАВКИ (START)

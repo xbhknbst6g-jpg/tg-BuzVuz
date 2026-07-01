@@ -497,24 +497,11 @@ function selectTextImageStyle(styleName, imageUrl, facesCount = 1, promptText = 
     window.selectedStyleName = styleName;
     window.selectedStylePrompt = promptText;
     window.selectedStyleFacesCount = facesCount;
+    window.selectedStyleImageUrl = imageUrl; // ← 🔥 ВОТ ЭТУ СТРОЧКУ НУЖНО ДОБАВИТЬ!
 
     document.getElementById('text_image_title').innerText = styleName;
     
-    // 🔥 ДИНАМИЧЕСКИЙ ТЕКСТ ПОДСКАЗКИ: информируем юзера, сколько селфи попросит бот
-    if (facesCount > 1) {
-        document.getElementById('text_image_subtitle').innerText = `Настройте параметры кадра и запустите генерацию::`;
-    } else {
-        document.getElementById('text_image_subtitle').innerText = "Настройте параметры кадра и запустите генерацию:";
-    }
-
-    document.getElementById('text_image_gallery').style.display = "none"; 
-    document.getElementById('text_image_settings_block').style.display = "block"; // Открываем пульт управления
-    
-    if (document.getElementById('text_image_spacer')) document.getElementById('text_image_spacer').style.display = 'none';
-    // Показываем черную рамку с картинкой превью (только для шаблонов!)
-    if (document.getElementById('preset_preview_block')) document.getElementById('preset_preview_block').style.display = 'block';
-    if (document.getElementById('custom_instruction_text')) document.getElementById('custom_instruction_text').style.display = 'none';
-
+    // ... далее весь твой код без изменений ...
     document.getElementById('text_image_large_preview').src = imageUrl;
 
     selectedTextQuality = 'schnell';
@@ -900,7 +887,6 @@ window.addEventListener('DOMContentLoaded', () => {
 // ====================================================================================
 // 8. ПЕРЕДАТЧИКИ JSON БОТУ И СИНХРОНИЗАЦИЯ С ПРЕСЕТАМИ ШАБЛОНОВ
 // ====================================================================================
-
 function sendToTelegram(payload) {
     try {
         const botUsername = "ChatGPT_BuzVuz_bot"; 
@@ -911,11 +897,18 @@ function sendToTelegram(payload) {
         let faces = payload.faces_count || 1;
         let isCustom = payload.is_custom_text_mode ? '1' : '0';
 
-        // 🔥 ИСПРАВЛЕНО: Генерируем ультра-короткий ID стиля из названия карточки (DubaiHelicopter, RussianRoad)
-        let styleId = payload.style_title ? payload.style_title.replace(/[^a-zA-Z0-9]/g, '') : 'none';
+        // 🌟 УНИВЕРСАЛЬНЫЙ ФИКС: Вытаскиваем имя файла из КОНЦА любой ссылки
+        let imageFileName = 'none';
+        if (!payload.is_custom_text_mode && window.selectedStyleImageUrl) {
+            // Регулярка забирает всё, что идет после последнего слэша до самого конца строки
+            const match = window.selectedStyleImageUrl.match(/\/([^\/?#]+)$/);
+            if (match && match[1]) {
+                imageFileName = match[1]; // Получим чистый хвост, например: "E6AC31CA-5E0C-4290-BB1A-E9D6FE6CCB44.jpg"
+            }
+        }
 
-        // 🔥 ОБНОВЛЯЕМ: Добавляем короткий ID стиля в самый конец параметра start
-        let startParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}_s_${styleId}`;
+        // 🔥 Передаем имя файла в параметр start под новой буквой _m_ (media)
+        let startParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}_m_${imageFileName}`;
         let telegramLink = `https://t.me/${botUsername}?start=${startParam}`;
 
         console.log("[WebApp Link] Перенаправление по ссылке:", telegramLink);
@@ -934,6 +927,7 @@ function sendToTelegram(payload) {
         window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
     }
 }
+
 
 // 1. ФУНКЦИЯ СБОРКИ И ОТПРАВКИ (START)
 function sendPhotoTextData() { 

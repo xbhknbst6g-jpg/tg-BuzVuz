@@ -493,13 +493,10 @@
 // ====================================================================================
 function selectTextImageStyle(styleName, imageUrl, facesCount = 1, promptText = '') {
     isTextImageStyleSelected = true;
-    selectedStyleName = styleName;
-    
-    // 🔥 СОХРАНЯЕМ: промт для этой карточки в глобальную переменную
-    selectedStylePrompt = promptText;
-    
-    // 🔥 СОХРАНЯЕМ: количество лиц для этой карточки в глобальную переменную
-    selectedStyleFacesCount = facesCount;
+     // 🔥 ЖЕСТКИЙ ФИКС: Записываем данные в глобальный window
+    window.selectedStyleName = styleName;
+    window.selectedStylePrompt = promptText;
+    window.selectedStyleFacesCount = facesCount;
 
     document.getElementById('text_image_title').innerText = styleName;
     
@@ -904,10 +901,9 @@ window.addEventListener('DOMContentLoaded', () => {
 // 8. ПЕРЕДАТЧИКИ JSON БОТУ И СИНХРОНИЗАЦИЯ С ПРЕСЕТАМИ ШАБЛОНОВ
 // ====================================================================================
 
-// 2. ИСПРАВЛЕННАЯ И СТАБИЛЬНАЯ ФУНКЦИЯ ФОРМИРОВАНИЯ ССЫЛКИ
 function sendToTelegram(payload) {
     try {
-        const botUsername = "ChatGPT_BuzVuz_bot"; // Твой точный юзернейм бота
+        const botUsername = "ChatGPT_BuzVuz_bot"; 
 
         let mode = payload.ai_model_engine || 'pulid';
         let quality = payload.quality || 'schnell';
@@ -915,29 +911,26 @@ function sendToTelegram(payload) {
         let faces = payload.faces_count || 1;
         let isCustom = payload.is_custom_text_mode ? '1' : '0';
 
-        // 🔥 СЛЭШ И ЗНАК ДОЛЛАРА НА МЕСТЕ: Ссылка соберется идеально правильно!
-        let startParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}`;
-        let telegramLink = `https://t.me/${botUsername}?start=${startParam}`;
+        // 🔥 ИСПРАВЛЕНО: Генерируем ультра-короткий ID стиля из названия карточки (DubaiHelicopter, RussianRoad)
+        let styleId = payload.style_title ? payload.style_title.replace(/[^a-zA-Z0-9]/g, '') : 'none';
+
+        // 🔥 ОБНОВЛЯЕМ: Добавляем короткий ID стиля в самый конец параметра start
+        let startParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}_s_${styleId}`;
+        let telegramLink = `https://t.me{botUsername}?start=${startParam}`;
 
         console.log("[WebApp Link] Перенаправление по ссылке:", telegramLink);
 
-        // Вызываем официальный переход Телеграма, который разблокирован на всех смартфонах
         if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openTelegramLink === 'function') {
             window.Telegram.WebApp.openTelegramLink(telegramLink);
             window.Telegram.WebApp.close();
         } else {
-            // Если окружение WebApp на айфоне залагало, принудительно открываем ссылку через браузер
             window.location.href = telegramLink;
         }
 
     } catch (e) {
         console.error("Ошибка генерации диплинка внутри sendToTelegram:", e);
-        window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
+        window.location.href = "https://t.me";
     }
-}
-// Глобальная переменная для количества лиц (если еще не была объявлена выше)
-if (typeof selectedStyleFacesCount === 'undefined') {
-    window.selectedStyleFacesCount = 1;
 }
 
 // 1. ФУНКЦИЯ СБОРКИ И ОТПРАВКИ (START)

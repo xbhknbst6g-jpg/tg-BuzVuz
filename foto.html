@@ -922,6 +922,9 @@ function sendToTelegram(payload) {
 
         if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openTelegramLink === 'function') {
             window.Telegram.WebApp.openTelegramLink(telegramLink);
+            setTimeout(() => {
+                window.Telegram.WebApp.close();
+            }, 100);
         } else {
             window.location.href = telegramLink;
         }

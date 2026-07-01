@@ -897,19 +897,21 @@ function sendToTelegram(payload) {
         let faces = payload.faces_count || 1;
         let isCustom = payload.is_custom_text_mode ? '1' : '0';
 
-        // 🌟 УНИВЕРСАЛЬНЫЙ ФИКС: Вытаскиваем имя файла из КОНЦА любой ссылки
-        let imageFileName = 'none';
+        // 🌟 ВЕЧНЫЙ УНИВЕРСАЛЬНЫЙ ФИКС: Берем первые 8 символов имени файла из КОНЦА любой ссылки
+        let shortImageId = 'none';
         if (!payload.is_custom_text_mode && window.selectedStyleImageUrl) {
-            // Регулярка забирает всё, что идет после последнего слэша до самого конца строки
-            const match = window.selectedStyleImageUrl.match(/\/([^\/?#]+)$/);
-            if (match && match[1]) {
-                imageFileName = match[1]; // Получим чистый хвост, например: "E6AC31CA-5E0C-4290-BB1A-E9D6FE6CCB44.jpg"
+            // Вытаскиваем чистое имя файла из конца ссылки (все, что после последнего слэша)
+            const fullFileName = window.selectedStyleImageUrl.substring(window.selectedStyleImageUrl.lastIndexOf('/') + 1);
+            if (fullFileName) {
+                // Отрезаем строго первые 8 символов от имени файла
+                shortImageId = fullFileName.substring(0, 8); // Получим чистый короткий ID кадра
             }
         }
 
-        // 🔥 Передаем имя файла в параметр start под новой буквой _m_ (media)
-        let startParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}_m_${imageFileName}`;
+        // 🔥 Передаем универсальный короткий ID под маркером _p_
+        let startParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}_p_${shortImageId}`;
         let telegramLink = `https://t.me/${botUsername}?start=${startParam}`;
+
 
         console.log("[WebApp Link] Перенаправление по ссылке:", telegramLink);
 

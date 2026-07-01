@@ -916,7 +916,7 @@ function sendToTelegram(payload) {
 
         // 🔥 ОБНОВЛЯЕМ: Добавляем короткий ID стиля в самый конец параметра start
         let startParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}_s_${styleId}`;
-        let telegramLink = `https://t.me{botUsername}?start=${startParam}`;
+        let telegramLink = `https://t.me/${botUsername}?start=${startParam}`;
 
         console.log("[WebApp Link] Перенаправление по ссылке:", telegramLink);
 

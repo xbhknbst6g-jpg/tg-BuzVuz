@@ -956,11 +956,10 @@ function sendPhotoTextData() {
         let styleTitleToSend = "";
 
         if (!isCustomText) {
-            // Если это готовая карточка — забираем наш длинный промпт из глобальной переменной
-            promptToSend = (typeof selectedStylePrompt !== 'undefined') ? selectedStylePrompt : "";
-            styleTitleToSend = (typeof selectedStyleName !== 'undefined') ? selectedStyleName : "Шаблон";
+            // Читаем напрямую из вечной глобальной памяти window
+            promptToSend = window.selectedStylePrompt || "";
+            styleTitleToSend = window.selectedStyleName || "none";
         }
-
         console.log("[WebApp] Сборка пакета. Модель:", currentModel, "Кастом:", isCustomText, "Лиц:", facesCountToSend);
 
         // 🔥 ИСПРАВЛЕНО: Больше НЕ передаем гигантский текст промпта в payload! 

@@ -929,7 +929,7 @@ function sendToTelegram(payload) {
 
     } catch (e) {
         console.error("Ошибка генерации диплинка внутри sendToTelegram:", e);
-        window.location.href = "https://t.me";
+        window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
     }
 }
 
@@ -961,7 +961,8 @@ function sendPhotoTextData() {
 
         console.log("[WebApp] Сборка пакета. Модель:", currentModel, "Кастом:", isCustomText, "Лиц:", facesCountToSend);
 
-        // Передаем управление в функцию генерации ссылки
+        // 🔥 ИСПРАВЛЕНО: Больше НЕ передаем гигантский текст промпта в payload! 
+        // Ссылка гарантированно будет короткой, легкой и никогда не заблокируется Телеграмом.
         sendToTelegram({ 
             mode_trigger: 'text_image', 
             aspect_ratio: ratio, 
@@ -969,10 +970,9 @@ function sendPhotoTextData() {
             ai_model_engine: currentModel,         
             is_custom_text_mode: isCustomText,     
             faces_count: facesCountToSend,
-            // 🔥 Пакет данных пополняется текстом стиля для бэкенда:
-            style_title: styleTitleToSend,
-            prompt_text: promptToSend          
+            style_title: styleTitleToSend          
         }); 
+
 
     } catch (err) {
         console.error("Критический сбой внутри функции sendPhotoTextData:", err);

@@ -530,19 +530,45 @@ function selectTextImageStyle(styleName, imageUrl, facesCount = 1, promptText = 
 // 2. ФУНКЦИЯ посредник для чтения промтов
 // ====================================================================================
 function handleCardClick(cardElement) {
-    // Включаем вибрацию Telegram
+    // 🌟 ТВОЯ РОДНАЯ ВИБРАЦИЯ TELEGRAM
     if (window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) {
         Telegram.WebApp.HapticFeedback.impactOccurred('medium');
     }
 
-    // Достаем все данные из data-атрибутов карточки
-    const styleName = cardElement.getAttribute('data-style-name');
-    const imageUrl = cardElement.getAttribute('data-image-url');
-    const facesCount = parseInt(cardElement.getAttribute('data-faces-count')) || 1;
-    const promptText = cardElement.getAttribute('data-prompt') || '';
+    try {
+        // Достаем данные из атрибутов карточки
+        const styleTitle = cardElement.getAttribute('data-style-name');
+        const facesCount = cardElement.getAttribute('data-faces-count') || 1;
 
-    // Вызываем вашу родную функцию, передавая ей все данные
-    selectTextImageStyle(styleName, imageUrl, facesCount, promptText);
+        // 🔥 УМНОЕ ОПРЕДЕЛЕНИЕ МОДЕЛИ: 
+        // Проверяем, какой движок сейчас выбран на сайте. 
+        // Если у тебя переменная или тумблер называется по-другому, подставь свой глобальный флаг (например, window.currentModel)
+        let currentMode = 'pulid';
+        if (typeof window.ai_model_engine !== 'undefined') {
+            currentMode = window.ai_model_engine; 
+        } else if (document.getElementById('model-toggle') && document.getElementById('model-toggle').checked) {
+            // Если тумблерchecked — ставим banana, если нет — pulid
+            currentMode = 'banana';
+        }
+
+        console.log(`[Card Click] Стиль: ${styleTitle} | Движок: ${currentMode}`);
+
+        // Собираем payload, который поймет твой бэкенд
+        const payload = {
+            ai_model_engine: currentMode, // Сюда динамически встанет 'pulid' или 'banana'
+            quality: 'schnell',
+            aspect_ratio: '9-16',
+            faces_count: parseInt(facesCount),
+            is_custom_text_mode: false, 
+            style_title: styleTitle     
+        };
+
+        // Мгновенно отправляем ссылку в бота
+        sendToTelegram(payload);
+
+    } catch (error) {
+        console.error("Критическая ошибка при клике на карточку:", error);
+    }
 }
 
 // ====================================================================================

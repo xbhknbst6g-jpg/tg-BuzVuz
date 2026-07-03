@@ -911,18 +911,20 @@ function sendToTelegram(payload) {
         let faces = payload.faces_count || 1;
         let isCustom = payload.is_custom_text_mode ? '1' : '0';
 
-        // 🔥 Генерируем ультра-короткий ID стиля из названия карточки (DubaiHelicopter, RussianRoad)
+        // 🔥 ИСПРАВЛЕНО: Генерируем ультра-короткий ID стиля из названия карточки (DubaiHelicopter, RussianRoad)
         let styleId = payload.style_title ? payload.style_title.replace(/[^a-zA-Z0-9]/g, '') : 'none';
 
-        // 🔥 Короткий ID стиля в самый конец параметра start
+        // 🔥 ОБНОВЛЯЕМ: Добавляем короткий ID стиля в самый конец параметра start
         let startParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}_s_${styleId}`;
         let telegramLink = `https://t.me/${botUsername}?start=${startParam}`;
 
         console.log("[WebApp Link] Перенаправление по ссылке:", telegramLink);
 
         if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openTelegramLink === 'function') {
-            // ✅ ПРОСТО ОТКРЫВАЕМ ССЫЛКУ. Telegram сам плавно переключит окно на чат с ботом.
             window.Telegram.WebApp.openTelegramLink(telegramLink);
+            setTimeout(() => {
+                window.Telegram.WebApp.close();
+            }, 100);
         } else {
             window.location.href = telegramLink;
         }
@@ -932,7 +934,6 @@ function sendToTelegram(payload) {
         window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
     }
 }
-
 
 // 1. ФУНКЦИЯ СБОРКИ И ОТПРАВКИ (START)
 function sendPhotoTextData() { 

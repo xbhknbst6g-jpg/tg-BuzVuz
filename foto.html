@@ -491,14 +491,17 @@
 // ====================================================================================
 // 2. ФУНКЦИЯ КЛИКА ПО КАРТОЧКЕ (Сброс кнопок-капсул в дефолт и показ пульта)
 // ====================================================================================
-// 1. РОДНАЯ ФУНКЦИЯ КЛИКА НА КАРТОЧКУ (Select Style)
 function selectTextImageStyle(styleName, imageUrl, facesCount = 1, promptText = '') {
     isTextImageStyleSelected = true;
     
     // Записываем данные строго в твои родные переменные window
     window.selectedStyleName = styleName;
-    window.selectedStylePrompt = promptText;
+    window.selectedStylePrompt = promptText; // Твой чистый промт
     window.selectedStyleFacesCount = facesCount;
+    
+    // 🔥 ОЧИСТКА: Явно говорим, что картинки-стиля для бэкенда НЕТ.
+    // Если у тебя используется переменная window.selectedStyleImage или похожая, занули её здесь:
+    window.selectedStyleImage = null; 
 
     document.getElementById('text_image_title').innerText = styleName;
     
@@ -515,7 +518,14 @@ function selectTextImageStyle(styleName, imageUrl, facesCount = 1, promptText = 
     if (document.getElementById('preset_preview_block')) document.getElementById('preset_preview_block').style.display = 'block';
     if (document.getElementById('custom_instruction_text')) document.getElementById('custom_instruction_text').style.display = 'none';
 
-    document.getElementById('text_image_large_preview').src = imageUrl;
+    // Картинка меняется ТОЛЬКО в самом плеере/превью на экране, чтобы UI не был пустым
+    if (imageUrl) {
+        document.getElementById('text_image_large_preview').style.display = 'block';
+        document.getElementById('text_image_large_preview').src = imageUrl;
+    } else {
+        // Если картинку вообще не передали (чистый Свой режим), прячем блок превью
+        if (document.getElementById('preset_preview_block')) document.getElementById('preset_preview_block').style.display = 'none';
+    }
 
     selectedTextQuality = 'schnell';
     selectedTextRatio = '9:16';
@@ -529,37 +539,37 @@ function selectTextImageStyle(styleName, imageUrl, facesCount = 1, promptText = 
 // ====================================================================================
 // 2. ФУНКЦИЯ посредник для чтения промтов
 // ====================================================================================
+// ====================================================================================
+// ОБНОВЛЕННАЯ ФУНКЦИЯ ДЛЯ 1 РЕЖИМА (Клик по карточке)
+// ====================================================================================
 function handleCardClick(cardElement) {
-    // 🌟 ТВОЯ РОДНАЯ ВИБРАЦИЯ TELEGRAM
+    // 🌟 Родная вибрация Telegram
     if (window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) {
         Telegram.WebApp.HapticFeedback.impactOccurred('medium');
     }
 
     try {
         // Достаем данные из атрибутов карточки
-        const styleTitle = cardElement.getAttribute('data-style-name');
+        const styleTitle = cardElement.getAttribute('data-style-name') || '';
         const facesCount = cardElement.getAttribute('data-faces-count') || 1;
 
-        // 🔥 УМНОЕ ОПРЕДЕЛЕНИЕ МОДЕЛИ: 
-        // Проверяем, какой движок сейчас выбран на сайте. 
-        // Если у тебя переменная или тумблер называется по-другому, подставь свой глобальный флаг (например, window.currentModel)
+        // 🔥 Выбор модели: проверяем, какой движок сейчас выбран на сайте
         let currentMode = 'pulid';
         if (typeof window.ai_model_engine !== 'undefined') {
             currentMode = window.ai_model_engine; 
         } else if (document.getElementById('model-toggle') && document.getElementById('model-toggle').checked) {
-            // Если тумблерchecked — ставим banana, если нет — pulid
             currentMode = 'banana';
         }
 
-        console.log(`[Card Click] Стиль: ${styleTitle} | Движок: ${currentMode}`);
+        console.log(`[Режим Карточек] Отправка в бота. Стиль: ${styleTitle} | Модель: ${currentMode}`);
 
-        // Собираем payload, который поймет твой бэкенд
+        // Собираем payload для мгновенного улета в бота (как ты и просил)
         const payload = {
-            ai_model_engine: currentMode, // Сюда динамически встанет 'pulid' или 'banana'
+            ai_model_engine: currentMode, 
             quality: 'schnell',
             aspect_ratio: '9-16',
             faces_count: parseInt(facesCount),
-            is_custom_text_mode: false, 
+            is_custom_text_mode: false, // Флаг, что это готовый стиль, а не свой текст
             style_title: styleTitle     
         };
 
@@ -932,23 +942,30 @@ function sendToTelegram(payload) {
 
         let mode = payload.ai_model_engine || 'pulid';
         let quality = payload.quality || 'schnell';
-        let ratio = payload.aspect_ratio ? payload.aspect_ratio.replace(':', '-') : '1-1';
+        // Приводим соотношение сторон к формату с дефисом, как просит бэкенд (например, 9-16)
+        let ratio = payload.aspect_ratio ? payload.aspect_ratio.replace(':', '-') : '9-16';
         let faces = payload.faces_count || 1;
         let isCustom = payload.is_custom_text_mode ? '1' : '0';
 
-        // Генерируем ультра-короткий ID стиля из названия карточки без пробелов
+        // Генерируем ID стиля из названия карточки БЕЗ пробелов (например, LoungeCocktail)
         let styleId = payload.style_title ? payload.style_title.replace(/[^a-zA-Z0-9]/g, '') : 'none';
 
-        let startParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}_s_${styleId}`;
+        // Если это Свой режим (isCustom === '1'), то вместо ID стиля бот будет ожидать ручной ввод текста
+        if (isCustom === '1') {
+            styleId = 'custom';
+        }
+
+        // Собираем компактный параметр для диплинка (строго до 64 символов)
+        let startParam = `m_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}_s_${styleId}`;
         let telegramLink = `https://t.me/${botUsername}?start=${startParam}`;
 
-        console.log("[WebApp Link] Перенаправление по ссылке:", telegramLink);
+        console.log("[WebApp Link] Перенаправление в бота:", telegramLink);
 
         if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openTelegramLink === 'function') {
             window.Telegram.WebApp.openTelegramLink(telegramLink);
             setTimeout(() => {
                 window.Telegram.WebApp.close();
-            }, 100);
+            }, 150);
         } else {
             window.location.href = telegramLink;
         }

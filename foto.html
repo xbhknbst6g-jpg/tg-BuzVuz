@@ -530,19 +530,27 @@ function selectTextImageStyle(styleName, imageUrl, facesCount = 1, promptText = 
 // 2. ФУНКЦИЯ посредник для чтения промтов
 // ====================================================================================
 function handleCardClick(cardElement) {
-    // Включаем вибрацию Telegram
+    // 🌟 Родная вибрация Telegram
     if (window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) {
         Telegram.WebApp.HapticFeedback.impactOccurred('medium');
     }
 
-    // Достаем все данные из data-атрибутов карточки
-    const styleName = cardElement.getAttribute('data-style-name');
-    const imageUrl = cardElement.getAttribute('data-image-url');
-    const facesCount = parseInt(cardElement.getAttribute('data-faces-count')) || 1;
-    const promptText = cardElement.getAttribute('data-prompt') || '';
+    try {
+        // 1. Вытаскиваем все данные из атрибутов твоей HTML-карточки
+        const styleName = cardElement.getAttribute('data-style-name') || '';
+        const imageUrl = cardElement.getAttribute('data-image-url') || '';
+        const facesCount = parseInt(cardElement.getAttribute('data-faces-count')) || 1;
+        const promptText = cardElement.getAttribute('data-prompt') || '';
 
-    // Вызываем вашу родную функцию, передавая ей все данные
-    selectTextImageStyle(styleName, imageUrl, facesCount, promptText);
+        console.log(`[Переход] Открываем настройки для стиля: ${styleName}`);
+
+        // 2. 🔥 ОСТАНАВЛИВАЕМ ОТПРАВКУ В БОТА И ВЫЗЫВАЕМ ТВОЕ ОКНО НАСТРОЕК
+        // Эта функция скроет галерею, покажет блок настроек и подставит картинку на весь экран
+        selectTextImageStyle(styleName, imageUrl, facesCount, promptText);
+
+    } catch (error) {
+        console.error("Ошибка при открытии экрана настроек:", error);
+    }
 }
 
 // ====================================================================================
@@ -900,7 +908,6 @@ window.addEventListener('DOMContentLoaded', () => {
 // ====================================================================================
 // 8. ПЕРЕДАТЧИКИ JSON БОТУ И СИНХРОНИЗАЦИЯ С ПРЕСЕТАМИ ШАБЛОНОВ
 // ====================================================================================
-
 function sendToTelegram(payload) {
     try {
         const botUsername = "ChatGPT_BuzVuz_bot"; 
@@ -911,20 +918,24 @@ function sendToTelegram(payload) {
         let faces = payload.faces_count || 1;
         let isCustom = payload.is_custom_text_mode ? '1' : '0';
 
-        // 🔥 ИСПРАВЛЕНО: Генерируем ультра-короткий ID стиля из названия карточки (DubaiHelicopter, RussianRoad)
-        let styleId = payload.style_title ? payload.style_title.replace(/[^a-zA-Z0-9]/g, '') : 'none';
+        // 1. Берем ОРИГИНАЛЬНОЕ название стиля с пробелами (например, "Lounge Cocktail")
+        let styleTitle = payload.style_title || 'none';
+        if (isCustom === '1') {
+            styleTitle = 'custom';
+        }
 
-        // 🔥 ОБНОВЛЯЕМ: Добавляем короткий ID стиля в самый конец параметра start
-        let startParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}_s_${styleId}`;
+        // 2. Собираем чистую строку параметров
+        let rawParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}_s_${styleTitle}`;
+        
+        // 3. 🔥 БЕЗОПАСНО КОДИРУЕМ ССЫЛКУ (пробелы станут %20, бэкенд сам их расшифрует)
+        let startParam = encodeURIComponent(rawParam);
         let telegramLink = `https://t.me/${botUsername}?start=${startParam}`;
 
         console.log("[WebApp Link] Перенаправление по ссылке:", telegramLink);
 
         if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openTelegramLink === 'function') {
+            // Просто открываем, никаких close()
             window.Telegram.WebApp.openTelegramLink(telegramLink);
-            setTimeout(() => {
-                window.Telegram.WebApp.close();
-            }, 100);
         } else {
             window.location.href = telegramLink;
         }
@@ -934,6 +945,8 @@ function sendToTelegram(payload) {
         window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
     }
 }
+
+
 
 // 1. ФУНКЦИЯ СБОРКИ И ОТПРАВКИ (START)
 function sendPhotoTextData() { 

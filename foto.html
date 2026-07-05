@@ -612,7 +612,12 @@ function switchTextTab(category, element) {
         if (instructionText) instructionText.style.display = 'block';      
         
         if (facesRow) facesRow.style.display = 'block';
-        selectFacesCount(1, document.getElementById('btn_faces_1')); 
+
+        // 🔥 ИСПРАВЛЕНО: Проверяем, было ли уже выбрано число лиц (например, 2 или 3)
+        // Если переменная пустая — ставим 1 по умолчанию, подсвечивая первую кнопку.
+        // Если там уже лежало число — повторно активируем именно его, чтобы ничего не сбрасывалось!
+        let savedFaces = window.selectedStyleFacesCount || 1;
+        selectFacesCount(savedFaces, document.getElementById(`btn_faces_${savedFaces}`)); 
 
         if (document.getElementById('text_image_spacer')) document.getElementById('text_image_spacer').style.display = 'block';
     } else {

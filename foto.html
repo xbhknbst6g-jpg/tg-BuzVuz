@@ -524,6 +524,7 @@ function selectTextImageStyle(styleName, imageUrl, facesCount = 1, promptText = 
 
     if (typeof updateNeoStartButtonText === 'function') updateNeoStartButtonText();
     if (tg && tg.MainButton) tg.MainButton.hide();
+    selectFacesCount(facesCount, null);
 }
 
 // ====================================================================================
@@ -647,27 +648,36 @@ function switchTextTab(category, element) {
 // 2. ФУНКЦИЯ выбора количества людей на вкладке "Свой"
 // ====================================================================================
 
-        function selectFacesCount(count, element) {
-            // 1. Записываем выбранное число в глобальную переменную для отправки боту
-            selectedStyleFacesCount = count;
+function selectFacesCount(count, element) {
+    // 🌟 1. Жестко фиксируем значение строго в глобальное окно window
+    window.selectedStyleFacesCount = parseInt(count) || 1;
+    
+    // 2. Ищем кнопки по их ID
+    const btn1 = document.getElementById('btn_faces_1');
+    const btn2 = document.getElementById('btn_faces_2');
+    const btn3 = document.getElementById('btn_faces_3');
 
-            // 2. Ищем кнопки по их ID
-            const btn1 = document.getElementById('btn_faces_1');
-            const btn2 = document.getElementById('btn_faces_2');
-            const btn3 = document.getElementById('btn_faces_3');
+    // Снимаем класс подсветки 'active' со всех кнопок этого ряда
+    if (btn1 && btn2 && btn3) {
+        btn1.classList.remove('active');
+        btn2.classList.remove('active');
+        btn3.classList.remove('active');
+    }
 
-            // Снимаем класс подсветки 'active' со всех кнопок этого ряда
-            if (btn1 && btn2 && btn3) {
-                btn1.classList.remove('active');
-                btn2.classList.remove('active');
-                btn3.classList.remove('active');
-            }
-
-            // 3. Подсвечиваем только ту кнопку, на которую кликнули
-            if (element) {
-                element.classList.add('active');
-            }
+    // 3. Подсвечиваем нужную кнопку
+    if (element) {
+        // Если кликнул юзер — подсвечиваем элемент, на который нажали
+        element.classList.add('active');
+    } else {
+        // Если вызвали программно из карточки — ищем кнопку по ID и подсвечиваем её
+        const targetBtn = document.getElementById(`btn_faces_${count}`);
+        if (targetBtn) {
+            targetBtn.classList.add('active');
         }
+    }
+    
+    console.log("[JS] Счетчик лиц успешно зафиксирован в window:", window.selectedStyleFacesCount);
+}
 
 
 // ====================================================================================

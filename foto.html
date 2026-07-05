@@ -530,19 +530,27 @@ function selectTextImageStyle(styleName, imageUrl, facesCount = 1, promptText = 
 // 2. ФУНКЦИЯ посредник для чтения промтов
 // ====================================================================================
 function handleCardClick(cardElement) {
-    // Включаем вибрацию Telegram
+    // 🌟 Родная вибрация Telegram
     if (window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) {
         Telegram.WebApp.HapticFeedback.impactOccurred('medium');
     }
 
-    // Достаем все данные из data-атрибутов карточки
-    const styleName = cardElement.getAttribute('data-style-name');
-    const imageUrl = cardElement.getAttribute('data-image-url');
-    const facesCount = parseInt(cardElement.getAttribute('data-faces-count')) || 1;
-    const promptText = cardElement.getAttribute('data-prompt') || '';
+    try {
+        // 1. Вытаскиваем все данные из атрибутов твоей HTML-карточки
+        const styleName = cardElement.getAttribute('data-style-name') || '';
+        const imageUrl = cardElement.getAttribute('data-image-url') || '';
+        const facesCount = parseInt(cardElement.getAttribute('data-faces-count')) || 1;
+        const promptText = cardElement.getAttribute('data-prompt') || '';
 
-    // Вызываем вашу родную функцию, передавая ей все данные
-    selectTextImageStyle(styleName, imageUrl, facesCount, promptText);
+        console.log(`[Переход] Открываем настройки для стиля: ${styleName}`);
+
+        // 2. 🔥 ОСТАНАВЛИВАЕМ ОТПРАВКУ В БОТА И ВЫЗЫВАЕМ ТВОЕ ОКНО НАСТРОЕК
+        // Эта функция скроет галерею, покажет блок настроек и подставит картинку на весь экран
+        selectTextImageStyle(styleName, imageUrl, facesCount, promptText);
+
+    } catch (error) {
+        console.error("Ошибка при открытии экрана настроек:", error);
+    }
 }
 
 // ====================================================================================
@@ -900,86 +908,95 @@ window.addEventListener('DOMContentLoaded', () => {
 // ====================================================================================
 // 8. ПЕРЕДАТЧИКИ JSON БОТУ И СИНХРОНИЗАЦИЯ С ПРЕСЕТАМИ ШАБЛОНОВ
 // ====================================================================================
-
 function sendToTelegram(payload) {
     try {
-        const botUsername = "ChatGPT_BuzVuz_bot"; 
+        // Подтягиваем промпт из глобальной памяти, если его забыли передать в payload
+        if (!payload.site_template_prompt && window.selectedStylePrompt) {
+            payload.site_template_prompt = window.selectedStylePrompt;
+        }
 
+        // 🔥 КЛЮЧЕВОЙ МОМЕНТ: Передаем весь объект (вместе с огромным промптом) через sendData
+        if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.sendData === 'function') {
+            console.log("[WebApp] Отправляем данные карточки в бот:", payload);
+            
+            // Телеграм легко переварит этот JSON-текст до 4096 символов
+            window.Telegram.WebApp.sendData(JSON.stringify(payload));
+            
+            // Мягко закрываем WebApp
+            window.Telegram.WebApp.close();
+            return;
+        }
+
+        // Резервный диплинк (оставляем ТОЛЬКО для тестов в обычном браузере, промпт тут обрежется)
+        const botUsername = "ChatGPT_BuzVuz_bot"; 
         let mode = payload.ai_model_engine || 'pulid';
         let quality = payload.quality || 'schnell';
         let ratio = payload.aspect_ratio ? payload.aspect_ratio.replace(':', '-') : '1-1';
         let faces = payload.faces_count || 1;
         let isCustom = payload.is_custom_text_mode ? '1' : '0';
+        let styleTitle = payload.style_title || 'none';
+        if (isCustom === '1') styleTitle = 'custom';
 
-        // 🔥 ИСПРАВЛЕНО: Генерируем ультра-короткий ID стиля из названия карточки (DubaiHelicopter, RussianRoad)
-        let styleId = payload.style_title ? payload.style_title.replace(/[^a-zA-Z0-9]/g, '') : 'none';
-
-        // 🔥 ОБНОВЛЯЕМ: Добавляем короткий ID стиля в самый конец параметра start
-        let startParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}_s_${styleId}`;
-        let telegramLink = `https://t.me/${botUsername}?start=${startParam}`;
-
-        console.log("[WebApp Link] Перенаправление по ссылке:", telegramLink);
-
-        if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openTelegramLink === 'function') {
-            window.Telegram.WebApp.openTelegramLink(telegramLink);
-            setTimeout(() => {
-                window.Telegram.WebApp.close();
-            }, 100);
-        } else {
-            window.location.href = telegramLink;
-        }
+        let rawParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}_s_${styleTitle}`;
+        let startParam = encodeURIComponent(rawParam).substring(0, 60); // Обрезаем ради лимита 64 байта
+        window.location.href = `https://t.me/${botUsername}?start=${startParam}`;
 
     } catch (e) {
-        console.error("Ошибка генерации диплинка внутри sendToTelegram:", e);
+        console.error("Ошибка отправки данных:", e);
         window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
     }
 }
 
+
 // 1. ФУНКЦИЯ СБОРКИ И ОТПРАВКИ (START)
 function sendPhotoTextData() { 
     try {
-        // Определяем вкладку "Свой"
         let isCustomText = (typeof currentGenerationMode !== 'undefined' && currentGenerationMode === 'custom');
-
-        // Чистое значение модели из тумблера ('banana' или 'pulid')
         let currentModel = (typeof selectedAiModelEngine !== 'undefined') ? selectedAiModelEngine : 'banana';
-
-        // Определяем количество лиц
         let facesCountToSend = isCustomText ? 1 : (window.selectedStyleFacesCount || 1);
-
-        // Безопасно считываем пропорции и качество кадра
         let ratio = (typeof selectedTextRatio !== 'undefined') ? selectedTextRatio : '9:16';
         let quality = (typeof selectedTextQuality !== 'undefined') ? selectedTextQuality : 'schnell';
 
-        // 🔥 СОБИРАЕМ ДАННЫЕ СТИЛЯ (Только для шаблонов!)
         let promptToSend = "";
-        let styleTitleToSend = "";
+        let styleTitleToSend = "custom";
 
         if (!isCustomText) {
-            // Читаем напрямую из вечной глобальной памяти window
             promptToSend = window.selectedStylePrompt || "";
             styleTitleToSend = window.selectedStyleName || "none";
+        } else {
+            styleTitleToSend = "custom";
         }
+        
         console.log("[WebApp] Сборка пакета. Модель:", currentModel, "Кастом:", isCustomText, "Лиц:", facesCountToSend);
 
-        // 🔥 ИСПРАВЛЕНО: Больше НЕ передаем гигантский текст промпта в payload! 
-        // Ссылка гарантированно будет короткой, легкой и никогда не заблокируется Телеграмом.
-        sendToTelegram({ 
-            mode_trigger: 'text_image', 
-            aspect_ratio: ratio, 
-            quality: quality,
-            ai_model_engine: currentModel,         
-            is_custom_text_mode: isCustomText,     
-            faces_count: facesCountToSend,
-            style_title: styleTitleToSend          
-        }); 
-
+        // 🔥 ШЛЕМ JSON НАПРЯМУЮ: Ключи строго подстроены под твой Python-хэндлер
+        if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.sendData === 'function') {
+            window.Telegram.WebApp.sendData(JSON.stringify({ 
+                mode_trigger: 'text_image', 
+                aspect_ratio: ratio, 
+                quality: quality,
+                ai_model_engine: currentModel,         
+                is_custom_text_mode: isCustomText, // передаем как boolean true/false     
+                faces_count: facesCountToSend,
+                style_title: styleTitleToSend,
+                prompt_text: promptToSend // 🔥 ТОЧНОЕ СОВПАДЕНИЕ КЛЮЧА С БЭКЕНДОМ!          
+            })); 
+            
+            window.Telegram.WebApp.close();
+        } else {
+            // Резервный вариант для браузера (оставляем твой диплинк)
+            const botUsername = "ChatGPT_BuzVuz_bot"; 
+            let isCustomStr = isCustomText ? '1' : '0';
+            let rawParam = `mode_${currentModel}_q_${quality}_r_${ratio.replace(':', '-')}_f_${facesCountToSend}_c_${isCustomStr}_s_${styleTitleToSend}`;
+            window.location.href = `https://t.me/${botUsername}?start=${encodeURIComponent(rawParam)}`;
+        }
 
     } catch (err) {
         console.error("Критический сбой внутри функции sendPhotoTextData:", err);
         window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
     }
 }
+
               
 // 1. ФУНКЦИЯ ОТПРАВКИ ДАННЫХ ДЛЯ FACE SWAP
 function sendCustomFaceSwapData() { 

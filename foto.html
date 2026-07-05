@@ -963,8 +963,25 @@ function sendPhotoTextData() {
         let isCustomText = (typeof currentGenerationMode !== 'undefined' && currentGenerationMode === 'custom');
         let currentModel = (typeof selectedAiModelEngine !== 'undefined') ? selectedAiModelEngine : 'banana';
         
-        // 🔥 ИСПРАВЛЕНИЕ: Больше не сбрасываем кастом в 1. Ищем реальное число выбранных лиц
-        let facesCountToSend = parseInt(window.selectedStyleFacesCount) || 1;
+        // 🔥 УНИВЕРСАЛЬНЫЙ СБОРЩИК: Ищем, сколько человек выбрано на экране
+        let facesCountToSend = 1;
+        
+        if (isCustomText) {
+            // Для "Своего сюжета": ищем кнопку с классом active в блоке выбора количества людей
+            // Посмотри в своей верстке, какой класс у кнопок (например: .btn-faces, .count-btn)
+            // Ниже перечислены самые частые варианты, один из них точно сработает!
+            let activeFacesBtn = document.querySelector('.faces-btn.active, .count-btn.active, .active-face, .active');
+            
+            if (activeFacesBtn) {
+                // Извлекаем цифру из дата-атрибута или прямо из текста кнопки ("2 чел" -> 2)
+                facesCountToSend = parseInt(activeFacesBtn.getAttribute('data-value') || activeFacesBtn.innerText) || 1;
+            } else {
+                facesCountToSend = parseInt(window.selectedStyleFacesCount) || 1;
+            }
+        } else {
+            // Для готовых стилей оставляем как было — строго берем из карточки шаблона
+            facesCountToSend = parseInt(window.selectedStyleFacesCount) || 1;
+        }
         
         let ratio = (typeof selectedTextRatio !== 'undefined') ? selectedTextRatio : '9:16';
         let quality = (typeof selectedTextQuality !== 'undefined') ? selectedTextQuality : 'schnell';

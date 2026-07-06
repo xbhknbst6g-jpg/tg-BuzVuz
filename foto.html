@@ -971,32 +971,13 @@ function sendToTelegram(payload) {
     }
 }
 
-
-// 1. ФУНКЦИЯ СБОРКИ И ОТПРАВКИ (START) для клика по карточке она нужна
 function sendPhotoTextData() { 
     try {
         let isCustomText = (typeof currentGenerationMode !== 'undefined' && currentGenerationMode === 'custom');
         let currentModel = (typeof selectedAiModelEngine !== 'undefined') ? selectedAiModelEngine : 'banana';
         
-        // 🔥 УНИВЕРСАЛЬНЫЙ СБОРЩИК: Ищем, сколько человек выбрано на экране
-        let facesCountToSend = 1;
-        
-        if (isCustomText) {
-            // Для "Своего сюжета": ищем кнопку с классом active в блоке выбора количества людей
-            // Посмотри в своей верстке, какой класс у кнопок (например: .btn-faces, .count-btn)
-            // Ниже перечислены самые частые варианты, один из них точно сработает!
-            let activeFacesBtn = document.querySelector('.faces-btn.active, .count-btn.active, .active-face, .active');
-            
-            if (activeFacesBtn) {
-                // Извлекаем цифру из дата-атрибута или прямо из текста кнопки ("2 чел" -> 2)
-                facesCountToSend = parseInt(activeFacesBtn.getAttribute('data-value') || activeFacesBtn.innerText) || 1;
-            } else {
-                facesCountToSend = parseInt(window.selectedStyleFacesCount) || 1;
-            }
-        } else {
-            // Для готовых стилей оставляем как было — строго берем из карточки шаблона
-            facesCountToSend = parseInt(window.selectedStyleFacesCount) || 1;
-        }
+        // 🔥 МЕГА-НАДЕЖНО: Берем цифру из window, которую сохраняет selectFacesCount при клике на кнопки!
+        let facesCountToSend = parseInt(window.selectedStyleFacesCount) || 1;
         
         let ratio = (typeof selectedTextRatio !== 'undefined') ? selectedTextRatio : '9:16';
         let quality = (typeof selectedTextQuality !== 'undefined') ? selectedTextQuality : 'schnell';
@@ -1007,22 +988,18 @@ function sendPhotoTextData() {
         if (!isCustomText) {
             styleTitleToSend = window.selectedStyleName || "none";
             
-            // 🔥 РАЗВЕТВЛЕНИЕ: Подставляем промпт под нужную модель
             if (currentModel === 'pulid') {
-                // Ищем специальный короткий промпт, если его нет — берем обычный
                 promptToSend = window.selectedStylePromptPulid || window.selectedStylePrompt || "";
             } else {
-                // Для Наны шлем длинный стандартный промпт
                 promptToSend = window.selectedStylePrompt || "";
             }
         } else {
             styleTitleToSend = "custom";
-            // В режиме кастомного текста берем то, что ввел юзер в инпут
-            let customInput = document.getElementById("custom-prompt-input"); // проверь id своего инпута
+            let customInput = document.getElementById("custom-prompt-input");
             promptToSend = customInput ? customInput.value : "";
         }
         
-        console.log("[WebApp] Сборка пакета. Модель:", currentModel, "Кастом:", isCustomText, "ЛицToSend:", facesCountToSend);
+        console.log("[WebApp] Сборка пакета. Отправляем лиц:", facesCountToSend);
 
         // ШЛЕМ JSON НАПРЯМУЮ в Телеграм
         if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.sendData === 'function') {
@@ -1032,7 +1009,7 @@ function sendPhotoTextData() {
                 quality: quality,
                 ai_model_engine: currentModel,         
                 is_custom_text_mode: isCustomText,     
-                faces_count: facesCountToSend, // Передаем правильное количество лиц
+                faces_count: facesCountToSend, // Теперь сюда ВСЕГДА улетит то, что выбрано кнопками!
                 style_title: styleTitleToSend,
                 prompt_text: promptToSend          
             })); 

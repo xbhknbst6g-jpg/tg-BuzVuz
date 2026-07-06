@@ -649,41 +649,44 @@ function updateFotoSubmitButtons() {
     if (currentFaces === 2) bananaPriceKey = "coins_mid";
     else if (currentFaces === 3) bananaPriceKey = "coins_max";
 
-    // 🔮 РАСЧЕТ ДЛЯ РЕЖИМА 1: «Фото + Текст» (ПОЛНОСТЬЮ ДИНАМИЧЕСКИЙ ИЗ MongoDB!)
+    // 🔮 РАСЧЕТ ДЛЯ РЕЖИМА 1: «Фото + Текст» (ПОЛНОЕ УМНОЖЕНИЕ КАЧЕСТВА НА ЛЮДЕЙ ДЛЯ ОБЕИХ МОДЕЛЕХ!)
     if (btnText) {
         const currentEngine = typeof selectedAiModelEngine !== 'undefined' ? selectedAiModelEngine : 'banana';
 
         if (currentEngine === 'pulid') {
-            // 🍏 ЦИФРОВАЯ ОПТИКА (Flux PuLID) -> Цена зависит И от шторки качества, И от людей!
-            let basePrice = window.dbFluxPulidPrices.coins_min; // Дефолт из базы
+            // 🍏 ЦИФРОВАЯ ОПТИКА (Flux PuLID)
+            let basePrice = window.dbFluxPulidPrices.coins_min;
             
             if (photoTextQuality === 'dev') {
-                basePrice = window.dbFluxPulidPrices.coins_mid; // Динамическая цена Pro из Монго
+                basePrice = window.dbFluxPulidPrices.coins_mid; // Pro из Монго
             } else if (photoTextQuality === 'ultra_4k') {
-                basePrice = window.dbFluxPulidPrices.coins_max; // Динамическая цена Ultra из Монго
+                basePrice = window.dbFluxPulidPrices.coins_max; // Ultra из Монго
             } else {
-                basePrice = window.dbFluxPulidPrices.coins_min; // Динамический Стандарт из Монго
+                basePrice = window.dbFluxPulidPrices.coins_min; // Стандарт из Монго
             }
             
-            // 🔥 Умножаем динамическую цену качества на количество выбранных людей!
+            // Умножаем динамическую цену качества на количество выбранных людей!
             let finalFluxPrice = basePrice * currentFaces;
             btnText.innerHTML = `Start ${finalFluxPrice} 🪙`;
             console.log(`[Монго-Прайс] PuLID обновлен. Качество: ${photoTextQuality}, Лиц: ${currentFaces}, Итого: ${finalFluxPrice}`);
             
         } else {
-            // 🍌 УМНЫЙ ФОКУС (Nano Banana Edit) -> Цена зависит И от шторки качества, И от людей!
-            let finalBananaPrice = window.dbBananaEditPrices.coins_min; // Дефолт
+            // 🍌 УМНЫЙ ФОКУС (Nano Banana Edit)
+            let baseBananaPrice = window.dbBananaEditPrices.coins_min;
             
             if (photoTextQuality === 'dev') {
-                finalBananaPrice = window.dbBananaEditPrices.coins_mid; // Берем mid из Монго
+                baseBananaPrice = window.dbBananaEditPrices.coins_mid; // Pro из Монго
             } else if (photoTextQuality === 'ultra_4k') {
-                finalBananaPrice = window.dbBananaEditPrices.coins_max; // Берем max из Монго
+                baseBananaPrice = window.dbBananaEditPrices.coins_max; // Ultra из Монго
             } else {
-                finalBananaPrice = window.dbBananaEditPrices.coins_min; // Берем min из Монго
+                baseBananaPrice = window.dbBananaEditPrices.coins_min; // Стандарт из Монго
             }
             
+            // 🔥 🔥 ТЕПЕРЬ СЮДА ТОЖЕ ДОБАВЛЕНО УМНОЖЕНИЕ НА КОЛИЧЕСТВО ЛЮДЕЙ!
+            let finalBananaPrice = baseBananaPrice * currentFaces;
+            
             btnText.innerHTML = `Start ${finalBananaPrice} 🪙`;
-            console.log(`[Монго-Прайс] Banana обновлена. Качество: ${photoTextQuality}, Итого: ${finalBananaPrice}`);
+            console.log(`[Монго-Прайс] Banana обновлена. Качество: ${photoTextQuality}, Лиц: ${currentFaces}, Итого: ${finalBananaPrice}`);
         }
     }
     

@@ -556,14 +556,14 @@ function handleCardClick(cardElement) {
         // 2. Вызываем твое окно настроек
         selectTextImageStyle(styleName, imageUrl, facesCount, promptText);
 
-        // 🔥 ПЕРЕНЕСЛИ СЮДА: Пересчитываем цену сразу при открытии карточки!
-        updateNeoStartButtonText();
+        if (typeof updateFotoSubmitButtons === 'function') {
+            updateFotoSubmitButtons();
+        }
 
     } catch (error) {
         console.error("Ошибка при открытии экрана настроек:", error);
     }
 }
-
 // ====================================================================================
 // 2. код подгрузки для 1 режима карточек текст + фото
 // ====================================================================================
@@ -684,8 +684,10 @@ function selectFacesCount(count, element) {
     
     console.log("[JS] Счетчик лиц успешно зафиксирован в window:", window.selectedStyleFacesCount);
     
-    // 🔥 ОБЯЗАТЕЛЬНО ДОБАВЬ СЮДА: Пересчитываем текст и цену на кнопке СТАРТ при клике на людей!
-    updateNeoStartButtonText();
+    // 🔥 ИСПРАВЛЕНО: Пересчитываем текст и цену на кнопке СТАРТ строго для ФОТОСТУДИИ!
+    if (typeof updateFotoSubmitButtons === 'function') {
+        updateFotoSubmitButtons();
+    }
 }
 
 // ====================================================================================

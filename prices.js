@@ -240,27 +240,24 @@ function openUniversalQualitySheet(serviceName) {
     let targetService = serviceName || 'flux_dev';
 
     // 🔥 УМНЫЙ ПЕРЕХВАТ ДЛЯ ПЕРВОГО ЭКРАНА (ФОТО + ТЕКСТ):
-    // Если вызвали шторку для первого экрана, проверяем положение верхнего тумблера!
     if (targetService === 'flux_pulid' || targetService === 'flux_dev') {
         const currentEngine = typeof selectedAiModelEngine !== 'undefined' ? selectedAiModelEngine : 'banana';
         
-        // Если тумблер стоит на "Умном фокусе", принудительно меняем сервис на Банану Редактирования!
         if (currentEngine === 'banana') {
             targetService = 'nano_banana_edit';
         }
     }
 
-    // 🔥 УНИВЕРСАЛЬНЫЙ КОД С ЗАЩИТОЙ ОТ СБОЕВ БАЗЫ
+    // УНИВЕРСАЛЬНЫЙ КОД С ЗАЩИТОЙ ОТ СБОЕВ БАЗЫ
     if (window.allPrices && window.allPrices.services && window.allPrices.services[targetService]) {
         min = window.allPrices.services[targetService].coins_min;
         mid = window.allPrices.services[targetService].coins_mid;
         max = window.allPrices.services[targetService].coins_max;
     } else {
-        // Если база недоступна или грузится, берем дефолты из наших застрахованных объектов window.db...
         let backup = window.dbFluxDevPrices;
         if (targetService === 'nano_banana_paint') backup = window.dbBananaPaintPrices;
         if (targetService === 'flux_pulid') backup = window.dbFluxPulidPrices;
-        if (targetService === 'nano_banana_edit') backup = window.dbBananaEditPrices; // Наша новая заглушка для фото-бананы
+        if (targetService === 'nano_banana_edit') backup = window.dbBananaEditPrices;
         if (targetService === 'hy_wu_faceswap') backup = window.dbFaceSwapPrices;
         if (targetService === 'hy_wu_clothing') backup = window.dbClothingPrices;
         if (targetService === 'bria_background') backup = window.dbBackgroundPrices;
@@ -268,6 +265,15 @@ function openUniversalQualitySheet(serviceName) {
         min = backup.coins_min;
         mid = backup.coins_mid;
         max = backup.coins_max;
+    }
+
+    // 🔥 🔥 🔥 НАДЕЖНАЯ ИЗОЛЯЦИЯ: Умножаем цену только для первого режима фотостудии!
+    if (targetService === 'flux_pulid' || targetService === 'nano_banana_edit') {
+        const currentFaces = parseInt(window.selectedStyleFacesCount) || 1;
+        min = min * currentFaces;
+        mid = mid * currentFaces;
+        max = max * currentFaces;
+        console.log(`[Шторка-Прайс] Включен режим фото. Умножаем цены на людей: ${currentFaces}. Итог: ${min}, ${mid}, ${max}`);
     }
 
     listEl.innerHTML = `

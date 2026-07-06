@@ -175,47 +175,45 @@ window.addEventListener("DOMContentLoaded", syncPricesFromDatabase);
 // ====================================================================================
 function updateNeoStartButtonText() {
     const btnText = document.getElementById('btn-start-flux-dev');
-    // Поддерживаем оба возможных ID для кнопки бананы-красок
     const btnDirect = document.getElementById('btn-start-banana-paint_2') || document.getElementById('btn-start-banana-paint');
     
-    // 🔥 СЧИТЫВАЕМ КОЛИЧЕСТВО КЛИКНУТЫХ ЛЮДЕЙ (1, 2 или 3)
+    // Считываем количество кликнутых людей (1, 2 или 3)
     const currentFaces = parseInt(window.selectedStyleFacesCount) || 1;
     
     // Для Nano Banana (btnDirect) определяем ключ цены по количеству человек (min, mid, max)
-    let bananaPriceKey = "coins_min"; // 1 чел
+    let bananaPriceKey = "coins_min"; 
     if (currentFaces === 2) bananaPriceKey = "coins_mid";
     else if (currentFaces === 3) bananaPriceKey = "coins_max";
 
-    // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ ЦИФРОВОЙ ОПТИКИ (Класс text_image на Flux)
+    // 🔥 РАСЧЕТ ДЛЯ ТВОЕЙ КНОПКИ ФОТОСТУДИИ (Цифровая Оптика / Свой сюжет)
     if (btnText) {
-        let basePrice = 0;
+        let basePrice = 2; // Стандартная базовая цена за 1 человека
         
         if (selectedAiModelEngine === 'custom') {
             // Если включен "custom", берем базовую цену Flux PuLID из безопасного объекта
-            basePrice = window.dbFluxPulidPrices.coins_min; 
+            basePrice = window.dbFluxPulidPrices.coins_min || 2; 
         } else {
             // Смотрим, какое качество выбрано в шторке текста (selectedTextQuality):
             if (selectedTextQuality === 'dev') {
-                basePrice = window.dbFluxDevPrices.coins_mid; // Цена Pro из базы
+                basePrice = window.dbFluxDevPrices.coins_mid || 3; 
             } else if (selectedTextQuality === 'ultra_4k') {
-                basePrice = window.dbFluxDevPrices.coins_max; // Цена Ultra из базы
+                basePrice = window.dbFluxDevPrices.coins_max || 4; 
             } else {
-                basePrice = window.dbFluxDevPrices.coins_min; // Стандартная цена
+                basePrice = window.dbFluxDevPrices.coins_min || 2; 
             }
         }
         
         // 🔥 ВАЖНО: Умножаем базовую стоимость на количество выбранных персонажей!
         let finalFluxPrice = basePrice * currentFaces;
+        
+        // Меняем текст на твоей реальной кнопке
         btnText.innerHTML = `Start ${finalFluxPrice} 🪙`;
     }
     
-    // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ УМНОГО ФОКУСА (Класс image_generation_direct на Nano Banana)
+    // ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ УМНОГО ФОКУСА
     if (btnDirect) {
-        // Подставляем правильный шаг цены (min/mid/max) в зависимости от выбранных людей
         let finalBananaPrice = window.dbBananaPaintPrices[bananaPriceKey] || window.dbBananaPaintPrices.coins_min;
         
-        // Дополнительно можно учесть наценку за качество для бананы, если у тебя в будущем изменятся тарифы,
-        // но сейчас база берет шаги min/mid/max строго под лица. Оставляем надежный выбор из объекта:
         if (directGenQuality === 'dev' && currentFaces === 1) {
             finalBananaPrice = window.dbBananaPaintPrices.coins_mid;
         } else if (directGenQuality === 'ultra_4k' && currentFaces === 1) {
@@ -646,26 +644,35 @@ function updateFotoSubmitButtons() {
         if (txt.includes('ultra') || txt.includes('max') || txt.includes('4k')) bgQuality = 'ultra_4k';
     }
 
-    // 🔮 РАСЧЕТ ДЛЯ РЕЖИМА 1: «Фото + Текст» (ТЕПЕРЬ С ИДЕАЛЬНОЙ СВЯЗКОЙ ТУМБЛЕРОВ!)
+    // 🔥 СЧИТЫВАЕМ КОЛИЧЕСТВО ВЫБРАННЫХ ЛЮДЕЙ ДЛЯ РЕЖИМА 1 (1, 2 или 3)
+    const currentFaces = parseInt(window.selectedStyleFacesCount) || 1;
+    
+    // Определяем шаг цены для Nano Banana по количеству лиц (min, mid, max)
+    let bananaPriceKey = "coins_min"; 
+    if (currentFaces === 2) bananaPriceKey = "coins_mid";
+    else if (currentFaces === 3) bananaPriceKey = "coins_max";
+
+    // 🔮 РАСЧЕТ ДЛЯ РЕЖИМА 1: «Фото + Текст» (С ДИНАМИЧЕСКИМ ПЕРЕСЧЕТОМ ОТ ЛИЦ!)
     if (btnText) {
-        // Узнаем, какое слово записал тумблер ('banana' или 'pulid')
         const currentEngine = typeof selectedAiModelEngine !== 'undefined' ? selectedAiModelEngine : 'banana';
-        let finalPrice = 1;
+        let basePrice = 1;
 
         if (currentEngine === 'pulid') {
-            // 🍏 Включена ЦИФРОВАЯ ОПТИКА (Flux PuLID) -> Берем цены из dbFluxPulidPrices
-            if (photoTextQuality === 'dev') finalPrice = window.dbFluxPulidPrices.coins_mid;
-            else if (photoTextQuality === 'ultra_4k') finalPrice = window.dbFluxPulidPrices.coins_max;
-            else finalPrice = window.dbFluxPulidPrices.coins_min;
+            // 🍏 ЦИФРОВАЯ ОПТИКА (Flux PuLID) -> Базовая цена качества из базы
+            if (photoTextQuality === 'dev') basePrice = window.dbFluxPulidPrices.coins_mid;
+            else if (photoTextQuality === 'ultra_4k') basePrice = window.dbFluxPulidPrices.coins_max;
+            else basePrice = window.dbFluxPulidPrices.coins_min;
+            
+            // 🔥 ВАЖНО ДЛЯ PULID: в боте идет чистое умножение тарифа на количество людей
+            let finalFluxPrice = basePrice * currentFaces;
+            btnText.innerHTML = `Start ${finalFluxPrice} 🪙`;
+            
         } else {
-            // 🍌 Включен УМНЫЙ ФОКУС (Nano Banana Edit) -> Берем цены из dbBananaEditPrices
-            if (photoTextQuality === 'dev') finalPrice = window.dbBananaEditPrices.coins_mid;
-            else if (photoTextQuality === 'ultra_4k') finalPrice = window.dbBananaEditPrices.coins_max;
-            else finalPrice = window.dbBananaEditPrices.coins_min;
+            // 🍌 УМНЫЙ ФОКУС (Nano Banana Edit) -> Берем фиксированные шаги (coins_min / mid / max) под количество лиц
+            let finalBananaPrice = window.dbBananaEditPrices ? window.dbBananaEditPrices[bananaPriceKey] : 2;
+            
+            btnText.innerHTML = `Start ${finalBananaPrice} 🪙`;
         }
-
-        // Выводим правильную динамическую цену на кнопку!
-        btnText.innerHTML = `Start ${finalPrice} 🪙`;
     }
     
     // 🔮 РАСЧЕТ ДЛЯ РЕЖИМА 2: FACE SWAP (Использует hy_wu_faceswap из базы MongoDB)
@@ -689,6 +696,3 @@ function updateFotoSubmitButtons() {
         else btnBg.innerHTML = `Start ${window.dbBackgroundPrices.coins_min} 🪙`;
     }
 }
-
-// Заглушка, чтобы роутер экранов openScreen() в HTML не ругался на удаленную функцию
-function updateFotoMainButton() { if (tg && tg.MainButton) tg.MainButton.hide(); }

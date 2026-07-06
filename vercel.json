@@ -1,7 +1,10 @@
 {
   "cleanUrls": true,
+  "trailingSlash": false,
   "routes": [
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/$1" }
+    { "src": "/foto", "dest": "/foto.html" },
+    { "src": "/video", "dest": "/video.html" },
+    { "src": "/image", "dest": "/image.html" },
+    { "src": "/cards-template", "dest": "/cards-template.html" }
   ]
 }

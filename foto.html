@@ -542,21 +542,22 @@ function handleCardClick(cardElement) {
         const imageUrl = cardElement.getAttribute('data-image-url') || '';
         const facesCount = parseInt(cardElement.getAttribute('data-faces-count')) || 1;
         
-        // 🔥 Считываем оба промпта: базовый (для Наны) и пулид-версию (для Флюкса)
         const promptText = cardElement.getAttribute('data-prompt') || '';
         const promptPulid = cardElement.getAttribute('data-prompt-pulid') || '';
 
         console.log(`[Переход] Открываем настройки для стиля: ${styleName}`);
 
-        // 🔥 Записываем данные в глобальный window (включая раздельные промпты)
+        // Записываем данные в глобальный window
         window.selectedStyleName = styleName;
         window.selectedStylePrompt = promptText;
-        window.selectedStylePromptPulid = promptPulid; // Сохраняем оптимизированный под пулид
+        window.selectedStylePromptPulid = promptPulid; 
         window.selectedStyleFacesCount = facesCount;
 
-        // 2. 🔥 ОСТАНАВЛИВАЕМ ОТПРАВКУ В БОТА И ВЫЗЫВАЕМ ТВОЕ ОКНО НАСТРОЕК
-        // Эта функция скроет галерею, покажет блок настроек и подставит картинку на весь экран
+        // 2. Вызываем твое окно настроек
         selectTextImageStyle(styleName, imageUrl, facesCount, promptText);
+
+        // 🔥 ПЕРЕНЕСЛИ СЮДА: Пересчитываем цену сразу при открытии карточки!
+        updateNeoStartButtonText();
 
     } catch (error) {
         console.error("Ошибка при открытии экрана настроек:", error);
@@ -682,8 +683,10 @@ function selectFacesCount(count, element) {
     }
     
     console.log("[JS] Счетчик лиц успешно зафиксирован в window:", window.selectedStyleFacesCount);
+    
+    // 🔥 ОБЯЗАТЕЛЬНО ДОБАВЬ СЮДА: Пересчитываем текст и цену на кнопке СТАРТ при клике на людей!
+    updateNeoStartButtonText();
 }
-
 
 // ====================================================================================
 // Микро-функция в JavaScript для переключения тумблера нана банана и флюкс плуид

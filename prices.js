@@ -620,23 +620,20 @@ function updateFotoSubmitButtons() {
         if (txt.includes('ultra') || txt.includes('max') || txt.includes('4k')) photoTextQuality = 'ultra_4k';
     }
 
-    // 🟠 2. Считываем текст с капсул остальных трех режимов фотостудии
+    // 🟠 2. Считываем текст с капсул остальных трех режимов
     let swapQuality = 'standard', tryonQuality = 'standard', bgQuality = 'standard';
-
     const swapBtn = document.getElementById('btn_swap_quality');
     if (swapBtn) {
         const txt = swapBtn.innerText.toLowerCase();
         if (txt.includes('pro') || txt.includes('mid') || txt.includes('dev')) swapQuality = 'dev';
         if (txt.includes('ultra') || txt.includes('max') || txt.includes('4k')) swapQuality = 'ultra_4k';
     }
-
     const tryonBtn = document.getElementById('btn_tryon_quality');
     if (tryonBtn) {
         const txt = tryonBtn.innerText.toLowerCase();
         if (txt.includes('pro') || txt.includes('mid') || txt.includes('dev')) tryonQuality = 'dev';
         if (txt.includes('ultra') || txt.includes('max') || txt.includes('4k')) tryonQuality = 'ultra_4k';
     }
-
     const bgBtn = document.getElementById('btn_bg_quality');
     if (bgBtn) {
         const txt = bgBtn.innerText.toLowerCase();
@@ -647,49 +644,60 @@ function updateFotoSubmitButtons() {
     // 🔥 СЧИТЫВАЕМ КОЛИЧЕСТВО ВЫБРАННЫХ ЛЮДЕЙ ДЛЯ РЕЖИМА 1 (1, 2 или 3)
     const currentFaces = parseInt(window.selectedStyleFacesCount) || 1;
     
-    // Определяем шаг цены для Nano Banana по количеству лиц (min, mid, max)
+    // Определяем динамический ключ для Наны Бананы по количеству лиц (coins_min, coins_mid, coins_max)
     let bananaPriceKey = "coins_min"; 
     if (currentFaces === 2) bananaPriceKey = "coins_mid";
     else if (currentFaces === 3) bananaPriceKey = "coins_max";
 
-    // 🔮 РАСЧЕТ ДЛЯ РЕЖИМА 1: «Фото + Текст» (С ДИНАМИЧЕСКИМ ПЕРЕСЧЕТОМ ОТ ЛИЦ!)
+    // 🔮 РАСЧЕТ ДЛЯ РЕЖИМА 1: «Фото + Текст» (ПОЛНОСТЬЮ ДИНАМИЧЕСКИЙ ИЗ MongoDB!)
     if (btnText) {
         const currentEngine = typeof selectedAiModelEngine !== 'undefined' ? selectedAiModelEngine : 'banana';
-        let basePrice = 1;
 
         if (currentEngine === 'pulid') {
-            // 🍏 ЦИФРОВАЯ ОПТИКА (Flux PuLID) -> Базовая цена качества из базы
-            if (photoTextQuality === 'dev') basePrice = window.dbFluxPulidPrices.coins_mid;
-            else if (photoTextQuality === 'ultra_4k') basePrice = window.dbFluxPulidPrices.coins_max;
-            else basePrice = window.dbFluxPulidPrices.coins_min;
+            // 🍏 ЦИФРОВАЯ ОПТИКА (Flux PuLID) -> Цена зависит И от шторки качества, И от людей!
+            let basePrice = window.dbFluxPulidPrices.coins_min; // Дефолт из базы
             
-            // 🔥 ВАЖНО ДЛЯ PULID: в боте идет чистое умножение тарифа на количество людей
+            if (photoTextQuality === 'dev') {
+                basePrice = window.dbFluxPulidPrices.coins_mid; // Динамическая цена Pro из Монго
+            } else if (photoTextQuality === 'ultra_4k') {
+                basePrice = window.dbFluxPulidPrices.coins_max; // Динамическая цена Ultra из Монго
+            } else {
+                basePrice = window.dbFluxPulidPrices.coins_min; // Динамический Стандарт из Монго
+            }
+            
+            // 🔥 Умножаем динамическую цену качества на количество выбранных людей!
             let finalFluxPrice = basePrice * currentFaces;
             btnText.innerHTML = `Start ${finalFluxPrice} 🪙`;
+            console.log(`[Монго-Прайс] PuLID обновлен. Качество: ${photoTextQuality}, Лиц: ${currentFaces}, Итого: ${finalFluxPrice}`);
             
         } else {
-            // 🍌 УМНЫЙ ФОКУС (Nano Banana Edit) -> Берем фиксированные шаги (coins_min / mid / max) под количество лиц
-            let finalBananaPrice = window.dbBananaEditPrices ? window.dbBananaEditPrices[bananaPriceKey] : 2;
+            // 🍌 УМНЫЙ ФОКУС (Nano Banana Edit) -> Цена зависит И от шторки качества, И от людей!
+            let finalBananaPrice = window.dbBananaEditPrices.coins_min; // Дефолт
+            
+            if (photoTextQuality === 'dev') {
+                finalBananaPrice = window.dbBananaEditPrices.coins_mid; // Берем mid из Монго
+            } else if (photoTextQuality === 'ultra_4k') {
+                finalBananaPrice = window.dbBananaEditPrices.coins_max; // Берем max из Монго
+            } else {
+                finalBananaPrice = window.dbBananaEditPrices.coins_min; // Берем min из Монго
+            }
             
             btnText.innerHTML = `Start ${finalBananaPrice} 🪙`;
+            console.log(`[Монго-Прайс] Banana обновлена. Качество: ${photoTextQuality}, Итого: ${finalBananaPrice}`);
         }
     }
     
-    // 🔮 РАСЧЕТ ДЛЯ РЕЖИМА 2: FACE SWAP (Использует hy_wu_faceswap из базы MongoDB)
+    // 🔮 РАСЧЕТ ДЛЯ ОСТАЛЬНЫХ ТРЕХ РЕЖИМОВ (FACE SWAP, ОДЕЖДА, ФОН) — ТОЖЕ ИЗ МЕНЯЮЩЕЙСЯ БАЗЫ
     if (btnSwap) {
         if (swapQuality === 'dev') btnSwap.innerHTML = `Start ${window.dbFaceSwapPrices.coins_mid} 🪙`;
         else if (swapQuality === 'ultra_4k') btnSwap.innerHTML = `Start ${window.dbFaceSwapPrices.coins_max} 🪙`;
         else btnSwap.innerHTML = `Start ${window.dbFaceSwapPrices.coins_min} 🪙`;
     }
-    
-    // 🔮 РАСЧЕТ ДЛЯ РЕЖИМА 3: ПРИМЕРКА ОДЕЖДЫ (Использует hy_wu_clothing из базы MongoDB)
     if (btnTryon) {
         if (tryonQuality === 'dev') btnTryon.innerHTML = `Start ${window.dbClothingPrices.coins_mid} 🪙`;
         else if (tryonQuality === 'ultra_4k') btnTryon.innerHTML = `Start ${window.dbClothingPrices.coins_max} 🪙`;
         else btnTryon.innerHTML = `Start ${window.dbClothingPrices.coins_min} 🪙`;
     }
-    
-    // 🔮 РАСЧЕТ ДЛЯ РЕЖИМА 4: СМЕНА ФОНА (Использует bria_background из базы MongoDB)
     if (btnBg) {
         if (bgQuality === 'dev') btnBg.innerHTML = `Start ${window.dbBackgroundPrices.coins_mid} 🪙`;
         else if (bgQuality === 'ultra_4k') btnBg.innerHTML = `Start ${window.dbBackgroundPrices.coins_max} 🪙`;

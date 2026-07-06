@@ -178,32 +178,51 @@ function updateNeoStartButtonText() {
     // Поддерживаем оба возможных ID для кнопки бананы-красок
     const btnDirect = document.getElementById('btn-start-banana-paint_2') || document.getElementById('btn-start-banana-paint');
     
+    // 🔥 СЧИТЫВАЕМ КОЛИЧЕСТВО КЛИКНУТЫХ ЛЮДЕЙ (1, 2 или 3)
+    const currentFaces = parseInt(window.selectedStyleFacesCount) || 1;
+    
+    // Для Nano Banana (btnDirect) определяем ключ цены по количеству человек (min, mid, max)
+    let bananaPriceKey = "coins_min"; // 1 чел
+    if (currentFaces === 2) bananaPriceKey = "coins_mid";
+    else if (currentFaces === 3) bananaPriceKey = "coins_max";
+
     // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ ЦИФРОВОЙ ОПТИКИ (Класс text_image на Flux)
     if (btnText) {
+        let basePrice = 0;
+        
         if (selectedAiModelEngine === 'custom') {
             // Если включен "custom", берем базовую цену Flux PuLID из безопасного объекта
-            btnText.innerHTML = `Start ${window.dbFluxPulidPrices.coins_min} 🪙`; 
+            basePrice = window.dbFluxPulidPrices.coins_min; 
         } else {
             // Смотрим, какое качество выбрано в шторке текста (selectedTextQuality):
             if (selectedTextQuality === 'dev') {
-                btnText.innerHTML = `Start ${window.dbFluxDevPrices.coins_mid} 🪙`; // Цена Pro из базы
+                basePrice = window.dbFluxDevPrices.coins_mid; // Цена Pro из базы
             } else if (selectedTextQuality === 'ultra_4k') {
-                btnText.innerHTML = `Start ${window.dbFluxDevPrices.coins_max} 🪙`; // Цена Ultra из базы
+                basePrice = window.dbFluxDevPrices.coins_max; // Цена Ultra из базы
             } else {
-                btnText.innerHTML = `Start ${window.dbFluxDevPrices.coins_min} 🪙`; // Стандартная цена
+                basePrice = window.dbFluxDevPrices.coins_min; // Стандартная цена
             }
         }
+        
+        // 🔥 ВАЖНО: Умножаем базовую стоимость на количество выбранных персонажей!
+        let finalFluxPrice = basePrice * currentFaces;
+        btnText.innerHTML = `Start ${finalFluxPrice} 🪙`;
     }
     
     // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ УМНОГО ФОКУСА (Класс image_generation_direct на Nano Banana)
     if (btnDirect) {
-        if (directGenQuality === 'dev') {
-            btnDirect.innerHTML = `Start ${window.dbBananaPaintPrices.coins_mid} 🪙`; // Средняя цена бананы
-        } else if (directGenQuality === 'ultra_4k') {
-            btnDirect.innerHTML = `Start ${window.dbBananaPaintPrices.coins_max} 🪙`; // Максимальная цена бананы
-        } else {
-            btnDirect.innerHTML = `Start ${window.dbBananaPaintPrices.coins_min} 🪙`; // Минимальная цена бананы
+        // Подставляем правильный шаг цены (min/mid/max) в зависимости от выбранных людей
+        let finalBananaPrice = window.dbBananaPaintPrices[bananaPriceKey] || window.dbBananaPaintPrices.coins_min;
+        
+        // Дополнительно можно учесть наценку за качество для бананы, если у тебя в будущем изменятся тарифы,
+        // но сейчас база берет шаги min/mid/max строго под лица. Оставляем надежный выбор из объекта:
+        if (directGenQuality === 'dev' && currentFaces === 1) {
+            finalBananaPrice = window.dbBananaPaintPrices.coins_mid;
+        } else if (directGenQuality === 'ultra_4k' && currentFaces === 1) {
+            finalBananaPrice = window.dbBananaPaintPrices.coins_max;
         }
+        
+        btnDirect.innerHTML = `Start ${finalBananaPrice} 🪙`;
     }
 }
 

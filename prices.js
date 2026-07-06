@@ -643,54 +643,50 @@ function updateFotoSubmitButtons() {
 
     // 🔥 СЧИТЫВАЕМ КОЛИЧЕСТВО ВЫБРАННЫХ ЛЮДЕЙ ДЛЯ РЕЖИМА 1 (1, 2 или 3)
     const currentFaces = parseInt(window.selectedStyleFacesCount) || 1;
-    
-    // Определяем динамический ключ для Наны Бананы по количеству лиц (coins_min, coins_mid, coins_max)
-    let bananaPriceKey = "coins_min"; 
-    if (currentFaces === 2) bananaPriceKey = "coins_mid";
-    else if (currentFaces === 3) bananaPriceKey = "coins_max";
 
-    // 🔮 РАСЧЕТ ДЛЯ РЕЖИМА 1: «Фото + Текст» (ПОЛНОЕ УМНОЖЕНИЕ КАЧЕСТВА НА ЛЮДЕЙ ДЛЯ ОБЕИХ МОДЕЛЕХ!)
+    // 🔥 🔥 🔥 НОВОЕ: Динамически пересчитываем и обновляем цены ПРЯМО ВНУТРИ ШТОРКИ КАЧЕСТВА!
+    // Проверяем, какой движок выбран, чтобы взять правильный объект цен для шторки
+    const currentEngine = typeof selectedAiModelEngine !== 'undefined' ? selectedAiModelEngine : 'banana';
+    let pricesObj = (currentEngine === 'pulid') ? window.dbFluxPulidPrices : window.dbBananaEditPrices;
+
+    if (pricesObj) {
+        // Ищем элементы цифр в твоей шторке и пишем туда (Базовая цена из базы * Количество людей)
+        if (document.getElementById("quality-flux-standard")) {
+            document.getElementById("quality-flux-standard").innerText = (pricesObj.coins_min || 2) * currentFaces;
+        }
+        if (document.getElementById("quality-flux-pro")) {
+            document.getElementById("quality-flux-pro").innerText = (pricesObj.coins_mid || 3) * currentFaces;
+        }
+        if (document.getElementById("quality-flux-ultra")) {
+            document.getElementById("quality-flux-ultra").innerText = (pricesObj.coins_max || 4) * currentFaces;
+        }
+    }
+
+    // 🔮 РАСЧЕТ ЦЕНЫ ДЛЯ БОЛЬШОЙ КНОПКИ «START»
     if (btnText) {
-        const currentEngine = typeof selectedAiModelEngine !== 'undefined' ? selectedAiModelEngine : 'banana';
-
         if (currentEngine === 'pulid') {
             // 🍏 ЦИФРОВАЯ ОПТИКА (Flux PuLID)
             let basePrice = window.dbFluxPulidPrices.coins_min;
+            if (photoTextQuality === 'dev') basePrice = window.dbFluxPulidPrices.coins_mid;
+            else if (photoTextQuality === 'ultra_4k') basePrice = window.dbFluxPulidPrices.coins_max;
+            else basePrice = window.dbFluxPulidPrices.coins_min;
             
-            if (photoTextQuality === 'dev') {
-                basePrice = window.dbFluxPulidPrices.coins_mid; // Pro из Монго
-            } else if (photoTextQuality === 'ultra_4k') {
-                basePrice = window.dbFluxPulidPrices.coins_max; // Ultra из Монго
-            } else {
-                basePrice = window.dbFluxPulidPrices.coins_min; // Стандарт из Монго
-            }
-            
-            // Умножаем динамическую цену качества на количество выбранных людей!
             let finalFluxPrice = basePrice * currentFaces;
             btnText.innerHTML = `Start ${finalFluxPrice} 🪙`;
-            console.log(`[Монго-Прайс] PuLID обновлен. Качество: ${photoTextQuality}, Лиц: ${currentFaces}, Итого: ${finalFluxPrice}`);
             
         } else {
             // 🍌 УМНЫЙ ФОКУС (Nano Banana Edit)
             let baseBananaPrice = window.dbBananaEditPrices.coins_min;
+            if (photoTextQuality === 'dev') baseBananaPrice = window.dbBananaEditPrices.coins_mid;
+            else if (photoTextQuality === 'ultra_4k') baseBananaPrice = window.dbBananaEditPrices.coins_max;
+            else baseBananaPrice = window.dbBananaEditPrices.coins_min;
             
-            if (photoTextQuality === 'dev') {
-                baseBananaPrice = window.dbBananaEditPrices.coins_mid; // Pro из Монго
-            } else if (photoTextQuality === 'ultra_4k') {
-                baseBananaPrice = window.dbBananaEditPrices.coins_max; // Ultra из Монго
-            } else {
-                baseBananaPrice = window.dbBananaEditPrices.coins_min; // Стандарт из Монго
-            }
-            
-            // 🔥 🔥 ТЕПЕРЬ СЮДА ТОЖЕ ДОБАВЛЕНО УМНОЖЕНИЕ НА КОЛИЧЕСТВО ЛЮДЕЙ!
             let finalBananaPrice = baseBananaPrice * currentFaces;
-            
             btnText.innerHTML = `Start ${finalBananaPrice} 🪙`;
-            console.log(`[Монго-Прайс] Banana обновлена. Качество: ${photoTextQuality}, Лиц: ${currentFaces}, Итого: ${finalBananaPrice}`);
         }
     }
     
-    // 🔮 РАСЧЕТ ДЛЯ ОСТАЛЬНЫХ ТРЕХ РЕЖИМОВ (FACE SWAP, ОДЕЖДА, ФОН) — ТОЖЕ ИЗ МЕНЯЮЩЕЙСЯ БАЗЫ
+    // 🔮 РАСЧЕТ ДЛЯ ОСТАЛЬНЫХ ТРЕХ РЕЖИМОВ (FACE SWAP, ОДЕЖДА, ФОН)
     if (btnSwap) {
         if (swapQuality === 'dev') btnSwap.innerHTML = `Start ${window.dbFaceSwapPrices.coins_mid} 🪙`;
         else if (swapQuality === 'ultra_4k') btnSwap.innerHTML = `Start ${window.dbFaceSwapPrices.coins_max} 🪙`;

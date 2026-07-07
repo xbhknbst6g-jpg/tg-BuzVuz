@@ -197,6 +197,7 @@
                             <source src="https://i.imgur.com/Q6GrKyK.mp4" type="video/mp4">
                         </video>
 
+                        
                         <div id="video_sound_play_overlay" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo('https://i.imgur.com/Q6GrKyK.mp4')" 
                             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; cursor: pointer;">
                         </div>
@@ -469,7 +470,7 @@
 // ====================================================================================
 // Функция для управления вашим плеером videoPlayerModal
 // ====================================================================================
-// Открытие универсального полноэкранного плеера (Ваш исходный рабочий вариант)
+// Открытие универсального полноэкранного плеера 
 function openPreviewVideo(mediaUrl) {
     const modal = document.getElementById('videoPlayerModal');
     const playerVideo = document.getElementById('previewVideoPlayer');
@@ -488,8 +489,8 @@ function openPreviewVideo(mediaUrl) {
         }
         if (playerVideo) {
             playerVideo.src = mediaUrl;
-            playerVideo.style.display = "block"; // Возвращаем видимость видео
-            playerVideo.muted = false; // Ваш исходный звук
+            playerVideo.style.display = "block";
+            playerVideo.muted = false; // Включаем звук в плеере
             playerVideo.play().catch(e => console.log("Автоплей заблокирован:", e));
         }
     } else {
@@ -512,35 +513,34 @@ function openPreviewVideo(mediaUrl) {
     }, 10);
 }
 
-// Закрытие универсального полноэкранного плеера (ИСПРАВЛЕНО БЕЗ ОПАСНЫХ ТАЙМАУТОВ ДЛЯ ПЛЕЕРА)
+// Закрытие универсального полноэкранного плеера (ИСПРАВЛЕНО И ИЗОЛИРОВАНО)
 function closePreviewVideo() {
     const modal = document.getElementById('videoPlayerModal');
     const playerVideo = document.getElementById('previewVideoPlayer');
     const playerImage = document.getElementById('previewImagePlayer');
+    
+    // 🔥 ДОБАВЛЕНО: Находим панель кнопок 3-го режима
     const controlsPanel = document.getElementById('modal_controls_panel');
 
     if (modal) {
         modal.classList.remove('active');
         
-        // 1. Мгновенно тушим панель управления и элементы, чтобы тайм-аут не зацепил новое открытие
+        // 🔥 ДОБАВЛЕНО: Мгновенно убираем кнопки, чтобы они не мелькали в 1-м и 2-м режимах
         if (controlsPanel) controlsPanel.style.display = "none";
         
+        // Гасим видео, если оно играло
         if (playerVideo) {
             playerVideo.pause();
             playerVideo.src = "";
-            playerVideo.style.display = "none"; // Скрываем сразу, не дожидаясь конца анимации модалки
         }
         
-        if (playerImage) {
-            playerImage.style.display = "none";
-            playerImage.src = ""; 
-        }
-        
-        // 2. Через 300мс гасим только саму подложку модального окна
+        // Ждем анимацию исчезновения и полностью скрываем элементы
         setTimeout(function() {
-            // Проверяем, не открыл ли пользователь видео снова за эти 300мс
-            if (!modal.classList.contains('active')) {
-                modal.style.display = "none";
+            modal.style.display = "none";
+            if (playerVideo) playerVideo.style.display = "none";
+            if (playerImage) {
+                playerImage.style.display = "none";
+                playerImage.src = ""; // Очищаем память от фото
             }
         }, 300); 
     }
@@ -827,31 +827,34 @@ function selectMotionTemplate(styleName, videoUrl, duration) {
         if (imagePlayer) imagePlayer.style.display = 'none';
         videoPlayer.style.display = 'block';
         
-        videoPlayer.muted = true;
+        // Настройки плеера для жесткого обхода блокировок Telegram WebApp
+        videoPlayer.muted = true; 
         videoPlayer.setAttribute('playsinline', 'true');
         videoPlayer.setAttribute('webkit-playsinline', 'true');
         videoPlayer.setAttribute('preload', 'auto');
         
         videoPlayer.src = videoUrl;
         if (muteBtn) muteBtn.innerHTML = "🔊 Включить звук";
+        
         modal.style.display = 'flex';
         setTimeout(() => {
             modal.classList.add('active'); 
         }, 10);
+        
         if (controlsPanel) controlsPanel.style.display = 'flex';
 
+        // 🔥 Прямой и синхронный запуск видео без ожидания onloadeddata
         videoPlayer.load();
-        videoPlayer.onloadeddata = function() {
-            const playPromise = videoPlayer.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(e => {
-                    console.log("Повторный толчок плеера телефона:", e);
-                    videoPlayer.muted = true;
-                    videoPlayer.play();
-                });
-            }
-        };
+        const playPromise = videoPlayer.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(e => {
+                console.log("Повторный толчок плеера:", e);
+                videoPlayer.muted = true;
+                videoPlayer.play().catch(err => console.log("Блокировка системы:", err));
+            });
+        }
     }
+
 
     // 🔥 ДОБАВЛЕНО: УМНЫЙ ОБНОВЛЯТОР ЦЕНЫ ДЛЯ КАРТОЧКИ ВНУТРИ МОДАЛКИ
     // Ищем неоновую кнопку "Start" внутри панели управления плеера
@@ -1024,119 +1027,95 @@ function openScreen(screenName) {
 // 67. Функция управления интерактивным видео-плеером для Режима 1
 // ====================================================================================
 // для Режима 1
-function toggleNoSoundVideo() {
-    // 🔥 ИСПРАВЛЕНО: берем правильный ID универсального плеера из вашей верстки
-    const video = document.getElementById('previewVideoPlayer');
-    const overlay = document.getElementById('video_nosound_play_overlay');
-    const icon = document.getElementById('play_nosound_icon_sym');
-    
-    if (!video) return; // Защита от падения скрипта
+        function toggleNoSoundVideo() {
+            const video = document.getElementById('preview_nosound_video');
+            const overlay = document.getElementById('video_nosound_play_overlay');
+            const icon = document.getElementById('play_nosound_icon_sym');
+            
+            if (tg?.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('medium');
+            }
 
-    if (tg?.HapticFeedback) {
-        tg.HapticFeedback.impactOccurred('medium');
-    }
-
-    if (video.paused) {
-        video.play().catch(e => console.log("Ошибка воспроизведения:", e));
-        if (overlay) overlay.style.background = "rgba(0,0,0,0)";
-        if (icon) icon.innerText = "⏸️";
-        
-        setTimeout(() => { 
-            if (!video.paused && overlay) overlay.style.opacity = "0"; 
-        }, 1500);
-    } else {
-        video.pause();
-        if (overlay) {
-            overlay.style.opacity = "1";
-            overlay.style.background = "rgba(0,0,0,0.4)";
+            if (video.paused) {
+                video.play();
+                overlay.style.background = "rgba(0,0,0,0)";
+                icon.innerText = "⏸️";
+                // Плавно прячем оверлей, чтобы не мешал просмотру лица
+                setTimeout(() => { 
+                    if (!video.paused) overlay.style.opacity = "0"; 
+                }, 1500);
+            } else {
+                video.pause();
+                overlay.style.opacity = "1";
+                overlay.style.background = "rgba(0,0,0,0.4)";
+                icon.innerText = "▶️";
+            }
         }
-        if (icon) icon.innerText = "▶️";
-    }
-}
 
-// Защищенный слушатель
-const noSoundOverlay = document.getElementById('video_nosound_play_overlay');
-if (noSoundOverlay) {
-    noSoundOverlay.addEventListener('mouseenter', () => {
-        noSoundOverlay.style.opacity = "1";
-    });
-}
+        // Возвращаем видимость интерфейса при тапе или наведении
+        document.getElementById('video_nosound_play_overlay').addEventListener('mouseenter', () => {
+            document.getElementById('video_nosound_play_overlay').style.opacity = "1";
+        });
 
 // для Режима 2 (Со звуком)
 function toggleSoundVideo() {
-    // 🔥 ИСПРАВЛЕНО: берем правильный ID универсального плеера
-    const video = document.getElementById('previewVideoPlayer');
+    const video = document.getElementById('preview_sound_video');
     const overlay = document.getElementById('video_sound_play_overlay');
     const icon = document.getElementById('play_sound_icon_sym');
     
-    if (!video) return; // Защита
-
     if (tg?.HapticFeedback) {
         tg.HapticFeedback.impactOccurred('medium');
     }
 
     if (video.paused) {
-        video.play().catch(e => console.log("Ошибка воспроизведения:", e));
-        if (overlay) overlay.style.background = "rgba(0,0,0,0)";
-        if (icon) icon.innerText = "⏸️";
-        
-        setTimeout(() => { 
-            if (!video.paused && overlay) overlay.style.opacity = "0"; 
-        }, 1500);
+        video.play();
+        overlay.style.background = "rgba(0,0,0,0)";
+        icon.innerText = "⏸️";
+        // Плавно убираем оверлей через 1.5 секунды
+        setTimeout(() => { if (!video.paused) overlay.style.opacity = "0"; }, 1500);
     } else {
         video.pause();
-        if (overlay) {
-            overlay.style.opacity = "1";
-            overlay.style.background = "rgba(0,0,0,0.4)";
-        }
-        if (icon) icon.innerText = "▶️";
+        overlay.style.opacity = "1";
+        overlay.style.background = "rgba(0,0,0,0.4)";
+        icon.innerText = "▶️";
     }
 }
 
-// Защищенный слушатель
-const soundOverlay = document.getElementById('video_sound_play_overlay');
-if (soundOverlay) {
-    soundOverlay.addEventListener('mouseenter', () => {
-        soundOverlay.style.opacity = "1";
-    });
-}
+// Показываем оверлей управления обратно при наведении/клике
+document.getElementById('video_sound_play_overlay').addEventListener('mouseenter', () => {
+    document.getElementById('video_sound_play_overlay').style.opacity = "1";
+});
+
+
 
 // для Режима 3
 function toggleMotionVideo() {
-    // 🔥 ИСПРАВЛЕНО: берем правильный ID универсального плеера
-    const video = document.getElementById('previewVideoPlayer');
+    const video = document.getElementById('preview_motion_video');
     const overlay = document.getElementById('video_motion_play_overlay');
     const icon = document.getElementById('play_motion_icon_sym');
     
-    if (!video) return; // Защита
-
     if (tg?.HapticFeedback) {
         tg.HapticFeedback.impactOccurred('medium');
     }
 
     if (video.paused) {
-        video.play().catch(e => console.log("Ошибка воспроизведения:", e));
-        if (overlay) overlay.style.background = "rgba(0,0,0,0)";
-        if (icon) icon.innerText = "⏸️";
-        
-        setTimeout(() => { 
-            if (!video.paused && overlay) overlay.style.opacity = "0"; 
-        }, 1500);
+        video.play();
+        overlay.style.background = "rgba(0,0,0,0)";
+        icon.innerText = "⏸️";
+        setTimeout(() => { if (!video.paused) overlay.style.opacity = "0"; }, 1500);
     } else {
         video.pause();
-        if (overlay) {
-            overlay.style.opacity = "1";
-            overlay.style.background = "rgba(0,0,0,0.4)";
-        }
-        if (icon) icon.innerText = "▶️";
+        overlay.style.opacity = "1";
+        overlay.style.background = "rgba(0,0,0,0.4)";
+        icon.innerText = "▶️";
     }
 }
 
-// Защищенный слушатель
-const motionPlayOverlayFix = document.getElementById('video_motion_play_overlay');
-if (motionPlayOverlayFix) {
-    motionPlayOverlayFix.addEventListener('mouseenter', () => {
-        motionPlayOverlayFix.style.opacity = "1";
+// 🔥 ИСПРАВЛЕНО: Добавили защитную проверку элемента, чтобы сайт не падал!
+const motionPlayOverlay = document.getElementById('video_motion_play_overlay');
+if (motionPlayOverlay) {
+    motionPlayOverlay.addEventListener('mouseenter', () => {
+        motionPlayOverlay.style.opacity = "1";
     });
 }
 

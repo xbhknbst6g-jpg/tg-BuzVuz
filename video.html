@@ -1024,95 +1024,119 @@ function openScreen(screenName) {
 // 67. Функция управления интерактивным видео-плеером для Режима 1
 // ====================================================================================
 // для Режима 1
-        function toggleNoSoundVideo() {
-            const video = document.getElementById('preview_nosound_video');
-            const overlay = document.getElementById('video_nosound_play_overlay');
-            const icon = document.getElementById('play_nosound_icon_sym');
-            
-            if (tg?.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('medium');
-            }
+function toggleNoSoundVideo() {
+    // 🔥 ИСПРАВЛЕНО: берем правильный ID универсального плеера из вашей верстки
+    const video = document.getElementById('previewVideoPlayer');
+    const overlay = document.getElementById('video_nosound_play_overlay');
+    const icon = document.getElementById('play_nosound_icon_sym');
+    
+    if (!video) return; // Защита от падения скрипта
 
-            if (video.paused) {
-                video.play();
-                overlay.style.background = "rgba(0,0,0,0)";
-                icon.innerText = "⏸️";
-                // Плавно прячем оверлей, чтобы не мешал просмотру лица
-                setTimeout(() => { 
-                    if (!video.paused) overlay.style.opacity = "0"; 
-                }, 1500);
-            } else {
-                video.pause();
-                overlay.style.opacity = "1";
-                overlay.style.background = "rgba(0,0,0,0.4)";
-                icon.innerText = "▶️";
-            }
+    if (tg?.HapticFeedback) {
+        tg.HapticFeedback.impactOccurred('medium');
+    }
+
+    if (video.paused) {
+        video.play().catch(e => console.log("Ошибка воспроизведения:", e));
+        if (overlay) overlay.style.background = "rgba(0,0,0,0)";
+        if (icon) icon.innerText = "⏸️";
+        
+        setTimeout(() => { 
+            if (!video.paused && overlay) overlay.style.opacity = "0"; 
+        }, 1500);
+    } else {
+        video.pause();
+        if (overlay) {
+            overlay.style.opacity = "1";
+            overlay.style.background = "rgba(0,0,0,0.4)";
         }
+        if (icon) icon.innerText = "▶️";
+    }
+}
 
-        // Возвращаем видимость интерфейса при тапе или наведении
-        document.getElementById('video_nosound_play_overlay').addEventListener('mouseenter', () => {
-            document.getElementById('video_nosound_play_overlay').style.opacity = "1";
-        });
+// Защищенный слушатель
+const noSoundOverlay = document.getElementById('video_nosound_play_overlay');
+if (noSoundOverlay) {
+    noSoundOverlay.addEventListener('mouseenter', () => {
+        noSoundOverlay.style.opacity = "1";
+    });
+}
 
 // для Режима 2 (Со звуком)
 function toggleSoundVideo() {
-    const video = document.getElementById('preview_sound_video');
+    // 🔥 ИСПРАВЛЕНО: берем правильный ID универсального плеера
+    const video = document.getElementById('previewVideoPlayer');
     const overlay = document.getElementById('video_sound_play_overlay');
     const icon = document.getElementById('play_sound_icon_sym');
     
+    if (!video) return; // Защита
+
     if (tg?.HapticFeedback) {
         tg.HapticFeedback.impactOccurred('medium');
     }
 
     if (video.paused) {
-        video.play();
-        overlay.style.background = "rgba(0,0,0,0)";
-        icon.innerText = "⏸️";
-        // Плавно убираем оверлей через 1.5 секунды
-        setTimeout(() => { if (!video.paused) overlay.style.opacity = "0"; }, 1500);
+        video.play().catch(e => console.log("Ошибка воспроизведения:", e));
+        if (overlay) overlay.style.background = "rgba(0,0,0,0)";
+        if (icon) icon.innerText = "⏸️";
+        
+        setTimeout(() => { 
+            if (!video.paused && overlay) overlay.style.opacity = "0"; 
+        }, 1500);
     } else {
         video.pause();
-        overlay.style.opacity = "1";
-        overlay.style.background = "rgba(0,0,0,0.4)";
-        icon.innerText = "▶️";
+        if (overlay) {
+            overlay.style.opacity = "1";
+            overlay.style.background = "rgba(0,0,0,0.4)";
+        }
+        if (icon) icon.innerText = "▶️";
     }
 }
 
-// Показываем оверлей управления обратно при наведении/клике
-document.getElementById('video_sound_play_overlay').addEventListener('mouseenter', () => {
-    document.getElementById('video_sound_play_overlay').style.opacity = "1";
-});
-
-
+// Защищенный слушатель
+const soundOverlay = document.getElementById('video_sound_play_overlay');
+if (soundOverlay) {
+    soundOverlay.addEventListener('mouseenter', () => {
+        soundOverlay.style.opacity = "1";
+    });
+}
 
 // для Режима 3
 function toggleMotionVideo() {
-    const video = document.getElementById('preview_motion_video');
+    // 🔥 ИСПРАВЛЕНО: берем правильный ID универсального плеера
+    const video = document.getElementById('previewVideoPlayer');
     const overlay = document.getElementById('video_motion_play_overlay');
     const icon = document.getElementById('play_motion_icon_sym');
     
+    if (!video) return; // Защита
+
     if (tg?.HapticFeedback) {
         tg.HapticFeedback.impactOccurred('medium');
     }
 
     if (video.paused) {
-        video.play();
-        overlay.style.background = "rgba(0,0,0,0)";
-        icon.innerText = "⏸️";
-        setTimeout(() => { if (!video.paused) overlay.style.opacity = "0"; }, 1500);
+        video.play().catch(e => console.log("Ошибка воспроизведения:", e));
+        if (overlay) overlay.style.background = "rgba(0,0,0,0)";
+        if (icon) icon.innerText = "⏸️";
+        
+        setTimeout(() => { 
+            if (!video.paused && overlay) overlay.style.opacity = "0"; 
+        }, 1500);
     } else {
         video.pause();
-        overlay.style.opacity = "1";
-        overlay.style.background = "rgba(0,0,0,0.4)";
-        icon.innerText = "▶️";
+        if (overlay) {
+            overlay.style.opacity = "1";
+            overlay.style.background = "rgba(0,0,0,0.4)";
+        }
+        if (icon) icon.innerText = "▶️";
     }
 }
 
-// 🔥 ИСПРАВЛЕНО: Добавили защитную проверку элемента, чтобы сайт не падал!
-const motionPlayOverlay = document.getElementById('video_motion_play_overlay');
-if (motionPlayOverlay) {
-    motionPlayOverlay.addEventListener('mouseenter', () => {
-        motionPlayOverlay.style.opacity = "1";
+// Защищенный слушатель
+const motionPlayOverlayFix = document.getElementById('video_motion_play_overlay');
+if (motionPlayOverlayFix) {
+    motionPlayOverlayFix.addEventListener('mouseenter', () => {
+        motionPlayOverlayFix.style.opacity = "1";
     });
 }
 

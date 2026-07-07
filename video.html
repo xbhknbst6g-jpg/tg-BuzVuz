@@ -1,3 +1,814 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <!-- Ограничение масштабирования для Web App и поддержка челки iPhone -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>AI Видеостудия</title>
+    <!-- Официальный скрипт Telegram Web App -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<!-- ========================================== -->
+<!-- ЭКРАН : ГЛАВНОЕ МЕНЮ РАЗДЕЛА ВИДЕО -->
+<!-- ========================================== -->
+
+    <div id="video_menu" class="screen active">
+        
+        <!-- Твой фирменный неоновый градиентный заголовок -->
+        <h1 class="ai-studio-title">AI Видеостудия</h1>
+        
+        <!-- Твоя светящаяся лазерная линия переливания -->
+        <div class="neon-divider"></div>
+
+        <p style="text-align: center; color: var(--tg-theme-hint-color, #666); font-size: 14px; margin-top: 5px; margin-bottom: 25px;">Выберите нужный инструмент для генерации видео</p>
+
+        <!-- Сетка, в которой карточки будут стоять строго друг под другом -->
+        <div class="main-menu-grid">
+            
+            <!-- 1. КАРТОЧКА: ОЖИВЛЕНИЕ ФОТО (Оранжевый неон) -->
+            <div class="menu-card" style="--neon-color: #ff7300; --neon-glow: rgba(255, 115, 0, 0.5);" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('animate_nosound');">
+                <div class="menu-icon">
+    <!-- 🔥 ИКОНКА БЕЗ ЗВУКА ДЛЯ ПЕРВОГО РЕЖИМА -->
+                    <svg width="100%" height="100%" viewBox="0 0 25 24" fill="none" xmlns="http://w3.org" style="display: block;">
+                        <path d="M3.78082 2.21967C3.48792 1.92678 3.01305 1.92678 2.72016 2.21967C2.42726 2.51256 2.42726 2.98744 2.72016 3.28033L6.87798 7.43815L6.80858 7.49984H4.75C3.50736 7.49984 2.5 8.5072 2.5 9.74984V14.2498C2.5 15.4925 3.50736 16.4998 4.75 16.4998H6.80862L10.0052 19.3412C11.4562 20.631 13.75 19.601 13.75 17.6596V14.3102L21.2192 21.7794C21.5121 22.0722 21.9869 22.0722 22.2798 21.7794C22.5727 21.4865 22.5727 21.0116 22.2798 20.7187L3.78082 2.21967ZM12.25 12.8102L7.94048 8.50065L7.592 8.8104C7.45472 8.93243 7.27742 8.99984 7.09373 8.99984H4.75C4.33579 8.99984 4 9.33563 4 9.74984V14.2498C4 14.6641 4.33579 14.9998 4.75 14.9998H7.09377C7.27745 14.9998 7.45475 15.0673 7.592 15.1893L11.0017 18.2201C11.4854 18.6501 12.25 18.3067 12.25 17.6596V12.8102Z" fill="currentColor"/>
+                        <path d="M12.25 6.34009V8.66135L13.75 10.1613V6.34009C13.75 4.39868 11.4562 3.36862 10.0052 4.65842L9.07442 5.48577L10.1369 6.54826L11.0017 5.77954C11.4854 5.3496 12.25 5.69296 12.25 6.34009Z" fill="currentColor"/>
+                        <path d="M15.499 11.9104L16.7902 13.2015C17.2211 12.0135 16.9913 10.6401 16.1007 9.64975C15.8237 9.34175 15.3495 9.3166 15.0415 9.59357C14.7335 9.87054 14.7084 10.3448 14.9853 10.6527C15.3078 11.0114 15.479 11.4581 15.499 11.9104Z" fill="currentColor"/>
+                        <path d="M17.7519 14.1633L18.8565 15.2678C20.2358 12.9757 20.0147 9.86257 18.193 7.83376C17.9162 7.52556 17.442 7.50005 17.1338 7.77679C16.8256 8.05353 16.8001 8.52772 17.0769 8.83592C18.3658 10.2714 18.5908 12.4636 17.7519 14.1633Z" fill="currentColor"/>
+                    </svg>
+                </div>
+
+                <div class="menu-info">
+                    <div class="menu-title">МАГИЯ ОЖИВЛЕНИЯ</div>
+                    <div class="menu-desc">Превратите статичный кадр в живое видео (режим без звуковых эффектов)</div>
+                </div>
+            </div>
+
+            <!-- 2. КАРТОЧКА: ОЖИВЛЕНИЕ СО ЗВУКОМ (Фиолетовый неон) -->
+            <div class="menu-card" style="--neon-color: #b624ff; --neon-glow: rgba(182, 36, 255, 0.5);" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('animate_sound');">
+                <div class="menu-icon">
+                    <!-- 🔥 ГРОМКИЙ ДИНАМИК ДЛЯ ВТОРОГО РЕЖИМА (SORA КИНО) -->
+                    <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org" style="display: block;">
+                        <path d="M17.1349 8.33459C18.9524 10.3587 18.9524 13.6405 17.1349 15.6646M19.3343 6.62459C21.8886 9.59312 21.8886 14.4061 19.3343 17.3746M15.043 10.151C15.987 11.2007 15.987 12.7985 15.043 13.8482M10.0035 5.21873L6.59373 8.2496H4.25C3.42157 8.2496 2.75 8.92117 2.75 9.7496V14.2496C2.75 15.078 3.42157 15.7496 4.25 15.7496H6.59377L10.0035 18.7804C10.9708 19.6403 12.5 18.9536 12.5 17.6593V6.33985C12.5 5.04557 10.9708 4.35887 10.0035 5.21873Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+
+                <div class="menu-info">
+                    <div class="menu-title">ЭКШЕН-ВИДЕО</div>
+                    <div class="menu-desc">Превратите фото в масштабный кино-сюжет с физикой, движением камеры, с звуковыми эффектами</div>
+                </div>
+            </div>
+
+            <!-- 3. КАРТОЧКА: ОЖИВЛЕНИЕ ПО ВИДЕО (Синий неон) -->
+            <div class="menu-card" style="--neon-color: #0066ff; --neon-glow: rgba(0, 102, 255, 0.5);" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('video_motion_control');">
+                <div class="menu-icon">
+                <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org" style="display: block;">
+                    <path d="M16.9065 9.84156C17.3076 9.84156 17.6335 10.1675 17.6335 10.5686V13.7999L21.1808 10.739C21.2334 10.6934 21.2981 10.6638 21.3671 10.6539C21.4362 10.6439 21.5066 10.6541 21.57 10.683C21.6334 10.712 21.6871 10.7586 21.7248 10.8173C21.7625 10.876 21.7825 10.9442 21.7824 11.014V19.9819C21.7824 20.0507 21.7629 20.1181 21.7262 20.1762C21.6895 20.2344 21.6371 20.281 21.5751 20.3106C21.513 20.3402 21.4438 20.3517 21.3755 20.3437C21.3072 20.3356 21.2426 20.3084 21.1891 20.2652L17.6335 17.3898V20.6413C17.6334 20.8144 17.5714 20.9818 17.4589 21.1134L17.3862 21.1869C17.3085 21.2551 17.2172 21.3059 17.1184 21.3361C17.0195 21.3662 16.9154 21.3749 16.8129 21.3616L7.69868 20.1833V21.273C7.69868 21.4657 7.6222 21.6505 7.48604 21.7868C7.34988 21.9231 7.16518 21.9998 6.97252 22H2.94477C2.75211 22 2.56732 21.9235 2.431 21.7874C2.29469 21.6512 2.21799 21.4665 2.21777 21.2738V10.5694C2.21777 10.1683 2.54367 9.8424 2.94477 9.84156H16.9065ZM11.7607 13.4749H8.04881C7.95255 13.4749 7.86022 13.5131 7.79207 13.5811C7.72393 13.649 7.68553 13.7413 7.68531 13.8376V16.2166C7.68531 16.4171 7.84826 16.5793 8.04881 16.5793H11.7607C11.9612 16.5793 12.1233 16.4171 12.1242 16.2166V13.8376C12.124 13.7413 12.0856 13.649 12.0174 13.5811C11.9493 13.5131 11.8569 13.4749 11.7607 13.4749ZM12.9356 2C13.9005 2 14.826 2.38332 15.5083 3.06564C16.1906 3.74797 16.5739 4.67339 16.5739 5.63834C16.5739 6.60329 16.1906 7.52871 15.5083 8.21103C14.826 8.89335 13.9005 9.27668 12.9356 9.27668C11.9706 9.27668 11.0452 8.89335 10.3629 8.21103C9.68057 7.52871 9.29724 6.60329 9.29724 5.63834C9.29724 4.67339 9.68057 3.74797 10.3629 3.06564C11.0452 2.38332 11.9706 2 12.9356 2ZM6.26724 3.09718C6.66537 3.09718 7.05959 3.1756 7.42741 3.32796C7.79523 3.48031 8.12944 3.70362 8.41096 3.98514C8.69247 4.26666 8.91578 4.60086 9.06814 4.96868C9.2205 5.3365 9.29891 5.73073 9.29891 6.12885C9.29891 6.52698 9.2205 6.92121 9.06814 7.28902C8.91578 7.65684 8.69247 7.99105 8.41096 8.27257C8.12944 8.55409 7.79523 8.7774 7.42741 8.92975C7.05959 9.08211 6.66537 9.16052 6.26724 9.16052C5.46319 9.16052 4.69208 8.84112 4.12353 8.27257C3.55498 7.70402 3.23557 6.9329 3.23557 6.12885C3.23557 5.32481 3.55498 4.55369 4.12353 3.98514C4.69208 3.41659 5.46319 3.09718 6.26724 3.09718Z" fill="currentColor"/>
+                </svg>
+            </div>
+
+                <div class="menu-info">
+                    <div class="menu-title">РЕЖИССЕР ДВИЖЕНИЙ</div>
+                    <div class="menu-desc">Управляйте физикой видео, оживите фото, ваше фото повторит движения из видео примера</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+<!-- ========================================== -->
+<!-- ЭКРАН 1: ОЖИВЛЕНИЕ ФОТО (БЕЗ ЗВУКА)          -->
+<!-- ========================================== -->
+    <div id="animate_nosound" class="screen">
+            
+        <!-- Фирменный контейнер вкладок с кнопкой назад -->
+        <div class="tabs-container">
+            <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('video_menu')"></button>
+            <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;">
+                Оживление фото без звука
+            </div>
+        </div>
+
+        <!-- Основной блок настроек -->
+        <div id="video_nosound_settings_block" class="custom-prompt-container">                
+            <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">Пример готовой генерации</div>
+            
+            <!-- 🔥 КОМПАКТНЫЙ ГОРИЗОНТАЛЬНЫЙ РЯД ДЛЯ ДВУХ КАРТОЧЕК (ОБА КЛИКАБЕЛЬНЫ НА ВЕСЬ ЭКРАН) -->
+            <div class="example-preview-container" style="display: flex; flex-direction: row; gap: 15px; justify-content: center; margin: 15px auto; width: 90%; max-width: 340px;">
+                
+                <!-- 1. Карточка Фото-оригинала (Левая сторона - КЛИКАБЕЛЬНАЯ) -->
+                <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;">
+                    <!-- 🔥 Рамка фото теперь оранжевая и неоновая, как у видео-результата -->
+                    <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
+                        <img src="https://i.postimg.cc/wMDnw6QS/IMG-0495.jpg" 
+                            onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo(this.src)"
+                            style="width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer;" alt="Фото оригинал">
+                    </div>
+                    <div style="font-size: 11px; font-weight: 800; color: rgba(255, 255, 255, 0.5); text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">📸 Исходное фото</div>
+                </div>
+                <!-- 2. Карточка Видео-результата (Правая сторона) -->
+                <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;">
+                    <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
+                        <video id="preview_nosound_video" style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay>
+                            <source src="https://i.imgur.com/7bLn7AV.mp4" type="video/mp4">
+                            Ваш браузер не поддерживает видео.
+                        </video>
+
+                        <!-- 🔥 ИСПРАВЛЕНО: Ссылка заменена на рабочую прямую ссылку mp4 из тега source -->
+                        <div id="video_nosound_play_overlay" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo('https://i.imgur.com/7bLn7AV.mp4')" 
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                        </div>
+                    </div>
+                    <div style="font-size: 11px; font-weight: 800; color: #ff7300; text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">🔥 Результат</div>
+                </div>
+            </div>
+
+            <!-- Текст пошаговой инструкции обновлен под авто-формат -->
+            <div style="font-size: 13px; line-height: 1.5; margin-top: 25px !important; padding: 0 5px; color: rgba(255, 255, 255, 0.6) !important;">
+                <b>Шаг 1:</b> Выберите длительность видео на кнопке ниже.<br>
+                <b>Шаг 2:</b> Нажмите кнопку запуска START.<br>
+                <b>Шаг 3:</b> Далее в ТГ боте следуйте инструкциями<br>
+            </div>
+
+            <!-- Фирменная лазерная линия-разделитель (Оранжевый неон) -->
+            <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
+
+            <!-- 🔥 Регулируйте отступ цифрой в margin-bottom (сейчас стоит 22px) -->
+            <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center; margin-bottom: 60px !important;">
+                <b>Итоговая цена зависит от выбранной длительности и отображается на кнопке START</b>
+            </div>
+            <!-- 🔥 ЭТА РАСПОРКА УДЕРЖИТ ОКНО ПО ЦЕНТРУ НА ПК 🔥 -->
+            <div class="mode-spacer" style="height: calc(100vh - 470px); display: none;" id="motion_spacer"></div>
+
+            <!-- 🔥 ОБНОВЛЕННЫЙ ПУЛЬТ УПРАВЛЕНИЯ РЕЖИМА 1 (Две колонки) -->
+            <div class="single-row-controls" style="display: flex; gap: 15px; align-items: flex-end; margin-top: -12px !important; position: relative; z-index: 10;">
+                <!-- Колонка Длительности -->
+                <div class="control-col" style="flex: 1;">
+                    <div class="control-label"></div>
+                    <button id="btn_video_duration" class="capsule-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openUniversalDurationSheet()">⏱️ 5 сек</button>
+                </div>
+                
+                <!-- Кнопка запуска -->
+                <div class="control-col-btn" style="flex: 1.5;">
+                    <div class="control-label"></div>
+                        <button id="neo_video_submit_btn" class="neo-start-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendVideoGenData()">Start 7 🪙</button> 
+                    </div>
+            </div>
+
+        </div> <!-- Закрыли блок настроек video_nosound_settings_block -->
+    </div>
+
+<!-- ========================================== -->
+<!-- ЭКРАН 2: ОЖИВЛЕНИЕ СО ЗВУКОМ (SORA-2)       -->
+<!-- ========================================== -->
+    <div id="animate_sound" class="screen">
+            
+        <!-- Фирменный контейнер вкладок с кнопкой назад -->
+        <div class="tabs-container">
+            <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('video_menu')"></button>
+            <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;">
+                Оживление фото со звуком
+            </div>
+        </div>
+
+        <!-- Основной блок настроек -->
+        <div id="video_sound_settings_block" class="custom-prompt-container">                
+            <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">Пример готовой генерации</div>
+            
+            <!-- Твой оригинальный компактный горизонтальный ряд для двух карточек -->
+            <div class="example-preview-container" style="display: flex; flex-direction: row; gap: 15px; justify-content: center; margin: 15px auto; width: 90%; max-width: 340px;">
+                
+                <!-- 1. Карточка Фото-оригинала -->
+                <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;">
+                    <!-- 🔥 Рамка фото на втором экране тоже загорелась оранжевым неон-стилем -->
+                    <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
+                        <img src="https://i.postimg.cc/Kv5FrNzq/b-Lx-N-n-XBzkt-Aah-Ej-Tr-YFf.png" 
+                            onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo(this.src)"
+                            style="width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer;" alt="Фото для Sora">
+                    </div>
+                    <div style="font-size: 11px; font-weight: 800; color: rgba(255, 255, 255, 0.5); text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">📸 Исходное фото</div>
+                </div>
+
+                <!-- 2. Карточка Видео-результата -->
+                <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;">
+                    <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
+                        <video id="preview_sound_video" style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay>
+                            <source src="https://i.imgur.com/Q6GrKyK.mp4" type="video/mp4">
+                        </video>
+
+                        
+                        <div id="video_sound_play_overlay" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo('https://i.imgur.com/Q6GrKyK.mp4')" 
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                        </div>
+                    </div>
+                    <div style="font-size: 11px; font-weight: 800; color: #ff7300; text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">🔥 Результат</div>
+                </div>
+
+            </div>
+
+            <!-- Твоя оригинальная пошаговая инструкция под авто-формат -->
+            <div style="font-size: 13px; line-height: 1.5; margin-top: 25px !important; padding: 0 5px; color: rgba(255, 255, 255, 0.6) !important;">
+                <b>Шаг 1:</b> Выберите длительность видео на кнопке ниже.<br>
+                <b>Шаг 2:</b> Нажмите кнопку запуска START.<br>
+                <b>Шаг 3:</b> Далее в ТГ боте следуйте инструкциями<br>
+            </div>
+
+            <!-- Твой фирменный оранжевый разделитель -->
+            <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
+
+            <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center; margin-bottom: 60px !important;">
+                <b>Итоговая цена зависит от выбранной длительности и отображается на кнопке START</b>
+            </div>
+
+            <!-- Твой оригинальный пульт управления -->
+            <div class="single-row-controls" style="display: flex; gap: 15px; align-items: flex-end; margin-top: -12px !important; position: relative; z-index: 10;">
+                <div class="control-col" style="flex: 1;">
+                    <button id="btn_sora_duration" class="capsule-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openUniversalDurationSheet()">⏱️ 4 сек</button>
+                </div>
+                
+                <div class="control-col-btn" style="flex: 1.5;">
+                    <button id="neo_video_sound_submit_btn" class="neo-start-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendVideoGenData()">Start 3 🪙</button>
+                </div>
+            </div>
+
+        </div>
+    </div> <!-- ТУТ СТРОГО ЗАКРЫЛСЯ ВТОРОЙ РЕЖИМ -->
+
+<!-- ========================================== -->
+<!-- ЭКРАН 3: ОЖИВЛЕНИЕ ПО ВИДЕО (MOTION CONTROL) -->
+<!-- ========================================== -->
+    <div id="video_motion_control" class="screen">
+
+        <!-- Фирменный контейнер вкладок с кнопкой назад -->
+        <div class="tabs-container">
+            <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); handleMotionBackClick()"></button>
+            <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;" id="video_motion_main_title">
+                Создание видео
+            </div>
+        </div>
+            
+        <!-- 🔥 ИСПРАВЛЕНО: Убрали класс tabs-container, который ломал геометрию окна на ПК. Теперь структура чистая! -->
+        <div id="video_motion_tabs" style="display: flex !important; gap: 10px !important; margin-bottom: 15px !important; padding: 0 10px;">
+            <button class="tab-btn capsule-btn active" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); switchMotionTab('preset', this)" style="flex: 1 !important; margin: 0 !important; font-size: 13px !important; text-transform: uppercase;">Шаблоны</button>
+            <button class="tab-btn capsule-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); switchMotionTab('custom', this)" style="flex: 1 !important; margin: 0 !important; font-size: 13px !important; text-transform: uppercase; background: #111111 !important; color: rgba(255,255,255,0.5) !important; border: 2px solid rgba(255, 102, 0, 0.2) !important; box-shadow: none !important;">Свой</button>
+        </div>
+
+        <div class="header" style="margin-bottom: 15px; text-align: center;">
+            <p id="video_motion_subtitle" style="font-size: 13px; margin: 4px 0 0 0; color: rgba(255,255,255,0.6);">Выберите готовый шаблон для настройки:</p>
+        </div>
+
+        <!-- ШАГ 1: ГАЛЕРЕЯ АККУРАТНЫХ КАРТОЧКЕК -->
+        <div class="phone-presets-grid" id="motion_gallery_block" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 10px; margin-bottom: 15px;">
+            
+            <!-- Карточка 1 -->
+            <div class="phone-template-card" onclick="selectMotionTemplate('Outside the city', 'https://i.imgur.com/2mcdE9J.mp4', 5)" style="position: relative; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15); background: #000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer;">
+                <video src="https://i.imgur.com/2mcdE9J.mp4" style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay preload="auto"></video>          
+                <div class="card-overlay" style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 8px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: #fff; font-size: 11px; font-weight: bold; text-align: center;">Outside the city</div>
+            </div>
+
+            <!-- Карточка 2 -->
+             <div class="phone-template-card" onclick="selectMotionTemplate('The Dark Soul', 'https://i.imgur.com/h6370oz.mp4', 5)" style="position: relative; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15); background: #000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer;">
+                <video src="https://i.imgur.com/h6370oz.mp4" style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay preload="auto"></video>          
+                <div class="card-overlay" style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 8px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: #fff; font-size: 11px; font-weight: bold; text-align: center;">Outside the city</div>
+            </div>
+
+        </div>
+
+        <!-- ШАГ 2: БЛОК НАСТРОЕК (Твой оригинальный скрытый блок) -->
+        <div id="motion_controls_block" style="display: none; width: 100%;">
+            
+            <!-- 1. ИНСТРУКЦИЯ ДЛЯ ВКЛАДКИ "СВОЙ" -->
+            <div id="motion_custom_instruction" class="custom-prompt-container" style="display: none; margin-bottom: 15px; padding: 10px 8px;">
+                <div style="font-size: 13px; color: rgba(255, 255, 255, 0.6); line-height: 1.5;">
+                    <b style="color: #ffffff;">Шаг 1:</b> Подготовьте фотографию для оживления и пример (видеоролик), с которого ИИ скопирует движения для фото.<br>
+                    <b style="color: #ffffff;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
+                    <b style="color: #ffffff;">Шаг 3:</b> Следуйте дальнейшим указаниям бота!
+                </div>
+            </div>
+
+            <!-- Твой фирменный оранжевый разделитель -->
+            <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
+
+            <div style="font-size: 15px; line-height: 1.5; padding: 0 5px; text-align: center; margin-bottom: 60px !important;">
+                <b>Честная посекундная оплата. Точная стоимость генерации зависит от финальной длительности ролика и отобразится перед запуском</b>
+            </div>
+
+            <!-- 2. КОНТЕЙНЕР ДЛЯ ПРЕВЬЮ ШАБЛОНОВ -->
+            <div id="motion_preset_preview_block" style="display: none; justify-content: center; margin-bottom: 15px;">
+                <div class="text-image-compact-preview" style="width: 45%; max-width: 150px; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; background: #000;">
+                    <video id="motion_large_preview_video" style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay>
+                        <source src="" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+
+            <!-- НИЖНЯЯ ПЛАШКА С КНОПКАМИ -->
+            <div class="single-row-controls">
+                <div class="control-col control-col-btn" style="flex: 1.5;">
+                    <button id="neo_motion_submit_btn" class="neo-start-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendVideoGenData()">Start 7 🪙</button>
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- Намертво закрыли экран -->
+    
+
+<!-- ========================================== -->
+<!-- ПОЛНОЭКРАННЫЙ ПЛЕЕР ПРЕВЬЮ (УНИВЕРСАЛЬНЫЙ) -->
+<!-- ========================================== -->
+    <div id="videoPlayerModal" class="video-modal" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); closePreviewVideo()">
+        <div class="video-modal-content" onclick="event.stopPropagation()" style="position: relative;">
+            
+            <button class="video-modal-close" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); closePreviewVideo()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+
+            <!-- Тег для видео -->
+            <video id="previewVideoPlayer" playsinline loop autoplay muted style="width: 100%; height: 100%; object-fit: cover; display: none;"></video>
+            
+            <!-- Тег для картинок -->
+            <img id="previewImagePlayer" style="width: 100%; height: 100%; object-fit: cover; display: none;" alt="Превью фото">
+            
+            <!-- 🔥 ДОБАВЛЕНО: Блок кнопок управления прямо поверх плеера (Звук + Старт) -->
+            <div id="modal_controls_panel" style="display: none; position: absolute; bottom: 16px; left: 16px; right: 16px; flex-direction: column; gap: 10px; z-index: 10;">
+                <!-- Твоя круглая капсула для звука -->
+                <button id="btn_modal_mute" class="capsule-btn" style="width: 100% !important; padding: 10px 4px !important; font-size: 12px !important; background: rgba(17, 17, 17, 0.8) !important; backdrop-filter: blur(4px); border: 2px solid rgba(255, 102, 0, 0.5) !important;" onclick="toggleModalMute()">
+                    🔊 Включить звук
+                </button>
+                <!-- Твоя неоновая кнопка запуска -->
+                <button id="neo_motion_submit_btn" class="neo-start-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendVideoGenData()">Start 10 🪙</button>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- УНИВЕРСАЛЬНАЯ КАСТОМНАЯ ШТОРКА (HTML ПОДЛОЖКА) -->
+    <!-- ========================================== -->
+    <div id="custom_action_sheet" class="custom-sheet-overlay" onclick="closeCustomSheet()">
+        <div class="custom-sheet-panel" onclick="event.stopPropagation()">
+            <div id="custom_sheet_title" class="custom-sheet-title">Заголовок</div>
+            <ul id="custom_sheet_list" class="custom-sheet-list">
+                <!-- Сюда JavaScript будет сам на лету подставлять нужные списки -->
+            </ul>
+           
+        </div>
+    </div>
+<!-- ========================================== -->
+<!-- 🔥 ЕДИНАЯ КОМПАКТНАЯ ШТОРКА ДЛИТЕЛЬНОСТИ ДЛЯ 1-ГО И 2-ГО РЕЖИМОВ -->
+<!-- ========================================== -->
+
+    <div id="universal_duration_sheet" class="custom-sheet-overlay" onclick="closeUniversalDurationSheet()">
+        <div class="custom-sheet-panel" onclick="event.stopPropagation()">
+            
+            <!-- Заголовок шторки -->
+            <div class="custom-sheet-title">Продолжительность видео</div>
+            
+            <!-- Динамический список элементов шторки (заполняется через JS) -->
+            <ul class="custom-sheet-list" id="universal_duration_list">
+                <!-- Кнопки секунд будут генерироваться автоматически -->
+            </ul>
+            
+        </div>
+    </div>
+<!-- ========================================== -->
+<!-- НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ (ТАББАР) -->
+<!-- ========================================== -->
+
+    <div class="bottom-navigation-bar">
+        <!-- Кнопка ФОТО (Ведет на photo.html) -->
+        <button class="nav-item" onclick="navigateToScreen('foto.html')">
+            <span class="nav-icon">📸</span>
+            <span class="nav-text">Фотоэффекты</span>
+        </button>
+        
+        <!-- Кнопка ВИДЕО (Активная) -->
+        <button class="nav-item active">
+            <span class="nav-icon">🎥</span>
+            <span class="nav-text">Видеоэффекты</span>
+        </button>
+        
+        <!-- Кнопка РИСУНКИ (Ведет на art.html) -->
+        <button class="nav-item" onclick="navigateToScreen('image.html')">
+            <span class="nav-icon">🎨</span>
+            <span class="nav-text">Рисование</span>
+        </button>
+    </div>
+    <script>
+// ====================================================================================
+// 1. СИСТЕМНАЯ ИНИЦИАЛИЗАЦИЯ И ПЕРЕМЕННЫЕ (СТРОГО ТРИ ВИДЕО РЕЖИМА)
+// ====================================================================================
+    const tg = window.Telegram.WebApp;
+
+    // Главная переменная роутера (Стартует с главного меню видеостудии 'video_menu')
+    let currentActiveMode = 'video_menu';
+
+    // 🎥 НАСТРОЙКИ ДЛЯ 1-ГО РЕЖИМА: «Оживление фото» (Без звука, Kling 2.1)
+    let currentKlingDuration = 5;  
+    let currentAnimateRatio = 'auto';  
+
+    // 🔊 НАСТРОЙКИ ДЛЯ 2-ГО РЕЖИМА: «Оживление со звуком» (С голосом ИИ, Sora-2)
+    let soundGenRatio = 'auto';
+    let selectedVoiceId = 'voice_male_01';
+
+    // 👤 НАСТРОЙКИ ДЛЯ 3-ГО РЕЖИМА: «Оживление по видео» (Motion Control, Kling v2.6)
+    let motionGenDuration = 5;
+    let motionGenRatio = 'auto';
+   // Глобальные переменные для отслеживания состояния режима 3 (убедись, что они объявлены вверху файла)
+    let isMotionStyleSelected = false;
+    let selectedMotionStyleName = "";
+    let selectedMotionVideoUrl = "";
+    let currentGenerationMode = "preset"; 
+
+    // ====================================================================================
+    // 🔥 АВТОМАТИЧЕСКИЙ ПЕРЕХОД ПО КНОПКЕ ИЗ ИНЛАЙН-МЕНЮ БОТА (DEEP LINKS)
+    // ====================================================================================
+    (function() {
+        // 1. Читаем адресную строку и ищем параметры режима
+        const urlParams = new URLSearchParams(window.location.search);
+        let startMode = urlParams.get('mode');
+        
+        // 🔍 ФИКС БАГА ТЕЛЕГРАМА: Проверяем, не спрятал ли Telegram параметр внутрь tgWebAppStartParam
+        const tgStartParam = urlParams.get('tgWebAppStartParam');
+        if (!startMode && tgStartParam) {
+            startMode = tgStartParam; // Если Telegram пережал ссылку, забираем режим оттуда
+        }
+
+        // 2. Если бот прислал команду на 1-й режим (Без звука)
+        if (startMode === 'animate_nosound') {
+            setTimeout(function() {
+                if (typeof openScreen === 'function') {
+                    openScreen('animate_nosound');
+                    console.log("🚀 Автопереход: Успешно открыт экран оживления фото без звука!");
+                }
+            }, 150);
+        }
+        // 3. Если бот прислал команду на 2-й режим (Со звуком)
+        else if (startMode === 'animate_sound') {
+            setTimeout(function() {
+                if (typeof openScreen === 'function') {
+                    openScreen('animate_sound');
+                    console.log("🚀 Автопереход: Успешно открыт экран говорящего аватара со звуком!");
+                }
+            }, 150);
+        }
+        // 4. Если бот прислал команду на 3-й режим (Оживление по видео / Motion Control)
+        else if (startMode === 'video_motion_control') {
+            setTimeout(function() {
+                if (typeof openScreen === 'function') {
+                    openScreen('video_motion_control');
+                    console.log("🚀 Автопереход: Успешно открыт экран переноса движений по видео!");
+                }
+            }, 150);
+        }
+    })();
+
+// ====================================================================================
+// Функция для управления вашим плеером videoPlayerModal
+// ====================================================================================
+// Открытие универсального полноэкранного плеера 
+function openPreviewVideo(mediaUrl) {
+    const modal = document.getElementById('videoPlayerModal');
+    const playerVideo = document.getElementById('previewVideoPlayer');
+    const playerImage = document.getElementById('previewImagePlayer');
+    
+    if (!modal) return;
+    
+    const urlLower = mediaUrl.toLowerCase();
+    
+    // Проверяем тип медиафайла
+    if (urlLower.includes('.mp4') || urlLower.includes('video') || urlLower.includes('mixkit')) {
+        // Включаем видео-режим
+        if (playerImage) {
+            playerImage.style.display = "none";
+            playerImage.src = "";
+        }
+        if (playerVideo) {
+            playerVideo.src = mediaUrl;
+            playerVideo.style.display = "block";
+            playerVideo.muted = false; // Включаем звук в плеере
+            playerVideo.play().catch(e => console.log("Автоплей заблокирован:", e));
+        }
+    } else {
+        // Включаем фото-режим (для .jpg, .png, Unsplash и т.д.)
+        if (playerVideo) {
+            playerVideo.pause();
+            playerVideo.style.display = "none";
+            playerVideo.src = "";
+        }
+        if (playerImage) {
+            playerImage.src = mediaUrl;
+            playerImage.style.display = "block";
+        }
+    }
+    
+    // Включаем саму модалку на экране
+    modal.style.display = "flex";
+    setTimeout(() => {
+        modal.classList.add('active'); 
+    }, 10);
+}
+
+// Закрытие универсального полноэкранного плеера (ИСПРАВЛЕНО И ИЗОЛИРОВАНО)
+function closePreviewVideo() {
+    const modal = document.getElementById('videoPlayerModal');
+    const playerVideo = document.getElementById('previewVideoPlayer');
+    const playerImage = document.getElementById('previewImagePlayer');
+    
+    // 🔥 ДОБАВЛЕНО: Находим панель кнопок 3-го режима
+    const controlsPanel = document.getElementById('modal_controls_panel');
+
+    if (modal) {
+        modal.classList.remove('active');
+        
+        // 🔥 ДОБАВЛЕНО: Мгновенно убираем кнопки, чтобы они не мелькали в 1-м и 2-м режимах
+        if (controlsPanel) controlsPanel.style.display = "none";
+        
+        // Гасим видео, если оно играло
+        if (playerVideo) {
+            playerVideo.pause();
+            playerVideo.src = "";
+        }
+        
+        // Ждем анимацию исчезновения и полностью скрываем элементы
+        setTimeout(function() {
+            modal.style.display = "none";
+            if (playerVideo) playerVideo.style.display = "none";
+            if (playerImage) {
+                playerImage.style.display = "none";
+                playerImage.src = ""; // Очищаем память от фото
+            }
+        }, 300); 
+    }
+}
+
+// ====================================================================================
+// 2. Логика кнопки переключения звука
+// ====================================================================================
+
+function toggleModalMute() {
+    if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+    
+    const videoPlayer = document.getElementById('previewVideoPlayer');
+    const muteBtn = document.getElementById('btn_modal_mute');
+    
+    if (videoPlayer && muteBtn) {
+        if (videoPlayer.muted) {
+            videoPlayer.muted = false;
+            muteBtn.innerHTML = "🔇 Выключить звук"; // Исправлено на правильный эмодзи
+        } else {
+            videoPlayer.muted = true;
+            muteBtn.innerHTML = "🔊 Включить звук";
+        }
+    }
+}
+
+// 3. Клик по кнопке "Сгенерировать" внутри плеера
+function submitFromModal() {
+    closePreviewVideo();
+    // Вызывает твою готовую функцию, которая шлет JSON и закрывает WebApp
+    if (typeof sendMotionControlData === 'function') {
+        sendMotionControlData();
+    }
+}
+
+// ====================================================================================
+// УПРАВЛЕНИЕ ВКЛАДКАМИ ("Шаблоны" / "Свой")
+// ====================================================================================
+function switchMotionTab(category, element) {
+    if (!element) return;
+
+    const tabs = document.querySelectorAll('#video_motion_tabs .tab-btn');
+    tabs.forEach(tab => {
+        tab.classList.remove('active');
+        tab.style.setProperty('background', '#111111', 'important');
+        tab.style.setProperty('color', 'rgba(255, 255, 255, 0.5)', 'important');
+        tab.style.setProperty('border', '2px solid rgba(255, 102, 0, 0.2)', 'important');
+        tab.style.setProperty('box-shadow', 'none', 'important');
+    });
+
+    element.classList.add('active');
+    element.style.setProperty('background', '#ff6600', 'important');
+    element.style.setProperty('color', '#ffffff', 'important');
+    element.style.setProperty('border', '2px solid #ff1e00', 'important');
+    element.style.setProperty('box-shadow', '0 4px 12px rgba(255, 30, 0, 0.3)', 'important');
+
+    const gallery = document.getElementById('motion_gallery_block');
+    const controlsBlock = document.getElementById('motion_controls_block');
+    const customInstruction = document.getElementById('motion_custom_instruction');
+    const presetPreviewBlock = document.getElementById('motion_preset_preview_block');
+    const spacer = document.getElementById('motion_spacer');
+
+    if (category === 'custom') {
+        currentGenerationMode = 'custom'; 
+        isMotionStyleSelected = true;  
+        selectedMotionStyleName = "Свой референс";
+        selectedMotionVideoUrl = "";
+
+        const subtitle = document.getElementById('video_motion_subtitle');
+        if (subtitle) subtitle.style.display = 'none';
+
+        if (gallery) gallery.style.display = 'none';                  
+        if (controlsBlock) controlsBlock.style.display = 'block';         
+        if (customInstruction) customInstruction.style.display = 'block';   
+        if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';  
+        
+        if (spacer) spacer.style.display = 'none';   
+        
+        const controlsPanel = document.querySelector('#video_motion_control .single-row-controls');
+        if (controlsPanel) {
+            controlsPanel.style.setProperty('margin-top', '35px', 'important');
+        }
+    } else {
+        currentGenerationMode = 'preset'; 
+        isMotionStyleSelected = false; 
+
+        const subtitle = document.getElementById('video_motion_subtitle');
+        if (subtitle) subtitle.style.display = 'block';
+
+        if (gallery) gallery.style.display = 'grid';                  
+        if (controlsBlock) controlsBlock.style.display = 'none';            
+        if (spacer) spacer.style.display = 'none';     
+        
+        const controlsPanel = document.querySelector('#video_motion_control .single-row-controls');
+        if (controlsPanel) {
+            controlsPanel.style.setProperty('margin-top', '55px', 'important');
+        }
+    }
+}
+
+// ====================================================================================
+// ФУНКЦИЯ КЛИКА ПО КАРТОЧКЕ ВИДЕО-ШАБЛОНА (Теперь принимает реальную длительность)
+// ====================================================================================
+// 🔥 ТЕПЕРЬ ФУНКЦИЯ ПРИНИМАЕТ ТРИ ПАРАМЕТРА И ПЕРЕДАЕТ СЕКУНДЫ БОТУ!
+function switchMotionTab(category, element) {
+    if (!element) return;
+
+    // 1. СБРОС СТИЛЕЙ: Возвращаем обеим кнопкам красивую круглую форму капсулы (темную)
+    const tabs = document.querySelectorAll('#video_motion_tabs .tab-btn');
+    tabs.forEach(tab => {
+        tab.classList.remove('active');
+        tab.style.setProperty('background', '#111111', 'important');
+        tab.style.setProperty('color', 'rgba(255, 255, 255, 0.5)', 'important');
+        tab.style.setProperty('border', '2px solid rgba(255, 102, 0, 0.2)', 'important');
+        tab.style.setProperty('box-shadow', 'none', 'important');
+    });
+
+    // 2. ПОДСВЕТКА: Делаем нажатую вкладку оранжевой, как твоя родная капсула
+    element.classList.add('active');
+    element.style.setProperty('background', '#ff6600', 'important');
+    element.style.setProperty('color', '#ffffff', 'important');
+    element.style.setProperty('border', '2px solid #ff1e00', 'important');
+    element.style.setProperty('box-shadow', '0 4px 12px rgba(255, 30, 0, 0.3)', 'important');
+
+    // 3. НАХОДИМ БЛОКИ (Строго те, что есть в HTML!)
+    const gallery = document.getElementById('motion_gallery_block');
+    const controlsBlock = document.getElementById('motion_controls_block');
+    const customInstruction = document.getElementById('motion_custom_instruction');
+    const presetPreviewBlock = document.getElementById('motion_preset_preview_block');
+    const spacer = document.getElementById('motion_spacer');
+
+    // 4. ЧИСТАЯ ЛОГИКА ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ
+    if (category === 'custom') {
+        currentGenerationMode = 'custom'; 
+        isMotionStyleSelected = true;  
+        selectedMotionStyleName = "Свой референс";
+        selectedMotionVideoUrl = "";
+
+        const subtitle = document.getElementById('video_motion_subtitle');
+        if (subtitle) subtitle.style.display = 'none';
+
+        if (gallery) gallery.style.display = 'none';                  
+        if (controlsBlock) controlsBlock.style.display = 'block';         
+        if (customInstruction) customInstruction.style.display = 'block';   
+        if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';  
+        
+        // Наглухо выключаем пустую распорку, она нам больше не нужна
+        if (spacer) spacer.style.display = 'none';   
+        
+        // НАПРЯМУЮ МЕНЯЕМ ОТСТУП У КНОПОК: Поднимаем кнопку START повыше во вкладке "Свой"
+        const controlsPanel = document.querySelector('#video_motion_control .single-row-controls');
+        if (controlsPanel) {
+            controlsPanel.style.setProperty('margin-top', '35px', 'important');
+        }
+    } else {
+        currentGenerationMode = 'preset'; 
+        isMotionStyleSelected = false; 
+
+        const subtitle = document.getElementById('video_motion_subtitle');
+        if (subtitle) subtitle.style.display = 'block';
+
+        if (gallery) gallery.style.display = 'grid';                  
+        if (controlsBlock) controlsBlock.style.display = 'none';            
+        if (spacer) spacer.style.display = 'none';     
+        
+        // ВОЗВРАЩАЕМ СТАНДАРТНЫЙ ОТСТУП ДЛЯ ШАБЛОНОВ
+        const controlsPanel = document.querySelector('#video_motion_control .single-row-controls');
+        if (controlsPanel) {
+            controlsPanel.style.setProperty('margin-top', '55px', 'important');
+        }
+    }
+}
+
+// ====================================================================================
+// функцию в JS
+// ====================================================================================
+function selectMotionDurationValue(seconds) {
+    // 1. Перезаписываем твою глобальную переменную 3-го режима
+    motionGenDuration = seconds; 
+    
+    // 2. Сразу меняем текст на кнопке, чтобы юзер видел выбранное время
+    const btn = document.getElementById('btn_motion_duration');
+    if (btn) btn.innerHTML = `⏱️ ${seconds} сек`;
+    
+    // 3. Автоматически закрываем шторку (скрываем её с экрана)
+    const sheet = document.getElementById('universal_duration_sheet');
+    if (sheet) {
+        sheet.style.display = 'none';
+    }
+
+    // 🔥 ДОБАВЛЕНО: Сразу пересчитываем цену на кнопке START под новые секунды!
+    if (typeof updateMotionSubmitButton === 'function') {
+        updateMotionSubmitButton();
+    }
+}
+
+
+// ====================================================================================
+// 2.5 ФУНКЦИИ ВОЗВРАТА НАЗАД (СТРОГО НАШИ ВИДЕО РЕЖИМЫ)
+// ====================================================================================
+// Назад из Режима 1: Оживление фото (без звука)
+        function handleAnimateNoSoundBackClick() {
+            openScreen('video_menu'); // Возвращает в главное меню видеостудии
+        }
+
+        // Назад из Режима 2: Оживление со звуком
+        function handleAnimateSoundBackClick() {
+            openScreen('video_menu'); // Возвращает в главное меню видеостудии
+        }
+
+        // Назад из Режима 3: Оживление по видео (Motion Control)
+        function handleMotionControlBackClick() {
+            openScreen('video_menu'); // Возвращает в главное меню видеостудии
+        }
+
+// ====================================================================================
+// ОБЪЕДИНЕННАЯ ФУНКЦИЯ КНОПКИ "НАЗАД" 
+// ====================================================================================
+function handleMotionBackClick() {
+    const gallery = document.getElementById('motion_gallery_block');
+    const controlsBlock = document.getElementById('motion_controls_block');
+
+    const activeTabButton = document.querySelector('#video_motion_tabs .tab-btn.active');
+    const isCustomTab = activeTabButton && activeTabButton.innerText.trim().toUpperCase() === 'СВОЙ';
+
+    // 1. Если мы на вкладке "Свой" — сразу выходим в главное меню
+    if (isCustomTab) {
+        isMotionStyleSelected = false;
+        selectedMotionStyleName = "";
+        if (controlsBlock) controlsBlock.style.display = "none";
+        openScreen('video_menu'); 
+        return; 
+    }
+
+    // 2. Если мы внутри настроек шаблона — возвращаемся обратно к галерее карточек
+    if (currentGenerationMode === 'preset' && gallery && gallery.style.display === 'none') {
+        isMotionStyleSelected = false;
+        selectedMotionStyleName = "";
+
+        if (document.getElementById('video_motion_main_title')) {
+            document.getElementById('video_motion_main_title').innerText = "Создание видео";
+        }
+        if (document.getElementById('video_motion_subtitle')) {
+            document.getElementById('video_motion_subtitle').innerText = "Выберите готовый шаблон для настройки:";
+        }
+        if (document.getElementById('video_motion_tabs')) {
+            document.getElementById('video_motion_tabs').style.display = "flex";
+        }
+
+        if (controlsBlock) controlsBlock.style.display = "none"; 
+        if (document.getElementById('motion_preset_preview_block')) {
+            document.getElementById('motion_preset_preview_block').style.display = "none";
+        }
+        
+        gallery.style.display = 'grid';
+    } else {
+        // 3. Если мы в самом корне вкладки — уходим в меню видеостудии
+        if (typeof openScreen === 'function') {
+            openScreen('video_menu'); 
+        } else {
+            if (window.Telegram?.WebApp) Telegram.WebApp.close();
+        }
+    }
+}
+
+// ====================================================================================
+// ВОЗВРАЩЕННАЯ ФУНКЦИЯ ОТКРЫТИЯ КАРТОЧЕК НА ВЕСЬ ЭКРАН
+// ====================================================================================
 function selectMotionTemplate(styleName, videoUrl, duration) {
     if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('medium');
 
@@ -71,3 +882,358 @@ function selectMotionTemplate(styleName, videoUrl, duration) {
         }
     }
 } // <- Теперь функция закрыта корректно
+
+
+// ====================================================================================
+// 4. СТАРТ WEBAPP, ИНИЦИАЛИЗАЦИЯ И ПРИВЯЗКА КНОПОК ДЛЯ 3-Х ВИДЕО РЕЖИМОВ
+// ====================================================================================
+        window.addEventListener('DOMContentLoaded', () => {
+            if (tg) {
+                tg.ready();  
+                tg.expand(); 
+            }
+            
+            // --- 1. ПРИВЯЗКА КЛИКОВ: РЕЖИМ 1 (ОЖИВЛЕНИЕ ФОТО БЕЗ ЗВУКА) ---
+            const videoDurationBtn = document.getElementById('btn_video_duration');
+            const videoRatioBtn = document.getElementById('btn_video_ratio');
+            
+            if (videoDurationBtn) {
+                videoDurationBtn.addEventListener('click', () => {
+                    tg.HapticFeedback.impactOccurred('medium');
+                    openUniversalDurationSheet();
+                });
+            }
+            if (videoRatioBtn) {
+                videoRatioBtn.addEventListener('click', () => {
+                    tg.HapticFeedback.impactOccurred('medium');
+                    openUniversalRatioSheet();
+                });
+            }
+
+            // --- 2. ПРИВЯЗКА КЛИКОВ: РЕЖИМ 2 (ОЖИВЛЕНИЕ СО ЗВУКОМ) ---
+            // 🔥 УДАЛИЛИ ХВОСТ СТЕРТОЙ КНОПКИ ГОЛОСА! Остался только рабочий формат кадра:
+            const videoSoundRatioBtn = document.getElementById('btn_video_sound_ratio');
+
+            if (videoSoundRatioBtn) {
+                videoSoundRatioBtn.addEventListener('click', () => {
+                    tg.HapticFeedback.impactOccurred('medium');
+                    openUniversalRatioSheet();
+                });
+            }
+
+            // --- 3. ПРИВЯЗКА КЛИКОВ: РЕЖИМ 3 (ОЖИВЛЕНИЕ ПО ВИДЕО / MOTION CONTROL) ---
+            const motionDurationBtn = document.getElementById('btn_motion_duration');
+            const motionRatioBtn = document.getElementById('btn_motion_ratio');
+            
+            if (motionDurationBtn) {
+                motionDurationBtn.addEventListener('click', () => {
+                    tg.HapticFeedback.impactOccurred('medium');
+                    openUniversalDurationSheet();
+                });
+            }
+            if (motionRatioBtn) {
+                motionRatioBtn.addEventListener('click', () => {
+                    tg.HapticFeedback.impactOccurred('medium');
+                    openUniversalRatioSheet();
+                });
+            }
+
+// ====================================================================
+// 🔍 УМНЫЙ СТАРТОВЫЙ РОУТЕР ДЛЯ ОПТИМИЗАЦИИ КЭША ТЕЛЕГРАМА
+// ====================================================================
+            const urlParams = new URLSearchParams(window.location.search);
+            const targetScreen = urlParams.get('screen');
+
+            if (targetScreen) {
+                // Если бот явно передал нужный экран (например, ?screen=video_motion_control)
+                openScreen(targetScreen);
+            } else {
+                // Если зашли без параметров — жестко включаем главное меню видеостудии
+                openScreen('video_menu'); 
+            }
+        });
+
+// ====================================================================================
+// 5. РОУТЕР ЭКРАНОВ И УМНЫЙ СЧЕТЧИК МОНЕТ НА КНОПКАХ START (СТРОГО ТРИ ВИДЕО РЕЖИМА)
+// ====================================================================================
+function openScreen(screenName) {
+    currentActiveMode = screenName;
+    
+    // НАШИ ЧЕТЫРЕ ЭКРАНА: Главное видео-меню и 3 экрана настройки генерации
+    const screens = ['video_menu', 'animate_nosound', 'animate_sound', 'video_motion_control'];
+    
+    // Перебираем экраны: начисто затираем класс active И НАГЛУХО СКРЫВАЕМ ИХ С ТЕЛЕФОНА И ПК
+    screens.forEach(s => {
+        const el = document.getElementById(s);
+        if (el) {
+            el.classList.remove('active');
+            el.style.display = 'none'; // 🔥 ИСПРАВЛЕНО: Скрываем старые экраны, чтобы они не торчали сверху!
+        }
+    });
+    
+    // Логика сброса параметров при возврате пользователя в Главное Меню Видеостудии
+    if (screenName === 'video_menu') {
+        // Скрываем блоки настроек на экранах, чтобы при следующем заходе они перерисовывались чисто
+        if (document.getElementById('video_nosound_settings_block')) document.getElementById('video_nosound_settings_block').style.display = "none";
+        if (document.getElementById('video_sound_settings_block')) document.getElementById('video_sound_settings_block').style.display = "none";
+        if (document.getElementById('video_motion_settings_block')) document.getElementById('video_motion_settings_block').style.display = "none";
+    }
+
+    // На всякий случай скрываем дефолтную нижнюю кнопку Телеграма (если она где-то всплывала)
+    if (tg && tg.MainButton) tg.MainButton.hide();
+
+    // Находим тот экран, на который переходит пользователь
+    const activeScreenEl = document.getElementById(screenName);
+    if (activeScreenEl) {
+        // 🔥 ИСПРАВЛЕНО: Включаем физическое отображение активного экрана
+        activeScreenEl.style.display = 'block';
+        
+        // Накатываем на него класс active, запускающий твою красивую CSS-анимацию fadeIn
+        activeScreenEl.classList.add('active');
+        
+        // Вызываем проверку главной кнопки, если она используется у тебя в боте
+        if (typeof updateVideoMainButton === 'function') updateVideoMainButton(); 
+        
+        // МГНОВЕННОЕ ВКЛЮЧЕНИЕ БЛОКА НАСТРОЕК ДЛЯ РЕЖИМА 1 (Оживление фото)
+        if (screenName === 'animate_nosound') {
+            const nosoundSettings = document.getElementById('video_nosound_settings_block');
+            if (nosoundSettings) nosoundSettings.style.display = "block";
+        }
+
+        // МГНОВЕННОЕ ВКЛЮЧЕНИЕ БЛОКА НАСТРОЕК ДЛЯ РЕЖИМА 2 (Оживление со звуком)
+        if (screenName === 'animate_sound') {
+            const soundSettings = document.getElementById('video_sound_settings_block');
+            if (soundSettings) soundSettings.style.display = "block";
+        }
+
+        // МГНОВЕННОЕ ВКЛЮЧЕНИЕ БЛОКА НАСТРОЕК ДЛЯ РЕЖИМА 3 (Оживление по видео)
+        if (screenName === 'video_motion_control') {
+            const motionSettings = document.getElementById('video_motion_settings_block');
+            if (motionSettings) motionSettings.style.display = "block";
+        }
+    }
+    
+    // Мгновенно обновляем текст стоимости монет на встроенных неоновых кнопках START под выбранные секунды
+    if (typeof updateStartButtonsPrice === 'function') updateStartButtonsPrice();
+
+    // ДОБАВЛЕНО: Оживление мини-плееров 1-го и 2-го режимов при входе на экраны
+    if (screenName === 'animate_nosound') {
+        const video1 = document.getElementById('preview_nosound_video');
+        if (video1) {
+            video1.currentTime = 0; // Сбрасываем на начало
+            video1.play().catch(e => console.log("Автозапуск ожидает клика 1:", e));
+        }
+    } else if (screenName === 'animate_sound') {
+        const video2 = document.getElementById('preview_sound_video');
+        if (video2) {
+            video2.currentTime = 0; // Сбрасываем на начало
+            video2.play().catch(e => console.log("Автозапуск ожидает клика 2:", e));
+        }
+    }
+}
+
+
+// ====================================================================================
+// 67. Функция управления интерактивным видео-плеером для Режима 1
+// ====================================================================================
+// для Режима 1
+        function toggleNoSoundVideo() {
+            const video = document.getElementById('preview_nosound_video');
+            const overlay = document.getElementById('video_nosound_play_overlay');
+            const icon = document.getElementById('play_nosound_icon_sym');
+            
+            if (tg?.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('medium');
+            }
+
+            if (video.paused) {
+                video.play();
+                overlay.style.background = "rgba(0,0,0,0)";
+                icon.innerText = "⏸️";
+                // Плавно прячем оверлей, чтобы не мешал просмотру лица
+                setTimeout(() => { 
+                    if (!video.paused) overlay.style.opacity = "0"; 
+                }, 1500);
+            } else {
+                video.pause();
+                overlay.style.opacity = "1";
+                overlay.style.background = "rgba(0,0,0,0.4)";
+                icon.innerText = "▶️";
+            }
+        }
+
+        // Возвращаем видимость интерфейса при тапе или наведении
+        document.getElementById('video_nosound_play_overlay').addEventListener('mouseenter', () => {
+            document.getElementById('video_nosound_play_overlay').style.opacity = "1";
+        });
+
+// для Режима 2 (Со звуком)
+function toggleSoundVideo() {
+    const video = document.getElementById('preview_sound_video');
+    const overlay = document.getElementById('video_sound_play_overlay');
+    const icon = document.getElementById('play_sound_icon_sym');
+    
+    if (tg?.HapticFeedback) {
+        tg.HapticFeedback.impactOccurred('medium');
+    }
+
+    if (video.paused) {
+        video.play();
+        overlay.style.background = "rgba(0,0,0,0)";
+        icon.innerText = "⏸️";
+        // Плавно убираем оверлей через 1.5 секунды
+        setTimeout(() => { if (!video.paused) overlay.style.opacity = "0"; }, 1500);
+    } else {
+        video.pause();
+        overlay.style.opacity = "1";
+        overlay.style.background = "rgba(0,0,0,0.4)";
+        icon.innerText = "▶️";
+    }
+}
+
+// Показываем оверлей управления обратно при наведении/клике
+document.getElementById('video_sound_play_overlay').addEventListener('mouseenter', () => {
+    document.getElementById('video_sound_play_overlay').style.opacity = "1";
+});
+
+
+
+// для Режима 3
+function toggleMotionVideo() {
+    const video = document.getElementById('preview_motion_video');
+    const overlay = document.getElementById('video_motion_play_overlay');
+    const icon = document.getElementById('play_motion_icon_sym');
+    
+    if (tg?.HapticFeedback) {
+        tg.HapticFeedback.impactOccurred('medium');
+    }
+
+    if (video.paused) {
+        video.play();
+        overlay.style.background = "rgba(0,0,0,0)";
+        icon.innerText = "⏸️";
+        setTimeout(() => { if (!video.paused) overlay.style.opacity = "0"; }, 1500);
+    } else {
+        video.pause();
+        overlay.style.opacity = "1";
+        overlay.style.background = "rgba(0,0,0,0.4)";
+        icon.innerText = "▶️";
+    }
+}
+
+// 🔥 ИСПРАВЛЕНО: Добавили защитную проверку элемента, чтобы сайт не падал!
+const motionPlayOverlay = document.getElementById('video_motion_play_overlay');
+if (motionPlayOverlay) {
+    motionPlayOverlay.addEventListener('mouseenter', () => {
+        motionPlayOverlay.style.opacity = "1";
+    });
+}
+
+
+// ====================================================================================
+// 8. СБОР И ОТПРАВКА ДАННЫХ ИЗ WEBAPP В PYTHON БОТ (ЧЕРЕЗ TG.SENDDATA)
+// ====================================================================================
+
+    // 🎥 1. Отправка для Режима 1: Оживление фото (без звука)
+    function sendVideoGenData() {
+        if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
+        
+        const dataToSend = {
+            mode_trigger: "video_menu",          
+            video_type: "default",               // Сработает ветка else (обычный Kling 2.1)
+            video_duration: currentKlingDuration, // Выбранные через шторку 5 или 10 сек
+            chosen_ratio: "auto",                // 🔥 Поменяли на "auto", чтобы бот сам корректировал по картинке
+            cost: currentKlingDuration === 10 ? 4 : 2 
+        };
+        
+        if (tg) {
+            tg.sendData(JSON.stringify(dataToSend));
+            tg.close();
+        }
+    }
+
+// 🔊 2. Отправка для Режима 2: Оживление со звуком (ОБНОВЛЕННАЯ СЕКУНДАМИ)
+function sendVideoSoundGenData() {
+    if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
+    
+    // 🔥 Берем выбранное из шторки время. Если оно еще не выбрано, ставим 4 сек по умолчанию
+    const finalDuration = typeof currentSoraDuration !== 'undefined' ? currentSoraDuration : 4;
+    
+    const isAudioActive = true;    
+    const dataToSend = {
+        mode_trigger: "video_menu",
+        video_type: "pro",                    // Сигнал для ветки elif (Sora-2)
+        video_duration: finalDuration,        // 🔥 Теперь отправляются РЕАЛЬНЫЕ секунды!
+        chosen_ratio: soundGenRatio || "auto", // Если переменная пустая, отправит "auto"
+        selected_voice: isAudioActive ? selectedVoiceId : "none", 
+        cost: 3                               
+    };
+    
+    if (tg) {
+        tg.sendData(JSON.stringify(dataToSend));
+        tg.close();
+    }
+}
+
+// 👤 3. Отправка для Режима 3: Оживление по видео (Motion Control)
+function sendMotionControlData() {
+    if (!isMotionStyleSelected) {
+        tg.showAlert("Пожалуйста, выберите шаблон или перейдите во вкладку 'Свой'!");
+        return;
+    }
+
+    if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
+    
+    const dataToSend = {
+        mode_trigger: "video_menu",
+        video_type: "motion_control", 
+        action: "start_file_waiting", // Сигнал боту переходить к сценарию запроса файлов
+        generation_mode: currentGenerationMode, // 'preset' или 'custom'
+        template_name: selectedMotionStyleName, // Название шаблона или "Свой референс"
+        video_url: selectedMotionVideoUrl      // Ссылка на mp4-шаблон (если выбран preset)
+    };
+    
+    if (tg) {
+        tg.sendData(JSON.stringify(dataToSend));
+        tg.close();
+    }
+}
+// ====================================================================================
+// Автоматический виброотклик для всего интерфейса (ВКЛЮЧАЯ ПУНКТЫ ВНУТРИ ШТОРКИ)
+// ====================================================================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    const hasHaptic = window.Telegram?.WebApp?.HapticFeedback;
+
+    if (hasHaptic) {
+        document.addEventListener('click', (event) => {
+            // 🔥 ДОБАВЛЕНО: Дописали '.custom-sheet-list li' и '.custom-sheet-item', чтобы ловить клики внутри списков шторок
+            const target = event.target.closest('button, .menu-card, .phone-template-card, .custom-sheet-item, .custom-sheet-list li, li, .back-tab-btn, .tab-btn');
+            
+            if (target) {
+                // Если у элемента уже прописан свой haptic в HTML, не дублируем его
+                if (target.getAttribute('onclick') && target.getAttribute('onclick').includes('HapticFeedback')) {
+                    return; 
+                }
+                // Выдаем четкий средний отклик
+                Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+            }
+        });
+    }
+});
+
+// ====================================================================================
+//  ФУНКЦИЯ переключения всех моих ШТМЭЛЬ
+// ====================================================================================
+
+function navigateToScreen(fileName) {
+    if (window.Telegram?.WebApp?.HapticFeedback) {
+        Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+    }
+    // Плавно перенаправляем пользователя на другой HTML-файл внутри WebApp
+    window.location.href = fileName;
+}
+    </script>
+        <script src="prices.js"></script>
+</body>
+</html>

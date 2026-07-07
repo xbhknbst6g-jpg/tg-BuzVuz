@@ -84,7 +84,7 @@
             
         <!-- Фирменный контейнер вкладок с кнопкой назад -->
         <div class="tabs-container">
-            <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openScreen('video_menu')"></button>
+            <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('video_menu')"></button>
             <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;">
                 Оживление фото без звука
             </div>
@@ -102,7 +102,7 @@
                     <!-- 🔥 Рамка фото теперь оранжевая и неоновая, как у видео-результата -->
                     <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
                         <img src="https://i.postimg.cc/wMDnw6QS/IMG-0495.jpg" 
-                            onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo(this.src)"
+                            onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo(this.src)"
                             style="width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer;" alt="Фото оригинал">
                     </div>
                     <div style="font-size: 11px; font-weight: 800; color: rgba(255, 255, 255, 0.5); text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">📸 Исходное фото</div>
@@ -116,7 +116,7 @@
                         </video>
 
                         <!-- 🔥 ИСПРАВЛЕНО: Ссылка заменена на рабочую прямую ссылку mp4 из тега source -->
-                        <div id="video_nosound_play_overlay" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo('https://i.imgur.com/7bLn7AV.mp4')" 
+                        <div id="video_nosound_play_overlay" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo('https://i.imgur.com/7bLn7AV.mp4')" 
                             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; cursor: pointer;">
                         </div>
                     </div>
@@ -146,7 +146,7 @@
                 <!-- Колонка Длительности -->
                 <div class="control-col" style="flex: 1;">
                     <div class="control-label"></div>
-                    <button id="btn_video_duration" class="capsule-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openUniversalDurationSheet()">⏱️ 5 сек</button>
+                    <button id="btn_video_duration" class="capsule-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openUniversalDurationSheet()">⏱️ 5 сек</button>
                 </div>
                 
                 <!-- Кнопка запуска -->
@@ -166,7 +166,7 @@
             
         <!-- Фирменный контейнер вкладок с кнопкой назад -->
         <div class="tabs-container">
-            <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openScreen('video_menu')"></button>
+            <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('video_menu')"></button>
             <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;">
                 Оживление фото со звуком
             </div>
@@ -184,7 +184,7 @@
                     <!-- 🔥 Рамка фото на втором экране тоже загорелась оранжевым неон-стилем -->
                     <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
                         <img src="https://i.postimg.cc/Kv5FrNzq/b-Lx-N-n-XBzkt-Aah-Ej-Tr-YFf.png" 
-                            onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo(this.src)"
+                            onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo(this.src)"
                             style="width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer;" alt="Фото для Sora">
                     </div>
                     <div style="font-size: 11px; font-weight: 800; color: rgba(255, 255, 255, 0.5); text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">📸 Исходное фото</div>
@@ -197,8 +197,7 @@
                             <source src="https://i.imgur.com/Q6GrKyK.mp4" type="video/mp4">
                         </video>
 
-                        
-                        <div id="video_sound_play_overlay" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo('https://i.imgur.com/Q6GrKyK.mp4')" 
+                        <div id="video_sound_play_overlay" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo('https://i.imgur.com/Q6GrKyK.mp4')" 
                             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; cursor: pointer;">
                         </div>
                     </div>
@@ -224,7 +223,7 @@
             <!-- Твой оригинальный пульт управления -->
             <div class="single-row-controls" style="display: flex; gap: 15px; align-items: flex-end; margin-top: -12px !important; position: relative; z-index: 10;">
                 <div class="control-col" style="flex: 1;">
-                    <button id="btn_sora_duration" class="capsule-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openUniversalDurationSheet()">⏱️ 4 сек</button>
+                    <button id="btn_sora_duration" class="capsule-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openUniversalDurationSheet()">⏱️ 4 сек</button>
                 </div>
                 
                 <div class="control-col-btn" style="flex: 1.5;">
@@ -242,7 +241,7 @@
 
         <!-- Фирменный контейнер вкладок с кнопкой назад -->
         <div class="tabs-container">
-            <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); handleMotionBackClick()"></button>
+            <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); handleMotionBackClick()"></button>
             <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;" id="video_motion_main_title">
                 Создание видео
             </div>
@@ -317,10 +316,10 @@
 <!-- ========================================== -->
 <!-- ПОЛНОЭКРАННЫЙ ПЛЕЕР ПРЕВЬЮ (УНИВЕРСАЛЬНЫЙ) -->
 <!-- ========================================== -->
-    <div id="videoPlayerModal" class="video-modal" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); closePreviewVideo()">
+    <div id="videoPlayerModal" class="video-modal" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); closePreviewVideo()">
         <div class="video-modal-content" onclick="event.stopPropagation()" style="position: relative;">
             
-            <button class="video-modal-close" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); closePreviewVideo()">
+            <button class="video-modal-close" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); closePreviewVideo()">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -471,10 +470,12 @@
 // Функция для управления вашим плеером videoPlayerModal
 // ====================================================================================
 // Открытие универсального полноэкранного плеера 
+// Открытие универсального полноэкранного плеера 
 function openPreviewVideo(mediaUrl) {
     const modal = document.getElementById('videoPlayerModal');
     const playerVideo = document.getElementById('previewVideoPlayer');
     const playerImage = document.getElementById('previewImagePlayer');
+    const controlsPanel = document.getElementById('modal_controls_panel'); // Добавили поиск панели кнопок
     
     if (!modal) return;
     
@@ -488,11 +489,29 @@ function openPreviewVideo(mediaUrl) {
             playerImage.src = "";
         }
         if (playerVideo) {
-            playerVideo.src = mediaUrl;
             playerVideo.style.display = "block";
-            playerVideo.muted = false; // Включаем звук в плеере
+            
+            // 1. Обязательно стартуем БЕЗ звука (политика автоплея на смартфонах)
+            playerVideo.muted = true; 
+            
+            // 2. Сначала передаем ссылку
+            playerVideo.src = mediaUrl;
+            
+            // 3. 🔥 КРИТИЧЕСКИЙ ШАГ: Принудительно перезагружаем плеер для iOS/Android
+            playerVideo.load(); 
+
+            // 4. Запускаем видео
             playerVideo.play().catch(e => console.log("Автоплей заблокирован:", e));
         }
+
+        // Показываем панель управления поверх видео
+        if (controlsPanel) {
+            controlsPanel.style.display = "flex";
+            // Сбрасываем текст кнопки звука на исходный при открытии нового видео
+            const muteBtn = document.getElementById('btn_modal_mute');
+            if (muteBtn) muteBtn.innerHTML = "🔊 Включить звук";
+        }
+
     } else {
         // Включаем фото-режим (для .jpg, .png, Unsplash и т.д.)
         if (playerVideo) {
@@ -504,6 +523,7 @@ function openPreviewVideo(mediaUrl) {
             playerImage.src = mediaUrl;
             playerImage.style.display = "block";
         }
+        if (controlsPanel) controlsPanel.style.display = "none";
     }
     
     // Включаем саму модалку на экране
@@ -551,7 +571,7 @@ function closePreviewVideo() {
 // ====================================================================================
 
 function toggleModalMute() {
-    if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light');
+    if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('medium');
     
     const videoPlayer = document.getElementById('previewVideoPlayer');
     const muteBtn = document.getElementById('btn_modal_mute');
@@ -810,7 +830,7 @@ function handleMotionBackClick() {
 // ВОЗВРАЩЕННАЯ ФУНКЦИЯ ОТКРЫТИЯ КАРТОЧЕК НА ВЕСЬ ЭКРАН
 // ====================================================================================
 function selectMotionTemplate(styleName, videoUrl, duration) {
-    if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light');
+    if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('medium');
 
     isMotionStyleSelected = true;
     selectedMotionStyleName = styleName;
@@ -886,13 +906,13 @@ function selectMotionTemplate(styleName, videoUrl, duration) {
             
             if (videoDurationBtn) {
                 videoDurationBtn.addEventListener('click', () => {
-                    tg.HapticFeedback.impactOccurred('light');
+                    tg.HapticFeedback.impactOccurred('medium');
                     openUniversalDurationSheet();
                 });
             }
             if (videoRatioBtn) {
                 videoRatioBtn.addEventListener('click', () => {
-                    tg.HapticFeedback.impactOccurred('light');
+                    tg.HapticFeedback.impactOccurred('medium');
                     openUniversalRatioSheet();
                 });
             }
@@ -903,7 +923,7 @@ function selectMotionTemplate(styleName, videoUrl, duration) {
 
             if (videoSoundRatioBtn) {
                 videoSoundRatioBtn.addEventListener('click', () => {
-                    tg.HapticFeedback.impactOccurred('light');
+                    tg.HapticFeedback.impactOccurred('medium');
                     openUniversalRatioSheet();
                 });
             }
@@ -914,13 +934,13 @@ function selectMotionTemplate(styleName, videoUrl, duration) {
             
             if (motionDurationBtn) {
                 motionDurationBtn.addEventListener('click', () => {
-                    tg.HapticFeedback.impactOccurred('light');
+                    tg.HapticFeedback.impactOccurred('medium');
                     openUniversalDurationSheet();
                 });
             }
             if (motionRatioBtn) {
                 motionRatioBtn.addEventListener('click', () => {
-                    tg.HapticFeedback.impactOccurred('light');
+                    tg.HapticFeedback.impactOccurred('medium');
                     openUniversalRatioSheet();
                 });
             }
@@ -1030,7 +1050,7 @@ function openScreen(screenName) {
             const icon = document.getElementById('play_nosound_icon_sym');
             
             if (tg?.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('light');
+                tg.HapticFeedback.impactOccurred('medium');
             }
 
             if (video.paused) {
@@ -1061,7 +1081,7 @@ function toggleSoundVideo() {
     const icon = document.getElementById('play_sound_icon_sym');
     
     if (tg?.HapticFeedback) {
-        tg.HapticFeedback.impactOccurred('light');
+        tg.HapticFeedback.impactOccurred('medium');
     }
 
     if (video.paused) {
@@ -1092,7 +1112,7 @@ function toggleMotionVideo() {
     const icon = document.getElementById('play_motion_icon_sym');
     
     if (tg?.HapticFeedback) {
-        tg.HapticFeedback.impactOccurred('light');
+        tg.HapticFeedback.impactOccurred('medium');
     }
 
     if (video.paused) {

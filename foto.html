@@ -1003,18 +1003,24 @@ function sendPhotoTextData() {
             let customInput = document.getElementById("custom-prompt-input");
             promptToSend = customInput ? customInput.value : "";
         }
+
+        // 🔥 НАША МАГИЯ: Динамически меняем триггер в зависимости от выбранной модели в Фотоэффектах
+        let finalTrigger = 'photo_banana_edit';
+        if (currentModel === 'pulid') {
+            finalTrigger = 'photo_flux_pulid';
+        }
         
-        console.log("[WebApp] Сборка пакета. Отправляем лиц:", facesCountToSend);
+        console.log("[WebApp] Сборка пакета ФОТО. Отправляем лиц:", facesCountToSend, "Триггер:", finalTrigger);
 
         // ШЛЕМ JSON НАПРЯМУЮ в Телеграм
         if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.sendData === 'function') {
             window.Telegram.WebApp.sendData(JSON.stringify({ 
-                mode_trigger: 'text_image', 
+                mode_trigger: finalTrigger, // 🔥 ИСПРАВЛЕНО: Вместо 'text_image' шлем уникальный триггер!
                 aspect_ratio: ratio, 
                 quality: quality,
                 ai_model_engine: currentModel,         
                 is_custom_text_mode: isCustomText,     
-                faces_count: facesCountToSend, // Теперь сюда ВСЕГДА улетит то, что выбрано кнопками!
+                faces_count: facesCountToSend, 
                 style_title: styleTitleToSend,
                 prompt_text: promptToSend          
             })); 

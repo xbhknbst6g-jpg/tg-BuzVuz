@@ -84,7 +84,7 @@
                         <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
                             <!-- Укажи здесь реальную ссылку на 1-ю картинку-пример -->
                             <img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg" 
-                                onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo(this.src)"
+                                onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo(this.src)"
                                 style="width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer;" alt="Пример 1">
                         </div>
                     </div>
@@ -94,7 +94,7 @@
                         <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
                             <!-- Укажи здесь реальную ссылку на 2-ю картинку-пример -->
                             <img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg" 
-                                onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo(this.src)"
+                                onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo(this.src)"
                                 style="width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer;" alt="Пример 2">
                         </div>
                     </div>
@@ -154,7 +154,7 @@
                         <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
                             <!-- Укажи здесь реальную ссылку на 1-ю картинку-пример для второго экрана -->
                             <img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg" 
-                                onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo(this.src)"
+                                onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo(this.src)"
                                 style="width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer;" alt="Пример 1">
                         </div>
                     </div>
@@ -164,7 +164,7 @@
                         <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
                             <!-- Укажи здесь реальную ссылку на 2-ю картинку-пример для второго экрана -->
                             <img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg" 
-                                onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); openPreviewVideo(this.src)"
+                                onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo(this.src)"
                                 style="width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer;" alt="Пример 2">
                         </div>
                     </div>
@@ -215,11 +215,11 @@
 <!-- ========================================== -->
 <!-- ПОЛНОЭКРАННЫЙ ПРОСМОТРЩИК КАРТИНОК И ВИДЕО -->
 <!-- ========================================== -->
-        <div id="videoPlayerModal" class="video-modal" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); closePreviewVideo()">
+        <div id="videoPlayerModal" class="video-modal" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); closePreviewVideo()">
             <div class="video-modal-content" onclick="event.stopPropagation()">
                 
                 <!-- Кнопка закрыть (Крестик) -->
-                <button class="video-modal-close" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); closePreviewVideo()">
+                <button class="video-modal-close" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); closePreviewVideo()">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="18" y1="6" x2="6" y2="18"></line>
                         <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -317,7 +317,7 @@
 // ====================================================================================
 // 🔥 УНИВЕРСАЛЬНАЯ ФУНКЦИЯ ОТКРЫТИЯ ПЛЕЕРА ДЛЯ ВИДЕО И ДЛЯ КАРТИНОК
 function openPreviewVideo(url) {
-    if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light');
+    if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('medium');
 
     const modal = document.getElementById('videoPlayerModal');
     const videoPlayer = document.getElementById('previewVideoPlayer');
@@ -523,85 +523,81 @@ function closePreviewVideo() {
 // ====================================================================================
 // 8. СБОРКА И ОТПРАВКА ДИПЛИНКА В БОТА (ОБЪЕДИНЕННЫЙ)
 // ====================================================================================
-        function sendToTelegram(payload) {
-            try {
-                const botUsername = "ChatGPT_BuzVuz_bot"; 
+function sendToTelegram(payload) {
+    try {
+        const botUsername = "ChatGPT_BuzVuz_bot"; 
 
-                // Настройки по умолчанию
-                let mode = payload.ai_model_engine || 'pulid';
-                let quality = payload.quality || 'schnell';
-                let ratio = payload.aspect_ratio ? payload.aspect_ratio.replace(':', '-') : '1-1';
-                let faces = payload.faces_count || 1;
-                let isCustom = payload.is_custom_text_mode ? '1' : '0';
+        let quality = payload.quality || 'schnell';
+        let ratio = payload.aspect_ratio ? payload.aspect_ratio.replace(':', '-') : '1-1';
+        let startParam = "";
 
-                // 1. Стандартный параметр для Цифровой Оптики (Класс text_image)
-                let startParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}`;
-                
-                // 2. 🔥 Если триггер сработал от Умного Фокуса — собираем короткий параметр
-                if (payload.mode_trigger === 'pure_text_image') {
-                    startParam = `mode_puretext_q_${quality}_r_${ratio}`;
-                }
-
-                // 🔥 ИСПРАВЛЕНО: Слэш / и знак доллара $ на месте, ссылка соберется идеально!
-                let telegramLink = `https://t.me/${botUsername}?start=${startParam}`;
-
-                console.log("[WebApp Link] Перенаправление по ссылке:", telegramLink);
-
-                if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openTelegramLink === 'function') {
-                    window.Telegram.WebApp.openTelegramLink(telegramLink);
-                    window.Telegram.WebApp.close();
-                } else {
-                    window.location.href = telegramLink;
-                }
-            } catch (e) {
-                console.error("Ошибка генерации диплинка:", e);
-                window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
-            }
+        // Строго разделяем диплинки для бэкенда по триггерам
+        if (payload.mode_trigger === 'pure_text_image') {
+            // Для 1-го режима: Цифровая Оптика (Flux Dev)
+            startParam = `mode_puretext_q_${quality}_r_${ratio}`;
+        } else if (payload.mode_trigger === 'image_generation_direct') {
+            // Для 2-го режима: Умный Фокус (Nano Banana 2)
+            startParam = `mode_direct_q_${quality}_r_${ratio}`;
+        } else {
+            // Дефолтный или старый фото-режим (pulid)
+            let mode = payload.ai_model_engine || 'pulid';
+            let faces = payload.faces_count || 1;
+            let isCustom = payload.is_custom_text_mode ? '1' : '0';
+            startParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}`;
         }
 
-        // Кнопка START для 1-го режима: «Цифровая Оптика» (Класс text_image)
-        function sendPhotoTextData() { 
-            try {
-                let isCustomText = (typeof currentGenerationMode !== 'undefined' && currentGenerationMode === 'custom');
-                let currentModel = (typeof selectedAiModelEngine !== 'undefined' && selectedAiModelEngine === 'preset') ? 'banana' : 'pulid';
+        let telegramLink = `https://t.me/${botUsername}?start=${startParam}`;
+        console.log("[WebApp Link] Перенаправление по ссылке:", telegramLink);
 
-                let ratio = (typeof selectedTextRatio !== 'undefined') ? selectedTextRatio : '9:16';
-                let quality = (typeof selectedTextQuality !== 'undefined') ? selectedTextQuality : 'schnell';
-
-                console.log("[WebApp] Сборка пакета Цифровой Оптики. Модель:", currentModel);
-
-                sendToTelegram({ 
-                    mode_trigger: 'text_image', 
-                    aspect_ratio: ratio, 
-                    quality: quality,
-                    ai_model_engine: currentModel,         
-                    is_custom_text_mode: isCustomText,     
-                    faces_count: 1          
-                }); 
-            } catch (err) {
-                console.error("Критический сбой отправки Цифровой Оптики:", err);
-                window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
-            }
+        if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openTelegramLink === 'function') {
+            window.Telegram.WebApp.openTelegramLink(telegramLink);
+            window.Telegram.WebApp.close();
+        } else {
+            window.location.href = telegramLink;
         }
+    } catch (e) {
+        console.error("Ошибка генерации диплинка:", e);
+        window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
+    }
+}
 
-        // Кнопка START для 2-го режима: «Умный Фокус» (Класс image_generation_direct)
-        function sendDirectGenData() { 
-            try {
-                let ratio = (typeof directGenRatio !== 'undefined') ? directGenRatio : '9:16';
-                let quality = (typeof directGenQuality !== 'undefined') ? directGenQuality : 'schnell';
+// Кнопка START для 1-го режима: «Цифровая Оптика» (Flux)
+function sendPhotoTextData() { 
+    try {
+        let ratio = (typeof selectedTextRatio !== 'undefined') ? selectedTextRatio : '9:16';
+        let quality = (typeof selectedTextQuality !== 'undefined') ? selectedTextQuality : 'schnell';
 
-                console.log("[WebApp] Сборка пакета Умного Фокуса. Формат:", ratio, "Качество:", quality);
+        console.log("[WebApp] Сборка пакета: Цифровая Оптика (Flux Dev)");
 
-                sendToTelegram({ 
-                    mode_trigger: 'pure_text_image', 
-                    aspect_ratio: ratio, 
-                    quality: quality
-                }); 
-            } catch (err) {
-                console.error("Критический сбой отправки Умного Фокуса:", err);
-                window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
-            }
-        }
+        sendToTelegram({ 
+            mode_trigger: 'pure_text_image', // 🔥 ТРИГГЕР ДЛЯ FLUX В БОТЕ
+            aspect_ratio: ratio, 
+            quality: quality      
+        }); 
+    } catch (err) {
+        console.error("Критический сбой отправки Цифровой Оптики:", err);
+        window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
+    }
+}
+
+// Кнопка START для 2-го режима: «Умный Фокус» (Nano Banana 2)
+function sendDirectGenData() { 
+    try {
+        let ratio = (typeof directGenRatio !== 'undefined') ? directGenRatio : '9:16';
+        let quality = (typeof directGenQuality !== 'undefined') ? directGenQuality : 'schnell';
+
+        console.log("[WebApp] Сборка пакета: Умный Фокус (Nano Banana 2)");
+
+        sendToTelegram({ 
+            mode_trigger: 'image_generation_direct', // 🔥 ТРИГГЕР ДЛЯ BANANA В БОТЕ
+            aspect_ratio: ratio, 
+            quality: quality
+        }); 
+    } catch (err) {
+        console.error("Критический сбой отправки Умного Фокуса:", err);
+        window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
+    }
+}
 
 
 

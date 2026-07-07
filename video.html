@@ -825,42 +825,36 @@ function selectMotionTemplate(styleName, videoUrl, duration) {
 
     if (modal && videoPlayer) {
         if (imagePlayer) imagePlayer.style.display = 'none';
-        
-        // 🔥 ШАГ 1: Сначала делаем всё видимым на экране, чтобы Mac выделил память под плеер
         videoPlayer.style.display = 'block';
-        modal.style.display = 'flex';
         
+        // Настройки плеера для жесткого обхода блокировок Telegram WebApp
+        videoPlayer.muted = true; 
+        videoPlayer.setAttribute('playsinline', 'true');
+        videoPlayer.setAttribute('webkit-playsinline', 'true');
+        videoPlayer.setAttribute('preload', 'auto');
+        
+        videoPlayer.src = videoUrl;
+        if (muteBtn) muteBtn.innerHTML = "🔊 Включить звук";
+        
+        modal.style.display = 'flex';
         setTimeout(() => {
             modal.classList.add('active'); 
         }, 10);
         
         if (controlsPanel) controlsPanel.style.display = 'flex';
-        if (muteBtn) muteBtn.innerHTML = "🔊 Включить звук";
 
-        // 🔥 ШАГ 2: Даем микро-паузу в 30мс, чтобы Mac отрисовал окно, и только потом кормим видео
-        setTimeout(() => {
-            // Настройки плеера для жесткого обхода блокировок
-            videoPlayer.muted = true; 
-            videoPlayer.setAttribute('playsinline', 'true');
-            videoPlayer.setAttribute('webkit-playsinline', 'true');
-            videoPlayer.setAttribute('preload', 'auto');
-            
-            // Передаем ссылку строго ПОСЛЕ того, как элемент стал видимым
-            videoPlayer.src = videoUrl;
-            
-            // Инициализируем и мягко толкаем поток
-            videoPlayer.load();
-            
-            const playPromise = videoPlayer.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(e => {
-                    console.log("Повторный толчок плеера на Mac/iOS:", e);
-                    videoPlayer.muted = true;
-                    videoPlayer.play().catch(err => console.log("Блокировка системы:", err));
-                });
-            }
-        }, 30); // 30 миллисекунд достаточно для Mac, чтобы запустить аппаратное ускорение
+        // 🔥 Прямой и синхронный запуск видео без ожидания onloadeddata
+        videoPlayer.load();
+        const playPromise = videoPlayer.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(e => {
+                console.log("Повторный толчок плеера:", e);
+                videoPlayer.muted = true;
+                videoPlayer.play().catch(err => console.log("Блокировка системы:", err));
+            });
+        }
     }
+
 
 
     // 🔥 ДОБАВЛЕНО: УМНЫЙ ОБНОВЛЯТОР ЦЕНЫ ДЛЯ КАРТОЧКИ ВНУТРИ МОДАЛКИ

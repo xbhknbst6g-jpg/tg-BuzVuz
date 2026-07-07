@@ -469,8 +469,7 @@
 // ====================================================================================
 // Функция для управления вашим плеером videoPlayerModal
 // ====================================================================================
-// Открытие универсального полноэкранного плеера 
-// Открытие универсального полноэкранного плеера 
+// Открытие универсального полноэкранного плеера (Ваш исходный рабочий вариант)
 function openPreviewVideo(mediaUrl) {
     const modal = document.getElementById('videoPlayerModal');
     const playerVideo = document.getElementById('previewVideoPlayer');
@@ -480,12 +479,6 @@ function openPreviewVideo(mediaUrl) {
     
     const urlLower = mediaUrl.toLowerCase();
     
-    // 1. СНАЧАЛА открываем саму модалку на экране, чтобы браузер подготовил контейнер
-    modal.style.display = "flex";
-    setTimeout(() => {
-        modal.classList.add('active'); 
-    }, 10);
-    
     // Проверяем тип медиафайла
     if (urlLower.includes('.mp4') || urlLower.includes('video') || urlLower.includes('mixkit')) {
         // Включаем видео-режим
@@ -493,23 +486,11 @@ function openPreviewVideo(mediaUrl) {
             playerImage.style.display = "none";
             playerImage.src = "";
         }
-        
         if (playerVideo) {
-            // 🔥 КРИТИЧЕСКИЙ СДВИГ: Сначала делаем плеер видимым на экране!
-            playerVideo.style.display = "block";
-            
-            // Стартуем БЕЗ звука, чтобы мобильные системы не блокировали плеер намертво
-            playerVideo.muted = true; 
-            
-            // 🔥 Даем микро-задержку, чтобы WebKit успел просчитать размеры видимого тега <video>
-            setTimeout(() => {
-                playerVideo.src = mediaUrl;
-                playerVideo.load(); // Инициализируем поток
-                
-                playerVideo.play().catch(e => {
-                    console.error("Критическая ошибка воспроизведения:", e);
-                });
-            }, 50); 
+            playerVideo.src = mediaUrl;
+            playerVideo.style.display = "block"; // Возвращаем видимость видео
+            playerVideo.muted = false; // Ваш исходный звук
+            playerVideo.play().catch(e => console.log("Автоплей заблокирован:", e));
         }
     } else {
         // Включаем фото-режим (для .jpg, .png, Unsplash и т.д.)
@@ -523,36 +504,43 @@ function openPreviewVideo(mediaUrl) {
             playerImage.style.display = "block";
         }
     }
+    
+    // Включаем саму модалку на экране
+    modal.style.display = "flex";
+    setTimeout(() => {
+        modal.classList.add('active'); 
+    }, 10);
 }
 
-// Закрытие универсального полноэкранного плеера (ИСПРАВЛЕНО И ИЗОЛИРОВАНО)
+// Закрытие универсального полноэкранного плеера (ИСПРАВЛЕНО БЕЗ ОПАСНЫХ ТАЙМАУТОВ ДЛЯ ПЛЕЕРА)
 function closePreviewVideo() {
     const modal = document.getElementById('videoPlayerModal');
     const playerVideo = document.getElementById('previewVideoPlayer');
     const playerImage = document.getElementById('previewImagePlayer');
-    
-    // 🔥 ДОБАВЛЕНО: Находим панель кнопок 3-го режима
     const controlsPanel = document.getElementById('modal_controls_panel');
 
     if (modal) {
         modal.classList.remove('active');
         
-        // 🔥 ДОБАВЛЕНО: Мгновенно убираем кнопки, чтобы они не мелькали в 1-м и 2-м режимах
+        // 1. Мгновенно тушим панель управления и элементы, чтобы тайм-аут не зацепил новое открытие
         if (controlsPanel) controlsPanel.style.display = "none";
         
-        // Гасим видео, если оно играло
         if (playerVideo) {
             playerVideo.pause();
             playerVideo.src = "";
+            playerVideo.style.display = "none"; // Скрываем сразу, не дожидаясь конца анимации модалки
         }
         
-        // Ждем анимацию исчезновения и полностью скрываем элементы
+        if (playerImage) {
+            playerImage.style.display = "none";
+            playerImage.src = ""; 
+        }
+        
+        // 2. Через 300мс гасим только саму подложку модального окна
         setTimeout(function() {
-            modal.style.display = "none";
-            if (playerVideo) playerVideo.style.display = "none";
-            if (playerImage) {
-                playerImage.style.display = "none";
-                playerImage.src = ""; // Очищаем память от фото
+            // Проверяем, не открыл ли пользователь видео снова за эти 300мс
+            if (!modal.classList.contains('active')) {
+                modal.style.display = "none";
             }
         }, 300); 
     }

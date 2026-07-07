@@ -475,11 +475,16 @@ function openPreviewVideo(mediaUrl) {
     const modal = document.getElementById('videoPlayerModal');
     const playerVideo = document.getElementById('previewVideoPlayer');
     const playerImage = document.getElementById('previewImagePlayer');
-    const controlsPanel = document.getElementById('modal_controls_panel'); // Добавили поиск панели кнопок
     
     if (!modal) return;
     
     const urlLower = mediaUrl.toLowerCase();
+    
+    // 1. СНАЧАЛА открываем саму модалку на экране, чтобы браузер подготовил контейнер
+    modal.style.display = "flex";
+    setTimeout(() => {
+        modal.classList.add('active'); 
+    }, 10);
     
     // Проверяем тип медиафайла
     if (urlLower.includes('.mp4') || urlLower.includes('video') || urlLower.includes('mixkit')) {
@@ -488,30 +493,24 @@ function openPreviewVideo(mediaUrl) {
             playerImage.style.display = "none";
             playerImage.src = "";
         }
+        
         if (playerVideo) {
+            // 🔥 КРИТИЧЕСКИЙ СДВИГ: Сначала делаем плеер видимым на экране!
             playerVideo.style.display = "block";
             
-            // 1. Обязательно стартуем БЕЗ звука (политика автоплея на смартфонах)
+            // Стартуем БЕЗ звука, чтобы мобильные системы не блокировали плеер намертво
             playerVideo.muted = true; 
             
-            // 2. Сначала передаем ссылку
-            playerVideo.src = mediaUrl;
-            
-            // 3. 🔥 КРИТИЧЕСКИЙ ШАГ: Принудительно перезагружаем плеер для iOS/Android
-            playerVideo.load(); 
-
-            // 4. Запускаем видео
-            playerVideo.play().catch(e => console.log("Автоплей заблокирован:", e));
+            // 🔥 Даем микро-задержку, чтобы WebKit успел просчитать размеры видимого тега <video>
+            setTimeout(() => {
+                playerVideo.src = mediaUrl;
+                playerVideo.load(); // Инициализируем поток
+                
+                playerVideo.play().catch(e => {
+                    console.error("Критическая ошибка воспроизведения:", e);
+                });
+            }, 50); 
         }
-
-        // Показываем панель управления поверх видео
-        if (controlsPanel) {
-            controlsPanel.style.display = "flex";
-            // Сбрасываем текст кнопки звука на исходный при открытии нового видео
-            const muteBtn = document.getElementById('btn_modal_mute');
-            if (muteBtn) muteBtn.innerHTML = "🔊 Включить звук";
-        }
-
     } else {
         // Включаем фото-режим (для .jpg, .png, Unsplash и т.д.)
         if (playerVideo) {
@@ -523,14 +522,7 @@ function openPreviewVideo(mediaUrl) {
             playerImage.src = mediaUrl;
             playerImage.style.display = "block";
         }
-        if (controlsPanel) controlsPanel.style.display = "none";
     }
-    
-    // Включаем саму модалку на экране
-    modal.style.display = "flex";
-    setTimeout(() => {
-        modal.classList.add('active'); 
-    }, 10);
 }
 
 // Закрытие универсального полноэкранного плеера (ИСПРАВЛЕНО И ИЗОЛИРОВАНО)

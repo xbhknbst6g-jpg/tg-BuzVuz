@@ -161,7 +161,7 @@
             <div class="mode-spacer" style="height: calc(100vh - 470px); display: none;" id="text_image_spacer"></div>
 
             <!-- 3. ТВОИ ОГНЕННЫЕ КНОПКИ УПРАВЛЕНИЯ СНИЗУ (Выбор людей) -->
-            <div id="faces_count_selector_row" style="margin-bottom: 12px; display: none;">
+            <div id="faces_count_selector_row" style="margin-top: -20px !important; margin-bottom: 12px; display: none;">
                 <div style="font-size: 12px; margin-bottom: 6px; color: var(--tg-theme-hint-color, #666); text-align: center;">Количество персонажей на фото:</div>
                 <div style="display: flex; background: rgba(255,255,255,0.06); padding: 4px; border-radius: 14px; gap: 4px; max-width: 280px; margin: 0 auto;">
                     <button id="btn_faces_1" class="tab-btn active" style="flex: 1; font-size: 12px; padding: 6px 0;" onclick="selectFacesCount(1, this)"> 1 чел.</button>
@@ -170,8 +170,8 @@
                 </div>
             </div>
 
-            <!-- Добавили класс screen-focus в список классов -->
-            <div class="single-row-controls screen-focus">
+            <!-- 🔥 УБРАЛИ КЛАСС screen-focus И СДЕЛАЛИ СТИЛИ КАК В ПРЕДЫДУЩИХ РЕЖИМАХ -->
+            <div class="single-row-controls" style="margin-top: 15px !important; margin-bottom: 25px !important;">
                 <div class="control-col">
                     <button id="btn_text_quality" class="capsule-btn" onclick="openUniversalQualitySheet(selectedAiModelEngine === 'pulid' ? 'flux_pulid' : 'nano_banana_edit')">⚡ Standard</button>
                 </div>

@@ -434,19 +434,34 @@ body {
     padding: 7px 4px !important; 
 }
 /* ========================================================================== */
-/* НАДЁЖНОЕ УПРАВЛЕНИЕ КНОПКАМИ ЧЕРЕЗ БЛОК ВЫБОРА ЛЮДЕЙ                        */
+/* ВОЗВРАТ К РАБОЧЕМУ СПОСОБУ: СЖАТИЕ ИНСТРУКЦИИ ДЛЯ СВОБОДЫ КНОПОК          */
 /* ========================================================================== */
 
-/* РЕЖИМ "СВОЙ": когда выбор людей АКТИВЕН (нет display: none) */
-#text_image #faces_count_selector_row:not([style*="display: none"]) ~ #bottom_action_controls,
-#text_image #faces_count_selector_row:not([style*="display: none"]) ~ * #bottom_action_controls {
-    transform: translateY(-50px) !important; /* РЕГУЛИРУЙТЕ ВЫСОТУ ТУТ */
+/* 1. В режиме "Свой" полностью убираем жесткую минимальную высоту текстового блока, 
+   чтобы он больше не держал кнопки и не блокировал их движение вниз/вверх */
+#text_image #preset_preview_block[style*="display: none"] ~ #text_image_settings_block #custom_instruction_text,
+#text_image #custom_instruction_text {
+    min-height: unset !important; /* Разблокировали кнопки! */
+    height: auto !important;
 }
 
-/* ОБЫЧНЫЙ РЕЖИМ (Meadow): когда выбор людей СКРЫТ (есть display: none) */
-#text_image #faces_count_selector_row[style*="display: none"] ~ #bottom_action_controls,
-#text_image #faces_count_selector_row[style*="display: none"] ~ * #bottom_action_controls {
-    transform: translateY(-445px) !important; /* Здесь всегда дефолтные 5px */
+/* 2. Полностью аннулируем распорку, которая ломала верстку */
+#text_image #preset_preview_block[style*="display: none"] ~ #text_image_settings_block #text_image_spacer,
+#text_image #preset_preview_block[style*="display: none"] ~ #text_image_spacer {
+    height: 0px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: none !important;
+}
+
+/* 3. РЕГУЛИРОВКА ВЫСОТЫ КНОПОК ДЛЯ РЕЖИМА "СВОЙ" */
+#text_image #preset_preview_block[style*="display: none"] ~ #bottom_action_controls {
+    transform: translateY(-50px) !important; /* ПОДБЕРИТЕ ЗНАЧЕНИЕ ТУТ */
+}
+
+/* 4. Для обычного шаблона (Meadow) возвращаем ваши идеальные 5px */
+#text_image #preset_preview_block:not([style*="display: none"]) ~ #bottom_action_controls {
+    transform: translateY(5px) !important;
 }
 
 

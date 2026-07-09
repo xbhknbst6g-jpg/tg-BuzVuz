@@ -434,33 +434,19 @@ body {
     padding: 7px 4px !important; 
 }
 /* ========================================================================== */
-/* МОЩНЫЙ ПОДЪЕМ КНОПОК И СЖАТИЕ ТЕКСТА ТОЛЬКО ДЛЯ РЕЖИМА "СВОЙ"              */
+/* НАДЁЖНОЕ УПРАВЛЕНИЕ КНОПКАМИ ЧЕРЕЗ БЛОК ВЫБОРА ЛЮДЕЙ                        */
 /* ========================================================================== */
 
-/* 1. Находим огромную текстовую инструкцию и заставляем её уменьшиться, 
-   чтобы освободить место для кнопок сверху */
-#text_image #preset_preview_block[style*="display: none"] ~ #text_image_settings_block #custom_instruction_text,
-#text_image #custom_instruction_text {
-    min-height: calc(100vh - 400px) !important; /* Было 240px, сделали 400px — это освободило кучу места сверху! */
+/* РЕЖИМ "СВОЙ": когда выбор людей АКТИВЕН (нет display: none) */
+#text_image #faces_count_selector_row:not([style*="display: none"]) ~ #bottom_action_controls,
+#text_image #faces_count_selector_row:not([style*="display: none"]) ~ * #bottom_action_controls {
+    transform: translateY(-50px) !important; /* РЕГУЛИРУЙТЕ ВЫСОТУ ТУТ */
 }
 
-/* 2. Полностью аннулируем распорку, чтобы она не мешала */
-#text_image #preset_preview_block[style*="display: none"] ~ #text_image_settings_block #text_image_spacer,
-#text_image #preset_preview_block[style*="display: none"] ~ #text_image_spacer {
-    height: 0px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    display: none !important;
-}
-
-/* 3. Теперь кнопки свободно летят вверх. Сейчас стоит -120px, регулируйте здесь! */
-#text_image #preset_preview_block[style*="display: none"] ~ #bottom_action_controls {
-    transform: translateY(-20px) !important; 
-}
-
-/* 4. Для обычного шаблона (Meadow) всё возвращается в исходный идеальный вид */
-#text_image #preset_preview_block:not([style*="display: none"]) ~ #bottom_action_controls {
-    transform: translateY(5px) !important;
+/* ОБЫЧНЫЙ РЕЖИМ (Meadow): когда выбор людей СКРЫТ (есть display: none) */
+#text_image #faces_count_selector_row[style*="display: none"] ~ #bottom_action_controls,
+#text_image #faces_count_selector_row[style*="display: none"] ~ * #bottom_action_controls {
+    transform: translateY(5px) !important; /* Здесь всегда дефолтные 5px */
 }
 
 

@@ -171,8 +171,8 @@
 
         </div> <!-- Закрылся text_image_settings_block -->
 
-            <!-- Очистили стиль, вернули кнопкам нормальное поведение, чтобы не портить другие режимы -->
-            <div class="single-row-controls" style="margin-top: 15px !important; margin-bottom: 25px !important;">
+            <!-- 🔥 ЖЕСТКОЕ ЗАКРЕПЛЕНИЕ: КНОПКИ БОЛЬШЕ НЕ БУДУТ ПАДАТЬ НА ДНО ЭКРАНА ТЕЛЕФОНА 🔥 -->
+            <div class="single-row-controls" style="position: absolute !important; bottom: 75px !important; left: 0; right: 0; padding: 0 15px; box-sizing: border-box; width: 100%;">
                 <div class="control-col">
                     <button id="btn_text_quality" class="capsule-btn" onclick="openUniversalQualitySheet(selectedAiModelEngine === 'pulid' ? 'flux_pulid' : 'nano_banana_edit')">⚡ Standard</button>
                 </div>

@@ -166,13 +166,13 @@
                 </div>
             </div>
 
-            <!-- 🔥 ЭТА РАСПОРКА ДЛЯ ОСТАЛЬНЫХ ВКЛАДОК (Высота адаптирована) 🔥 -->
-            <div class="mode-spacer" style="height: calc(100vh - 630px); display: none;" id="text_image_spacer"></div>
+            <!-- 🔥 ВЕРНУЛИ СТАНДАРТНУЮ ВЫСОТУ: Обычные вкладки больше не будут перекрываться кнопоками! 🔥 -->
+            <div class="mode-spacer" style="height: calc(100vh - 470px); display: none;" id="text_image_spacer"></div>
 
         </div> <!-- Закрылся text_image_settings_block -->
 
-            <!-- 🔥 ЖЕСТКИЙ СДВИГ ВВЕРХ ЧЕРЕЗ TRANSFORM — СРАБОТАЕТ И НА ПК, И НА ТЕЛЕФОНЕ 🔥 -->
-            <div class="single-row-controls" style="transform: translateY(-140px) !important; margin-bottom: 25px !important;">
+            <!-- Очистили стиль, вернули кнопкам нормальное поведение, чтобы не портить другие режимы -->
+            <div class="single-row-controls" style="margin-top: 15px !important; margin-bottom: 25px !important;">
                 <div class="control-col">
                     <button id="btn_text_quality" class="capsule-btn" onclick="openUniversalQualitySheet(selectedAiModelEngine === 'pulid' ? 'flux_pulid' : 'nano_banana_edit')">⚡ Standard</button>
                 </div>

@@ -148,8 +148,8 @@
                     <b>Итоговая цена зависит от выбранного качества и количества человек, точная цифра будет отображаться на кнопке START</b>
                 </div>
 
-                <!-- 3. ТВОИ ОГНЕННЫЕ КНОПКИ УПРАВЛЕНИЯ СНИЗУ (Выбор людей) -->
-                <div id="faces_count_selector_row" style="margin-top: -20px !important; margin-bottom: 12px; display: none;">
+                <!-- 3. ТВОИ ОГНЕННЫЕ КНОПКИ УПРАВЛЕНИЯ СНИЗУ (Выбор людей теперь внутри инструкции Свой!) -->
+                <div id="faces_count_selector_row" style="margin-top: 10px !important; margin-bottom: 12px;">
                     <div style="font-size: 12px; margin-bottom: 6px; color: var(--tg-theme-hint-color, #666); text-align: center;">Количество персонажей на фото:</div>
                     <div style="display: flex; background: rgba(255,255,255,0.06); padding: 4px; border-radius: 14px; gap: 4px; max-width: 280px; margin: 0 auto;">
                         <button id="btn_faces_1" class="tab-btn active" style="flex: 1; font-size: 12px; padding: 6px 0;" onclick="selectFacesCount(1, this)"> 1 чел.</button>
@@ -157,18 +157,30 @@
                         <button id="btn_faces_3" class="tab-btn" style="flex: 1; font-size: 12px; padding: 6px 0;" onclick="selectFacesCount(3, this)"> 3 чел.</button>
                     </div>
                 </div>
+            </div> <!-- 🌟 ВОТ СЮДА МЫ ПЕРЕНЕСЛИ ЗАКРЫВАЮЩИЙ ТЕГ ДЛЯ custom_instruction_text -->
 
-                <!-- 🌟 ДОБАВИЛИ КЛАСС screen-other СЮДА В СТРОКУ КНОПОК -->
-                <div class="single-row-controls screen-other" style="margin-bottom: 25px !important;">
-                    <div class="control-col">
-                        <button id="btn_text_quality" class="capsule-btn" onclick="openUniversalQualitySheet(selectedAiModelEngine === 'pulid' ? 'flux_pulid' : 'nano_banana_edit')">⚡ Standard</button>
-                    </div>
-                    <div class="control-col">
-                        <button id="btn_text_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">9:16</button>
-                    </div>
-                    <div class="control-col control-col-btn">
-                        <button id="neo_text_submit_btn" class="neo-start-btn" onclick="sendPhotoTextData()">Start 1 🪙</button>
-                    </div>
+            <!-- 2. СЛУЖЕБНЫЙ КОНТЕЙНЕР ДЛЯ ШАБЛОНОВ (Большое превью картинки на весь экран) -->
+            <div id="preset_preview_block" style="display: none;">
+                <div class="text-image-compact-preview">
+                    <img id="text_image_large_preview" src="" alt="Выбранный стиль" style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 12px;">
+                </div>
+            </div>
+
+            <!-- 🔥 ЭТА РАСПОРКА ДЛЯ ОСТАЛЬНЫХ ВКЛАДОК (Высота адаптирована) 🔥 -->
+            <div class="mode-spacer" style="height: calc(100vh - 630px); display: none;" id="text_image_spacer"></div>
+
+        </div> <!-- Закрылся text_image_settings_block -->
+
+            <!-- 🔥 УБРАЛИ КЛАСС screen-focus И СДЕЛАЛИ СТИЛИ КАК В ПРЕДЫДУЩИХ РЕЖИМАХ -->
+            <div class="single-row-controls" style="margin-top: 15px !important; margin-bottom: 25px !important;">
+                <div class="control-col">
+                    <button id="btn_text_quality" class="capsule-btn" onclick="openUniversalQualitySheet(selectedAiModelEngine === 'pulid' ? 'flux_pulid' : 'nano_banana_edit')">⚡ Standard</button>
+                </div>
+                <div class="control-col">
+                    <button id="btn_text_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">9:16</button>
+                </div>
+                <div class="control-col control-col-btn">
+                    <button id="neo_text_submit_btn" class="neo-start-btn" onclick="sendPhotoTextData()">Start 1 🪙</button>
                 </div>
             </div>
 

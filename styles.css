@@ -434,17 +434,26 @@ body {
     padding: 7px 4px !important; 
 }
 /* ========================================================================== */
-/* ИЗОЛИРОВАННАЯ КОРРЕКЦИЯ КНОПОК ДЛЯ ЭКРАНА TEXT_IMAGE                       */
+/* УБИРАЕМ РАСПОРКУ ТОЛЬКО ДЛЯ РЕЖИМА "СВОЙ" И ПОДНИМАЕМ КНОПКИ              */
 /* ========================================================================== */
 
-/* РЕЖИМ 1: Если открыта инструкция "Свой" (блок превью скрыт display: none) */
-#text_image #preset_preview_block[style*="display: none"] ~ #bottom_action_controls {
-    transform: translateY(-240px) !important; /* Сюда пишем минус, чтобы поднять кнопки выше в режиме "Свой" */
+/* 1. Если превью скрыто (режим Свой), мы принудительно обнуляем высоту распорки, 
+   чтобы она больше не выдавливала кнопки вниз экрана! */
+#text_image #preset_preview_block[style*="display: none"] ~ #text_image_settings_block #text_image_spacer,
+#text_image #preset_preview_block[style*="display: none"] ~ #text_image_spacer {
+    height: 0px !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
-/* РЕЖИМ 2: Если открыт обычный шаблон (блок превью ВКЛЮЧЕН, то есть НЕ display: none) */
+/* 2. Поднимаем сам блок кнопок на комфортную высоту в режиме "Свой" */
+#text_image #preset_preview_block[style*="display: none"] ~ #bottom_action_controls {
+    transform: translateY(-50px) !important; /* Начните с -50px, теперь кнопки будут легко двигаться! */
+}
+
+/* 3. Для обычного шаблона (Meadow) возвращаем кнопкам их дефолтное положение */
 #text_image #preset_preview_block:not([style*="display: none"]) ~ #bottom_action_controls {
-    transform: translateY(5px) !important;  /* Ваша идеальная стандартная высота для Meadow */
+    transform: translateY(5px) !important;
 }
 
 

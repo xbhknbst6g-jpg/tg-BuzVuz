@@ -434,34 +434,30 @@ body {
     padding: 7px 4px !important; 
 }
 /* ========================================================================== */
-/* ВОЗВРАТ К РАБОЧЕМУ СПОСОБУ: СЖАТИЕ ИНСТРУКЦИИ ДЛЯ СВОБОДЫ КНОПОК          */
+/* СДВИГ НИЖНИХ КНОПОК ЧЕРЕЗ БЛОК ВЫБОРА КОЛИЧЕСТВА ЧЕЛОВЕК                   */
 /* ========================================================================== */
 
-/* 1. В режиме "Свой" полностью убираем жесткую минимальную высоту текстового блока, 
-   чтобы он больше не держал кнопки и не блокировал их движение вниз/вверх */
-#text_image #preset_preview_block[style*="display: none"] ~ #text_image_settings_block #custom_instruction_text,
+/* 1. Возвращаем инструкции нормальную высоту, чтобы она не сжимала контент */
 #text_image #custom_instruction_text {
-    min-height: unset !important; /* Разблокировали кнопки! */
+    min-height: unset !important;
     height: auto !important;
 }
 
-/* 2. Полностью аннулируем распорку, которая ломала верстку */
-#text_image #preset_preview_block[style*="display: none"] ~ #text_image_settings_block #text_image_spacer,
-#text_image #preset_preview_block[style*="display: none"] ~ #text_image_spacer {
+/* 2. Обнуляем распорку, чтобы она не мешала нашей новой логике */
+#text_image #text_image_spacer {
     height: 0px !important;
-    margin: 0 !important;
-    padding: 0 !important;
     display: none !important;
 }
 
-/* 3. РЕГУЛИРОВКА ВЫСОТЫ КНОПОК ДЛЯ РЕЖИМА "СВОЙ" */
-#text_image #preset_preview_block[style*="display: none"] ~ #bottom_action_controls {
-    transform: translateY(50px) !important; /* ПОДБЕРИТЕ ЗНАЧЕНИЕ ТУТ */
+/* 3. ОПУСКАЕМ БЛОК ВЫБОР ЧЕЛОВЕК: он механически толкнет нижние кнопки вниз */
+#text_image #faces_count_selector_row {
+    /* Сейчас стоит 40px (это примерно 1 см). РЕГУЛИРУЙТЕ ДВИЖЕНИЕ ТУТ! */
+    margin-bottom: 40px !important; 
 }
 
-/* 4. Для обычного шаблона (Meadow) возвращаем ваши идеальные 5px */
-#text_image #preset_preview_block:not([style*="display: none"]) ~ #bottom_action_controls {
-    transform: translateY(5px) !important;
+/* 4. Нижний ряд кнопок просто оставляем в покое, убирая дикие сдвиги */
+#text_image #preset_preview_block[style*="display: none"] ~ #bottom_action_controls {
+    transform: translateY(5px) !important; /* Оставляем как в режиме Meadow */
 }
 
 

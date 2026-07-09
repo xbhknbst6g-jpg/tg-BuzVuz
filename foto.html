@@ -353,35 +353,26 @@
 
         <!-- СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (Изначально полностью скрыт под логику твоего роутера) -->
         <div id="bg_change_settings_block" style="display: none;">
-            
-            <!-- 🔥 КОНТЕЙНЕР-ОРИЕНТИР С МИНИМАЛЬНОЙ ВЫСОТОЙ -->
             <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 190px); box-sizing: border-box; display: flex; flex-direction: column;">
-                            
+                
                 <div style="font-size: 14px; font-weight: bold; margin-bottom: 12px; color: var(--tg-theme-text-color, #000); text-align: center;">📍 Как это работает (Пример):</div>
 
-                <!-- 🔥 ИДЕАЛЬНО СИММЕТРИЧНЫЙ КОНТЕЙНЕР (Увеличили gap до 16px для баланса) -->
-                <div class="swap-steps-grid" style="display: flex !important; justify-content: center !important; gap: 16px !important; width: 100%; box-sizing: border-box; padding: 0 10px;">
+                <!-- 🌟 ИСПОЛЬЗУЕМ ТУ ЖЕ СЕТКУ ШАГОВ -->
+                <div class="swap-steps-grid">
                     
-                    <!-- Карточка 1: Исходное фото (Увеличили max-width до 180px) -->
-                    <div style="flex: 1; max-width: 180px; text-align: center; display: flex; flex-direction: column; align-items: center;">
-                        <div class="phone-template-card" style="width: 100%; border: 2px solid #FF6A00 !important; border-radius: 12px; overflow: hidden; aspect-ratio: 3/4;">
-                            <img src="https://i.postimg.cc/t7GbBDxL/itog-smeny-odezdy.jpg" alt="1. Исходное фото" style="width: 100%; height: 100%; object-fit: cover; display: block;">
-                        </div>
-                        <!-- Подпись под карточкой -->
-                        <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 6px; white-space: nowrap;">1. Исходное фото</div>
+                    <!-- Шаг 1 (Используем оригинальный класс swap-template-card) -->
+                    <div class="swap-template-card">
+                        <img src="https://i.postimg.cc/t7GbBDxL/itog-smeny-odezdy.jpg" alt="1. Исходное фото">
+                        <div class="card-overlay">1. Исходное фото</div>
                     </div>
                     
-                    <!-- Карточка 2: Результат -->
-                    <div style="flex: 1; max-width: 180px; text-align: center; display: flex; flex-direction: column; align-items: center;">
-                        <div class="phone-template-card" style="width: 100%; border: 2px solid #ff1e00 !important; border-radius: 12px; overflow: hidden; aspect-ratio: 3/4;">
-                            <img src="https://i.postimg.cc/x1j67KTC/5860519473268330113.jpg" alt="2. Результат" style="width: 100%; height: 100%; object-fit: cover; display: block;">
-                        </div>
-                        <!-- Подпись под карточкой -->
-                        <div style="font-size: 11px; font-weight: bold; color: #ff6600; margin-top: 6px; white-space: nowrap;">2. Результат 🔥</div>
+                    <!-- Шаг 2 (Используем оригинальный класс swap-template-card) -->
+                    <div class="swap-template-card">
+                        <img src="https://i.postimg.cc/x1j67KTC/5860519473268330113.jpg" alt="2. Результат">
+                        <div class="card-overlay">2. Результат 🔥</div>
                     </div>
 
                 </div>
-
 
                 <!-- ИНСТРУКЦИЯ (Увеличен отступ до 40px) -->
                 <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">

@@ -446,7 +446,7 @@ body {
 /* ОБЫЧНЫЙ РЕЖИМ (Meadow): когда выбор людей СКРЫТ (есть display: none) */
 #text_image #faces_count_selector_row[style*="display: none"] ~ #bottom_action_controls,
 #text_image #faces_count_selector_row[style*="display: none"] ~ * #bottom_action_controls {
-    transform: translateY(5px) !important; /* Здесь всегда дефолтные 5px */
+    transform: translateY(-445px) !important; /* Здесь всегда дефолтные 5px */
 }
 
 

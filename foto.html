@@ -627,7 +627,7 @@ function switchTextTab(category, element) {
         isTextImageStyleSelected = false; 
 
         document.getElementById('text_image_title').innerText = "Шаблоны для генераций Вашего Фото";
-        document.getElementById('text_image_subtitle').innerText = "В режиме умный фокус измображение реалистичное как на шаблоне, в режиме цыфровая оптика более художественный стиль фото";
+        document.getElementById('text_image_subtitle').innerText = "В режиме умный фокус изображение реалистичное как на шаблоне, в режиме цыфровая оптика более художественный стиль фото";
 
         gallery.style.display = 'grid';            
         settingsBlock.style.display = 'none';      
@@ -754,8 +754,8 @@ function switchGlobalAiModel(modelMode, element) {
                 isTextImageStyleSelected = false;
                 selectedStyleName = "";
 
-                document.getElementById('text_image_title').innerText = "Примеры генераций Фото + Текст";
-                document.getElementById('text_image_subtitle').innerText = "Выберите желаемый стиль для настройки:";
+                document.getElementById('text_image_title').innerText = "Шаблоны для генераций Вашего Фото";
+                document.getElementById('text_image_subtitle').innerText = "В режиме умный фокус изображение реалистичное как на шаблоне, в режиме цыфровая оптика более художественный стиль фото";
 
                 if (settingsBlock) settingsBlock.style.display = "none"; 
                 if (presetPreviewBlock) presetPreviewBlock.style.display = "none";
@@ -878,8 +878,8 @@ window.addEventListener('DOMContentLoaded', () => {
             if (screenName === 'foto') {
                 isTextImageStyleSelected = false;
                 selectedStyleName = "";
-                document.getElementById('text_image_title').innerText = "Примеры генераций Фото + Текст";
-                document.getElementById('text_image_subtitle').innerText = "Выберите желаемый стиль для настройки:";
+                document.getElementById('text_image_title').innerText = "Шаблоны для генераций Вашего Фото";
+                document.getElementById('text_image_subtitle').innerText = "В режиме умный фокус изображение реалистичное как на шаблоне, в режиме цыфровая оптика более художественный стиль фото";
                 document.getElementById('text_image_large_preview').src = "";
                 document.getElementById('text_image_settings_block').style.display = "none";
                 document.getElementById('text_image_gallery').style.display = "grid";

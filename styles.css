@@ -437,7 +437,7 @@ body {
    мы находим нижние кнопки и сильно поднимаем их вверх */
 #faces_count_selector_row:not([style*="display: none"]) ~ #bottom_action_controls,
 #faces_count_selector_row:not([style*="display: none"]) ~ * #bottom_action_controls {
-    transform: translateY(-40px) !important; /* Поднимает кнопки вверх только в режиме "Свой" */
+    transform: translateY(-240px) !important; /* Поднимает кнопки вверх только в режиме "Свой" */
 }
 
 /* ========================================================================== */

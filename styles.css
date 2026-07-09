@@ -456,7 +456,7 @@ body {
 
 /* 3. РЕГУЛИРОВКА ВЫСОТЫ КНОПОК ДЛЯ РЕЖИМА "СВОЙ" */
 #text_image #preset_preview_block[style*="display: none"] ~ #bottom_action_controls {
-    transform: translateY(-50px) !important; /* ПОДБЕРИТЕ ЗНАЧЕНИЕ ТУТ */
+    transform: translateY(50px) !important; /* ПОДБЕРИТЕ ЗНАЧЕНИЕ ТУТ */
 }
 
 /* 4. Для обычного шаблона (Meadow) возвращаем ваши идеальные 5px */

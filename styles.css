@@ -420,14 +420,14 @@ body {
     box-shadow: 0 2px 8px rgba(255, 30, 0, 0.4) !important;
 }
 /* НАСТРОЙКА ДЛЯ ТЕКУЩЕГО ЭКРАНА (УМНЫЙ ФОКУС) */
-/* Тут приподнимаем ЧУТЬ-ЧУТЬ */
+/* Мягкая настройка: кнопки почти не трогаем, только аккуратно двигаем блок вверх */
 .single-row-controls.screen-focus {
-    margin-top: -6px !important; /* Слегка подтягиваем блок вверх */
+    margin-top: -6px !important; /* Аккуратно приподнимает весь ряд на 1-2 мм */
 }
+
 .single-row-controls.screen-focus .capsule-btn,
 .single-row-controls.screen-focus .neo-start-btn {
-    padding: 8px 4px !important; /* Уменьшаем высоту кнопок умеренно */
-    font-size: 12px !important;
+    padding: 10px 4px !important; /* Почти как ваши родные 11px, убрали буквально 1px */
 }
 
 

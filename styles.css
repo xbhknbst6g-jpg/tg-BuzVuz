@@ -433,6 +433,9 @@ body {
     /* Было 11px, ставим 7px — это уменьшит общую высоту кнопки ровно на 8 пикселей */
     padding: 7px 4px !important; 
 }
+#faces_count_selector_row + .single-row-controls {
+    transform: translateY(-80px) !important;
+}
 
 /* ========================================================================== */
 /* КНОПКА START БЕЗ СДВИГОВ И ПЕРЕКОСОВ */

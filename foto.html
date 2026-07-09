@@ -126,14 +126,14 @@
         <!-- 🔥 НАШ ШАГ 1 (ГАЛЕРЕЯ КАРТОЧЕК). ТЕПЕРЬ ОНА ЧИСТАЯ И ИЗОЛИРОВАННАЯ -->
         <div class="isolated-photo-text-grid" id="text_image_gallery">
             <!-- Сюда ваш JS скрипт через fetch автоматически вставит карточки из файла cards-template.html -->
-        </div> <!-- 👈 МЫ ЗАКРЫЛИ ГАЛЕРЕЮ ЗДЕСЬ! Кнопки ниже теперь в безопасности -->
+        </div>
 
         <!-- ШАГ 2: БЛОК НАСТРОЕК (Полностью независимый пульт управления) -->
         <div id="text_image_settings_block" style="display: none;">
             
-            <!-- 1. ИНСТРУКЦИЯ ДЛЯ ВКЛАДКИ "СВОЙ" -->
-            <div id="custom_instruction_text" class="custom-prompt-container" style="display: none; margin-bottom: 15px;">
-                <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Как работает режим:</div>
+            <!-- 1. ИНСТРУКЦИЯ ДЛЯ ВКЛАДКИ "СВОЙ" (Всё, что внутри, будет скрываться и показываться скриптом ОДНОВРЕМЕННО) -->
+            <div id="custom_instruction_text" class="custom-prompt-container" style="display: none; margin-bottom: 15px; min-height: calc(100vh - 240px); box-sizing: border-box; display: flex; flex-direction: column;">
+                <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px; color: var(--tg-theme-text-color, #000); text-align: center;">Как работает режим:</div>
                 <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.4;">
                     <b style="color: #ffffff;">Шаг 1:</b> Настройте формат и качество кадра внизу.<br>
                     <b style="color: #ffffff;">Шаг 2:</b> Выбирите количество людей (сколько людей - столько бот потребует загрузить фото).<br>
@@ -144,10 +144,20 @@
                 <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
 
                 <!-- Строка про итог (Белая и жирная) -->
-                <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center;">
+                <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center; margin-bottom: 15px;">
                     <b>Итоговая цена зависит от выбранного качества и количества человек, точная цифра будет отображаться на кнопке START</b>
                 </div>
-            </div>
+
+                <!-- 3. ТВОИ ОГНЕННЫЕ КНОПКИ УПРАВЛЕНИЯ СНИЗУ (Выбор людей теперь внутри инструкции Свой!) -->
+                <div id="faces_count_selector_row" style="margin-top: 10px !important; margin-bottom: 12px;">
+                    <div style="font-size: 12px; margin-bottom: 6px; color: var(--tg-theme-hint-color, #666); text-align: center;">Количество персонажей на фото:</div>
+                    <div style="display: flex; background: rgba(255,255,255,0.06); padding: 4px; border-radius: 14px; gap: 4px; max-width: 280px; margin: 0 auto;">
+                        <button id="btn_faces_1" class="tab-btn active" style="flex: 1; font-size: 12px; padding: 6px 0;" onclick="selectFacesCount(1, this)"> 1 чел.</button>
+                        <button id="btn_faces_2" class="tab-btn" style="flex: 1; font-size: 12px; padding: 6px 0;" onclick="selectFacesCount(2, this)"> 2 чел.</button>
+                        <button id="btn_faces_3" class="tab-btn" style="flex: 1; font-size: 12px; padding: 6px 0;" onclick="selectFacesCount(3, this)"> 3 чел.</button>
+                    </div>
+                </div>
+            </div> <!-- 🌟 ВОТ СЮДА МЫ ПЕРЕНЕСЛИ ЗАКРЫВАЮЩИЙ ТЕГ ДЛЯ custom_instruction_text -->
 
             <!-- 2. СЛУЖЕБНЫЙ КОНТЕЙНЕР ДЛЯ ШАБЛОНОВ (Большое превью картинки на весь экран) -->
             <div id="preset_preview_block" style="display: none;">
@@ -156,19 +166,10 @@
                 </div>
             </div>
 
+            <!-- 🔥 ЭТА РАСПОРКА ДЛЯ ОСТАЛЬНЫХ ВКЛАДОК (Высота адаптирована) 🔥 -->
+            <div class="mode-spacer" style="height: calc(100vh - 630px); display: none;" id="text_image_spacer"></div>
 
-            <!-- 🔥 ЭТА РАСПОРКА ВЫДАВИТ ВСЕ НАСТРОЙКИ ВНИЗ ЭКРАНА 🔥 -->
-            <div class="mode-spacer" style="height: calc(100vh - 670px); display: none;" id="text_image_spacer"></div>
-
-            <!-- 3. ТВОИ ОГНЕННЫЕ КНОПКИ УПРАВЛЕНИЯ СНИЗУ (Выбор людей) -->
-            <div id="faces_count_selector_row" style="margin-top: -20px !important; margin-bottom: 12px; display: none;">
-                <div style="font-size: 12px; margin-bottom: 6px; color: var(--tg-theme-hint-color, #666); text-align: center;">Количество персонажей на фото:</div>
-                <div style="display: flex; background: rgba(255,255,255,0.06); padding: 4px; border-radius: 14px; gap: 4px; max-width: 280px; margin: 0 auto;">
-                    <button id="btn_faces_1" class="tab-btn active" style="flex: 1; font-size: 12px; padding: 6px 0;" onclick="selectFacesCount(1, this)"> 1 чел.</button>
-                    <button id="btn_faces_2" class="tab-btn" style="flex: 1; font-size: 12px; padding: 6px 0;" onclick="selectFacesCount(2, this)"> 2 чел.</button>
-                    <button id="btn_faces_3" class="tab-btn" style="flex: 1; font-size: 12px; padding: 6px 0;" onclick="selectFacesCount(3, this)"> 3 чел.</button>
-                </div>
-            </div>
+        </div> <!-- Закрылся text_image_settings_block -->
 
             <!-- 🔥 УБРАЛИ КЛАСС screen-focus И СДЕЛАЛИ СТИЛИ КАК В ПРЕДЫДУЩИХ РЕЖИМАХ -->
             <div class="single-row-controls" style="margin-top: 15px !important; margin-bottom: 25px !important;">

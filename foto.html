@@ -167,12 +167,13 @@
             </div>
 
             <!-- 🔥 ЭТА РАСПОРКА ДЛЯ ОСТАЛЬНЫХ ВКЛАДОК (Высота адаптирована) 🔥 -->
-            <div class="mode-spacer" style="height: calc(100vh - 1230px); display: none;" id="text_image_spacer"></div>
+            <div class="mode-spacer" style="height: calc(100vh - 630px); display: none;" id="text_image_spacer"></div>
 
         </div> <!-- Закрылся text_image_settings_block -->
 
-            <!-- 🔥 УБРАЛИ КЛАСС screen-focus И СДЕЛАЛИ СТИЛИ КАК В ПРЕДЫДУЩИХ РЕЖИМАХ -->
-            <div class="single-row-controls" style="margin-top: 15px !important; margin-bottom: 25px !important;">
+            <!-- 🔥 ОБНОВЛЕННЫЙ РЯД КНОПОК ДЛЯ ТЕКСТОВОГО РЕЖИМА "СВОЙ" -->
+            <!-- Поставили минусовой margin-top, чтобы притянуть к выбору человек, и вытолкнули из нижнего меню -->
+            <div class="single-row-controls" style="margin-top: -20px !important; margin-bottom: 25px !important;">
                 <div class="control-col">
                     <button id="btn_text_quality" class="capsule-btn" onclick="openUniversalQualitySheet(selectedAiModelEngine === 'pulid' ? 'flux_pulid' : 'nano_banana_edit')">⚡ Standard</button>
                 </div>

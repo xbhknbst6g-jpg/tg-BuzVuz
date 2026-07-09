@@ -455,7 +455,7 @@ body {
 
 /* 3. Теперь кнопки свободно летят вверх. Сейчас стоит -120px, регулируйте здесь! */
 #text_image #preset_preview_block[style*="display: none"] ~ #bottom_action_controls {
-    transform: translateY(-120px) !important; 
+    transform: translateY(-100px) !important; 
 }
 
 /* 4. Для обычного шаблона (Meadow) всё возвращается в исходный идеальный вид */

@@ -419,6 +419,28 @@ body {
     border-color: #e61b00 !important;
     box-shadow: 0 2px 8px rgba(255, 30, 0, 0.4) !important;
 }
+/* НАСТРОЙКА ДЛЯ ТЕКУЩЕГО ЭКРАНА (УМНЫЙ ФОКУС) */
+/* Тут приподнимаем ЧУТЬ-ЧУТЬ */
+.single-row-controls.screen-focus {
+    margin-top: -6px !important; /* Слегка подтягиваем блок вверх */
+}
+.single-row-controls.screen-focus .capsule-btn,
+.single-row-controls.screen-focus .neo-start-btn {
+    padding: 8px 4px !important; /* Уменьшаем высоту кнопок умеренно */
+    font-size: 12px !important;
+}
+
+
+/* НАСТРОЙКА ДЛЯ ДРУГИХ РЕЖИМОВ (где нужно поднять СИЛЬНЕЕ) */
+/* (В HTML тех режимов вам нужно будет дописать класс screen-other) */
+.single-row-controls.screen-other {
+    margin-top: -15px !important; /* Подтягиваем блок вверх гораздо сильнее */
+}
+.single-row-controls.screen-other .capsule-btn,
+.single-row-controls.screen-other .neo-start-btn {
+    padding: 5px 4px !important; /* Делаем кнопки совсем тонкими */
+    font-size: 11px !important;
+}
 
 /* ========================================================================== */
 /* КНОПКА START БЕЗ СДВИГОВ И ПЕРЕКОСОВ */

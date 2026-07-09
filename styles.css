@@ -435,11 +435,12 @@ body {
 }
 
 
-/* Безопасный визуальный сдвиг кнопок вверх ТОЛЬКО в текстовом режиме */
-.single-row-controls:not([style*="margin-top: 15px"]) {
+/* Поднимаем оранжевые кнопки еще чуток выше */
+#faces_count_selector_row + .single-row-controls {
     position: relative !important;
-    top: -25px !important;         /* Физически перемещает кнопки на 25px выше над черной панелью */
-    margin-bottom: -10px !important; /* Убирает лишнюю дыру в подвале, чтобы не ломался скролл */
+    margin-top: 0 !important;      
+    top: -48px !important;         /* Изменяй эту цифру (например -30px, -35px), если захочешь поднять ЕЩЕ ВЫШЕ */
+    margin-bottom: 25px !important; 
 }
 
 /* ========================================================================== */

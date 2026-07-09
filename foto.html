@@ -18,7 +18,7 @@
     <!-- ========================================== -->
     <div id="foto" class="screen active">
         <div class="header"></div>
-        <h1 class="ai-studio-title">AI Studio</h1>
+        <h1 class="ai-studio-title">AI Photo Studio</h1>
         <div class="neon-divider"></div>
 
        <p style="text-align: center; color: var(--tg-theme-hint-color, #666); font-size: 14px; margin-top: 5px;">Выберите нужный инструмент генерации ниже</p>
@@ -34,7 +34,7 @@
                 </div>
                 <div class="menu-info">
                     <div class="menu-title">Фото + Текст</div>
-                    <div class="menu-desc">Создание по вашему фото и описанию</div>
+                    <div class="menu-desc">Выбирите готовый шаблон или создайте свое уникальное фото</div>
                 </div>
             </div>
 
@@ -51,7 +51,7 @@
                 </div>
                 <div class="menu-info">
                     <div class="menu-title">Face Swap</div>
-                    <div class="menu-desc">Замена лиц по шаблонам</div>
+                    <div class="menu-desc">Перенос вашего лица на другое фото</div>
                 </div>
             </div>
 
@@ -67,7 +67,7 @@
                 </div>
                 <div class="menu-info">
                     <div class="menu-title">Примерка одежды</div>
-                    <div class="menu-desc">Примерка любых вещей по вашей фигуре До / После</div>
+                    <div class="menu-desc">Примерка любых вещей по вашей фигуре</div>
                 </div>
             </div>
 
@@ -119,8 +119,8 @@
         </div>
 
         <div class="header" style="margin-bottom: 15px; text-align: center;">
-            <h1 id="text_image_title" style="font-size: 15px; font-weight: 800; margin: 0; color: var(--tg-theme-text-color, #fff);">Примеры генераций Фото + Текст</h1>
-            <p id="text_image_subtitle" style="font-size: 13px; margin: 4px 0 0 0; color: var(--tg-theme-hint-color, #666);">Выберите желаемый стиль для настройки:</p>
+            <h1 id="text_image_title" style="font-size: 15px; font-weight: 800; margin: 0; color: var(--tg-theme-text-color, #fff);">Шаблоны для генераций Вашего Фото</h1>
+            <p id="text_image_subtitle" style="font-size: 13px; margin: 4px 0 0 0; color: var(--tg-theme-hint-color, #666);">В режиме умный фокус измображение реалистичное как на шаблоне, в режиме цыфровая оптика более художественный стиль фото</p>
         </div>
 
         <!-- 🔥 НАШ ШАГ 1 (ГАЛЕРЕЯ КАРТОЧЕК). ТЕПЕРЬ ОНА ЧИСТАЯ И ИЗОЛИРОВАННАЯ -->
@@ -136,8 +136,9 @@
                 <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px; color: var(--tg-theme-text-color, #000);">Как работает режим:</div>
                 <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.4;">
                     <b style="color: #ffffff;">Шаг 1:</b> Настройте формат и качество кадра внизу.<br>
-                    <b style="color: #ffffff;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
-                    <b style="color: #ffffff;">Шаг 3:</b> Следуйте дальнейшим указаниям бота!
+                    <b style="color: #ffffff;">Шаг 2:</b> Выбирите количество людей (сколько людей - столько бот потребует загрузить фото).<br>
+                    <b style="color: #ffffff;">Шаг 3:</b> Нажмите кнопку запуска START.<br>
+                    <b style="color: #ffffff;">Шаг 4:</b> Следуйте дальнейшим указаниям бота!
                 </div>
                 <!-- Наша лазерная линия-разделитель (Оранжевый неон) -->
                 <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
@@ -604,7 +605,7 @@ function switchTextTab(category, element) {
         isTextImageStyleSelected = true;  
         selectedStyleName = "Свой промпт";
 
-        document.getElementById('text_image_title').innerText = "Свой сюжет (Фото + Текст)";
+        document.getElementById('text_image_title').innerText = "Свой сюжет";
         document.getElementById('text_image_subtitle').innerText = "Настройте параметры вашей персональной генерации:";
 
         gallery.style.display = 'none';            

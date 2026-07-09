@@ -439,7 +439,7 @@ body {
 
 /* РЕЖИМ 1: Если открыта инструкция "Свой" (блок превью скрыт display: none) */
 #text_image #preset_preview_block[style*="display: none"] ~ #bottom_action_controls {
-    transform: translateY(-40px) !important; /* Сюда пишем минус, чтобы поднять кнопки выше в режиме "Свой" */
+    transform: translateY(-240px) !important; /* Сюда пишем минус, чтобы поднять кнопки выше в режиме "Свой" */
 }
 
 /* РЕЖИМ 2: Если открыт обычный шаблон (блок превью ВКЛЮЧЕН, то есть НЕ display: none) */

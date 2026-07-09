@@ -433,12 +433,20 @@ body {
     /* Было 11px, ставим 7px — это уменьшит общую высоту кнопки ровно на 8 пикселей */
     padding: 7px 4px !important; 
 }
-/* Магия CSS: если блок faces_count_selector_row НЕ скрыт, 
-   мы находим нижние кнопки и сильно поднимаем их вверх */
-#faces_count_selector_row:not([style*="display: none"]) ~ #bottom_action_controls,
-#faces_count_selector_row:not([style*="display: none"]) ~ * #bottom_action_controls {
-    transform: translateY(-240px) !important; /* Поднимает кнопки вверх только в режиме "Свой" */
+/* ========================================================================== */
+/* ИЗОЛИРОВАННАЯ КОРРЕКЦИЯ КНОПОК ДЛЯ ЭКРАНА TEXT_IMAGE                       */
+/* ========================================================================== */
+
+/* РЕЖИМ 1: Если открыта инструкция "Свой" (блок превью скрыт display: none) */
+#text_image #preset_preview_block[style*="display: none"] ~ #bottom_action_controls {
+    transform: translateY(-40px) !important; /* Сюда пишем минус, чтобы поднять кнопки выше в режиме "Свой" */
 }
+
+/* РЕЖИМ 2: Если открыт обычный шаблон (блок превью ВКЛЮЧЕН, то есть НЕ display: none) */
+#text_image #preset_preview_block:not([style*="display: none"]) ~ #bottom_action_controls {
+    transform: translateY(5px) !important;  /* Ваша идеальная стандартная высота для Meadow */
+}
+
 
 /* ========================================================================== */
 /* КНОПКА START БЕЗ СДВИГОВ И ПЕРЕКОСОВ */

@@ -420,14 +420,20 @@ body {
     box-shadow: 0 2px 8px rgba(255, 30, 0, 0.4) !important;
 }
 /* НАСТРОЙКА ДЛЯ ТЕКУЩЕГО ЭКРАНА (УМНЫЙ ФОКУС) */
-/* Мягкая настройка: кнопки почти не трогаем, только аккуратно двигаем блок вверх */
+/* Убираем пустое пространство под картинкой в режиме умного фокуса */
 .single-row-controls.screen-focus {
-    margin-top: -6px !important; /* Аккуратно приподнимает весь ряд на 1-2 мм */
+    margin-top: 0 !important; /* Сбрасываем прошлый сдвиг, он не нужен */
 }
 
-.single-row-controls.screen-focus .capsule-btn,
-.single-row-controls.screen-focus .neo-start-btn {
-    padding: 10px 4px !important; /* Почти как ваши родные 11px, убрали буквально 1px */
+/* Находим контейнер картинки, который находится ПЕРЕД кнопками, и прижимаем его */
+.screen-focus {
+    margin-top: -10px !important; /* Подтягивает всю карточку Meadow повыше */
+}
+
+/* Находим саму нижнюю панель и заставляем её приподняться */
+.single-row-controls.screen-focus {
+    position: relative !important;
+    top: -12px !important; /* Этот сдвиг ТОЧНО приподниму кнопки на 1-2 мм визуально */
 }
 
 

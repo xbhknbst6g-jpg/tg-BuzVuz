@@ -435,15 +435,11 @@ body {
 }
 
 
-/* НАСТРОЙКА ДЛЯ ДРУГИХ РЕЖИМОВ (где нужно поднять СИЛЬНЕЕ) */
-/* (В HTML тех режимов вам нужно будет дописать класс screen-other) */
-.single-row-controls.screen-other {
-    margin-top: -15px !important; /* Подтягиваем блок вверх гораздо сильнее */
-}
-.single-row-controls.screen-other .capsule-btn,
-.single-row-controls.screen-other .neo-start-btn {
-    padding: 5px 4px !important; /* Делаем кнопки совсем тонкими */
-    font-size: 11px !important;
+/* Безопасный визуальный сдвиг кнопок вверх ТОЛЬКО в текстовом режиме */
+.single-row-controls:not([style*="margin-top: 15px"]) {
+    position: relative !important;
+    top: -25px !important;         /* Физически перемещает кнопки на 25px выше над черной панелью */
+    margin-bottom: -10px !important; /* Убирает лишнюю дыру в подвале, чтобы не ломался скролл */
 }
 
 /* ========================================================================== */

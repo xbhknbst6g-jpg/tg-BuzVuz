@@ -191,13 +191,14 @@
     <!-- ПОДРЕЖИМ 2: FACE SWAP                      -->
     <!-- ========================================== -->
     <div id="face_swap" class="screen">
-        
-       <!-- ЛЕНТА ВЕРХУШКИ С НАШЕЙ КРУГЛОЙ КНОПКОЙ НАЗАД (Добавили стили и position: relative) -->
+            
+        <!-- ЛЕНТА ВЕРХУШКИ С НАШЕЙ КРУГЛОЙ КНОПКОЙ НАЗАД (Добавили стили и position: relative) -->
         <div class="tabs-container" id="swap_tabs" style="display: flex; align-items: center; padding: 5px 0; position: relative;">
             <button class="back-tab-btn" onclick="handleSwapBackClick()"></button>  
             <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;"></div>          
             <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%; position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 1; pointer-events: none;">Настройка Face Swap</div>
         </div>
+        
         <!-- СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (Изначально полностью скрыт, как в твоих других режимах) -->
         <div id="face_swap_settings_block" style="display: none;">
             
@@ -206,25 +207,34 @@
                 
                 <div style="font-size: 14px; font-weight: bold; margin-bottom: 12px; color: var(--tg-theme-text-color, #000); text-align: center;">📍 Как это работает (Пример):</div>
                 
-                <!-- Сетка шагов (Селфи -> Шаблон -> Итог) -->
-                <div class="swap-steps-grid">
+                <!-- Сетка шагов (Селфи -> Шаблон -> Итог) + Добавили display: flex -->
+                <div class="swap-steps-grid" style="display: flex !important; gap: 8px !important; width: 100%; box-sizing: border-box;">
                     
                     <!-- Шаг 1 -->
-                    <div class="swap-template-card" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo('https://i.postimg.cc/1tDhc1zH/selfi.jpg')">
-                        <img src="https://i.postimg.cc/1tDhc1zH/selfi.jpg" alt="1. Селфи">
-                        <div class="card-overlay">1. Селфи</div>
+                    <div style="flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center; min-width: 0;">
+                        <div class="swap-template-card" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo('https://i.postimg.cc/1tDhc1zH/selfi.jpg')" style="width: 100%;">
+                            <img src="https://i.postimg.cc/1tDhc1zH/selfi.jpg" alt="1. Селфи">
+                        </div>
+                        <!-- Подпись строго под фото, белая -->
+                        <div style="font-size: 11px; font-weight: bold; color: #ffffff; margin-top: 8px; white-space: nowrap;">1. Селфи</div>
                     </div>
-                    
+
                     <!-- Шаг 2 -->
-                    <div class="swap-template-card">
-                        <img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg" alt="2. Шаблон">
-                        <div class="card-overlay">2. Шаблон</div>
+                    <div style="flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center; min-width: 0;">
+                        <div class="swap-template-card" style="width: 100%;">
+                            <img src="https://i.postimg.cc/CLSY75kz/svap-sablon.jpg" alt="2. Шаблон">
+                        </div>
+                        <!-- Подпись строго под фото, белая -->
+                        <div style="font-size: 11px; font-weight: bold; color: #ffffff; margin-top: 8px; white-space: nowrap;">2. Шаблон</div>
                     </div>
-                    
+
                     <!-- Шаг 3 (Итог с оранжевой рамкой) -->
-                    <div class="swap-template-card">
-                        <img src="https://i.postimg.cc/pLrwcFTt/itog.jpg" alt="3. Итог">
-                        <div class="card-overlay">3. Итог 🔥</div>
+                    <div style="flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center; min-width: 0;">
+                        <div class="swap-template-card" style="width: 100%;">
+                            <img src="https://i.postimg.cc/pLrwcFTt/itog.jpg" alt="3. Итог">
+                        </div>
+                        <!-- Подпись строго под фото, белая -->
+                        <div style="font-size: 11px; font-weight: bold; color: #ffffff; margin-top: 8px; white-space: nowrap;">3. Итог 🔥</div>
                     </div>
 
                 </div>
@@ -258,162 +268,167 @@
                 </div>
             </div>
 
-        </div> <!-- Конец служебного блока -->
-    </div>
+        </div> <!-- Конец служебного блока настроек -->
+    </div> <!-- Конец экрана face_swap -->
 
 
     <!-- ========================================== -->
     <!-- РЕЖИМ 3: ПРИМЕРКА ОДЕЖДЫ (TRY-ON)          -->
     <!-- ========================================== -->
     <div id="tryon" class="screen">
-        
-       <!-- ЛЕНТА ВЕРХУШКИ С НАШЕЙ КРУГЛОЙ КНОПКОЙ НАЗАД (Добавили position: relative) -->
-        <div class="tabs-container" id="tryon_tabs" style="display: flex; align-items: center; padding: 5px 0; position: relative;">
-            <button class="back-tab-btn" onclick="handleTryOnBackClick()"></button> 
-            <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;"></div>   
-            <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%; position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 1; pointer-events: none;">Настройка примерки одежды</div>
-        </div>
-        <!-- СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (Управляется твоим роутером openScreen) -->
-        <div id="tryon_settings_block" style="display: none;">
             
-            <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 190px); box-sizing: border-box; display: flex; flex-direction: column;">
+        <!-- ЛЕНТА ВЕРХУШКИ С НАШЕЙ КРУГЛОЙ КНОПКОЙ НАЗАД (Добавили position: relative) -->
+            <div class="tabs-container" id="tryon_tabs" style="display: flex; align-items: center; padding: 5px 0; position: relative;">
+                <button class="back-tab-btn" onclick="handleTryOnBackClick()"></button> 
+                <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;"></div>   
+                <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%; position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 1; pointer-events: none;">Настройка примерки одежды</div>
+            </div>
+            
+            <!-- СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (Управляется твоим роутером openScreen) -->
+            <div id="tryon_settings_block" style="display: none;">
                 
-                <div style="font-size: 14px; font-weight: bold; margin-bottom: 12px; color: var(--tg-theme-text-color, #000); text-align: center;">📍 Как это работает (Пример):</div>
-                
-                <!-- Сетка шагов (Фото в полный рост -> Вещь -> Итог) -->
-                <div class="swap-steps-grid">
+                <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 190px); box-sizing: border-box; display: flex; flex-direction: column;">
                     
-                <!-- Шаг 1 -->
-                <div style="flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center; min-width: 0;">
-                    <div class="swap-template-card" style="width: 100%;">
-                        <img src="https://i.postimg.cc/8c2pqNq0/Vase-foto.jpg" alt="1. Ваше фото">
+                    <div style="font-size: 14px; font-weight: bold; margin-bottom: 12px; color: var(--tg-theme-text-color, #000); text-align: center;">📍 Как это работает (Пример):</div>
+                    
+                    <!-- Сетка шагов (Фото в полный рост -> Вещь -> Итог) -->
+                    <div class="swap-steps-grid" style="display: flex !important;">
+                        
+                        <!-- Шаг 1 -->
+                        <div style="flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center; min-width: 0;">
+                            <div class="swap-template-card" style="width: 100%;">
+                                <img src="https://i.postimg.cc/8c2pqNq0/Vase-foto.jpg" alt="1. Ваше фото">
+                            </div>
+                            <!-- Подпись строго под фото, белая -->
+                            <div style="font-size: 11px; font-weight: bold; color: #ffffff; margin-top: 8px; white-space: nowrap;">1. Исходное фото</div>
+                        </div>
+
+                        <!-- Шаг 2 -->
+                        <div style="flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center; min-width: 0;">
+                            <div class="swap-template-card" style="width: 100%;">
+                                <img src="https://i.postimg.cc/bwQrfSYs/Sablon-odezdy.png" alt="2. Фото вещи">
+                            </div>
+                            <!-- Подпись строго под фото, белая -->
+                            <div style="font-size: 11px; font-weight: bold; color: #ffffff; margin-top: 8px; white-space: nowrap;">2. Фото вещи</div>
+                        </div>
+
+                        <!-- Шаг 3 (Итог с оранжевой рамкой) -->
+                        <div style="flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center; min-width: 0;">
+                            <div class="swap-template-card" style="width: 100%;">
+                                <img src="https://i.postimg.cc/t7GbBDxL/itog-smeny-odezdy.jpg" alt="3. Итог">
+                            </div>
+                            <!-- Подпись строго под фото, белая -->
+                            <div style="font-size: 11px; font-weight: bold; color: #ffffff; margin-top: 8px; white-space: nowrap;">3. Итог 🔥</div>
+                        </div>
+
+                    </div> <!-- Закрылся swap-steps-grid -->
+
+                    <!-- ИНСТРУКЦИЯ (Увеличен отступ до 40px) -->
+                    <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
+                        <b style="color: #ffffff;">Шаг 1:</b> Настройте формат и качество кадра внизу.<br>
+                        <b style="color: #ffffff;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
+                        <b style="color: #ffffff;">Шаг 3:</b> Следуйте дальнейшим указаниям бота!
                     </div>
-                    <!-- Подпись строго под фото, белая -->
-                    <div style="font-size: 11px; font-weight: bold; color: #ffffff; margin-top: 8px; white-space: nowrap;">1. Исходное фотот</div>
-                </div>
+                    
+                    <!-- Наша лазерная линия-разделитель (Оранжевый неон) -->
+                    <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
 
-                <!-- Шаг 2 -->
-                <div style="flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center; min-width: 0;">
-                    <div class="swap-template-card" style="width: 100%;">
-                        <img src="https://i.postimg.cc/bwQrfSYs/Sablon-odezdy.png" alt="2. Фото вещи">
+                    <!-- Строка про итог (Белая и жирная) -->
+                    <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center;">
+                        <b>Итоговая цена зависит от выбранного качества и будет отображаться на кнопке START</b>
                     </div>
-                    <!-- Подпись строго под фото, белая -->
-                    <div style="font-size: 11px; font-weight: bold; color: #ffffff; margin-top: 8px; white-space: nowrap;">2. Фото вещи</div>
-                </div>
 
-                <!-- Шаг 3 (Итог с оранжевой рамкой) -->
-                <div style="flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center; min-width: 0;">
-                    <div class="swap-template-card" style="width: 100%;">
-                        <img src="https://i.postimg.cc/t7GbBDxL/itog-smeny-odezdy.jpg" alt="3. Итог">
+                </div> <!-- 🌟 Перенесли закрывающий тег для custom-prompt-container сюда -->
+
+                <!-- РЯД КНОПОК УПРАВЛЕНИЯ -->
+                <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px;">
+                    <div class="control-col">
+                        <button id="btn_tryon_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
                     </div>
-                    <!-- Подпись строго под фото, белая -->
-                    <div style="font-size: 11px; font-weight: bold; color: #ffffff; margin-top: 8px; white-space: nowrap;">3. Итог 🔥</div>
-                </div>
+                    <div class="control-col">
+                        <button id="btn_tryon_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">9:16</button>
+                    </div>
+                    <div class="control-col control-col-btn">
+                    <button id="neo_tryon_submit_btn" class="neo-start-btn" onclick="sendTryOnData()">Start 3 🪙</button>
+                    </div>
+                </div> <!-- Закрылся single-row-controls -->
 
-                </div>
-
-                <!-- ИНСТРУКЦИЯ (Увеличен отступ до 40px) -->
-                <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
-                    <b style="color: #ffffff;">Шаг 1:</b> Настройте формат и качество кадра внизу.<br>
-                    <b style="color: #ffffff;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
-                    <b style="color: #ffffff;">Шаг 3:</b> Следуйте дальнейшим указаниям бота!
-                </div>
-                <!-- Наша лазерная линия-разделитель (Оранжевый неон) -->
-                <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
-
-                <!-- Строка про итог (Белая и жирная) -->
-                <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center;">
-                    <b>Итоговая цена зависит от выбранного качества и будет отображаться на кнопке START</b>
-                </div>
-
-            </div>
-
-            <!-- РЯД КНОПОК УПРАВЛЕНИЯ (Возвращаем стандартные лаконичные ID под твою шторку) -->
-            <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px;">
-                <div class="control-col">
-                    <button id="btn_tryon_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
-                </div>
-                <div class="control-col">
-                    <button id="btn_tryon_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">9:16</button>
-                </div>
-                <div class="control-col control-col-btn">
-                   <button id="neo_tryon_submit_btn" class="neo-start-btn" onclick="sendTryOnData()">Start 3 🪙</button>
-                </div>
-            </div>
-
-        </div> <!-- Конец служебного блока -->
-    </div>
+            </div> <!-- Закрылся tryon_settings_block -->
+    </div> <!-- Закрылся экран tryon -->
 
 
     <!-- ========================================== -->
     <!-- ПОДРЕЖИМ 4: СМЕНА ФОНА                     -->
     <!-- ========================================== -->
     <div id="bg_change" class="screen">
-        
-        <!-- 🔥 ЛЕНТА ВЕРХУШКИ С НАШЕЙ КРУГЛОЙ КНОПКОЙ НАЗАД -->
-        <div class="tabs-container" id="bg_change_tabs" style="display: flex; align-items: center; padding: 5px 0; position: relative;">
-            <!-- Фиксированная круглая стрелка назад -->
-            <button class="back-tab-btn" onclick="openScreen('foto')"></button>
-            <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;"></div>
             
-            <!-- Заголовок теперь намертво привязан к шапке и встанет идеально по центру экрана -->
-            <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%; position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 1; pointer-events: none;">Настройка смены фона</div>
-        </div>
-
-        <!-- СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (Изначально полностью скрыт под логику твоего роутера) -->
-        <div id="bg_change_settings_block" style="display: none;">
-            <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 190px); box-sizing: border-box; display: flex; flex-direction: column;">
+            <!-- 🔥 ЛЕНТА ВЕРХУШКИ С НАШЕЙ КРУГЛОЙ КНОПКОЙ НАЗАД -->
+            <div class="tabs-container" id="bg_change_tabs" style="display: flex; align-items: center; padding: 5px 0; position: relative;">
+                <!-- Фиксированная круглая стрелка назад -->
+                <button class="back-tab-btn" onclick="openScreen('foto')"></button>
+                <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;"></div>
                 
-                <div style="font-size: 14px; font-weight: bold; margin-bottom: 12px; color: var(--tg-theme-text-color, #000); text-align: center;">📍 Как это работает (Пример):</div>
-
-                <!-- 🔥 ДОБАВИЛИ ЦЕНТРИРОВАНИЕ И УВЕЛИЧЕНИЕ ДЛЯ 2-Х КАРТОЧЕК -->
-                <div class="swap-steps-grid" style="display: flex !important; justify-content: center !important; gap: 12px !important; max-width: 480px; margin: 0 auto; width: 100%; box-sizing: border-box; padding: 0 10px;">
-                    
-                    <!-- Шаг 1 -->
-                    <div style="flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center;">
-                        <div class="phone-template-card" style="width: 100%;">
-                            <img src="https://i.postimg.cc/t7GbBDxL/itog-smeny-odezdy.jpg" alt="1. Исходное фото" style="width: 100%; display: block;">
-                        </div>
-                        <div style="font-size: 11px; font-weight: bold; color: #ffffff; margin-top: 8px; white-space: nowrap;">1. Исходное фото</div>
-                    </div>
-                    
-                    <!-- Шаг 2 (Здесь была красная рамка border - теперь её нет) -->
-                    <div style="flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center;">
-                        <div class="phone-template-card" style="width: 100%;">
-                            <img src="https://i.postimg.cc/x1j67KTC/5860519473268330113.jpg" alt="2. Результат" style="width: 100%; display: block;">
-                        </div>
-                       <div style="font-size: 11px; font-weight: bold; color: #ffffff; margin-top: 8px; white-space: nowrap;">2. Результат 🔥</div>
-                    </div>
-
-                </div>
-
-                <!-- ИНСТРУКЦИЯ (Увеличен отступ до 40px) -->
-                <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
-                    <b style="color: #ffffff;">Шаг 1:</b> Настройте формат и качество кадра внизу.<br>
-                    <b style="color: #ffffff;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
-                    <b style="color: #ffffff;">Шаг 3:</b> Следуйте дальнейшим указаниям бота!
-                </div>
-                <!-- Наша лазерная линия-разделитель (Оранжевый неон) -->
-                <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
-
-                <!-- Строка про итог (Белая и жирная) -->
-                <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center;">
-                    <b>Итоговая цена зависит от выбранного качества и будет отображаться на кнопке START</b>
-                </div>
-
+                <!-- Заголовок теперь намертво привязан к шапке и встанет идеально по центру экрана -->
+                <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%; position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 1; pointer-events: none;">Настройка смены фона</div>
             </div>
 
-            <!-- 🔥 ОБНОВЛЕННЫЙ РЯД КНОПОК: Формат убран, сетка автоматически подстроится -->
-            <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px;">
-                <div class="control-col">
-                    <button id="btn_bg_quality" class="capsule-btn">⚡ Standard</button>
-                </div>
-                <div class="control-col control-col-btn">
-                    <button id="neo_bg_submit_btn" class="neo-start-btn" onclick="sendBgChangeData()">Start 2 🪙</button>
-                </div>
-            </div>
-        </div> <!-- Конец служебного блока настроек -->
-    </div>
+            <!-- СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (Изначально полностью скрыт под логику твоего роутера) -->
+            <div id="bg_change_settings_block" style="display: none;">
+                
+                <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 190px); box-sizing: border-box; display: flex; flex-direction: column;">
+                    
+                    <div style="font-size: 14px; font-weight: bold; margin-bottom: 12px; color: var(--tg-theme-text-color, #000); text-align: center;">📍 Как это работает (Пример):</div>
+
+                    <!-- 🔥 ДОБАВИЛИ ЦЕНТРИРОВАНИЕ И УВЕЛИЧЕНИЕ ДЛЯ 2-Х КАРТОЧЕК -->
+                    <div class="swap-steps-grid" style="display: flex !important; justify-content: center !important; gap: 12px !important; max-width: 480px; margin: 0 auto; width: 100%; box-sizing: border-box; padding: 0 10px;">
+                        
+                        <!-- Шаг 1 -->
+                        <div style="flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                            <div class="phone-template-card" style="width: 100%;">
+                                <img src="https://i.postimg.cc/t7GbBDxL/itog-smeny-odezdy.jpg" alt="1. Исходное foto" style="width: 100%; display: block;">
+                            </div>
+                            <div style="font-size: 11px; font-weight: bold; color: #ffffff; margin-top: 8px; white-space: nowrap;">1. Исходное фото</div>
+                        </div>
+                        
+                        <!-- Шаг 2 (Здесь была красная рамка border - теперь её нет) -->
+                        <div style="flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                            <div class="phone-template-card" style="width: 100%;">
+                                <img src="https://i.postimg.cc/x1j67KTC/5860519473268330113.jpg" alt="2. Результат" style="width: 100%; display: block;">
+                            </div>
+                        <div style="font-size: 11px; font-weight: bold; color: #ffffff; margin-top: 8px; white-space: nowrap;">2. Результат 🔥</div>
+                        </div>
+
+                    </div> <!-- Закрылся swap-steps-grid -->
+
+                    <!-- ИНСТРУКЦИЯ (Увеличен отступ до 40px) -->
+                    <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
+                        <b style="color: #ffffff;">Шаг 1:</b> Настройте формат и качество кадра внизу.<br>
+                        <b style="color: #ffffff;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
+                        <b style="color: #ffffff;">Шаг 3:</b> Следуйте дальнейшим указаниям бота!
+                    </div>
+                    
+                    <!-- Наша лазерная линия-разделитель (Оранжевый неон) -->
+                    <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
+
+                    <!-- Строка про итог (Белая и жирная) -->
+                    <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center;">
+                        <b>Итоговая цена зависит от выбранного качества и будет отображаться на кнопке START</b>
+                    </div>
+
+                </div> <!-- 🌟 Перенесли закрывающий тег для custom-prompt-container сюда -->
+
+                <!-- 🔥 ОБНОВЛЕННЫЙ РЯД КНОПОК: Формат убран, сетка автоматически подстроится -->
+                <div class="single-row-controls" style="margin-top: 55px !important; margin-bottom: 15px;">
+                    <div class="control-col">
+                        <button id="btn_bg_quality" class="capsule-btn">⚡ Standard</button>
+                    </div>
+                    <div class="control-col control-col-btn">
+                        <button id="neo_bg_submit_btn" class="neo-start-btn" onclick="sendBgChangeData()">Start 2 🪙</button>
+                    </div>
+                </div> <!-- Закрылся single-row-controls -->
+                
+            </div> <!-- Закрылся bg_change_settings_block -->
+    </div> <!-- Закрылся экран bg_change -->
 
     <!-- ========================================== -->
     <!-- УНИВЕРСАЛЬНАЯ КАСТОМНАЯ ШТОРКА (HTML ПОДЛОЖКА) -->

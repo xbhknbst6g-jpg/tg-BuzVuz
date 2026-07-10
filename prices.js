@@ -566,13 +566,15 @@ function updateMotionSubmitButton() {
         startBtn2.innerHTML = `Start ${currentSoraPrice} 🪙`; 
     }
     
-// 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ РЕЖИМА 3: «Оживление по видео» (Motion Control) -> УМНОЖАЕТ ТАРИФ ИЗ БАЗЫ НА СЕКУНДЫ!
+    // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ РЕЖИМА 3: «Оживление по видео» (Motion Control)
     if (startBtn3) {
-        const ratePerSec = window.dbKlingPerSec.coins_per_sec; 
-        const totalPrice = ratePerSec * klingSeconds; // Умножаем ставку из базы на выбранное в шторке время
-        startBtn3.innerHTML = `Start ${totalPrice} 🪙`;
+        // Защита: берем цену из базы, если она готова, или ставим 2 по умолчанию
+        const ratePerSec = (window.dbKlingPerSec && window.dbKlingPerSec.coins_per_sec) ? window.dbKlingPerSec.coins_per_sec : 2; 
+        
+        // На кнопке теперь ВСЕГДА будет просто надпись Start без лишних цифр страховок
+        startBtn3.innerHTML = `Start 🪙`;
 
-        // 🔥 ДОБАВЛЕНО: Выводим тариф за одну секунду прямо в описание режима!
+        // Тариф за секунду всё равно передаем в текст описания, чтобы точки заменялись на цифру
         const rateTextEl = document.getElementById('motion_rate_per_sec');
         if (rateTextEl) {
             rateTextEl.innerText = ratePerSec;

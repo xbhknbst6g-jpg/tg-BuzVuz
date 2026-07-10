@@ -306,7 +306,7 @@
             <!-- НИЖНЯЯ ПЛАШКА С КНОПКАМИ -->
             <div class="single-row-controls" style="transform: translateY(225px);">
                 <div class="control-col control-col-btn" style="flex: 1.5;">
-                    <button id="neo_motion_submit_btn" class="neo-start-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendVideoGenData()">Start 7 🪙</button>
+                    <button id="neo_motion_submit_btn" class="neo-start-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendVideoGenData()">Start</button>
                 </div>
             </div>
         </div>
@@ -582,6 +582,7 @@ function submitFromModal() {
 function switchMotionTab(category, element) {
     if (!element) return;
 
+    // 1. СБРОС СТИЛЕЙ КНОПОК ВКЛАДОК
     const tabs = document.querySelectorAll('#video_motion_tabs .tab-btn');
     tabs.forEach(tab => {
         tab.classList.remove('active');
@@ -591,18 +592,25 @@ function switchMotionTab(category, element) {
         tab.style.setProperty('box-shadow', 'none', 'important');
     });
 
+    // 2. АКТИВАЦИЯ НАЖАТОЙ ВКЛАДКИ
     element.classList.add('active');
     element.style.setProperty('background', '#ff6600', 'important');
     element.style.setProperty('color', '#ffffff', 'important');
     element.style.setProperty('border', '2px solid #ff1e00', 'important');
     element.style.setProperty('box-shadow', '0 4px 12px rgba(255, 30, 0, 0.3)', 'important');
 
+    // 3. ПОЛУЧЕНИЕ ЭЛЕМЕНТОВ ИНТЕРФЕЙСА
     const gallery = document.getElementById('motion_gallery_block');
     const controlsBlock = document.getElementById('motion_controls_block');
     const customInstruction = document.getElementById('motion_custom_instruction');
     const presetPreviewBlock = document.getElementById('motion_preset_preview_block');
     const spacer = document.getElementById('motion_spacer');
+    
+    // Объявляем один раз, чтобы не было никаких задвоений
+    const controlsPanel = document.querySelector('#video_motion_control .single-row-controls');
+    const motionSubmitBtn = document.getElementById('neo_motion_submit_btn'); 
 
+    // 4. ЛОГИКА ПЕРЕКЛЮЧЕНИЯ РЕЖИМОВ
     if (category === 'custom') {
         currentGenerationMode = 'custom'; 
         isMotionStyleSelected = true;  
@@ -616,10 +624,11 @@ function switchMotionTab(category, element) {
         if (controlsBlock) controlsBlock.style.display = 'block';         
         if (customInstruction) customInstruction.style.display = 'block';   
         if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';  
-        
         if (spacer) spacer.style.display = 'none';   
         
-        const controlsPanel = document.querySelector('#video_motion_control .single-row-controls');
+        // Включаем кнопку только во вкладке "Свой"
+        if (motionSubmitBtn) motionSubmitBtn.style.display = 'block'; 
+
         if (controlsPanel) {
             controlsPanel.style.setProperty('margin-top', '35px', 'important');
         }
@@ -634,85 +643,15 @@ function switchMotionTab(category, element) {
         if (controlsBlock) controlsBlock.style.display = 'none';            
         if (spacer) spacer.style.display = 'none';     
         
-        const controlsPanel = document.querySelector('#video_motion_control .single-row-controls');
+        // Прячем кнопку наглухо, чтобы она не маячила в шаблонах
+        if (motionSubmitBtn) motionSubmitBtn.style.display = 'none'; 
+
         if (controlsPanel) {
             controlsPanel.style.setProperty('margin-top', '55px', 'important');
         }
     }
 }
 
-// ====================================================================================
-// ФУНКЦИЯ КЛИКА ПО КАРТОЧКЕ ВИДЕО-ШАБЛОНА (Теперь принимает реальную длительность)
-// ====================================================================================
-// 🔥 ТЕПЕРЬ ФУНКЦИЯ ПРИНИМАЕТ ТРИ ПАРАМЕТРА И ПЕРЕДАЕТ СЕКУНДЫ БОТУ!
-function switchMotionTab(category, element) {
-    if (!element) return;
-
-    // 1. СБРОС СТИЛЕЙ: Возвращаем обеим кнопкам красивую круглую форму капсулы (темную)
-    const tabs = document.querySelectorAll('#video_motion_tabs .tab-btn');
-    tabs.forEach(tab => {
-        tab.classList.remove('active');
-        tab.style.setProperty('background', '#111111', 'important');
-        tab.style.setProperty('color', 'rgba(255, 255, 255, 0.5)', 'important');
-        tab.style.setProperty('border', '2px solid rgba(255, 102, 0, 0.2)', 'important');
-        tab.style.setProperty('box-shadow', 'none', 'important');
-    });
-
-    // 2. ПОДСВЕТКА: Делаем нажатую вкладку оранжевой, как твоя родная капсула
-    element.classList.add('active');
-    element.style.setProperty('background', '#ff6600', 'important');
-    element.style.setProperty('color', '#ffffff', 'important');
-    element.style.setProperty('border', '2px solid #ff1e00', 'important');
-    element.style.setProperty('box-shadow', '0 4px 12px rgba(255, 30, 0, 0.3)', 'important');
-
-    // 3. НАХОДИМ БЛОКИ (Строго те, что есть в HTML!)
-    const gallery = document.getElementById('motion_gallery_block');
-    const controlsBlock = document.getElementById('motion_controls_block');
-    const customInstruction = document.getElementById('motion_custom_instruction');
-    const presetPreviewBlock = document.getElementById('motion_preset_preview_block');
-    const spacer = document.getElementById('motion_spacer');
-
-    // 4. ЧИСТАЯ ЛОГИКА ПЕРЕКЛЮЧЕНИЯ ЭКРАНОВ
-    if (category === 'custom') {
-        currentGenerationMode = 'custom'; 
-        isMotionStyleSelected = true;  
-        selectedMotionStyleName = "Свой референс";
-        selectedMotionVideoUrl = "";
-
-        const subtitle = document.getElementById('video_motion_subtitle');
-        if (subtitle) subtitle.style.display = 'none';
-
-        if (gallery) gallery.style.display = 'none';                  
-        if (controlsBlock) controlsBlock.style.display = 'block';         
-        if (customInstruction) customInstruction.style.display = 'block';   
-        if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';  
-        
-        // Наглухо выключаем пустую распорку, она нам больше не нужна
-        if (spacer) spacer.style.display = 'none';   
-        
-        // НАПРЯМУЮ МЕНЯЕМ ОТСТУП У КНОПОК: Поднимаем кнопку START повыше во вкладке "Свой"
-        const controlsPanel = document.querySelector('#video_motion_control .single-row-controls');
-        if (controlsPanel) {
-            controlsPanel.style.setProperty('margin-top', '35px', 'important');
-        }
-    } else {
-        currentGenerationMode = 'preset'; 
-        isMotionStyleSelected = false; 
-
-        const subtitle = document.getElementById('video_motion_subtitle');
-        if (subtitle) subtitle.style.display = 'block';
-
-        if (gallery) gallery.style.display = 'grid';                  
-        if (controlsBlock) controlsBlock.style.display = 'none';            
-        if (spacer) spacer.style.display = 'none';     
-        
-        // ВОЗВРАЩАЕМ СТАНДАРТНЫЙ ОТСТУП ДЛЯ ШАБЛОНОВ
-        const controlsPanel = document.querySelector('#video_motion_control .single-row-controls');
-        if (controlsPanel) {
-            controlsPanel.style.setProperty('margin-top', '55px', 'important');
-        }
-    }
-}
 
 // ====================================================================================
 // функцию в JS

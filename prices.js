@@ -572,7 +572,7 @@ function updateMotionSubmitButton() {
         const ratePerSec = (window.dbKlingPerSec && window.dbKlingPerSec.coins_per_sec) ? window.dbKlingPerSec.coins_per_sec : 2; 
         
         // На кнопке теперь ВСЕГДА будет просто надпись Start без лишних цифр страховок
-        startBtn3.innerHTML = `Start 🪙`;
+        startBtn3.innerHTML = `Start`;
 
         // Тариф за секунду всё равно передаем в текст описания, чтобы точки заменялись на цифру
         const rateTextEl = document.getElementById('motion_rate_per_sec');

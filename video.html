@@ -705,11 +705,22 @@ function handleMotionBackClick() {
     const activeTabButton = document.querySelector('#video_motion_tabs .tab-btn.active');
     const isCustomTab = activeTabButton && activeTabButton.innerText.trim().toUpperCase() === 'СВОЙ';
 
-    // 1. Если мы на вкладке "Свой" — сразу выходим в главное меню
+    // Сразу находим кнопку старта, чтобы убрать её при любом выходе в главное меню
+    const motionSubmitBtn = document.getElementById('neo_motion_submit_btn');
+
+    // 1. Если мы на вкладке "Свой" — сбрасываем всё и выходим в главное меню
     if (isCustomTab) {
         isMotionStyleSelected = false;
         selectedMotionStyleName = "";
+        
+        // Прячем блоки вкладки "Свой", чтобы при следующем заходе они не конфликтовали
         if (controlsBlock) controlsBlock.style.display = "none";
+        const customInstruction = document.getElementById('motion_custom_instruction');
+        if (customInstruction) customInstruction.style.display = "none";
+
+        // ГАРАНТИРОВАННО убираем залипшую кнопку старта при выходе в меню
+        if (motionSubmitBtn) motionSubmitBtn.style.display = "none";
+
         openScreen('video_menu'); 
         return; 
     }
@@ -734,9 +745,14 @@ function handleMotionBackClick() {
             document.getElementById('motion_preset_preview_block').style.display = "none";
         }
         
+        // На всякий случай прячем кнопку старта и здесь, так как мы вернулись к сетке карточек
+        if (motionSubmitBtn) motionSubmitBtn.style.display = "none";
+
         gallery.style.display = 'grid';
     } else {
-        // 3. Если мы в самом корне вкладки — уходим в меню видеостудии
+        // 3. Если мы в самом корне вкладки шаблонов — уходим в меню видеостудии
+        if (motionSubmitBtn) motionSubmitBtn.style.display = "none"; // Прячем кнопку перед выходом
+
         if (typeof openScreen === 'function') {
             openScreen('video_menu'); 
         } else {
@@ -916,6 +932,10 @@ function openScreen(screenName) {
         if (document.getElementById('video_nosound_settings_block')) document.getElementById('video_nosound_settings_block').style.display = "none";
         if (document.getElementById('video_sound_settings_block')) document.getElementById('video_sound_settings_block').style.display = "none";
         if (document.getElementById('video_motion_settings_block')) document.getElementById('video_motion_settings_block').style.display = "none";
+        
+        // Гарантированно прячем кнопку старта, если пользователь вышел в меню кнопкой назад
+        const motionSubmitBtn = document.getElementById('neo_motion_submit_btn');
+        if (motionSubmitBtn) motionSubmitBtn.style.display = "none";
     }
 
     // На всякий случай скрываем дефолтную нижнюю кнопку Телеграма (если она где-то всплывала)
@@ -949,6 +969,17 @@ function openScreen(screenName) {
         if (screenName === 'video_motion_control') {
             const motionSettings = document.getElementById('video_motion_settings_block');
             if (motionSettings) motionSettings.style.display = "block";
+
+            // 🔥 ДОБАВЛЕНО: Принудительный авто-вызов функции switchMotionTab при открытии экрана
+            // Ищем, какая вкладка сейчас подсвечена (Свой или Шаблоны)
+            const activeTabButton = document.querySelector('#video_motion_tabs .tab-btn.active') || document.querySelector('#video_motion_tabs .tab-btn');
+            if (activeTabButton) {
+                const category = activeTabButton.innerText.trim().toUpperCase() === 'СВОЙ' ? 'custom' : 'preset';
+                // Пинаем функцию, чтобы она мгновенно отрисовала все блоки и кнопку старта!
+                if (typeof switchMotionTab === 'function') {
+                    switchMotionTab(category, activeTabButton);
+                }
+            }
         }
     }
     

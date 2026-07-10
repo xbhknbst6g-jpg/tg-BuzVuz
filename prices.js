@@ -294,11 +294,11 @@ function openUniversalRatioSheet() {
     titleEl.innerText = "СООТНОШЕНИЕ СТОРОН";
     
     listEl.innerHTML = `
-        <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('9:16')"><span style="width: 100%; text-align: center;">9:16</span></button></li>
-        <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('3:4')"><span style="width: 100%; text-align: center;">3:4</span></button></li>
-        <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('1:1')"><span style="width: 100%; text-align: center;">1:1</span></button></li>
-        <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('4:3')"><span style="width: 400%; text-align: center;">4:3</span></button></li>
-        <li><button class="custom-sheet-item" onclick="selectRatioFromSheet('16:9')"><span style="width: 100%; text-align: center;">16:9</span></button></li>
+        <li><button class="custom-sheet-item" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('9:16')"><span style="width: 100%; text-align: center;">9:16</span></button></li>
+        <li><button class="custom-sheet-item" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('3:4')"><span style="width: 100%; text-align: center;">3:4</span></button></li>
+        <li><button class="custom-sheet-item" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('1:1')"><span style="width: 100%; text-align: center;">1:1</span></button></li>
+        <li><button class="custom-sheet-item" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('4:3')"><span style="width: 100%; text-align: center;">4:3</span></button></li>
+        <li><button class="custom-sheet-item" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('16:9')"><span style="width: 100%; text-align: center;">16:9</span></button></li>
     `;
 
     document.getElementById('custom_action_sheet').classList.add('active');

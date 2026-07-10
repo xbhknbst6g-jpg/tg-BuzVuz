@@ -248,7 +248,7 @@
             </div>
         </div>
             
-        <!-- 🔥 ИСПРАВЛЕНО: Убрали класс tabs-container, который ломал геометрию окна на ПК. Теперь структура чистая! -->
+        <!-- Контейнер вкладок -->
         <div id="video_motion_tabs" style="display: flex !important; gap: 10px !important; margin-bottom: 15px !important; padding: 0 10px;">
             <button class="tab-btn capsule-btn active" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); switchMotionTab('preset', this)" style="flex: 1 !important; margin: 0 !important; font-size: 13px !important; text-transform: uppercase;">Шаблоны</button>
             <button class="tab-btn capsule-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); switchMotionTab('custom', this)" style="flex: 1 !important; margin: 0 !important; font-size: 13px !important; text-transform: uppercase; background: #111111 !important; color: rgba(255,255,255,0.5) !important; border: 2px solid rgba(255, 102, 0, 0.2) !important; box-shadow: none !important;">Свой</button>
@@ -258,27 +258,23 @@
             <p id="video_motion_subtitle" style="font-size: 13px; margin: 4px 0 0 0; color: rgba(255,255,255,0.6);">Выберите готовый шаблон для настройки:</p>
         </div>
 
-        <!-- ШАГ 1: ГАЛЕРЕЯ АККУРАТНЫХ КАРТОЧКЕК -->
+        <!-- ШАГ 1: ГАЛЕРЕЯ КАРТОЧЕК -->
         <div class="phone-presets-grid" id="motion_gallery_block" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 10px; margin-bottom: 15px;">
-            
             <!-- Карточка 1 -->
             <div class="phone-template-card" onclick="selectMotionTemplate('Outside the city', 'https://i.imgur.com/2mcdE9J.mp4', 5)" style="position: relative; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15); background: #000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer;">
                 <video src="https://i.imgur.com/2mcdE9J.mp4" style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay preload="auto"></video>          
                 <div class="card-overlay" style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 8px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: #fff; font-size: 11px; font-weight: bold; text-align: center;">Outside the city</div>
             </div>
-
             <!-- Карточка 2 -->
-             <div class="phone-template-card" onclick="selectMotionTemplate('The Dark Soul', 'https://i.imgur.com/h6370oz.mp4', 5)" style="position: relative; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15); background: #000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer;">
+            <div class="phone-template-card" onclick="selectMotionTemplate('The Dark Soul', 'https://i.imgur.com/h6370oz.mp4', 5)" style="position: relative; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.15); background: #000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); cursor: pointer;">
                 <video src="https://i.imgur.com/h6370oz.mp4" style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay preload="auto"></video>          
                 <div class="card-overlay" style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 8px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: #fff; font-size: 11px; font-weight: bold; text-align: center;">Outside the city</div>
             </div>
-
         </div>
 
-        <!-- ШАГ 2: БЛОК НАСТРОЕК (Твой оригинальный скрытый блок) -->
+        <!-- ШАГ 2: БЛОК НАСТРОЕК -->
         <div id="motion_controls_block" style="display: none; width: 100%;">
-            
-            <!-- 1. ИНСТРУКЦИЯ ДЛЯ ВКЛАДКИ "СВОЙ" -->
+            <!-- ИНСТРУКЦИЯ ДЛЯ ВКЛАДКИ "СВОЙ" -->
             <div id="motion_custom_instruction" class="custom-prompt-container" style="display: none; margin-bottom: 15px; padding: 10px 8px;">
                 <div style="font-size: 13px; color: rgba(255, 255, 255, 0.6); line-height: 1.5;">
                     <b style="color: #ffffff;">Шаг 1:</b> Подготовьте фотографию для оживления и пример (видеоролик), с которого ИИ скопирует движения для фото.<br>
@@ -287,15 +283,15 @@
                 </div>
             </div>
 
-            <!-- Твой фирменный оранжевый разделитель -->
+            <!-- Оранжевый разделитель -->
             <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
 
-            <div style="font-size: 15px; line-height: 1.5; padding: 0 5px; text-align: center; margin-bottom: 60px !important;">
+            <div style="font-size: 13px; line-height: 1.5; padding: 0 10px; text-align: center; margin-bottom: 25px; color: rgba(255, 255, 255, 0.8);">
                 <b>Честная посекундная оплата. Точная стоимость генерации зависит от длительности загруженного вами видео шаблона и отобразится перед запуском в боте, так же вам будет представлен выбор начать или отменить генерацию</b>
             </div>
 
-            <!-- 2. КОНТЕЙНЕР ДЛЯ ПРЕВЬЮ ШАБЛОНОВ -->
-            <div id="motion_preset_preview_block" style="display: none; justify-content: center; margin-bottom: 15px;">
+            <!-- КОНТЕЙНЕР ДЛЯ ПРЕВЬЮ ШАБЛОНОВ -->
+            <div id="motion_preset_preview_block" style="display: none; justify-content: center; margin-bottom: 25px;">
                 <div class="text-image-compact-preview" style="width: 45%; max-width: 150px; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; background: #000;">
                     <video id="motion_large_preview_video" style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay>
                         <source src="" type="video/mp4">
@@ -303,15 +299,15 @@
                 </div>
             </div>
 
-            <!-- НИЖНЯЯ ПЛАШКА С КНОПКАМИ -->
-            <div class="single-row-controls" style="transform: translateY(225px);">
+            <!-- 🔥 ИСПРАВЛЕНО: Кнопка жестко привязана к низу без костыльного translateY -->
+            <div class="single-row-controls" style="padding: 0 10px; margin-top: 25px;">
                 <div class="control-col control-col-btn" style="flex: 1.5;">
                     <button id="neo_motion_submit_btn" class="neo-start-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendVideoGenData()">Start</button>
                 </div>
             </div>
         </div>
 
-    </div> <!-- Намертво закрыли экран -->
+    </div>
     
 
 <!-- ========================================== -->
@@ -606,7 +602,6 @@ function switchMotionTab(category, element) {
     const presetPreviewBlock = document.getElementById('motion_preset_preview_block');
     const spacer = document.getElementById('motion_spacer');
     
-    // Объявляем один раз, чтобы не было никаких задвоений
     const controlsPanel = document.querySelector('#video_motion_control .single-row-controls');
     const motionSubmitBtn = document.getElementById('neo_motion_submit_btn'); 
 
@@ -626,11 +621,12 @@ function switchMotionTab(category, element) {
         if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';  
         if (spacer) spacer.style.display = 'none';   
         
-        // Включаем кнопку только во вкладке "Свой"
+        // Включаем кнопку и саму панель во вкладке "Свой"
         if (motionSubmitBtn) motionSubmitBtn.style.display = 'block'; 
-
         if (controlsPanel) {
-            controlsPanel.style.setProperty('margin-top', '35px', 'important');
+            controlsPanel.style.display = 'block';
+            // Этим отступом регулируйте положение кнопки во вкладке "Свой"
+            controlsPanel.style.setProperty('margin-top', '35px', 'important'); 
         }
     } else {
         currentGenerationMode = 'preset'; 
@@ -643,11 +639,10 @@ function switchMotionTab(category, element) {
         if (controlsBlock) controlsBlock.style.display = 'none';            
         if (spacer) spacer.style.display = 'none';     
         
-        // Прячем кнопку наглухо, чтобы она не маячила в шаблонах
+        // Полностью прячем кнопку и панель на вкладке шаблонов, чтобы они не залипали
         if (motionSubmitBtn) motionSubmitBtn.style.display = 'none'; 
-
         if (controlsPanel) {
-            controlsPanel.style.setProperty('margin-top', '55px', 'important');
+            controlsPanel.style.display = 'none';
         }
     }
 }

@@ -356,54 +356,48 @@ function selectQualityFromSheet(id, text) {
 
 // 4. УЛЬТРА-УНИВЕРСАЛЬНЫЙ ОБРАБОТЧИК ФОРМАТА ДЛЯ ВСЕХ РЕЖИМОВ
 function selectRatioFromSheet(id) {
-    // Собираем список ID кнопок формата ИЗ ВСЕХ твоих режимов
     const ratioButtonIds = [
         'btn_text_ratio',      // Фото (Свой/Шаблоны) и Рисование 1
-        'btn_direct_ratio',    // Рисование 2 (image_generation_direct)
-        'btn_direct_ratio_2',  // Резервный для прямого режима
-        'btn_swap_ratio',      // Лицо / Face Swap
-        'btn_tryon_ratio',     // Одежда / Примерка
-        'btn_bg_ratio'         // Смена фона (если кнопка формата называется так же, как и качество)
+        'btn_direct_ratio',    // Рисование 2
+        'btn_direct_ratio_2',  
+        'btn_swap_ratio',      // Face Swap
+        'btn_tryon_ratio',     // Примерка одежды
+        'btn_bg_ratio'         // Смена фона
     ];
 
     let updated = false;
 
-    // Циклом проходим по всем кнопкам и ищем ту, которая сейчас РЕАЛЬНО видна на экране
     for (let i = 0; i < ratioButtonIds.length; i++) {
         const el = document.getElementById(ratioButtonIds[i]);
         
-        // Если кнопка существует в HTML и она видна пользователю (offsetParent !== null)
         if (el && el.offsetParent !== null) {
-            el.innerHTML = id; // Меняем текст на ней (например, на 9:16)
+            el.innerHTML = id; 
             updated = true;
             
-            // Сохраняем выбор в нужную глобальную переменную в зависимости от режима
             if (ratioButtonIds[i] === 'btn_text_ratio') {
                 selectedTextRatio = id;
             } else {
-                directGenRatio = id; // Для Свапа, Примерки, Фона и Рисования 2 записываем в общую переменную
+                directGenRatio = id; 
             }
-            break; // Нашли активную кнопку, выходим из цикла
+            break; 
         }
     }
 
-    // Если ни одна кнопка не видна на экране, но в HTML есть btn_direct_ratio (как запасной вариант)
     if (!updated) {
         const fallbackEl = document.getElementById('btn_direct_ratio_2') || document.getElementById('btn_direct_ratio');
         if (fallbackEl) fallbackEl.innerHTML = id;
         directGenRatio = id;
     }
 
-    // 🔥 БЕЗОПАСНОЕ ОБНОВЛЕНИЕ ЦЕНЫ НА КНОПКЕ START
+    // 🔥 ВЫЗЫВАЕМ ОБЕ ФУНКЦИИ ОБНОВЛЕНИЯ ЦЕН (Для Рисования и для Фотостудии)
     try {
-        if (typeof updateNeoStartButtonText === "function") {
-            updateNeoStartButtonText();
-        }
-    } catch (e) {
-        console.error("Ошибка при обновлении цены на кнопке Старт:", e);
-    }
+        if (typeof updateNeoStartButtonText === "function") updateNeoStartButtonText();
+    } catch (e) { console.error(e); }
+
+    try {
+        if (typeof updateFotoSubmitButtons === "function") updateFotoSubmitButtons();
+    } catch (e) { console.error(e); }
     
-    // Закрываем шторку (это сработает железно при любых условиях, клики не зависнут)
     closeCustomSheet();
 }
 
@@ -707,22 +701,6 @@ function updateFotoSubmitButtons() {
         }
         if (document.getElementById("quality-flux-ultra")) {
             document.getElementById("quality-flux-ultra").innerText = (pricesObj.coins_max || 4) * currentFaces;
-        }
-         // 🔥 НАПОЛНЯЕМ КНОПКУ СТАРТ ТЕКСТОМ И ЦЕНОЙ, ЧТОБЫ ОНА ОЖИЛА!
-        if (btnText && pricesObj) {
-            let basePrice = pricesObj.coins_min || 2; // По умолчанию Стандарт
-            
-            if (photoTextQuality === 'dev') {
-                basePrice = pricesObj.coins_mid || 3; // Pro / Dev
-            } else if (photoTextQuality === 'ultra_4k') {
-                basePrice = pricesObj.coins_max || 4; // Ultra / 4K
-            }
-            
-            // Умножаем на количество людей
-            let finalPrice = basePrice * currentFaces;
-            
-            // Записываем текст на кнопку
-            btnText.innerHTML = `Start ${finalPrice} 🪙`;
         }
     }
 

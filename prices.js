@@ -354,39 +354,48 @@ function selectQualityFromSheet(id, text) {
     closeCustomSheet();
 }
 
-// 4. УМНЫЙ ОБРАБОТЧИК ФОРМАТА (БЕЗОПАСНАЯ СИНХРОНИЗАЦИЯ)
+// 4. УМНЫЙ ОБРАБОТЧИК ФОРМАТА
 function selectRatioFromSheet(id) {
-    try {
-        // Ищем саму плашку формата на экране Фото
-        const textRatioEl = document.getElementById('btn_text_ratio');
-        
-        // Проверяем, видна ли она сейчас пользователю
-        const isTextImageActive = textRatioEl && textRatioEl.offsetParent !== null;
+    const btnText = document.getElementById('btn-start-flux-dev');
+    const isTextImageActive = btnText && btnText.offsetParent !== null;
 
-        if (isTextImageActive) {
-            selectedTextRatio = id;
-            textRatioEl.innerHTML = id;
-        } else {
-            directGenRatio = id;
-            const el = document.getElementById('btn_direct_ratio_2') || document.getElementById('btn_direct_ratio');
-            if (el) el.innerHTML = id;
-        }
-    } catch (e) {
-        console.error("Ошибка при смене формата в шторке:", e);
-    }
-
-    // 🔥 ОБЕРТКА В TRY-CATCH: если расчет цены упадет из-за ID кнопок, 
-    // шторка ВСЁ РАВНО закроется и выбор зафиксируется!
-    try {
-        if (typeof updateNeoStartButtonText === "function") {
-            updateNeoStartButtonText();
-        }
-    } catch (e) {
-        console.error("Ошибка при обновлении цены на кнопке Старт:", e);
+    if (isTextImageActive) {
+        selectedTextRatio = id;
+        const el = document.getElementById('btn_text_ratio');
+        if (el) el.innerHTML = id;
+    } else {
+        directGenRatio = id;
+        const el = document.getElementById('btn_direct_ratio_2') || document.getElementById('btn_direct_ratio');
+        if (el) el.innerHTML = id;
     }
     
-    // Этот код выполнится в любом случае, клики не заблокируются
+    updateNeoStartButtonText();
     closeCustomSheet();
+}
+
+// Функции принудительной синхронизации формата для капсул кадра на основном экране
+function setTextRatio(ratio) { 
+    selectedTextRatio = ratio; 
+    const el = document.getElementById('btn_text_ratio');
+    if (el) el.innerHTML = ratio;
+    
+    // 🔥 ДОБАВЛЕНО: Пересчитываем цену на кнопке "Start" при смене формата
+    if (typeof updateNeoStartButtonText === "function") updateNeoStartButtonText();
+}
+
+function setDirectRatio(ratio) { 
+    directGenRatio = ratio; 
+    const el = document.getElementById('btn_direct_ratio_2') || document.getElementById('btn_direct_ratio');
+    if (el) el.innerHTML = ratio;
+    
+    // 🔥 ДОБАВЛЕНО: Пересчитываем цену на кнопке "Start" при смене формата
+    if (typeof updateNeoStartButtonText === "function") updateNeoStartButtonText();
+}
+
+// Функция закрытия шторки (остается без изменений)
+function closeCustomSheet() {
+    const sheet = document.getElementById('custom_action_sheet');
+    if (sheet) sheet.classList.remove('active');
 }
 
 

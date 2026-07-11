@@ -354,22 +354,56 @@ function selectQualityFromSheet(id, text) {
     closeCustomSheet();
 }
 
-// 4. УМНЫЙ ОБРАБОТЧИК ФОРМАТА
+// 4. УЛЬТРА-УНИВЕРСАЛЬНЫЙ ОБРАБОТЧИК ФОРМАТА ДЛЯ ВСЕХ РЕЖИМОВ
 function selectRatioFromSheet(id) {
-    const btnText = document.getElementById('btn-start-flux-dev');
-    const isTextImageActive = btnText && btnText.offsetParent !== null;
+    // Собираем список ID кнопок формата ИЗ ВСЕХ твоих режимов
+    const ratioButtonIds = [
+        'btn_text_ratio',      // Фото (Свой/Шаблоны) и Рисование 1
+        'btn_direct_ratio',    // Рисование 2 (image_generation_direct)
+        'btn_direct_ratio_2',  // Резервный для прямого режима
+        'btn_swap_ratio',      // Лицо / Face Swap
+        'btn_tryon_ratio',     // Одежда / Примерка
+        'btn_bg_ratio'         // Смена фона (если кнопка формата называется так же, как и качество)
+    ];
 
-    if (isTextImageActive) {
-        selectedTextRatio = id;
-        const el = document.getElementById('btn_text_ratio');
-        if (el) el.innerHTML = id;
-    } else {
+    let updated = false;
+
+    // Циклом проходим по всем кнопкам и ищем ту, которая сейчас РЕАЛЬНО видна на экране
+    for (let i = 0; i < ratioButtonIds.length; i++) {
+        const el = document.getElementById(ratioButtonIds[i]);
+        
+        // Если кнопка существует в HTML и она видна пользователю (offsetParent !== null)
+        if (el && el.offsetParent !== null) {
+            el.innerHTML = id; // Меняем текст на ней (например, на 9:16)
+            updated = true;
+            
+            // Сохраняем выбор в нужную глобальную переменную в зависимости от режима
+            if (ratioButtonIds[i] === 'btn_text_ratio') {
+                selectedTextRatio = id;
+            } else {
+                directGenRatio = id; // Для Свапа, Примерки, Фона и Рисования 2 записываем в общую переменную
+            }
+            break; // Нашли активную кнопку, выходим из цикла
+        }
+    }
+
+    // Если ни одна кнопка не видна на экране, но в HTML есть btn_direct_ratio (как запасной вариант)
+    if (!updated) {
+        const fallbackEl = document.getElementById('btn_direct_ratio_2') || document.getElementById('btn_direct_ratio');
+        if (fallbackEl) fallbackEl.innerHTML = id;
         directGenRatio = id;
-        const el = document.getElementById('btn_direct_ratio_2') || document.getElementById('btn_direct_ratio');
-        if (el) el.innerHTML = id;
+    }
+
+    // 🔥 БЕЗОПАСНОЕ ОБНОВЛЕНИЕ ЦЕНЫ НА КНОПКЕ START
+    try {
+        if (typeof updateNeoStartButtonText === "function") {
+            updateNeoStartButtonText();
+        }
+    } catch (e) {
+        console.error("Ошибка при обновлении цены на кнопке Старт:", e);
     }
     
-    updateNeoStartButtonText();
+    // Закрываем шторку (это сработает железно при любых условиях, клики не зависнут)
     closeCustomSheet();
 }
 

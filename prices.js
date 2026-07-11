@@ -174,7 +174,8 @@ window.addEventListener("DOMContentLoaded", syncPricesFromDatabase);
 // 7. УМНЫЙ ОБНОВЛЯТОР СТОИМОСТИ НА ВСТРОЕННЫХ КНОПКАХ (ТЕПЕРЬ ТУТ!)
 // ====================================================================================
 function updateNeoStartButtonText() {
-    const btnText = document.getElementById('btn-start-flux-dev');
+    // 🔥 Исправлено: ищем либо старую кнопку, либо твою новую неоновую кнопку СТАРТ для Фотостудии
+    const btnText = document.getElementById('btn-start-flux-dev') || document.getElementById('neo_text_submit_btn');
     const btnDirect = document.getElementById('btn-start-banana-paint_2') || document.getElementById('btn-start-banana-paint');
     
     // Считываем количество кликнутых людей (1, 2 или 3)
@@ -206,11 +207,11 @@ function updateNeoStartButtonText() {
         // 🔥 ВАЖНО: Умножаем базовую стоимость на количество выбранных персонажей!
         let finalFluxPrice = basePrice * currentFaces;
         
-        // Меняем текст на твоей реальной кнопке
+        // Меняем текст на твоей реальной кнопке (автоматически применится и к neo_text_submit_btn)
         btnText.innerHTML = `Start ${finalFluxPrice} 🪙`;
     }
     
-    // ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ УМНОГО ФОКУСА
+    // ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ УМНОГО ФОКУСА (Режим Рисование)
     if (btnDirect) {
         let finalBananaPrice = window.dbBananaPaintPrices[bananaPriceKey] || window.dbBananaPaintPrices.coins_min;
         
@@ -285,7 +286,7 @@ function openUniversalQualitySheet(serviceName) {
     document.getElementById('custom_action_sheet').classList.add('active');
 }
 
-// 2. ОТКРЫТИЕ ШТОРКИ ФОРМАТА (ИСПРАВЛЕНО КОНФЛИКТ КАВЫЧЕК)
+// 2. ОТКРЫТИЕ ШТОРКИ ФОРМАТА (ОСТАВЛЯЕМ БЕЗ ИЗМЕНЕНИЙ)
 function openUniversalRatioSheet() {
     const titleEl = document.getElementById('custom_sheet_title');
     const listEl = document.getElementById('custom_sheet_list');
@@ -293,13 +294,12 @@ function openUniversalRatioSheet() {
 
     titleEl.innerText = "СООТНОШЕНИЕ СТОРОН";
     
-    // 🔥 Используем косые кавычки `...` снаружи и обычные внутри, чтобы JS не спотыкался
     listEl.innerHTML = `
-        <li><button class="custom-sheet-item" onclick="if(window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('9:16')"><span style="width: 100%; text-align: center;">9:16</span></button></li>
-        <li><button class="custom-sheet-item" onclick="if(window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('3:4')"><span style="width: 100%; text-align: center;">3:4</span></button></li>
-        <li><button class="custom-sheet-item" onclick="if(window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('1:1')"><span style="width: 100%; text-align: center;">1:1</span></button></li>
-        <li><button class="custom-sheet-item" onclick="if(window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('4:3')"><span style="width: 100%; text-align: center;">4:3</span></button></li>
-        <li><button class="custom-sheet-item" onclick="if(window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('16:9')"><span style="width: 100%; text-align: center;">16:9</span></button></li>
+        <li><button class="custom-sheet-item" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('9:16')"><span style="width: 100%; text-align: center;">9:16</span></button></li>
+        <li><button class="custom-sheet-item" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('3:4')"><span style="width: 100%; text-align: center;">3:4</span></button></li>
+        <li><button class="custom-sheet-item" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('1:1')"><span style="width: 100%; text-align: center;">1:1</span></button></li>
+        <li><button class="custom-sheet-item" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('4:3')"><span style="width: 100%; text-align: center;">4:3</span></button></li>
+        <li><button class="custom-sheet-item" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('16:9')"><span style="width: 100%; text-align: center;">16:9</span></button></li>
     `;
 
     document.getElementById('custom_action_sheet').classList.add('active');

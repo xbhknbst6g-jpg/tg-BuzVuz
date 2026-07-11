@@ -747,45 +747,64 @@ function switchGlobalAiModel(modelMode, element) {
 // 3. УМНАЯ ФУНКЦИЯ ВОЗВРАТА НАЗАД К ГАЛЕРЕЕ КАРТОЧЕК
 // ====================================================================================
         
-        function handleTextBackClick() {
-            const gallery = document.getElementById('text_image_gallery');
-            const settingsBlock = document.getElementById('text_image_settings_block');
-            const instructionText = document.getElementById('custom_instruction_text');
-            const presetPreviewBlock = document.getElementById('preset_preview_block');
+function handleTextBackClick() {
+    // 🔥 ДОБАВЛЯЕМ: Легкий виброотклик для кнопки "Назад" (для отзывчивости интерфейса)
+    if (window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) {
+        Telegram.WebApp.HapticFeedback.impactOccurred('light');
+    }
 
-            // 1. Проверяем, горит ли сейчас оранжевым вкладка "Свой"
-            const activeTabButton = document.querySelector('#text_image_tabs .tab-btn.active');
-            const isCustomTab = activeTabButton && activeTabButton.innerText === 'Свой';
+    const gallery = document.getElementById('text_image_gallery');
+    const settingsBlock = document.getElementById('text_image_settings_block');
+    const instructionText = document.getElementById('custom_instruction_text');
+    const presetPreviewBlock = document.getElementById('preset_preview_block');
 
-            // 🔥 Если мы находимся во вкладке "Свой" — СРАЗУ с первого клика улетаем в меню
-            if (isCustomTab) {
-                isTextImageStyleSelected = false;
-                selectedStyleName = "";
-                if (settingsBlock) settingsBlock.style.display = "none";
-                openScreen('foto'); // Твой переход на главную страницу студии
-                return; // Останавливаем выполнение функции, чтобы код ниже не срабатывал
-            }
+    // 1. Проверяем, горит ли сейчас вкладка "Свой"
+    const activeTabButton = document.querySelector('#text_image_tabs .tab-btn.active');
+    
+    // Безопасная проверка: смотрим на текст кнопки или на переданный атрибут, если он есть
+    const isCustomTab = activeTabButton && (activeTabButton.innerText === 'Свой' || currentGenerationMode === 'custom');
 
-            // 2. Обычная логика возврата для готовых шаблонов (Муж, Жен, Дети, Все)
-            if (isTextImageStyleSelected) {
-                isTextImageStyleSelected = false;
-                selectedStyleName = "";
+    // 🔥 Если мы находимся во вкладке "Свой" — СРАЗУ с первого клика сбрасываем всё и улетаем в меню
+    if (isCustomTab) {
+        isTextImageStyleSelected = false;
+        currentGenerationMode = 'preset'; // Сбрасываем режим на стандартный
+        selectedStyleName = "";
 
-                document.getElementById('text_image_title').innerText = "Шаблоны для генераций Вашего Фото";
-                document.getElementById('text_image_subtitle').innerText = "В режиме умный фокус изображение реалистичное как на шаблоне, в режиме цыфровая оптика более художественный стиль фото";
-
-                if (settingsBlock) settingsBlock.style.display = "none"; 
-                if (presetPreviewBlock) presetPreviewBlock.style.display = "none";
-                if (instructionText) instructionText.style.display = "none";
-                
-                if (gallery) gallery.style.display = "grid"; // Возвращаем сетку картинок
-
-                if (tg && tg.MainButton) tg.MainButton.hide();
-            } else {
-                // Если мы и так просто смотрели галерею шаблонов — уходим в меню
-                openScreen('foto');
-            }
+        // Принудительно переставляем подсветку табов на вкладку "Все", чтобы при следующем входе интерфейс был чистым
+        const allTabButton = document.querySelector('#text_image_tabs .tab-btn') || document.querySelector('#text_image_tabs .tab-btn[onclick*="all"]');
+        if (allTabButton) {
+            // Эмулируем клик или ручной вызов переключения на "all", чтобы сбросить заголовки и видимость блоков
+            switchTextTab('all', allTabButton);
         }
+
+        if (settingsBlock) settingsBlock.style.display = "none";
+        if (instructionText) instructionText.style.display = "none";
+        if (gallery) gallery.style.display = "grid"; // Заранее включаем галерею для следующего открытия
+
+        openScreen('foto'); // Твой переход на главную страницу студии
+        return; // Останавливаем выполнение функции, чтобы код ниже не срабатывал
+    }
+
+    // 2. Обычная логика возврата для готовых шаблонов (Муж, Жен, Дети, Все)
+    if (isTextImageStyleSelected) {
+        isTextImageStyleSelected = false;
+        selectedStyleName = "";
+
+        document.getElementById('text_image_title').innerText = "Шаблоны для генераций Вашего Фото";
+        document.getElementById('text_image_subtitle').innerText = "В режиме умный фокус изображение реалистичное как на шаблоне, в режиме цыфровая оптика более художественный стиль фото";
+
+        if (settingsBlock) settingsBlock.style.display = "none"; 
+        if (presetPreviewBlock) presetPreviewBlock.style.display = "none";
+        if (instructionText) instructionText.style.display = "none";
+        
+        if (gallery) gallery.style.display = "grid"; // Возвращаем сетку картинок
+
+        if (window.tg && tg.MainButton) tg.MainButton.hide();
+    } else {
+        // Если мы и так просто смотрели галерею шаблонов — уходим в меню
+        openScreen('foto');
+    }
+}
 
 // ====================================================================================
 // 4. Старт WebApp, автоматическое разворачивание шторки и привязка кнопок

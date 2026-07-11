@@ -1022,7 +1022,13 @@ function sendPhotoTextData() {
         let facesCountToSend = parseInt(window.selectedStyleFacesCount) || 1;
         
         let ratio = (typeof selectedTextRatio !== 'undefined') ? selectedTextRatio : '9:16';
-        let quality = (typeof selectedTextQuality !== 'undefined') ? selectedTextQuality : 'schnell';
+        let quality = 'standard';
+        const textProtoBtn = document.getElementById('btn_text_quality');
+        if (textProtoBtn) {
+            const txt = textProtoBtn.innerText.toLowerCase();
+            if (txt.includes('pro') || txt.includes('mid') || txt.includes('dev')) quality = 'dev';
+            if (txt.includes('ultra') || txt.includes('max') || txt.includes('4k')) quality = 'ultra_4k';
+        }
 
         let promptToSend = "";
         let styleTitleToSend = "custom";

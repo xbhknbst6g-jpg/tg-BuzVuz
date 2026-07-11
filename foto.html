@@ -409,13 +409,14 @@
 
                 </div> <!-- 🌟 Перенесли закрывающий тег для custom-prompt-container сюда -->
 
-                <!-- Убрали лишние классы, подняли блок с помощью margin-top: 15px -->
-                <div class="single-row-controls" style="margin-top: 15px !important; margin-bottom: 35px;">
-                    <div class="control-col">
-                        <button id="btn_bg_quality" class="capsule-btn">⚡ Standard</button>
+                <div class="single-row-controls" style="margin-top: 15px !important; margin-bottom: 35px; display: flex !important; justify-content: space-between !important; gap: 10px !important; width: 100% !important; box-sizing: border-box !important;">
+                    <!-- Левая колонка (Качество) — жестко задаем 50% ширины -->
+                    <div class="control-col" style="flex: 1 !important; width: 50% !important; min-width: 0 !important; max-width: 50% !important;">
+                        <button id="btn_bg_quality" class="capsule-btn" style="width: 100% !important; box-sizing: border-box !important;">⚡ Standard</button>
                     </div>
-                    <div class="control-col control-col-btn">
-                        <button id="neo_bg_submit_btn" class="neo-start-btn" onclick="sendBgChangeData()">Start 2 🪙</button>
+                    
+                    <div class="control-col" style="flex: 1 !important; width: 50% !important; min-width: 0 !important; max-width: 50% !important;">
+                        <button id="neo_bg_submit_btn" class="neo-start-btn" onclick="sendBgChangeData()" style="width: 100% !important; box-sizing: border-box !important; margin: 0 !important;">Start 2 🪙</button>
                     </div>
                 </div>
                 

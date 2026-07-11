@@ -174,8 +174,7 @@ window.addEventListener("DOMContentLoaded", syncPricesFromDatabase);
 // 7. УМНЫЙ ОБНОВЛЯТОР СТОИМОСТИ НА ВСТРОЕННЫХ КНОПКАХ (ТЕПЕРЬ ТУТ!)
 // ====================================================================================
 function updateNeoStartButtonText() {
-    // 🔥 Исправлено: ищем либо старую кнопку, либо твою новую неоновую кнопку СТАРТ для Фотостудии
-    const btnText = document.getElementById('btn-start-flux-dev') || document.getElementById('neo_text_submit_btn');
+    const btnText = document.getElementById('btn-start-flux-dev');
     const btnDirect = document.getElementById('btn-start-banana-paint_2') || document.getElementById('btn-start-banana-paint');
     
     // Считываем количество кликнутых людей (1, 2 или 3)
@@ -207,11 +206,11 @@ function updateNeoStartButtonText() {
         // 🔥 ВАЖНО: Умножаем базовую стоимость на количество выбранных персонажей!
         let finalFluxPrice = basePrice * currentFaces;
         
-        // Меняем текст на твоей реальной кнопке (автоматически применится и к neo_text_submit_btn)
+        // Меняем текст на твоей реальной кнопке
         btnText.innerHTML = `Start ${finalFluxPrice} 🪙`;
     }
     
-    // ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ УМНОГО ФОКУСА (Режим Рисование)
+    // ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ УМНОГО ФОКУСА
     if (btnDirect) {
         let finalBananaPrice = window.dbBananaPaintPrices[bananaPriceKey] || window.dbBananaPaintPrices.coins_min;
         
@@ -355,48 +354,33 @@ function selectQualityFromSheet(id, text) {
     closeCustomSheet();
 }
 
-// 4. УМНЫЙ ОБРАБОТЧИК ФОРМАТА
+// 4. УМНЫЙ ОБРАБОТЧИК ФОРМАТА (ИСПРАВЛЕННЫЙ)
 function selectRatioFromSheet(id) {
-    const btnText = document.getElementById('btn-start-flux-dev');
-    const isTextImageActive = btnText && btnText.offsetParent !== null;
+    // Проверяем, активен ли режим текстовой генерации ("Свой" или шаблоны)
+    // Мы смотрим на твою глобальную переменную currentGenerationMode
+    // Или проверяем, виден ли сам экран text_image
+    const textImageScreen = document.getElementById('text_image');
+    const isTextImageActive = (typeof currentGenerationMode !== 'undefined' && currentGenerationMode === 'custom') || 
+                              (textImageScreen && textImageScreen.offsetParent !== null);
 
     if (isTextImageActive) {
+        // Если мы в режиме Фото ("Свой" / Шаблоны)
         selectedTextRatio = id;
         const el = document.getElementById('btn_text_ratio');
         if (el) el.innerHTML = id;
     } else {
+        // Если мы в любом другом режиме (Рисование и т.д.)
         directGenRatio = id;
         const el = document.getElementById('btn_direct_ratio_2') || document.getElementById('btn_direct_ratio');
         if (el) el.innerHTML = id;
     }
     
-    updateNeoStartButtonText();
+    // Безопасно обновляем текст кнопки "Start", если функция существует
+    if (typeof updateNeoStartButtonText === "function") {
+        updateNeoStartButtonText();
+    }
+    
     closeCustomSheet();
-}
-
-// Функции принудительной синхронизации формата для капсул кадра на основном экране
-function setTextRatio(ratio) { 
-    selectedTextRatio = ratio; 
-    const el = document.getElementById('btn_text_ratio');
-    if (el) el.innerHTML = ratio;
-    
-    // 🔥 ДОБАВЛЕНО: Пересчитываем цену на кнопке "Start" при смене формата
-    if (typeof updateNeoStartButtonText === "function") updateNeoStartButtonText();
-}
-
-function setDirectRatio(ratio) { 
-    directGenRatio = ratio; 
-    const el = document.getElementById('btn_direct_ratio_2') || document.getElementById('btn_direct_ratio');
-    if (el) el.innerHTML = ratio;
-    
-    // 🔥 ДОБАВЛЕНО: Пересчитываем цену на кнопке "Start" при смене формата
-    if (typeof updateNeoStartButtonText === "function") updateNeoStartButtonText();
-}
-
-// Функция закрытия шторки (остается без изменений)
-function closeCustomSheet() {
-    const sheet = document.getElementById('custom_action_sheet');
-    if (sheet) sheet.classList.remove('active');
 }
 
 

@@ -168,9 +168,6 @@
 
             <!-- 🔥 ВЕРНУЛИ СТАНДАРТНУЮ ВЫСОТУ: Обычные вкладки больше не будут перекрываться кнопоками! 🔥 -->
             <div class="mode-spacer" style="height: calc(100vh - 470px); display: none;" id="text_image_spacer"></div>
-
-        </div> <!-- Закрылся text_image_settings_block -->
-
             <!-- Добавили transform: translateY(-10px); в конец стиля -->
             <div id="bottom_action_controls" class="single-row-controls" style="margin-top: 15px !important; margin-bottom: 25px !important; transform: translateY(5px);">
                 <div class="control-col">
@@ -605,7 +602,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // ====================================================================================
         
 function switchTextTab(category, element) {
-    // 🔥 ДОБАВЛЯЕМ: Легкий виброотклик при переключении категорий (Муж/Жен/Свой)
+    // 🔥 ЛЕГКИЙ ВИБРООТКЛИК ПРИ ПЕРЕКЛЮЧЕНИИ КАТЕГОРИЙ
     if (window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) {
         Telegram.WebApp.HapticFeedback.impactOccurred('light');
     }
@@ -629,15 +626,15 @@ function switchTextTab(category, element) {
         document.getElementById('text_image_subtitle').innerText = "Настройте параметры вашей персональной генерации:";
 
         gallery.style.display = 'none';            
-        settingsBlock.style.display = 'block';      
+        settingsBlock.style.display = 'block'; // Включает блок настроек И нижние кнопки вместе с ним!     
         if (presetPreviewBlock) presetPreviewBlock.style.display = 'none'; 
-        if (instructionText) instructionText.style.display = 'block';      
+        
+        // Исправлено с 'block' на 'flex', чтобы сохранить вашу оригинальную верстку инструкции
+        if (instructionText) instructionText.style.display = 'flex';      
         
         if (facesRow) facesRow.style.display = 'block';
 
-        // 🔥 ИСПРАВЛЕНО: Проверяем, было ли уже выбрано число лиц (например, 2 или 3)
-        // Если переменная пустая — ставим 1 по умолчанию, подсвечивая первую кнопку.
-        // Если там уже лежало число — повторно активируем именно его, чтобы ничего не сбрасывалось!
+        // Восстановление выбранного количества лиц
         let savedFaces = window.selectedStyleFacesCount || 1;
         selectFacesCount(savedFaces, document.getElementById(`btn_faces_${savedFaces}`)); 
 
@@ -650,7 +647,7 @@ function switchTextTab(category, element) {
         document.getElementById('text_image_subtitle').innerText = "В режиме умный фокус изображение реалистичное как на шаблоне, в режиме цыфровая оптика более художественный стиль фото";
 
         gallery.style.display = 'grid';            
-        settingsBlock.style.display = 'none';      
+        settingsBlock.style.display = 'none'; // Полностью скрывает блок настроек вместе с кнопками качества и кнопкой Start!     
         if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';
         if (instructionText) instructionText.style.display = 'none';
         

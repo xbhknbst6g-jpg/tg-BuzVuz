@@ -354,32 +354,38 @@ function selectQualityFromSheet(id, text) {
     closeCustomSheet();
 }
 
-// 4. УМНЫЙ ОБРАБОТЧИК ФОРМАТА (ИСПРАВЛЕННЫЙ)
+// 4. УМНЫЙ ОБРАБОТЧИК ФОРМАТА (БЕЗОПАСНАЯ СИНХРОНИЗАЦИЯ)
 function selectRatioFromSheet(id) {
-    // Проверяем, активен ли режим текстовой генерации ("Свой" или шаблоны)
-    // Мы смотрим на твою глобальную переменную currentGenerationMode
-    // Или проверяем, виден ли сам экран text_image
-    const textImageScreen = document.getElementById('text_image');
-    const isTextImageActive = (typeof currentGenerationMode !== 'undefined' && currentGenerationMode === 'custom') || 
-                              (textImageScreen && textImageScreen.offsetParent !== null);
+    try {
+        // Ищем саму плашку формата на экране Фото
+        const textRatioEl = document.getElementById('btn_text_ratio');
+        
+        // Проверяем, видна ли она сейчас пользователю
+        const isTextImageActive = textRatioEl && textRatioEl.offsetParent !== null;
 
-    if (isTextImageActive) {
-        // Если мы в режиме Фото ("Свой" / Шаблоны)
-        selectedTextRatio = id;
-        const el = document.getElementById('btn_text_ratio');
-        if (el) el.innerHTML = id;
-    } else {
-        // Если мы в любом другом режиме (Рисование и т.д.)
-        directGenRatio = id;
-        const el = document.getElementById('btn_direct_ratio_2') || document.getElementById('btn_direct_ratio');
-        if (el) el.innerHTML = id;
+        if (isTextImageActive) {
+            selectedTextRatio = id;
+            textRatioEl.innerHTML = id;
+        } else {
+            directGenRatio = id;
+            const el = document.getElementById('btn_direct_ratio_2') || document.getElementById('btn_direct_ratio');
+            if (el) el.innerHTML = id;
+        }
+    } catch (e) {
+        console.error("Ошибка при смене формата в шторке:", e);
+    }
+
+    // 🔥 ОБЕРТКА В TRY-CATCH: если расчет цены упадет из-за ID кнопок, 
+    // шторка ВСЁ РАВНО закроется и выбор зафиксируется!
+    try {
+        if (typeof updateNeoStartButtonText === "function") {
+            updateNeoStartButtonText();
+        }
+    } catch (e) {
+        console.error("Ошибка при обновлении цены на кнопке Старт:", e);
     }
     
-    // Безопасно обновляем текст кнопки "Start", если функция существует
-    if (typeof updateNeoStartButtonText === "function") {
-        updateNeoStartButtonText();
-    }
-    
+    // Этот код выполнится в любом случае, клики не заблокируются
     closeCustomSheet();
 }
 

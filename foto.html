@@ -747,64 +747,45 @@ function switchGlobalAiModel(modelMode, element) {
 // 3. УМНАЯ ФУНКЦИЯ ВОЗВРАТА НАЗАД К ГАЛЕРЕЕ КАРТОЧЕК
 // ====================================================================================
         
-function handleTextBackClick() {
-    // 🔥 ДОБАВЛЯЕМ: Легкий виброотклик для кнопки "Назад" (для отзывчивости интерфейса)
-    if (window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) {
-        Telegram.WebApp.HapticFeedback.impactOccurred('light');
-    }
+        function handleTextBackClick() {
+            const gallery = document.getElementById('text_image_gallery');
+            const settingsBlock = document.getElementById('text_image_settings_block');
+            const instructionText = document.getElementById('custom_instruction_text');
+            const presetPreviewBlock = document.getElementById('preset_preview_block');
 
-    const gallery = document.getElementById('text_image_gallery');
-    const settingsBlock = document.getElementById('text_image_settings_block');
-    const instructionText = document.getElementById('custom_instruction_text');
-    const presetPreviewBlock = document.getElementById('preset_preview_block');
+            // 1. Проверяем, горит ли сейчас оранжевым вкладка "Свой"
+            const activeTabButton = document.querySelector('#text_image_tabs .tab-btn.active');
+            const isCustomTab = activeTabButton && activeTabButton.innerText === 'Свой';
 
-    // 1. Проверяем, горит ли сейчас вкладка "Свой"
-    const activeTabButton = document.querySelector('#text_image_tabs .tab-btn.active');
-    
-    // Безопасная проверка: смотрим на текст кнопки или на переданный атрибут, если он есть
-    const isCustomTab = activeTabButton && (activeTabButton.innerText === 'Свой' || currentGenerationMode === 'custom');
+            // 🔥 Если мы находимся во вкладке "Свой" — СРАЗУ с первого клика улетаем в меню
+            if (isCustomTab) {
+                isTextImageStyleSelected = false;
+                selectedStyleName = "";
+                if (settingsBlock) settingsBlock.style.display = "none";
+                openScreen('foto'); // Твой переход на главную страницу студии
+                return; // Останавливаем выполнение функции, чтобы код ниже не срабатывал
+            }
 
-    // 🔥 Если мы находимся во вкладке "Свой" — СРАЗУ с первого клика сбрасываем всё и улетаем в меню
-    if (isCustomTab) {
-        isTextImageStyleSelected = false;
-        currentGenerationMode = 'preset'; // Сбрасываем режим на стандартный
-        selectedStyleName = "";
+            // 2. Обычная логика возврата для готовых шаблонов (Муж, Жен, Дети, Все)
+            if (isTextImageStyleSelected) {
+                isTextImageStyleSelected = false;
+                selectedStyleName = "";
 
-        // Принудительно переставляем подсветку табов на вкладку "Все", чтобы при следующем входе интерфейс был чистым
-        const allTabButton = document.querySelector('#text_image_tabs .tab-btn') || document.querySelector('#text_image_tabs .tab-btn[onclick*="all"]');
-        if (allTabButton) {
-            // Эмулируем клик или ручной вызов переключения на "all", чтобы сбросить заголовки и видимость блоков
-            switchTextTab('all', allTabButton);
+                document.getElementById('text_image_title').innerText = "Шаблоны для генераций Вашего Фото";
+                document.getElementById('text_image_subtitle').innerText = "В режиме умный фокус изображение реалистичное как на шаблоне, в режиме цыфровая оптика более художественный стиль фото";
+
+                if (settingsBlock) settingsBlock.style.display = "none"; 
+                if (presetPreviewBlock) presetPreviewBlock.style.display = "none";
+                if (instructionText) instructionText.style.display = "none";
+                
+                if (gallery) gallery.style.display = "grid"; // Возвращаем сетку картинок
+
+                if (tg && tg.MainButton) tg.MainButton.hide();
+            } else {
+                // Если мы и так просто смотрели галерею шаблонов — уходим в меню
+                openScreen('foto');
+            }
         }
-
-        if (settingsBlock) settingsBlock.style.display = "none";
-        if (instructionText) instructionText.style.display = "none";
-        if (gallery) gallery.style.display = "grid"; // Заранее включаем галерею для следующего открытия
-
-        openScreen('foto'); // Твой переход на главную страницу студии
-        return; // Останавливаем выполнение функции, чтобы код ниже не срабатывал
-    }
-
-    // 2. Обычная логика возврата для готовых шаблонов (Муж, Жен, Дети, Все)
-    if (isTextImageStyleSelected) {
-        isTextImageStyleSelected = false;
-        selectedStyleName = "";
-
-        document.getElementById('text_image_title').innerText = "Шаблоны для генераций Вашего Фото";
-        document.getElementById('text_image_subtitle').innerText = "В режиме умный фокус изображение реалистичное как на шаблоне, в режиме цыфровая оптика более художественный стиль фото";
-
-        if (settingsBlock) settingsBlock.style.display = "none"; 
-        if (presetPreviewBlock) presetPreviewBlock.style.display = "none";
-        if (instructionText) instructionText.style.display = "none";
-        
-        if (gallery) gallery.style.display = "grid"; // Возвращаем сетку картинок
-
-        if (window.tg && tg.MainButton) tg.MainButton.hide();
-    } else {
-        // Если мы и так просто смотрели галерею шаблонов — уходим в меню
-        openScreen('foto');
-    }
-}
 
 // ====================================================================================
 // 4. Старт WebApp, автоматическое разворачивание шторки и привязка кнопок
@@ -1012,30 +993,24 @@ function sendToTelegram(payload) {
         window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
     }
 }
+
 function sendPhotoTextData() { 
     try {
         let isCustomText = (typeof currentGenerationMode !== 'undefined' && currentGenerationMode === 'custom');
         let currentModel = (typeof selectedAiModelEngine !== 'undefined') ? selectedAiModelEngine : 'banana';
         
-        // Берем цифру из window, которую сохраняет selectFacesCount
+        // 🔥 МЕГА-НАДЕЖНО: Берем цифру из window, которую сохраняет selectFacesCount при клике на кнопки!
         let facesCountToSend = parseInt(window.selectedStyleFacesCount) || 1;
         
         let ratio = (typeof selectedTextRatio !== 'undefined') ? selectedTextRatio : '9:16';
-        
-        // Считываем качество прямо с кнопки
-        let quality = 'standard';
-        const textProtoBtn = document.getElementById('btn_text_quality');
-        if (textProtoBtn) {
-            const txt = textProtoBtn.innerText.toLowerCase();
-            if (txt.includes('pro') || txt.includes('mid') || txt.includes('dev')) quality = 'dev';
-            if (txt.includes('ultra') || txt.includes('max') || txt.includes('4k')) quality = 'ultra_4k';
-        }
+        let quality = (typeof selectedTextQuality !== 'undefined') ? selectedTextQuality : 'schnell';
 
         let promptToSend = "";
         let styleTitleToSend = "custom";
 
         if (!isCustomText) {
             styleTitleToSend = window.selectedStyleName || "none";
+            
             if (currentModel === 'pulid') {
                 promptToSend = window.selectedStylePromptPulid || window.selectedStylePrompt || "";
             } else {
@@ -1047,33 +1022,39 @@ function sendPhotoTextData() {
             promptToSend = customInput ? customInput.value : "";
         }
 
-        // Динамически меняем триггер в зависимости от выбранной модели в Фотоэффектах
+        // 🔥 НАША МАГИЯ: Динамически меняем триггер в зависимости от выбранной модели в Фотоэффектах
         let finalTrigger = 'photo_banana_edit';
         if (currentModel === 'pulid') {
             finalTrigger = 'photo_flux_pulid';
         }
         
-        console.log("[WebApp] Сборка пакета ФОТО через шлюз системы. Отправляем лиц:", facesCountToSend, "Триггер:", finalTrigger);
+        console.log("[WebApp] Сборка пакета ФОТО. Отправляем лиц:", facesCountToSend, "Триггер:", finalTrigger);
 
-        // 🔥 ИСПРАВЛЕНО: Теперь отправляем строго через твою рабочую функцию sendToTelegram!
-        sendToTelegram({ 
-            mode_trigger: finalTrigger,
-            aspect_ratio: ratio, 
-            quality: quality,
-            ai_model_engine: currentModel,         
-            is_custom_text_mode: isCustomText,     
-            faces_count: facesCountToSend, 
-            style_title: styleTitleToSend,
-            prompt_text: promptToSend          
-        });
+        // ШЛЕМ JSON НАПРЯМУЮ в Телеграм
+        if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.sendData === 'function') {
+            window.Telegram.WebApp.sendData(JSON.stringify({ 
+                mode_trigger: finalTrigger, // 🔥 ИСПРАВЛЕНО: Вместо 'text_image' шлем уникальный триггер!
+                aspect_ratio: ratio, 
+                quality: quality,
+                ai_model_engine: currentModel,         
+                is_custom_text_mode: isCustomText,     
+                faces_count: facesCountToSend, 
+                style_title: styleTitleToSend,
+                prompt_text: promptToSend          
+            })); 
+            
+            window.Telegram.WebApp.close();
+        } else {
+            // Резервный вариант для браузера
+            const botUsername = "ChatGPT_BuzVuz_bot"; 
+            let isCustomStr = isCustomText ? '1' : '0';
+            let rawParam = `mode_${currentModel}_q_${quality}_r_${ratio.replace(':', '-')}_f_${facesCountToSend}_c_${isCustomStr}_s_${styleTitleToSend}`;
+            window.location.href = `https://t.me/${botUsername}?start=${encodeURIComponent(rawParam)}`;
+        }
 
     } catch (err) {
         console.error("Критический сбой внутри функции sendPhotoTextData:", err);
-        if (window.Telegram && Telegram.WebApp) {
-            Telegram.WebApp.close();
-        } else {
-            window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
-        }
+        window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
     }
 }
 

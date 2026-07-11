@@ -708,6 +708,22 @@ function updateFotoSubmitButtons() {
         if (document.getElementById("quality-flux-ultra")) {
             document.getElementById("quality-flux-ultra").innerText = (pricesObj.coins_max || 4) * currentFaces;
         }
+         // 🔥 НАПОЛНЯЕМ КНОПКУ СТАРТ ТЕКСТОМ И ЦЕНОЙ, ЧТОБЫ ОНА ОЖИЛА!
+        if (btnText && pricesObj) {
+            let basePrice = pricesObj.coins_min || 2; // По умолчанию Стандарт
+            
+            if (photoTextQuality === 'dev') {
+                basePrice = pricesObj.coins_mid || 3; // Pro / Dev
+            } else if (photoTextQuality === 'ultra_4k') {
+                basePrice = pricesObj.coins_max || 4; // Ultra / 4K
+            }
+            
+            // Умножаем на количество людей
+            let finalPrice = basePrice * currentFaces;
+            
+            // Записываем текст на кнопку
+            btnText.innerHTML = `Start ${finalPrice} 🪙`;
+        }
     }
 
     // 🔮 РАСЧЕТ ЦЕНЫ ДЛЯ БОЛЬШОЙ КНОПКИ «START»

@@ -171,7 +171,7 @@
             <!-- Добавили transform: translateY(-10px); в конец стиля -->
             <div id="bottom_action_controls" class="single-row-controls" style="margin-top: 15px !important; margin-bottom: 25px !important; transform: translateY(5px);">
                 <div class="control-col">
-                    <button id="btn_text_quality" class="capsule-btn" onclick="openUniversalQualitySheet(selectedAiModelEngine === 'pulid' ? 'flux_pulid' : 'nano_banana_edit')">⚡ Standard</button>
+                    <button id="btn_text_quality" class="capsule-btn" onclick="openUniversalQualitySheet(selectedAiModelEngine === 'pulid' ? 'flux_pulid' : 'nano_banana_edit')">⚡ Standard (1k)</button>
                 </div>
                 <div class="control-col">
                     <button id="btn_text_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">9:16</button>
@@ -256,7 +256,7 @@
             <!-- 🔥 УВЕЛИЧИЛИ ОТСТУП МЕЖДУ ТЕКСТОМ И КНОПКАМИ ДО 55px -->
             <div class="single-row-controls" style="margin-top: 15px !important; margin-bottom: 35px; display: flex !important; justify-content: space-between !important; gap: 10px !important; width: 100% !important; box-sizing: border-box !important;">
                 <div class="control-col" style="flex: 1 !important; width: 50% !important; min-width: 0 !important; max-width: 50% !important;">
-                    <button id="btn_swap_quality" class="capsule-btn" onclick="openUniversalQualitySheet()" style="width: 100% !important; box-sizing: border-box !important;">⚡ Standard</button>
+                    <button id="btn_swap_quality" class="capsule-btn" onclick="openUniversalQualitySheet()" style="width: 100% !important; box-sizing: border-box !important;">⚡ Standard (1k)</button>
                 </div>
                 
                 <div class="control-col" style="flex: 1 !important; width: 50% !important; min-width: 0 !important; max-width: 50% !important;">
@@ -339,7 +339,7 @@
                 <!-- РЯД КНОПОК УПРАВЛЕНИЯ -->
                 <div class="single-row-controls" style="margin-top: 15px !important; margin-bottom: 35px; display: flex !important; justify-content: space-between !important; gap: 10px !important; width: 100% !important; box-sizing: border-box !important;">
                     <div class="control-col" style="flex: 1 !important; width: 50% !important; min-width: 0 !important; max-width: 50% !important;">
-                        <button id="btn_tryon_quality" class="capsule-btn" onclick="openUniversalQualitySheet()" style="width: 100% !important; box-sizing: border-box !important;">⚡ Standard</button>
+                        <button id="btn_tryon_quality" class="capsule-btn" onclick="openUniversalQualitySheet()" style="width: 100% !important; box-sizing: border-box !important;">⚡ Standard (1k)</button>
                     </div>
                     
                     <div class="control-col" style="flex: 1 !important; width: 50% !important; min-width: 0 !important; max-width: 50% !important;">
@@ -414,7 +414,7 @@
                 <div class="single-row-controls" style="margin-top: 15px !important; margin-bottom: 35px; display: flex !important; justify-content: space-between !important; gap: 10px !important; width: 100% !important; box-sizing: border-box !important;">
                     <!-- Левая колонка (Качество) — жестко задаем 50% ширины -->
                     <div class="control-col" style="flex: 1 !important; width: 50% !important; min-width: 0 !important; max-width: 50% !important;">
-                        <button id="btn_bg_quality" class="capsule-btn" style="width: 100% !important; box-sizing: border-box !important;">⚡ Standard</button>
+                        <button id="btn_bg_quality" class="capsule-btn" style="width: 100% !important; box-sizing: border-box !important;">⚡ Standard (1k)</button>
                     </div>
                     
                     <div class="control-col" style="flex: 1 !important; width: 50% !important; min-width: 0 !important; max-width: 50% !important;">
@@ -534,7 +534,7 @@ function selectTextImageStyle(styleName, imageUrl, facesCount = 1, promptText = 
 
     selectedTextQuality = 'schnell';
     selectedTextRatio = '9:16';
-    document.getElementById('btn_text_quality').innerHTML = `⚡ Standard`;
+    document.getElementById('btn_text_quality').innerHTML = `⚡ Standard (1k)`;
     document.getElementById('btn_text_ratio').innerHTML = `9:16`;
 
     if (typeof updateNeoStartButtonText === 'function') updateNeoStartButtonText();

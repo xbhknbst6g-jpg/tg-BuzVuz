@@ -285,7 +285,7 @@ function openUniversalQualitySheet(serviceName) {
     document.getElementById('custom_action_sheet').classList.add('active');
 }
 
-// 2. ОТКРЫТИЕ ШТОРКИ ФОРМАТА (ОСТАВЛЯЕМ БЕЗ ИЗМЕНЕНИЙ)
+// 2. ОТКРЫТИЕ ШТОРКИ ФОРМАТА (ИСПРАВЛЕНО КОНФЛИКТ КАВЫЧЕК)
 function openUniversalRatioSheet() {
     const titleEl = document.getElementById('custom_sheet_title');
     const listEl = document.getElementById('custom_sheet_list');
@@ -293,12 +293,13 @@ function openUniversalRatioSheet() {
 
     titleEl.innerText = "СООТНОШЕНИЕ СТОРОН";
     
+    // 🔥 Используем косые кавычки `...` снаружи и обычные внутри, чтобы JS не спотыкался
     listEl.innerHTML = `
-        <li><button class="custom-sheet-item" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('9:16')"><span style="width: 100%; text-align: center;">9:16</span></button></li>
-        <li><button class="custom-sheet-item" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('3:4')"><span style="width: 100%; text-align: center;">3:4</span></button></li>
-        <li><button class="custom-sheet-item" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('1:1')"><span style="width: 100%; text-align: center;">1:1</span></button></li>
-        <li><button class="custom-sheet-item" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('4:3')"><span style="width: 100%; text-align: center;">4:3</span></button></li>
-        <li><button class="custom-sheet-item" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('16:9')"><span style="width: 100%; text-align: center;">16:9</span></button></li>
+        <li><button class="custom-sheet-item" onclick="if(window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('9:16')"><span style="width: 100%; text-align: center;">9:16</span></button></li>
+        <li><button class="custom-sheet-item" onclick="if(window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('3:4')"><span style="width: 100%; text-align: center;">3:4</span></button></li>
+        <li><button class="custom-sheet-item" onclick="if(window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('1:1')"><span style="width: 100%; text-align: center;">1:1</span></button></li>
+        <li><button class="custom-sheet-item" onclick="if(window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('4:3')"><span style="width: 100%; text-align: center;">4:3</span></button></li>
+        <li><button class="custom-sheet-item" onclick="if(window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('16:9')"><span style="width: 100%; text-align: center;">16:9</span></button></li>
     `;
 
     document.getElementById('custom_action_sheet').classList.add('active');

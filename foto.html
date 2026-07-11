@@ -258,9 +258,6 @@
                 <div class="control-col">
                     <button id="btn_swap_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
                 </div>
-                <!-- <div class="control-col">
-                    <button id="btn_swap_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">9:16</button>
-                </div> -->
                 <div class="control-col control-col-btn">
                     <button id="neo_swap_submit_btn" class="neo-start-btn" onclick="sendCustomFaceSwapData()">Start 3 🪙</button>
                 </div>
@@ -342,9 +339,6 @@
                 <div class="single-row-controls" style="margin-top: 15px !important; margin-bottom: 35px;">
                     <div class="control-col">
                         <button id="btn_tryon_quality" class="capsule-btn" onclick="openUniversalQualitySheet()">⚡ Standard</button>
-                    </div>
-                    <div class="control-col">
-                        <button id="btn_tryon_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">9:16</button>
                     </div>
                     <div class="control-col control-col-btn">
                     <button id="neo_tryon_submit_btn" class="neo-start-btn" onclick="sendTryOnData()">Start 3 🪙</button>
@@ -1068,7 +1062,6 @@ function sendCustomFaceSwapData() {
     sendToTelegram({ 
         mode_trigger: 'face_swap', 
         is_custom_template: true, 
-        aspect_ratio: ratio, 
         quality: quality 
     }); 
 }
@@ -1082,7 +1075,6 @@ function sendTryOnData() {
     sendToTelegram({ 
         mode_trigger: 'tryon', 
         sub_mode: tryonMode, // 🔥 Отправит 'face_swap_mode' или 'clothes_swap_mode'
-        aspect_ratio: ratio, 
         quality: quality 
     }); 
 }

@@ -1120,22 +1120,37 @@ if (motionPlayOverlay) {
         }
     }
 
-// 🔊 2. Отправка для Режима 2: Оживление со звуком (ОБНОВЛЕННАЯ СЕКУНДАМИ)
+// 🔊 2. Отправка для Режима 2: Оживление со звуком (БЕЗ ПОВТОРНЫХ РАСЧЕТОВ)
 function sendVideoSoundGenData() {
     if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
     
-    // 🔥 Берем выбранное из шторки время. Если оно еще не выбрано, ставим 4 сек по умолчанию
-    const finalDuration = typeof currentSoraDuration !== 'undefined' ? currentSoraDuration : 4;
+    // 1. Читаем секунды прямо с кнопки шторки (например, "⏱️ 16 сек" -> 16)
+    let finalDuration = 4; 
+    const soraBtnEl = document.getElementById('btn_sora_duration');
+    if (soraBtnEl) {
+        const match = soraBtnEl.innerText.match(/\d+/);
+        if (match) finalDuration = parseInt(match, 10);
+    }
+    
+    // 2. 🔥 Читаем готовую цену прямо с кнопки старта (например, "Start 12 🪙" -> 12)
+    let finalCost = 3;
+    const startBtn2 = document.getElementById('neo_video_sound_submit_btn');
+    if (startBtn2) {
+        const matchCost = startBtn2.innerText.match(/\d+/);
+        if (matchCost) finalCost = parseInt(matchCost, 10);
+    }
     
     const isAudioActive = true;    
     const dataToSend = {
         mode_trigger: "video_menu",
-        video_type: "pro",                    // Сигнал для ветки elif (Sora-2)
-        video_duration: finalDuration,        // 🔥 Теперь отправляются РЕАЛЬНЫЕ секунды!
-        chosen_ratio: soundGenRatio || "auto", // Если переменная пустая, отправит "auto"
+        video_type: "pro",                    
+        video_duration: String(finalDuration), // Реальные секунды (16)
+        chosen_ratio: soundGenRatio || "auto", 
         selected_voice: isAudioActive ? selectedVoiceId : "none", 
-        cost: 3                               
+        cost: Number(finalCost)                // Реальная цена с кнопки (12)
     };
+    
+    console.log("[WebApp Send pro] Улетает пакет в бота:", dataToSend);
     
     if (tg) {
         tg.sendData(JSON.stringify(dataToSend));

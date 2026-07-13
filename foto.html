@@ -983,11 +983,11 @@ function sendToTelegram(payload) {
 
         let rawParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}_s_${styleTitle}`;
         let startParam = encodeURIComponent(rawParam).substring(0, 60); // Обрезаем ради лимита 64 байта
-        window.Telegram.WebApp.openTelegramLink(`https://t.me/${botUsername}?start=${startParam}`);
+        window.location.href = `https://t.me/${botUsername}?start=${startParam}`;
 
     } catch (e) {
         console.error("Ошибка отправки данных:", e);
-        window.Telegram.WebApp.openTelegramLink("https://t.me/ChatGPT_BuzVuz_bot");
+        window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
     }
 }
 
@@ -1046,12 +1046,12 @@ function sendPhotoTextData() {
             const botUsername = "ChatGPT_BuzVuz_bot"; 
             let isCustomStr = isCustomText ? '1' : '0';
             let rawParam = `mode_${currentModel}_q_${quality}_r_${ratio.replace(':', '-')}_f_${facesCountToSend}_c_${isCustomStr}_s_${styleTitleToSend}`;
-            window.Telegram.WebApp.openTelegramLink(`https://t.me/${botUsername}?start=${startParam}`);
+            window.location.href = `https://t.me/${botUsername}?start=${encodeURIComponent(rawParam)}`;
         }
 
     } catch (err) {
         console.error("Критический сбой внутри функции sendPhotoTextData:", err);
-        window.Telegram.WebApp.openTelegramLink("https://t.me/ChatGPT_BuzVuz_bot");
+        window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
     }
 }
 

@@ -954,58 +954,20 @@ window.addEventListener('DOMContentLoaded', () => {
 // ====================================================================================
 function sendToTelegram(payload) {
     try {
-        const botUsername = "ChatGPT_BuzVuz_bot"; 
-
-        // 1. ДЛЯ МАКБУКА: Оставляем старый sendData, пускай летит целый JSON как раньше!
-        if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.sendData === 'function' && !/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-            console.log("[WebApp] Отправляем JSON в бот:", payload);
+        // Теперь этот метод нативно сработает на ЛЮБЫХ телефонах!
+        if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.sendData === 'function') {
+            console.log("[WebApp] Отправляем полный JSON напрямую в бот:", payload);
+            
+            // Передаем весь объект, включая длинные промпты и любые названия стилей словами
             window.Telegram.WebApp.sendData(JSON.stringify(payload));
             window.Telegram.WebApp.close();
             return;
         }
-
-        // 2. ДЛЯ ТЕЛЕФОНОВ: Собираем чистую короткую ссылку БЕЗ обрезки substring(0,60)
-        let mainMode = payload.mode_trigger || payload.ai_model_engine || 'pulid';
-        
-        if (mainMode === 'tryon' && payload.sub_mode) {
-            mainMode = payload.sub_mode; 
-        }
-
-        let quality = payload.quality || 'schnell';
-        let ratio = payload.aspect_ratio ? payload.aspect_ratio.replace(':', '-') : '9-16';
-        let faces = payload.faces_count || 1;
-        let isCustom = payload.is_custom_text_mode || payload.is_custom_template ? '1' : '0';
-        
-        let styleTitle = payload.style_title || 'none';
-        if (isCustom === '1' && !payload.style_title) styleTitle = 'custom';
-        
-        // Очищаем пробелы, заменяя на дефисы
-        let safeStyleTitle = styleTitle.replace(/\s+/g, '-');
-
-        // Строка параметров, которую твой Python-код считает без ошибок
-        let startParam = `mode_${mainMode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}_s_${safeStyleTitle}`;
-
-        // Страховка лимита 64 символа Телеграма
-        if (startParam.length > 64) {
-            startParam = `mode_${mainMode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}_s_short`;
-        }
-
-        const telegramDeepLink = `https://t.me/${botUsername}?start=${startParam}`;
-
-        // Закрываем шторку на телефонах нативным методом
-        if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openTelegramLink === 'function') {
-            window.Telegram.WebApp.openTelegramLink(telegramDeepLink);
-            window.Telegram.WebApp.close();
-            return;
-        }
-
-        window.location.href = telegramDeepLink;
-
     } catch (e) {
         console.error("Ошибка функции sendToTelegram:", e);
-        window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
     }
 }
+
 
 
 
@@ -1013,7 +975,7 @@ function sendToTelegram(payload) {
 //     try {
 //         const botUsername = "ChatGPT_BuzVuz_bot"; 
 
-//         // Пытаемся отправить через sendData (для Мака это сработает как раньше)
+//         // 1. ДЛЯ МАКБУКА: Оставляем старый sendData, пускай летит целый JSON как раньше!
 //         if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.sendData === 'function' && !/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
 //             console.log("[WebApp] Отправляем JSON в бот:", payload);
 //             window.Telegram.WebApp.sendData(JSON.stringify(payload));
@@ -1021,13 +983,11 @@ function sendToTelegram(payload) {
 //             return;
 //         }
 
-//         // 🔥 УНИВЕРСАЛЬНЫЙ РАЗБОР ДЛЯ СМАРТФОНОВ:
-//         // Определяем главный режим бота
+//         // 2. ДЛЯ ТЕЛЕФОНОВ: Собираем чистую короткую ссылку БЕЗ обрезки substring(0,60)
 //         let mainMode = payload.mode_trigger || payload.ai_model_engine || 'pulid';
         
-//         // Если это примерка (tryon), подставляем её подрежим (clothes_swap_mode или face_swap_mode)
 //         if (mainMode === 'tryon' && payload.sub_mode) {
-//             mainMode = payload.sub_mode; // Превратится в clothes_swap_mode или face_swap_mode
+//             mainMode = payload.sub_mode; 
 //         }
 
 //         let quality = payload.quality || 'schnell';
@@ -1035,14 +995,13 @@ function sendToTelegram(payload) {
 //         let faces = payload.faces_count || 1;
 //         let isCustom = payload.is_custom_text_mode || payload.is_custom_template ? '1' : '0';
         
-//         // Для этих трех режимов имя стиля нам не нужно, ставим 'none'
 //         let styleTitle = payload.style_title || 'none';
 //         if (isCustom === '1' && !payload.style_title) styleTitle = 'custom';
         
-//         // Чистим имя стиля от пробелов на всякий случай (заменяем на дефисы)
+//         // Очищаем пробелы, заменяя на дефисы
 //         let safeStyleTitle = styleTitle.replace(/\s+/g, '-');
 
-//         // Собираем чистую строку параметров, которую поймет твой Python-код
+//         // Строка параметров, которую твой Python-код считает без ошибок
 //         let startParam = `mode_${mainMode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}_s_${safeStyleTitle}`;
 
 //         // Страховка лимита 64 символа Телеграма
@@ -1052,7 +1011,7 @@ function sendToTelegram(payload) {
 
 //         const telegramDeepLink = `https://t.me/${botUsername}?start=${startParam}`;
 
-//         // Нативно закрываем шторку на телефонах
+//         // Закрываем шторку на телефонах нативным методом
 //         if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openTelegramLink === 'function') {
 //             window.Telegram.WebApp.openTelegramLink(telegramDeepLink);
 //             window.Telegram.WebApp.close();
@@ -1066,6 +1025,9 @@ function sendToTelegram(payload) {
 //         window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
 //     }
 // }
+
+
+
 
 // функция — главный передатчик настроек для вкладки «Фотоэффекты»
 function sendPhotoTextData() { 

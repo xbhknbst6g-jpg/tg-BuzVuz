@@ -993,47 +993,39 @@ window.addEventListener('DOMContentLoaded', () => {
 
 function sendToTelegram(payload) {
     try {
+        if (!payload.site_template_prompt && window.selectedStylePrompt) {
+            payload.site_template_prompt = window.selectedStylePrompt;
+        }
+
+        // Пытаемся отправить через sendData (для Мака это сработает)
+        if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.sendData === 'function') {
+            console.log("[WebApp] Отправляем данные карточки в бот:", payload);
+            window.Telegram.WebApp.sendData(JSON.stringify(payload));
+            window.Telegram.WebApp.close();
+            return;
+        }
+
+        // РЕЗЕРВНЫЙ ВАРИАНТ ДЛЯ ТЕЛЕФОНОВ (БЕЗ МУТИ И ОБРЕЗКИ):
         const botUsername = "ChatGPT_BuzVuz_bot"; 
-        
-        // 1. Извлекаем все параметры для вашего Python-кода
         let mode = payload.ai_model_engine || 'pulid';
         let quality = payload.quality || 'schnell';
         let ratio = payload.aspect_ratio ? payload.aspect_ratio.replace(':', '-') : '1-1';
         let faces = payload.faces_count || 1;
         let isCustom = payload.is_custom_text_mode ? '1' : '0';
-        
-        // Очищаем название стиля от пробелов и спецсимволов, чтобы не раздувать ссылку
         let styleTitle = payload.style_title || 'none';
         if (isCustom === '1') styleTitle = 'custom';
-        styleTitle = styleTitle.replace(/[^a-zA-Z0-9-]/g, '').toLowerCase();
 
-        // 2. Собираем СТРОГО чистую строку параметров БЕЗ encodeURIComponent
+        // Собираем чистую строку БЕЗ encodeURIComponent и БЕЗ substring(0, 60)
         let startParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}_s_${styleTitle}`;
-        
-        // Жесткая проверка на лимит Telegram (параметр start не должен быть длиннее 64 символов)
-        if (startParam.length > 64) {
-            console.warn("[WebApp] Параметры слишком длинные, сокращаем стиль до дефолта");
-            startParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}_s_short`;
-        }
 
-        // Формируем правильную внутреннюю диплинк-ссылку
-        const telegramDeepLink = `https://t.me/${botUsername}?start=${startParam}`;
-
-        // 3. САМЫЙ ВАЖНЫЙ ШАГ ДЛЯ ТЕЛЕФОНОВ:
-        // Используем нативный метод openTelegramLink. Он заставит мобильный Telegram 
-        // правильно обработать и передать параметры в ваш Python-бот.
+        // КРИТИЧЕСКИ ВАЖНО ДЛЯ МОБИЛОК: нативный метод вместо window.location.href
         if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openTelegramLink === 'function') {
-            console.log("[WebApp] Отправляем команду через openTelegramLink:", telegramDeepLink);
-            
-            window.Telegram.WebApp.openTelegramLink(telegramDeepLink);
-            
-            // Закрываем шторку сайта на телефоне
+            window.Telegram.WebApp.openTelegramLink(`https://t.me/${botUsername}?start=${startParam}`);
             window.Telegram.WebApp.close();
             return;
         }
 
-        // Резервный переход, если открыли просто в обычном браузере на ПК
-        window.location.href = telegramDeepLink;
+        window.location.href = `https://t.me/${botUsername}?start=${startParam}`;
 
     } catch (e) {
         console.error("Ошибка отправки данных:", e);

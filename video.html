@@ -1167,8 +1167,8 @@ function sendMotionControlData() {
 
     if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
     
-    // 🔥 НАДЕЖНО: Вытаскиваем точную стоимость коинов прямо с кнопки плеера карточки!
-    let presetCost = 10; // дефолт на самый крайний случай
+    // 🔥 НАДЕЖНО: Считываем точную стоимость коинов прямо с кнопки старта карточки!
+    let presetCost = 10; // дефолт на случай сбоя
     const motionBtnEl = document.getElementById('neo_motion_submit_btn');
     if (motionBtnEl) {
         const matchCost = motionBtnEl.innerText.match(/\d+/);
@@ -1179,7 +1179,7 @@ function sendMotionControlData() {
         mode_trigger: "video_menu",
         video_type: "motion_control", 
         action: "start_file_waiting", 
-        generation_mode: currentGenerationMode, 
+        generation_mode: currentGenerationMode, // 'preset' или 'custom'
         template_name: selectedMotionStyleName, 
         video_url: selectedMotionVideoUrl,
         cost: Number(presetCost) // 🔥 ПЕРЕДАЕМ ТОЧНУЮ СТОИМОСТЬ КАРТОЧКИ В БОТА!

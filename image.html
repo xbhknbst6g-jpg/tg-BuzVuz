@@ -531,39 +531,19 @@ function closePreviewVideo() {
 // ====================================================================================
 function sendToTelegram(payload) {
     try {
-        const botUsername = "ChatGPT_BuzVuz_bot"; 
-
-        let quality = payload.quality || 'schnell';
-        let ratio = payload.aspect_ratio ? payload.aspect_ratio.replace(':', '-') : '1-1';
-        let startParam = "";
-
-        // Строго разделяем диплинки для бэкенда по триггерам
-        if (payload.mode_trigger === 'pure_text_image') {
-            // Для 1-го режима: Цифровая Оптика (Flux Dev)
-            startParam = `mode_puretext_q_${quality}_r_${ratio}`;
-        } else if (payload.mode_trigger === 'image_generation_direct') {
-            // Для 2-го режима: Умный Фокус (Nano Banana 2)
-            startParam = `mode_direct_q_${quality}_r_${ratio}`;
-        } else {
-            // Дефолтный или старый фото-режим (pulid)
-            let mode = payload.ai_model_engine || 'pulid';
-            let faces = payload.faces_count || 1;
-            let isCustom = payload.is_custom_text_mode ? '1' : '0';
-            startParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}`;
-        }
-
-        let telegramLink = `https://t.me/${botUsername}?start=${startParam}`;
-        console.log("[WebApp Link] Перенаправление по ссылке:", telegramLink);
-
-        if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openTelegramLink === 'function') {
-            window.Telegram.WebApp.openTelegramLink(telegramLink);
+        // 🔥 ТЕПЕРЬ ОДИН НАДЁЖНЫЙ ПУТЬ ДЛЯ ВСЕХ УСТРОЙСТВ: Шлём чистый JSON
+        if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.sendData === 'function') {
+            console.log("[WebApp] Отправляем полный JSON напрямую в WebAppData:", payload);
+            
+            // Передаем весь объект целиком (включая mode_trigger: 'pure_text_image' или 'image_generation_direct')
+            window.Telegram.WebApp.sendData(JSON.stringify(payload));
+            
+            // Закрываем шторку Mini App
             window.Telegram.WebApp.close();
-        } else {
-            window.location.href = telegramLink;
+            return;
         }
     } catch (e) {
-        console.error("Ошибка генерации диплинка:", e);
-        window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
+        console.error("Ошибка функции sendToTelegram:", e);
     }
 }
 

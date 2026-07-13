@@ -1167,13 +1167,22 @@ function sendMotionControlData() {
 
     if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
     
+    // 🔥 НАДЕЖНО: Вытаскиваем точную стоимость коинов прямо с кнопки плеера карточки!
+    let presetCost = 10; // дефолт на самый крайний случай
+    const motionBtnEl = document.getElementById('neo_motion_submit_btn');
+    if (motionBtnEl) {
+        const matchCost = motionBtnEl.innerText.match(/\d+/);
+        if (matchCost) presetCost = parseInt(matchCost, 10);
+    }
+    
     const dataToSend = {
         mode_trigger: "video_menu",
         video_type: "motion_control", 
-        action: "start_file_waiting", // Сигнал боту переходить к сценарию запроса файлов
-        generation_mode: currentGenerationMode, // 'preset' или 'custom'
-        template_name: selectedMotionStyleName, // Название шаблона или "Свой референс"
-        video_url: selectedMotionVideoUrl      // Ссылка на mp4-шаблон (если выбран preset)
+        action: "start_file_waiting", 
+        generation_mode: currentGenerationMode, 
+        template_name: selectedMotionStyleName, 
+        video_url: selectedMotionVideoUrl,
+        cost: Number(presetCost) // 🔥 ПЕРЕДАЕМ ТОЧНУЮ СТОИМОСТЬ КАРТОЧКИ В БОТА!
     };
     
     if (tg) {

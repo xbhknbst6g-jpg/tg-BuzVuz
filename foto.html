@@ -952,60 +952,26 @@ window.addEventListener('DOMContentLoaded', () => {
 // ====================================================================================
 // 8. ПЕРЕДАТЧИКИ JSON БОТУ И СИНХРОНИЗАЦИЯ С ПРЕСЕТАМИ ШАБЛОНОВ для клика по карточке
 // ====================================================================================
-// function sendToTelegram(payload) {
-//     try {
-//         // Подтягиваем промпт из глобальной памяти, если его забыли передать в payload
-//         if (!payload.site_template_prompt && window.selectedStylePrompt) {
-//             payload.site_template_prompt = window.selectedStylePrompt;
-//         }
-
-//         // 🔥 КЛЮЧЕВОЙ МОМЕНТ: Передаем весь объект (вместе с огромным промптом) через sendData
-//         if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.sendData === 'function') {
-//             console.log("[WebApp] Отправляем данные карточки в бот:", payload);
-            
-//             // Телеграм легко переварит этот JSON-текст до 4096 символов
-//             window.Telegram.WebApp.sendData(JSON.stringify(payload));
-            
-//             // Мягко закрываем WebApp
-//             window.Telegram.WebApp.close();
-//             return;
-//         }
-
-//         // Резервный диплинк (оставляем ТОЛЬКО для тестов в обычном браузере, промпт тут обрежется)
-//         const botUsername = "ChatGPT_BuzVuz_bot"; 
-//         let mode = payload.ai_model_engine || 'pulid';
-//         let quality = payload.quality || 'schnell';
-//         let ratio = payload.aspect_ratio ? payload.aspect_ratio.replace(':', '-') : '1-1';
-//         let faces = payload.faces_count || 1;
-//         let isCustom = payload.is_custom_text_mode ? '1' : '0';
-//         let styleTitle = payload.style_title || 'none';
-//         if (isCustom === '1') styleTitle = 'custom';
-
-//         let rawParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}_s_${styleTitle}`;
-//         let startParam = encodeURIComponent(rawParam).substring(0, 60); // Обрезаем ради лимита 64 байта
-//         window.location.href = `https://t.me/${botUsername}?start=${startParam}`;
-
-//     } catch (e) {
-//         console.error("Ошибка отправки данных:", e);
-//         window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
-//     }
-// }
-
 function sendToTelegram(payload) {
     try {
+        // Подтягиваем промпт из глобальной памяти, если его забыли передать в payload
         if (!payload.site_template_prompt && window.selectedStylePrompt) {
             payload.site_template_prompt = window.selectedStylePrompt;
         }
 
-        // Пытаемся отправить через sendData (для Мака это сработает)
+        // 🔥 КЛЮЧЕВОЙ МОМЕНТ: Передаем весь объект (вместе с огромным промптом) через sendData
         if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.sendData === 'function') {
             console.log("[WebApp] Отправляем данные карточки в бот:", payload);
+            
+            // Телеграм легко переварит этот JSON-текст до 4096 символов
             window.Telegram.WebApp.sendData(JSON.stringify(payload));
+            
+            // Мягко закрываем WebApp
             window.Telegram.WebApp.close();
             return;
         }
 
-        // РЕЗЕРВНЫЙ ВАРИАНТ ДЛЯ ТЕЛЕФОНОВ (БЕЗ МУТИ И ОБРЕЗКИ):
+        // Резервный диплинк (оставляем ТОЛЬКО для тестов в обычном браузере, промпт тут обрежется)
         const botUsername = "ChatGPT_BuzVuz_bot"; 
         let mode = payload.ai_model_engine || 'pulid';
         let quality = payload.quality || 'schnell';
@@ -1015,16 +981,8 @@ function sendToTelegram(payload) {
         let styleTitle = payload.style_title || 'none';
         if (isCustom === '1') styleTitle = 'custom';
 
-        // Собираем чистую строку БЕЗ encodeURIComponent и БЕЗ substring(0, 60)
-        let startParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}_s_${styleTitle}`;
-
-        // КРИТИЧЕСКИ ВАЖНО ДЛЯ МОБИЛОК: нативный метод вместо window.location.href
-        if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openTelegramLink === 'function') {
-            window.Telegram.WebApp.openTelegramLink(`https://t.me/${botUsername}?start=${startParam}`);
-            window.Telegram.WebApp.close();
-            return;
-        }
-
+        let rawParam = `mode_${mode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}_s_${styleTitle}`;
+        let startParam = encodeURIComponent(rawParam).substring(0, 60); // Обрезаем ради лимита 64 байта
         window.location.href = `https://t.me/${botUsername}?start=${startParam}`;
 
     } catch (e) {
@@ -1038,9 +996,7 @@ function sendPhotoTextData() {
         let isCustomText = (typeof currentGenerationMode !== 'undefined' && currentGenerationMode === 'custom');
         let currentModel = (typeof selectedAiModelEngine !== 'undefined') ? selectedAiModelEngine : 'banana';
         
-        // 🔥 МЕГА-НАДЕЖНО: Берем цифру из window, которую сохраняет selectFacesCount при клике на кнопки!
         let facesCountToSend = parseInt(window.selectedStyleFacesCount) || 1;
-        
         let ratio = (typeof selectedTextRatio !== 'undefined') ? selectedTextRatio : '9:16';
         let quality = (typeof selectedTextQuality !== 'undefined') ? selectedTextQuality : 'schnell';
 
@@ -1057,11 +1013,9 @@ function sendPhotoTextData() {
             }
         } else {
             styleTitleToSend = "custom";
-            let customInput = document.getElementById("custom-prompt-input");
-            promptToSend = customInput ? customInput.value : "";
+            promptToSend = ""; // Для кастомного режима промпт на сайте пустой, юзер напишет его в боте
         }
 
-        // 🔥 НАША МАГИЯ: Динамически меняем триггер в зависимости от выбранной модели в Фотоэффектах
         let finalTrigger = 'photo_banana_edit';
         if (currentModel === 'pulid') {
             finalTrigger = 'photo_flux_pulid';
@@ -1069,8 +1023,8 @@ function sendPhotoTextData() {
         
         console.log("[WebApp] Сборка пакета ФОТО. Отправляем лиц:", facesCountToSend, "Триггер:", finalTrigger);
 
-        // ШЛЕМ JSON НАПРЯМУЮ в Телеграм
-        if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.sendData === 'function') {
+        // 1. ДЛЯ МАКБУКА: Оставляем старый sendData, пускай летит целый JSON
+        if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.sendData === 'function' && !/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
             window.Telegram.WebApp.sendData(JSON.stringify({ 
                 mode_trigger: finalTrigger,
                 aspect_ratio: ratio, 
@@ -1081,15 +1035,35 @@ function sendPhotoTextData() {
                 style_title: styleTitleToSend,
                 prompt_text: promptToSend          
             })); 
-            
             window.Telegram.WebApp.close();
-        } else {
-            // Резервный вариант для браузера
-            const botUsername = "ChatGPT_BuzVuz_bot"; 
-            let isCustomStr = isCustomText ? '1' : '0';
-            let rawParam = `mode_${currentModel}_q_${quality}_r_${ratio.replace(':', '-')}_f_${facesCountToSend}_c_${isCustomStr}_s_${styleTitleToSend}`;
-            window.location.href = `https://t.me/${botUsername}?start=${encodeURIComponent(rawParam)}`;
+            return;
+        } 
+
+        // 2. ДЛЯ СМАРТФОНОВ: Отправляем чистую короткую ссылку без обрезки и кодирования
+        const botUsername = "ChatGPT_BuzVuz_bot"; 
+        let isCustomStr = isCustomText ? '1' : '0';
+        
+        // Заменяем пробелы в названии стиля на дефисы, чтобы ссылка была чистой
+        let safeStyleTitle = styleTitleToSend.replace(/\s+/g, '-');
+
+        // Собираем чистую строку ПАРАМЕТРОВ БЕЗ encodeURIComponent и БЕЗ substring(0, 60)
+        let startParam = `mode_${currentModel}_q_${quality}_r_${ratio.replace(':', '-')}_f_${facesCountToSend}_c_${isCustomStr}_s_${safeStyleTitle}`;
+
+        // Страховка от превышения лимита 64 символа Telegram
+        if (startParam.length > 64) {
+            startParam = `mode_${currentModel}_q_${quality}_r_${ratio.replace(':', '-')}_f_${facesCountToSend}_c_${isCustomStr}_s_short`;
         }
+
+        const telegramDeepLink = `https://t.me/${botUsername}?start=${startParam}`;
+
+        // Нативно и красиво закрываем шторку на телефонах с передачей параметров в чат
+        if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openTelegramLink === 'function') {
+            window.Telegram.WebApp.openTelegramLink(telegramDeepLink);
+            window.Telegram.WebApp.close();
+            return;
+        }
+
+        window.location.href = telegramDeepLink;
 
     } catch (err) {
         console.error("Критический сбой внутри функции sendPhotoTextData:", err);

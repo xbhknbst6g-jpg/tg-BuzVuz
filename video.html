@@ -1173,7 +1173,7 @@ function sendMotionControlData() {
 
     if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
     
-    // 🔥 НАДЕЖНО: Считываем точную стоимость коинов прямо с кнопки старта карточки!
+    // НАДЕЖНО: Считываем точную стоимость коинов прямо с кнопки старта карточки!
     let presetCost = 10; // дефолт на случай сбоя
     const motionBtnEl = document.getElementById('neo_motion_submit_btn');
     if (motionBtnEl) {
@@ -1181,15 +1181,19 @@ function sendMotionControlData() {
         if (matchCost) presetCost = parseInt(matchCost, 10);
     }
     
+    // 🔥 ФИКС: Привели ключи в полное соответствие с FSM-памятью твоего Python-бота!
     const dataToSend = {
         mode_trigger: "video_menu",
         video_type: "motion_control", 
         action: "start_file_waiting", 
-        generation_mode: currentGenerationMode, // 'preset' или 'custom'
-        template_name: selectedMotionStyleName, 
-        video_url: selectedMotionVideoUrl,
-        cost: Number(presetCost) // 🔥 ПЕРЕДАЕМ ТОЧНУЮ СТОИМОСТЬ КАРТОЧКИ В БОТА!
+        motion_gen_mode: currentGenerationMode,       // Исправлено: было generation_mode
+        motion_template_name: selectedMotionStyleName,// Исправлено: было template_name
+        motion_video_url: selectedMotionVideoUrl,     // Исправлено: было video_url
+        video_duration: window.motionGenDuration || 5, // Передаем ту самую ПЯТЕРКУ с твоей HTML-карточки! ✅
+        video_cost: Number(presetCost)                // Исправлено: было cost
     };
+    
+    console.log("[WebApp Send Motion] Улетает пакет в бота:", dataToSend);
     
     if (tg) {
         tg.sendData(JSON.stringify(dataToSend));

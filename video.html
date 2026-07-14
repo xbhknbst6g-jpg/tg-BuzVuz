@@ -1189,7 +1189,7 @@ function sendMotionControlData() {
         motion_gen_mode: currentGenerationMode,       // Исправлено: было generation_mode
         motion_template_name: selectedMotionStyleName,// Исправлено: было template_name
         motion_video_url: selectedMotionVideoUrl,     // Исправлено: было video_url
-        video_duration: window.motionGenDuration || 5, // Передаем ту самую ПЯТЕРКУ с твоей HTML-карточки! ✅
+        video_duration: motionGenDuration || 5,
         video_cost: Number(presetCost)                // Исправлено: было cost
     };
     

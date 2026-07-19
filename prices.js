@@ -116,7 +116,7 @@ async function syncPricesFromDatabase() {
         const bananaPaintPrice = data.services.nano_banana_paint.coins_min;
         const kling5sPrice = data.services.kling_video_5s.coins;
         const kling10sPrice = data.services.kling_video_10s.coins;
-        const soraPrice = data.services.sora_2_10s.coins;
+        const soraPrice = data.services.kling_o3_10s?.coins || 10;
 
         // =========================================================================
         // 2. СИЛОЙ ВСТАВЛЯЕМ ЦЕНЫ НА КНОПКИ РЕЖИМОВ САЙТА

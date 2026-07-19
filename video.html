@@ -159,81 +159,74 @@
         </div> <!-- Закрыли блок настроек video_nosound_settings_block -->
     </div>
 
-<!-- ========================================== -->
-<!-- ЭКРАН 2: ОЖИВЛЕНИЕ СО ЗВУКОМ (SORA-2)       -->
-<!-- ========================================== -->
-    <div id="animate_sound" class="screen">
-            
-        <!-- Фирменный контейнер вкладок с кнопкой назад -->
-        <div class="tabs-container">
-            <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('video_menu')"></button>
-            <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;">
-                Оживление фото со звуком
-            </div>
-        </div>
+<!-- ========================================== --> 
+<!-- ЭКРАН 2: ОЖИВЛЕНИЕ СО ЗВУКОМ (KLING O3 PRO) --> 
+<!-- ========================================== --> 
+<div id="animate_sound" class="screen"> 
+    <!-- Фирменный контейнер вкладок с кнопкой назад --> 
+    <div class="tabs-container"> 
+        <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('video_menu')"></button> 
+        <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;"> 
+            Оживление фото со звуком (Kling O3)
+        </div> 
+    </div> 
 
-        <!-- Основной блок настроек -->
-        <div id="video_sound_settings_block" class="custom-prompt-container">                
-            <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">Пример готовой генерации</div>
-            
-            <!-- Твой оригинальный компактный горизонтальный ряд для двух карточек -->
-            <div class="example-preview-container" style="display: flex; flex-direction: row; gap: 15px; justify-content: center; margin: 15px auto; width: 90%; max-width: 340px;">
-                
-                <!-- 1. Карточка Фото-оригинала -->
-                <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;">
-                    <!-- 🔥 Рамка фото на втором экране тоже загорелась оранжевым неон-стилем -->
-                    <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
-                        <img src="https://i.postimg.cc/Kv5FrNzq/b-Lx-N-n-XBzkt-Aah-Ej-Tr-YFf.png" 
-                            onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo(this.src)"
-                            style="width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer;" alt="Фото для Sora">
-                    </div>
-                    <div style="font-size: 11px; font-weight: 800; color: #ffffff; letter-spacing: 0.5px; text-align: center;">1. Исходное фото</div>
-                </div>
+    <!-- Основной блок настроек --> 
+    <div id="video_sound_settings_block" class="custom-prompt-container"> 
+        <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">Пример готовой генерации</div> 
 
-                <!-- 2. Карточка Видео-результата -->
-                <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;">
-                    <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
-                        <video id="preview_sound_video" style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay>
-                            <source src="https://i.imgur.com/Q6GrKyK.mp4" type="video/mp4">
-                        </video>
+        <!-- Твой оригинальный компактный горизонтальный ряд для двух карточек --> 
+        <div class="example-preview-container" style="display: flex; flex-direction: row; gap: 15px; justify-content: center; margin: 15px auto; width: 90%; max-width: 340px;"> 
+            <!-- 1. Карточка Фото-оригинала --> 
+            <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;"> 
+                <!-- 🔥 Рамка фото на втором экране тоже загорелась оранжевым неон-стилем --> 
+                <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;"> 
+                    <img src="https://i.postimg.cc/Kv5FrNzq/b-Lx-N-n-XBzkt-Aah-Ej-Tr-YFf.png" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo(this.src)" style="width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer;" alt="Фото для Kling O3"> 
+                </div> 
+                <div style="font-size: 11px; font-weight: 800; color: #ffffff; letter-spacing: 0.5px; text-align: center;">1. Исходное фото</div> 
+            </div> 
 
-                        
-                        <div id="video_sound_play_overlay" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo('https://i.imgur.com/Q6GrKyK.mp4')" 
-                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                        </div>
-                    </div>
-                    <div style="font-size: 11px; font-weight: 800; color: #ffffff; letter-spacing: 0.5px; text-align: center;">2. Результат🔥</div>
-                </div>
+            <!-- 2. Карточка Видео-результата --> 
+            <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;"> 
+                <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;"> 
+                    <video id="preview_sound_video" style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay> 
+                        <source src="https://i.imgur.com/Q6GrKyK.mp4" type="video/mp4"> 
+                    </video> 
+                    <div id="video_sound_play_overlay" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo('https://i.imgur.com/Q6GrKyK.mp4')" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; cursor: pointer;"> 
+                    </div> 
+                </div> 
+                <div style="font-size: 11px; font-weight: 800; color: #ffffff; letter-spacing: 0.5px; text-align: center;">2. Результат🔥</div> 
+            </div> 
+        </div> 
 
-            </div>
+        <!-- Твоя оригинальная пошаговая инструкция под авто-формат --> 
+        <div style="font-size: 13px; line-height: 1.5; margin-top: 25px !important; padding: 0 5px; color: rgba(255, 255, 255, 0.6) !important;"> 
+            <b>Шаг 1:</b> Выберите длительность видео на кнопке ниже.<br> 
+            <b>Шаг 2:</b> Нажмите кнопку запуска START.<br> 
+            <b>Шаг 3:</b> Следуйте дальнейшим указаниям бота!<br> 
+        </div> 
 
-            <!-- Твоя оригинальная пошаговая инструкция под авто-формат -->
-            <div style="font-size: 13px; line-height: 1.5; margin-top: 25px !important; padding: 0 5px; color: rgba(255, 255, 255, 0.6) !important;">
-                <b>Шаг 1:</b> Выберите длительность видео на кнопке ниже.<br>
-                <b>Шаг 2:</b> Нажмите кнопку запуска START.<br>
-                <b>Шаг 3:</b> Следуйте дальнейшим указаниям бота!<br>
-            </div>
+        <!-- Твой фирменный оранжевый разделитель --> 
+        <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div> 
+        
+        <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center; margin-bottom: 60px !important;"> 
+            <b>Итоговая цена зависит от выбранной длительности и отображается на кнопке START</b> 
+        </div> 
 
-            <!-- Твой фирменный оранжевый разделитель -->
-            <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
-
-            <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center; margin-bottom: 60px !important;">
-                <b>Итоговая цена зависит от выбранной длительности и отображается на кнопке START</b>
-            </div>
-
-            <!-- Твой оригинальный пульт управления -->
-            <div class="single-row-controls" style="display: flex; gap: 15px; align-items: flex-end; margin-top: 85px !important; position: relative; z-index: 10;">
-                <div class="control-col" style="flex: 1;">
-                    <button id="btn_sora_duration" class="capsule-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openUniversalDurationSheet()">⏱️ 4 сек</button>
-                </div>
-                
-                <div class="control-col-btn" style="flex: 1.5;">
-                    <button id="neo_video_sound_submit_btn" class="neo-start-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendVideoSoundGenData()">Start 3 🪙</button>
-                </div>
-            </div>
-
-        </div>
-    </div> <!-- ТУТ СТРОГО ЗАКРЫЛСЯ ВТОРОЙ РЕЖИМ -->
+        <!-- Твой оригинальный пульт управления --> 
+        <div class="single-row-controls" style="display: flex; gap: 15px; align-items: flex-end; margin-top: 85px !important; position: relative; z-index: 10;"> 
+            <div class="control-col" style="flex: 1;"> 
+                <!-- 🔥 Изменили дефолтный текст кнопки длительности на 5 сек -->
+                <button id="btn_sora_duration" class="capsule-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openUniversalDurationSheet()">⏱️ 5 сек</button> 
+            </div> 
+            <div class="control-col-btn" style="flex: 1.5;"> 
+                <!-- 🔥 Изменили ID кнопки отправки и дефолтный текст цены на 5 коинов -->
+                <button id="neo_video_sound_submit_btn" class="neo-start-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendVideoSoundGenData()">Start 5 🪙</button> 
+            </div> 
+        </div> 
+    </div> 
+</div> 
+<!-- ТУТ СТРОГО ЗАКРЫЛСЯ ВТОРОЙ РЕЖИМ -->
 
 <!-- ========================================== -->
 <!-- ЭКРАН 3: ОЖИВЛЕНИЕ ПО ВИДЕО (MOTION CONTROL) -->
@@ -400,7 +393,7 @@
     let currentKlingDuration = 5;  
     let currentAnimateRatio = 'auto';  
 
-    // 🔊 НАСТРОЙКИ ДЛЯ 2-ГО РЕЖИМА: «Оживление со звуком» (С голосом ИИ, Sora-2)
+    // 🔊 НАСТРОЙКИ ДЛЯ 2-ГО РЕЖИМА: «Оживление со звуком» (Kling O3 Pro)
     let soundGenRatio = 'auto';
     let selectedVoiceId = 'voice_male_01';
 
@@ -436,15 +429,16 @@
                 }
             }, 150);
         }
-        // 3. Если бот прислал команду на 2-й режим (Со звуком)
+        // 3. Если бот прислал команду на 2-й режим (Kling O3 Pro со звуком)
         else if (startMode === 'animate_sound') {
             setTimeout(function() {
                 if (typeof openScreen === 'function') {
-                    openScreen('animate_sound');
-                    console.log("🚀 Автопереход: Успешно открыт экран говорящего аватара со звуком!");
+                    openScreen('animate_sound'); // ОСТАВЛЯЕМ БЕЗ ИЗМЕНЕНИЙ, это технический ID экрана!
+                    console.log("🚀 Автопереход: Успешно открыт экран оживления со звуком Kling O3 Pro!");
                 }
             }, 150);
         }
+
         // 4. Если бот прислал команду на 3-й режим (Оживление по видео / Motion Control)
         else if (startMode === 'video_motion_control') {
             setTimeout(function() {
@@ -1129,35 +1123,34 @@ if (motionPlayOverlay) {
 // 🔊 2. Отправка для Режима 2: Оживление со звуком (БЕЗ ПОВТОРНЫХ РАСЧЕТОВ)
 function sendVideoSoundGenData() {
     if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
-    
-    // 1. Читаем секунды прямо с кнопки шторки (например, "⏱️ 16 сек" -> 16)
-    let finalDuration = 4; 
+
+    // 1. Читаем секунды прямо с кнопки шторки (например, "⏱️ 15 сек" -> 15)
+    let finalDuration = 5; // 🔥 ФИКС: дефолт теперь 5 секунд вместо 4
     const soraBtnEl = document.getElementById('btn_sora_duration');
     if (soraBtnEl) {
         const match = soraBtnEl.innerText.match(/\d+/);
         if (match) finalDuration = parseInt(match, 10);
     }
-    
-    // 2. 🔥 Читаем готовую цену прямо с кнопки старта (например, "Start 12 🪙" -> 12)
-    let finalCost = 3;
+
+    // 2. 🔥 Читаем готовую цену прямо с кнопки старта (например, "Start 15 🪙" -> 15)
+    let finalCost = 5; // 🔥 ФИКС: дефолт теперь 5 монет вместо 3
     const startBtn2 = document.getElementById('neo_video_sound_submit_btn');
     if (startBtn2) {
         const matchCost = startBtn2.innerText.match(/\d+/);
         if (matchCost) finalCost = parseInt(matchCost, 10);
     }
-    
-    const isAudioActive = true;    
+
+    const isAudioActive = true;
     const dataToSend = {
         mode_trigger: "video_menu",
-        video_type: "pro",                    
-        video_duration: String(finalDuration), // Реальные секунды (16)
-        chosen_ratio: soundGenRatio || "auto", 
-        selected_voice: isAudioActive ? selectedVoiceId : "none", 
-        cost: Number(finalCost)                // Реальная цена с кнопки (12)
+        video_type: "pro",
+        video_duration: String(finalDuration), // Сюда улетят честные 5, 10 или 15 сек
+        chosen_ratio: soundGenRatio || "auto",
+        selected_voice: isAudioActive ? selectedVoiceId : "none",
+        cost: Number(finalCost) // Реальная цена, считанная прямо с кнопки старта
     };
-    
+
     console.log("[WebApp Send pro] Улетает пакет в бота:", dataToSend);
-    
     if (tg) {
         tg.sendData(JSON.stringify(dataToSend));
         tg.close();

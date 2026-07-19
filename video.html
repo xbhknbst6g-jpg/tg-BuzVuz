@@ -1163,29 +1163,37 @@ function sendMotionControlData() {
         tg.showAlert("Пожалуйста, выберите шаблон или перейдите во вкладку 'Свой'!");
         return;
     }
-
+    
     if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
-    
+
     // НАДЕЖНО: Считываем точную стоимость коинов прямо с кнопки старта карточки!
-    let presetCost = 10; // дефолт на случай сбоя
-    const motionBtnEl = document.getElementById('neo_motion_submit_btn');
-    if (motionBtnEl) {
-        const matchCost = motionBtnEl.innerText.match(/\d+/);
-        if (matchCost) presetCost = parseInt(matchCost, 10);
-    }
+    let presetCost = 0; // 🔥 ФИКС: дефолт теперь 0, так как для вкладки "Свой" цена изначально нулевая
     
+    // Считываем цену с кнопки ТОЛЬКО если мы находимся в режиме готового шаблона (preset)
+    if (currentGenerationMode === "preset") {
+        presetCost = 16; // дефолтная подстраховка для шаблона (например, 8 сек * 2 коина)
+        const motionBtnEl = document.getElementById('neo_motion_submit_btn');
+        if (motionBtnEl && motionBtnEl.innerText) {
+            const matchCost = motionBtnEl.innerText.match(/\d+/);
+            if (matchCost) presetCost = parseInt(matchCost, 10);
+        }
+    } else {
+        // 🔥 ЖЕСТКИЙ ФИКС: Если это вкладка "Свой" (custom), цена для бота ВСЕГДА должна быть строго 0!
+        presetCost = 0;
+    }
+
     // 🔥 ФИКС: Привели ключи в полное соответствие с FSM-памятью твоего Python-бота!
     const dataToSend = {
         mode_trigger: "video_menu",
-        video_type: "motion_control", 
-        action: "start_file_waiting", 
-        motion_gen_mode: currentGenerationMode,       // Исправлено: было generation_mode
-        motion_template_name: selectedMotionStyleName,// Исправлено: было template_name
-        motion_video_url: selectedMotionVideoUrl,     // Исправлено: было video_url
+        video_type: "motion_control",
+        action: "start_file_waiting",
+        motion_gen_mode: currentGenerationMode,      // 'custom' или 'preset'
+        motion_template_name: selectedMotionStyleName,
+        motion_video_url: selectedMotionVideoUrl, 
         video_duration: motionGenDuration || 5,
-        video_cost: Number(presetCost)                // Исправлено: было cost
+        video_cost: Number(presetCost)                // 🔥 Теперь улетит честный 0 для вкладки "Свой"!
     };
-    
+
     console.log("[WebApp Send Motion] Улетает пакет в бота:", dataToSend);
     
     if (tg) {
@@ -1193,6 +1201,7 @@ function sendMotionControlData() {
         tg.close();
     }
 }
+
 // ====================================================================================
 // Автоматический виброотклик для всего интерфейса (ВКЛЮЧАЯ ПУНКТЫ ВНУТРИ ШТОРКИ)
 // ====================================================================================

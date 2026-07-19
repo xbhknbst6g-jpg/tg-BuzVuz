@@ -63,11 +63,9 @@ async function syncPricesFromDatabase() {
             // 🔥 2. СОХРАНЯЕМ СВЕЖИЕ ЦЕНЫ ВИДЕО ИЗ MONGO
             if (data.services.kling_video_5s) window.dbKling5s.coins = data.services.kling_video_5s.coins;
             if (data.services.kling_video_10s) window.dbKling10s.coins = data.services.kling_video_10s.coins;
-            if (data.services.sora_4s) window.dbSora4s.coins = data.services.sora_4s.coins;
-            if (data.services.sora_8s) window.dbSora8s.coins = data.services.sora_8s.coins;
-            if (data.services.sora_12s) window.dbSora12s.coins = data.services.sora_12s.coins;
-            if (data.services.sora_16s) window.dbSora16s.coins = data.services.sora_16s.coins;
-            if (data.services.sora_20s) window.dbSora20s.coins = data.services.sora_20s.coins;
+            if (data.services.kling_o3_5s) window.dbKlingO3_5s.coins = data.services.kling_o3_5s.coins;
+            if (data.services.kling_o3_10s) window.dbKlingO3_10s.coins = data.services.kling_o3_10s.coins;
+            if (data.services.kling_o3_15s) window.dbKlingO3_15s.coins = data.services.kling_o3_15s.coins;
 
             if (data.services.kling_control_per_sec) {
                 window.dbKlingPerSec.coins_per_sec = data.services.kling_control_per_sec.coins_per_sec;
@@ -446,24 +444,22 @@ function openUniversalDurationSheet() {
     listEl.innerHTML = ''; // Очищаем список старых кнопок
 
     // 🍏 БЕЗОПАСНО: Берём цены из наших застрахованных объектов (там всегда либо база, либо дефолты)
-    let price5s = window.dbKling5s.coins;   
-    let price10s = window.dbKling10s.coins; 
-    let sora4 = window.dbSora4s.coins;
-    let sora8 = window.dbSora8s.coins;
-    let sora12 = window.dbSora12s.coins;
-    let sora16 = window.dbSora16s.coins;
-    let sora20 = window.dbSora20s.coins;
+    let price5s = window.dbKling5s.coins;
+    let price10s = window.dbKling10s.coins;
+
+    // Твои новые локальные переменные Kling O3 Pro
+    let klingO3_5 = window.dbKlingO3_5s.coins;
+    let klingO3_10 = window.dbKlingO3_10s.coins;
+    let klingO3_15 = window.dbKlingO3_15s.coins;
 
     // 🔥 ПОДТЯГИВАЕМ СВЕЖИЙ JSON, ЕСЛИ ОН УЖЕ ДОЛЕТЕЛ ИЗ БАЗЫ
     if (window.allPrices && window.allPrices.services) {
         if (window.allPrices.services.kling_video_5s) price5s = window.allPrices.services.kling_video_5s.coins;
         if (window.allPrices.services.kling_video_10s) price10s = window.allPrices.services.kling_video_10s.coins;
         
-        if (window.allPrices.services.sora_4s) sora4 = window.allPrices.services.sora_4s.coins;
-        if (window.allPrices.services.sora_8s) sora8 = window.allPrices.services.sora_8s.coins;
-        if (window.allPrices.services.sora_12s) sora12 = window.allPrices.services.sora_12s.coins;
-        if (window.allPrices.services.sora_16s) sora16 = window.allPrices.services.sora_16s.coins;
-        if (window.allPrices.services.sora_20s) sora20 = window.allPrices.services.sora_20s.coins;
+        if (window.allPrices.services.kling_o3_5s) klingO3_5 = window.allPrices.services.kling_o3_5s.coins;
+        if (window.allPrices.services.kling_o3_10s) klingO3_10 = window.allPrices.services.kling_o3_10s.coins;
+        if (window.allPrices.services.kling_o3_15s) klingO3_15 = window.allPrices.services.kling_o3_15s.coins;
     }
 
     let options = [];
@@ -475,14 +471,11 @@ function openUniversalDurationSheet() {
             { sec: 5, text: '⏱️ 5 сек', label: '5 секунд', price: `${price5s} 🪙` },
             { sec: 10, text: '⏱️ 10 сек', label: '10 секунд', price: `${price10s} 🪙` }
         ];
-    } else if (activeMode === 'animate_sound') {
-        // Режим 2: Оживление со звуком (Sora)
+    } else if (activeMode === 'animate_sound') { // Режим 2: Оживление со звуком (Kling O3 Pro)
         options = [
-            { sec: 4, text: '⏱️ 4 сек', label: '4 секунды', price: `${sora4} 🪙` },
-            { sec: 8, text: '⏱️ 8 сек', label: '8 секунд', price: `${sora8} 🪙` },
-            { sec: 12, text: '⏱️ 12 сек', label: '12 секунд', price: `${sora12} 🪙` },
-            { sec: 16, text: '⏱️ 16 сек', label: '16 секунд', price: `${sora16} 🪙` },
-            { sec: 20, text: '⏱️ 20 сек', label: '20 секунд', price: `${sora20} 🪙` }
+            { sec: 5, text: '⏱️ 5 сек', label: '5 секунд', price: `${klingO3_5} 🪙` },
+            { sec: 10, text: '⏱️ 10 сек', label: '10 секунд', price: `${klingO3_10} 🪙` },
+            { sec: 15, text: '⏱️ 15 сек', label: '15 секунд', price: `${klingO3_15} 🪙` }
         ];
     }
 
@@ -510,7 +503,7 @@ function selectDurationFromSheet(seconds, text) {
     const btnKling = document.getElementById('btn_video_duration');
     const btnSora = document.getElementById('btn_sora_duration');
     
-    // Определяем режим: смотрим на переменную или на видимость кнопки Sora
+    // Определяем режим: смотрим на переменную или на видимость кнопки Kling O3 Pro
     let activeMode = window.currentActiveMode || currentActiveMode || 'animate_nosound';
     if (btnSora && btnSora.offsetParent !== null) {
         activeMode = 'animate_sound';
@@ -522,7 +515,7 @@ function selectDurationFromSheet(seconds, text) {
         if (typeof window.currentKlingDuration !== 'undefined') window.currentKlingDuration = seconds;
         if (btnKling) btnKling.innerHTML = text; 
     } else if (activeMode === 'animate_sound') {
-        // 🔥 ЖЕЛЕЗОБЕТОННО: Меняем переменную 2-го режима (Sora)
+        // 🔥 ЖЕЛЕЗОБЕТОННО: Меняем переменную 2-го режима (Kling O3 Pro)
         if (typeof currentSoraDuration !== 'undefined') currentSoraDuration = seconds;
         if (typeof window.currentSoraDuration !== 'undefined') window.currentSoraDuration = seconds;
         if (btnSora) btnSora.innerHTML = text; 
@@ -559,23 +552,21 @@ function updateMotionSubmitButton() {
     const price5s = window.dbKling5s.coins;
     const price10s = window.dbKling10s.coins;
 
-    // 🔵 2. ДИНАМИЧЕСКИЕ ЦЕНЫ ДЛЯ SORA (ТЕПЕРЬ ТОЖЕ ИЗ СТРУКТУРЫ WINDOW!)
-    const sora4 = window.dbSora4s.coins;
-    const sora8 = window.dbSora8s.coins;
-    const sora12 = window.dbSora12s.coins;
-    const sora16 = window.dbSora16s.coins;
-    const sora20 = window.dbSora20s.coins;
+    // 🔵 2. ДИНАМИЧЕСКИЕ ЦЕНЫ ДЛЯ KLING O3 PRO (ИЗ СТРУКТУРЫ WINDOW!)
+    const klingO3_5 = window.dbKlingO3_5s.coins;
+    const klingO3_10 = window.dbKlingO3_10s.coins;
+    const klingO3_15 = window.dbKlingO3_15s.coins;
 
     // 3. Железная защита от ошибок "not defined" на разных вкладках сайта!
     const klingSeconds = (typeof currentKlingDuration !== 'undefined') ? currentKlingDuration : ((typeof window.currentKlingDuration !== 'undefined') ? window.currentKlingDuration : 5);
     
-    // 🔥 НАДЕЖНЫЙ ВАРИАНТ ДЛЯ SORA: Читаем секунды прямо из текста кнопки на экране!
-    let soraSeconds = 4; // по умолчанию 4
-    const soraBtnEl = document.getElementById('btn_sora_duration');
+    // 🔥 НАДЕЖНЫЙ ВАРИАНТ ДЛЯ KLING O3 PRO: Читаем секунды прямо из текста кнопки на экране!
+    let klingProSeconds = 5; // по умолчанию теперь базовые 5 секунд
+    const soraBtnEl = document.getElementById('btn_sora_duration'); // ID не трогаем, чтобы не поломать DOM
     if (soraBtnEl) {
-        // Берем текст кнопки (например, "⏱️ 8 сек"), вытаскиваем оттуда цифру и превращаем в число 8
+        // Берем текст кнопки (например, "⏱️ 15 сек"), вытаскиваем цифру и превращаем в число 15
         const match = soraBtnEl.innerText.match(/\d+/);
-        if (match) soraSeconds = parseInt(match, 10);
+        if (match) klingProSeconds = parseInt(match, 10);
     }
 
     // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ РЕЖИМА 1: «Оживление фото» (Kling)
@@ -583,15 +574,13 @@ function updateMotionSubmitButton() {
         startBtn1.innerHTML = `Start ${klingSeconds === 10 ? price10s : price5s} 🪙`;
     }
     
-    // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ РЕЖИМА 2: «Оживление со звуком» (Sora)
+    // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ РЕЖИМА 2: «Оживление со звуком» (Kling O3 Pro)
     if (startBtn2) {
-        let currentSoraPrice = sora4; // по дефолту за 4 секунды (3 коина)
-        if (soraSeconds === 8) currentSoraPrice = sora8;
-        if (soraSeconds === 12) currentSoraPrice = sora12;
-        if (soraSeconds === 16) currentSoraPrice = sora16;
-        if (soraSeconds === 20) currentSoraPrice = sora20;
-
-        startBtn2.innerHTML = `Start ${currentSoraPrice} 🪙`; 
+        let currentKlingProPrice = klingO3_5; // по дефолту за 5 секунд
+        if (klingProSeconds === 10) currentKlingProPrice = klingO3_10;
+        if (klingProSeconds === 15) currentKlingProPrice = klingO3_15;
+        
+        startBtn2.innerHTML = `Start ${currentKlingProPrice} 🪙`;
     }
     
     // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ РЕЖИМА 3: «Оживление по видео» (Motion Control)

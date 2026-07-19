@@ -9,12 +9,13 @@ window.dbFluxPulidPrices = { coins_min: 1, coins_mid: 2, coins_max: 3 }; // 🍏
 // 🔵 2. ДЕФОЛТНЫЕ ЗАГЛУШКИ ДЛЯ ВИДЕОСТУДИИ
 window.dbKling5s = { coins: 7 };
 window.dbKling10s = { coins: 14 };
-window.dbSora4s = { coins: 3 };
-window.dbSora8s = { coins: 6 };
-window.dbSora12s = { coins: 9 };
-window.dbSora16s = { coins: 12 };
-window.dbSora20s = { coins: 15 };
-window.dbKlingPerSec = { coins_per_sec: 2 }; 
+
+// Твои новые застрахованные объекты для Kling O3 Pro вместо Sora
+window.dbKlingO3_5s = { coins: 5 };
+window.dbKlingO3_10s = { coins: 10 };
+window.dbKlingO3_15s = { coins: 15 };
+
+window.dbKlingPerSec = { coins_per_sec: 2 };
 
 // 🟠 3. ДЕФОЛТНЫЕ ЗАГЛУШКИ ДЛЯ ФОТОСТУДИИ
 window.dbFaceSwapPrices = { coins_min: 3, coins_mid: 4, coins_max: 5 };

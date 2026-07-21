@@ -120,7 +120,7 @@
 
         <div class="header" style="margin-bottom: 15px; text-align: center;">
             <h1 id="text_image_title" style="font-size: 15px; font-weight: 800; margin: 0; color: var(--tg-theme-text-color, #fff);">Шаблоны для генераций Вашего Фото</h1>
-            <p id="text_image_subtitle" style="font-size: 13px; margin: 4px 0 0 0; color: var(--tg-theme-hint-color, #666);">В режиме умный фокус измображение реалистичное как на шаблоне, в режиме цыфровая оптика более художественный стиль фото</p>
+            <p id="text_image_subtitle" style="font-size: 13px; margin: 4px 0 0 0; color: var(--tg-theme-hint-color, #666);">В режиме «Умный фокус» фото получается реалистичным, а в режиме «Цифровая оптика» — в художественном стиле.</p>
         </div>
 
         <!-- 🔥 НАШ ШАГ 1 (ГАЛЕРЕЯ КАРТОЧЕК). ТЕПЕРЬ ОНА ЧИСТАЯ И ИЗОЛИРОВАННАЯ -->
@@ -967,66 +967,6 @@ function sendToTelegram(payload) {
         console.error("Ошибка функции sendToTelegram:", e);
     }
 }
-
-
-
-
-// function sendToTelegram(payload) {
-//     try {
-//         const botUsername = "ChatGPT_BuzVuz_bot"; 
-
-//         // 1. ДЛЯ МАКБУКА: Оставляем старый sendData, пускай летит целый JSON как раньше!
-//         if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.sendData === 'function' && !/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-//             console.log("[WebApp] Отправляем JSON в бот:", payload);
-//             window.Telegram.WebApp.sendData(JSON.stringify(payload));
-//             window.Telegram.WebApp.close();
-//             return;
-//         }
-
-//         // 2. ДЛЯ ТЕЛЕФОНОВ: Собираем чистую короткую ссылку БЕЗ обрезки substring(0,60)
-//         let mainMode = payload.mode_trigger || payload.ai_model_engine || 'pulid';
-        
-//         if (mainMode === 'tryon' && payload.sub_mode) {
-//             mainMode = payload.sub_mode; 
-//         }
-
-//         let quality = payload.quality || 'schnell';
-//         let ratio = payload.aspect_ratio ? payload.aspect_ratio.replace(':', '-') : '9-16';
-//         let faces = payload.faces_count || 1;
-//         let isCustom = payload.is_custom_text_mode || payload.is_custom_template ? '1' : '0';
-        
-//         let styleTitle = payload.style_title || 'none';
-//         if (isCustom === '1' && !payload.style_title) styleTitle = 'custom';
-        
-//         // Очищаем пробелы, заменяя на дефисы
-//         let safeStyleTitle = styleTitle.replace(/\s+/g, '-');
-
-//         // Строка параметров, которую твой Python-код считает без ошибок
-//         let startParam = `mode_${mainMode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}_s_${safeStyleTitle}`;
-
-//         // Страховка лимита 64 символа Телеграма
-//         if (startParam.length > 64) {
-//             startParam = `mode_${mainMode}_q_${quality}_r_${ratio}_f_${faces}_c_${isCustom}_s_short`;
-//         }
-
-//         const telegramDeepLink = `https://t.me/${botUsername}?start=${startParam}`;
-
-//         // Закрываем шторку на телефонах нативным методом
-//         if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openTelegramLink === 'function') {
-//             window.Telegram.WebApp.openTelegramLink(telegramDeepLink);
-//             window.Telegram.WebApp.close();
-//             return;
-//         }
-
-//         window.location.href = telegramDeepLink;
-
-//     } catch (e) {
-//         console.error("Ошибка функции sendToTelegram:", e);
-//         window.location.href = "https://t.me/ChatGPT_BuzVuz_bot";
-//     }
-// }
-
-
 
 
 function sendPhotoTextData() { 

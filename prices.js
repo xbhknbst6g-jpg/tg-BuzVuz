@@ -1,5 +1,5 @@
-// URL-адрес вашего сервера, где запущен бот и API
-const API_URL = "https://thyself-lavish-underhand.ngrok-free.dev/api/v1/tariffs";
+// Теперь сайт будет стучаться в твою собственную безопасную функцию Vercel
+const API_URL = "/api/tariffs";
 
 // 🟢 1. ДЕФОЛТНЫЕ ЗАГЛУШКИ ДЛЯ КАРТИНОК (РИСОВАНИЯ)
 window.dbFluxDevPrices = { coins_min: 1, coins_mid: 2, coins_max: 3 };

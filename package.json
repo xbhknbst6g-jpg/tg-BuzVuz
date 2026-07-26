@@ -1,0 +1,8 @@
+{
+  "name": "tg-bot-frontend",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "mongodb": "^6.0.0"
+  }
+}

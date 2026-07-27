@@ -89,7 +89,7 @@ async function syncPricesFromDatabase() {
                 window.dbBackgroundPrices.coins_max = data.services.bria_background.coins_max;
             }
             
-            // 🔥 ДОБАВЛЕНО: Сохраняем три уровня цен для Умного Фокуса Фотостудии (nano_banana_edit)
+            // 🔥 ДОБАВЛЕНО: Сохраняем три уровня цен для Умного Фокуса ИИ-Фото (nano_banana_edit)
             if (data.services.nano_banana_edit) {
                 window.dbBananaEditPrices.coins_min = data.services.nano_banana_edit.coins_min;
                 window.dbBananaEditPrices.coins_mid = data.services.nano_banana_edit.coins_mid;
@@ -346,9 +346,9 @@ function selectQualityFromSheet(id, text) {
     }
     
     // 🔥 МГНОВЕННО ПИНАЕМ ВСЕ ОБНОВЛЯТОРЫ ЦЕН НА ВСЕХ САЙТАХ ПРОЕКТА!
-    if (typeof updateNeoStartButtonText === "function") updateNeoStartButtonText(); // Рисование
-    if (typeof updateMotionSubmitButton === "function") updateMotionSubmitButton(); // Видеостудия
-    if (typeof updateFotoSubmitButtons === "function") updateFotoSubmitButtons();   // Фотостудия
+    if (typeof updateNeoStartButtonText === "function") updateNeoStartButtonText(); // ИИ-Арт
+    if (typeof updateMotionSubmitButton === "function") updateMotionSubmitButton(); // ИИ-Видео
+    if (typeof updateFotoSubmitButtons === "function") updateFotoSubmitButtons();   // ИИ-Фото
     
     closeCustomSheet();
 }
@@ -356,8 +356,8 @@ function selectQualityFromSheet(id, text) {
 // 4. УЛЬТРА-УНИВЕРСАЛЬНЫЙ ОБРАБОТЧИК ФОРМАТА ДЛЯ ВСЕХ РЕЖИМОВ
 function selectRatioFromSheet(id) {
     const ratioButtonIds = [
-        'btn_text_ratio',      // Фото (Свой/Шаблоны) и Рисование 1
-        'btn_direct_ratio',    // Рисование 2
+        'btn_text_ratio',      // Фото (Свой/Шаблоны) и ИИ-Арт 1
+        'btn_direct_ratio',    // ИИ-Арт 2
         'btn_direct_ratio_2',  
         'btn_swap_ratio',      // Face Swap
         'btn_tryon_ratio',     // Примерка одежды
@@ -388,7 +388,7 @@ function selectRatioFromSheet(id) {
         directGenRatio = id;
     }
 
-    // 🔥 ВЫЗЫВАЕМ ОБЕ ФУНКЦИИ ОБНОВЛЕНИЯ ЦЕН (Для Рисования и для Фотостудии)
+    // 🔥 ВЫЗЫВАЕМ ОБЕ ФУНКЦИИ ОБНОВЛЕНИЯ ЦЕН (Для ИИ-Арта и для ИИ-Фото)
     try {
         if (typeof updateNeoStartButtonText === "function") updateNeoStartButtonText();
     } catch (e) { console.error(e); }

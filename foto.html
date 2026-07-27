@@ -2,331 +2,428 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <!-- Ограничение масштабирования для Web App и поддержка челки iPhone -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>AI Видеостудия</title>
+    <title>AI Фотостудия</title>
+    
     <!-- Официальный скрипт Telegram Web App -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<!-- ========================================== -->
-<!-- ЭКРАН : ГЛАВНОЕ МЕНЮ РАЗДЕЛА ВИДЕО -->
-<!-- ========================================== -->
 
-    <div id="video_menu" class="screen active">
-        
-        <!-- Твой фирменный неоновый градиентный заголовок -->
-        <h1 class="ai-studio-title">AI Video Studio</h1>
-        
-        <!-- Твоя светящаяся лазерная линия переливания -->
+
+
+    <!-- ========================================== -->
+    <!-- ЭКРАН 1: ГЛАВНОЕ МЕНЮ ФОТО-СТУДИИ          -->
+    <!-- ========================================== -->
+    <div id="foto" class="screen active">
+        <div class="header"></div>
+        <h1 class="ai-studio-title">AI Photo Studio</h1>
         <div class="neon-divider"></div>
 
-        <p style="text-align: center; color: var(--tg-theme-hint-color, #666); font-size: 14px; margin-top: 5px; margin-bottom: 25px;">Выберите нужный инструмент для генерации видео</p>
+       <p style="text-align: center; color: var(--tg-theme-hint-color, #666); font-size: 14px; margin-top: 5px;">Выберите нужный инструмент генерации ниже</p>
 
-        <!-- Сетка, в которой карточки будут стоять строго друг под другом -->
-        <div class="main-menu-grid">
+       <div class="main-menu-grid">
+                <!-- 1. Фото + Текст с вашей новой камерой -->
+            <div class="menu-card orange" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('text_image');">
+                <div class="menu-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-camera">
+                        <path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/>
+                        <circle cx="12" cy="13" r="3"/>
+                    </svg>
+                </div>
+                <div class="menu-info">
+                    <div class="menu-title">Фото + Текст</div>
+                    <div class="menu-desc">Выбирите готовый шаблон или создайте свое уникальное фото</div>
+                </div>
+            </div>
+
             
-            <!-- 1. КАРТОЧКА: ОЖИВЛЕНИЕ ФОТО (Оранжевый неон) -->
-            <div class="menu-card" style="--neon-color: #ff7300; --neon-glow: rgba(255, 115, 0, 0.5);" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('animate_nosound');">
+                <!-- 2. Face Swap с вашей новой иконкой стрелок обмена -->
+            <div class="menu-card purple" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('face_swap');">
                 <div class="menu-icon">
-    <!-- 🔥 ИКОНКА БЕЗ ЗВУКА ДЛЯ ПЕРВОГО РЕЖИМА -->
-                    <svg width="100%" height="100%" viewBox="0 0 25 24" fill="none" xmlns="http://w3.org" style="display: block;">
-                        <path d="M3.78082 2.21967C3.48792 1.92678 3.01305 1.92678 2.72016 2.21967C2.42726 2.51256 2.42726 2.98744 2.72016 3.28033L6.87798 7.43815L6.80858 7.49984H4.75C3.50736 7.49984 2.5 8.5072 2.5 9.74984V14.2498C2.5 15.4925 3.50736 16.4998 4.75 16.4998H6.80862L10.0052 19.3412C11.4562 20.631 13.75 19.601 13.75 17.6596V14.3102L21.2192 21.7794C21.5121 22.0722 21.9869 22.0722 22.2798 21.7794C22.5727 21.4865 22.5727 21.0116 22.2798 20.7187L3.78082 2.21967ZM12.25 12.8102L7.94048 8.50065L7.592 8.8104C7.45472 8.93243 7.27742 8.99984 7.09373 8.99984H4.75C4.33579 8.99984 4 9.33563 4 9.74984V14.2498C4 14.6641 4.33579 14.9998 4.75 14.9998H7.09377C7.27745 14.9998 7.45475 15.0673 7.592 15.1893L11.0017 18.2201C11.4854 18.6501 12.25 18.3067 12.25 17.6596V12.8102Z" fill="currentColor"/>
-                        <path d="M12.25 6.34009V8.66135L13.75 10.1613V6.34009C13.75 4.39868 11.4562 3.36862 10.0052 4.65842L9.07442 5.48577L10.1369 6.54826L11.0017 5.77954C11.4854 5.3496 12.25 5.69296 12.25 6.34009Z" fill="currentColor"/>
-                        <path d="M15.499 11.9104L16.7902 13.2015C17.2211 12.0135 16.9913 10.6401 16.1007 9.64975C15.8237 9.34175 15.3495 9.3166 15.0415 9.59357C14.7335 9.87054 14.7084 10.3448 14.9853 10.6527C15.3078 11.0114 15.479 11.4581 15.499 11.9104Z" fill="currentColor"/>
-                        <path d="M17.7519 14.1633L18.8565 15.2678C20.2358 12.9757 20.0147 9.86257 18.193 7.83376C17.9162 7.52556 17.442 7.50005 17.1338 7.77679C16.8256 8.05353 16.8001 8.52772 17.0769 8.83592C18.3658 10.2714 18.5908 12.4636 17.7519 14.1633Z" fill="currentColor"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-repeat">
+                        <path d="m17 2 4 4-4 4"/>
+                        <path d="M3 11v-1a4 4 0 0 1 4-4h14"/>
+                        <path d="m7 22-4-4 4-4"/>
+                        <path d="M21 13v1a4 4 0 0 1-4 4H3"/>
                     </svg>
                 </div>
-
                 <div class="menu-info">
-                    <div class="menu-title">МАГИЯ ОЖИВЛЕНИЯ</div>
-                    <div class="menu-desc">Превратите статичный кадр в живое видео (режим без звуковых эффектов)</div>
+                    <div class="menu-title">Face Swap</div>
+                    <div class="menu-desc">Перенос вашего лица на другое фото</div>
                 </div>
             </div>
 
-            <!-- 2. КАРТОЧКА: ОЖИВЛЕНИЕ СО ЗВУКОМ (Фиолетовый неон) -->
-            <div class="menu-card" style="--neon-color: #b624ff; --neon-glow: rgba(182, 36, 255, 0.5);" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('animate_sound');">
+
+            
+            <!-- 3. Примерка одежды (Иконка: Вешалка / Футболка) -->
+            <div class="menu-card blue" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('tryon');">
                 <div class="menu-icon">
-                    <!-- 🔥 ГРОМКИЙ ДИНАМИК ДЛЯ ВТОРОГО РЕЖИМА (SORA КИНО) -->
-                    <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org" style="display: block;">
-                        <path d="M17.1349 8.33459C18.9524 10.3587 18.9524 13.6405 17.1349 15.6646M19.3343 6.62459C21.8886 9.59312 21.8886 14.4061 19.3343 17.3746M15.043 10.151C15.987 11.2007 15.987 12.7985 15.043 13.8482M10.0035 5.21873L6.59373 8.2496H4.25C3.42157 8.2496 2.75 8.92117 2.75 9.7496V14.2496C2.75 15.078 3.42157 15.7496 4.25 15.7496H6.59377L10.0035 18.7804C10.9708 19.6403 12.5 18.9536 12.5 17.6593V6.33985C12.5 5.04557 10.9708 4.35887 10.0035 5.21873Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shirt">
+                        <path d="M6 2 3 5v4l3 1v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10l3-1V5l-3-3H6Z"/>
+                        <path d="M10 2a2 2 0 0 0 4 0"/>
                     </svg>
                 </div>
-
                 <div class="menu-info">
-                    <div class="menu-title">ЭКШЕН-ВИДЕО</div>
-                    <div class="menu-desc">Превратите фото в масштабный кино-сюжет с физикой, движением камеры, с звуковыми эффектами</div>
+                    <div class="menu-title">Примерка одежды</div>
+                    <div class="menu-desc">Примерка любых вещей по вашей фигуре</div>
                 </div>
             </div>
 
-            <!-- 3. КАРТОЧКА: ОЖИВЛЕНИЕ ПО ВИДЕО (Синий неон) -->
-            <div class="menu-card" style="--neon-color: #0066ff; --neon-glow: rgba(0, 102, 255, 0.5);" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('video_motion_control');">
+            
+            <!-- 4. Смена фона (Иконка: Изображение / Картина) -->
+            <div class="menu-card cyan" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('bg_change');">
                 <div class="menu-icon">
-                <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org" style="display: block;">
-                    <path d="M16.9065 9.84156C17.3076 9.84156 17.6335 10.1675 17.6335 10.5686V13.7999L21.1808 10.739C21.2334 10.6934 21.2981 10.6638 21.3671 10.6539C21.4362 10.6439 21.5066 10.6541 21.57 10.683C21.6334 10.712 21.6871 10.7586 21.7248 10.8173C21.7625 10.876 21.7825 10.9442 21.7824 11.014V19.9819C21.7824 20.0507 21.7629 20.1181 21.7262 20.1762C21.6895 20.2344 21.6371 20.281 21.5751 20.3106C21.513 20.3402 21.4438 20.3517 21.3755 20.3437C21.3072 20.3356 21.2426 20.3084 21.1891 20.2652L17.6335 17.3898V20.6413C17.6334 20.8144 17.5714 20.9818 17.4589 21.1134L17.3862 21.1869C17.3085 21.2551 17.2172 21.3059 17.1184 21.3361C17.0195 21.3662 16.9154 21.3749 16.8129 21.3616L7.69868 20.1833V21.273C7.69868 21.4657 7.6222 21.6505 7.48604 21.7868C7.34988 21.9231 7.16518 21.9998 6.97252 22H2.94477C2.75211 22 2.56732 21.9235 2.431 21.7874C2.29469 21.6512 2.21799 21.4665 2.21777 21.2738V10.5694C2.21777 10.1683 2.54367 9.8424 2.94477 9.84156H16.9065ZM11.7607 13.4749H8.04881C7.95255 13.4749 7.86022 13.5131 7.79207 13.5811C7.72393 13.649 7.68553 13.7413 7.68531 13.8376V16.2166C7.68531 16.4171 7.84826 16.5793 8.04881 16.5793H11.7607C11.9612 16.5793 12.1233 16.4171 12.1242 16.2166V13.8376C12.124 13.7413 12.0856 13.649 12.0174 13.5811C11.9493 13.5131 11.8569 13.4749 11.7607 13.4749ZM12.9356 2C13.9005 2 14.826 2.38332 15.5083 3.06564C16.1906 3.74797 16.5739 4.67339 16.5739 5.63834C16.5739 6.60329 16.1906 7.52871 15.5083 8.21103C14.826 8.89335 13.9005 9.27668 12.9356 9.27668C11.9706 9.27668 11.0452 8.89335 10.3629 8.21103C9.68057 7.52871 9.29724 6.60329 9.29724 5.63834C9.29724 4.67339 9.68057 3.74797 10.3629 3.06564C11.0452 2.38332 11.9706 2 12.9356 2ZM6.26724 3.09718C6.66537 3.09718 7.05959 3.1756 7.42741 3.32796C7.79523 3.48031 8.12944 3.70362 8.41096 3.98514C8.69247 4.26666 8.91578 4.60086 9.06814 4.96868C9.2205 5.3365 9.29891 5.73073 9.29891 6.12885C9.29891 6.52698 9.2205 6.92121 9.06814 7.28902C8.91578 7.65684 8.69247 7.99105 8.41096 8.27257C8.12944 8.55409 7.79523 8.7774 7.42741 8.92975C7.05959 9.08211 6.66537 9.16052 6.26724 9.16052C5.46319 9.16052 4.69208 8.84112 4.12353 8.27257C3.55498 7.70402 3.23557 6.9329 3.23557 6.12885C3.23557 5.32481 3.55498 4.55369 4.12353 3.98514C4.69208 3.41659 5.46319 3.09718 6.26724 3.09718Z" fill="currentColor"/>
-                </svg>
-            </div>
-
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layers">
+                        <path d="m12 3-10 5 10 5 10-5-10-5Z"/>
+                        <path d="m2 17 10 5 10-5"/>
+                        <path d="m2 12 10 5 10-5"/>
+                    </svg>
+                </div>
                 <div class="menu-info">
-                    <div class="menu-title">РЕЖИССЕР ДВИЖЕНИЙ</div>
-                    <div class="menu-desc">Управляйте физикой видео, оживите фото, ваше фото повторит движения из видео примера</div>
+                    <div class="menu-title">Смена фона</div>
+                    <div class="menu-desc">Умный перенос объекта на новый задний план</div>
                 </div>
             </div>
-
         </div>
     </div>
 
-<!-- ========================================== -->
-<!-- ЭКРАН 1: ОЖИВЛЕНИЕ ФОТО (БЕЗ ЗВУКА)          -->
-<!-- ========================================== -->
-    <div id="animate_nosound" class="screen">
+
+
+    <!-- ========================================== -->
+    <!-- РЕЖИМ 1: ФОТО + ТЕКСТ (TEXT_IMAGE)        -->
+    <!-- ========================================== -->
+    <div id="text_image" class="screen">
             
-        <!-- Фирменный контейнер вкладок с кнопкой назад -->
-        <div class="tabs-container">
-            <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('video_menu')"></button>
-            <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;">
-                Оживление фото без звука
+        <!-- 🔥 ЛЕНТА ВЕРХУШКИ №1: Стрелка "Назад" и выбор моделей ИИ строго на одной линии -->
+        <div class="tabs-container" id="text_image_models_row" style="display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100%; box-sizing: border-box; margin-bottom: 8px;">
+            <!-- Наша круглая кнопка назад -->
+            <button class="back-tab-btn" onclick="handleTextBackClick()"></button>
+            
+            <!-- Две широкие кнопки ИИ-моделей делят оставшееся место поровну -->
+            <div style="display: flex; flex: 1; background: rgba(255,255,255,0.06); padding: 4px; border-radius: 14px; gap: 4px; margin-left: 8px;">
+                <button id="btn_global_model_banana" class="tab-btn active" style="flex: 1; font-size: 11px !important; padding: 7px 2px !important; margin: 0 !important; width: auto !important; min-width: 0 !important;" onclick="switchGlobalAiModel('banana', this)">Умный Фокус</button>
+                <button id="btn_global_model_pulid" class="tab-btn" style="flex: 1; font-size: 11px !important; padding: 7px 2px !important; margin: 0 !important; width: auto !important; min-width: 0 !important;" onclick="switchGlobalAiModel('pulid', this)">Цифровая Оптика</button>
             </div>
         </div>
 
-        <!-- Основной блок настроек -->
-        <div id="video_nosound_settings_block" class="custom-prompt-container">                
-            <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">Пример готовой генерации</div>
-            
-            <!-- 🔥 КОМПАКТНЫЙ ГОРИЗОНТАЛЬНЫЙ РЯД ДЛЯ ДВУХ КАРТОЧЕК (ОБА КЛИКАБЕЛЬНЫ НА ВЕСЬ ЭКРАН) -->
-            <div class="example-preview-container" style="display: flex; flex-direction: row; gap: 15px; justify-content: center; margin: 15px auto; width: 90%; max-width: 340px;">
-                
-                <!-- 1. Карточка Фото-оригинала (Левая сторона - КЛИКАБЕЛЬНАЯ) -->
-                <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;">
-                    <!-- 🔥 Рамка фото теперь оранжевая и неоновая, как у видео-результата -->
-                    <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
-                        <img src="https://i.postimg.cc/wMDnw6QS/1_video.jpg" 
-                            onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo(this.src)"
-                            style="width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer;" alt="Фото оригинал">
-                    </div>
-                    <div style="font-size: 11px; font-weight: 800; color: #ffffff; letter-spacing: 0.5px; text-align: center;">1. Исходное фото</div>
-                </div>
-                <!-- 2. Карточка Видео-результата (Правая сторона) -->
-                <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;">
-                    <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;">
-                        <video id="preview_nosound_video" style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay>
-                            <source src="https://i.imgur.com/7bLn7AV.mp4" type="video/mp4">
-                            Ваш браузер не поддерживает видео.
-                        </video>
-
-                        <!-- 🔥 ИСПРАВЛЕНО: Ссылка заменена на рабочую прямую ссылку mp4 из тега source -->
-                        <div id="video_nosound_play_overlay" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo('https://i.imgur.com/7bLn7AV.mp4')" 
-                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                        </div>
-                    </div>
-                    <div style="font-size: 11px; font-weight: 800; color: #ffffff; letter-spacing: 0.5px; text-align: center;">2. Результат🔥</div>
-                </div>
-            </div>
-
-            <!-- Текст пошаговой инструкции обновлен под авто-формат -->
-            <div style="font-size: 13px; line-height: 1.5; margin-top: 25px !important; padding: 0 5px; color: rgba(255, 255, 255, 0.6) !important;">
-                <b>Шаг 1:</b> Выберите длительность видео на кнопке ниже.<br>
-                <b>Шаг 2:</b> Нажмите кнопку запуска START.<br>
-                <b>Шаг 3:</b> Следуйте дальнейшим указаниям бота!<br>
-            </div>
-
-            <!-- Фирменная лазерная линия-разделитель (Оранжевый неон) -->
-            <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
-
-            <!-- 🔥 Регулируйте отступ цифрой в margin-bottom (сейчас стоит 22px) -->
-            <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center; margin-bottom: 60px !important;">
-                <b>Итоговая цена зависит от выбранной длительности и отображается на кнопке START</b>
-            </div>
-            <!-- 🔥 ЭТА РАСПОРКА УДЕРЖИТ ОКНО ПО ЦЕНТРУ НА ПК 🔥 -->
-            <div class="mode-spacer" style="height: calc(100vh - 470px); display: none;" id="motion_spacer"></div>
-
-            <!-- 🔥 ОБНОВЛЕННЫЙ ПУЛЬТ УПРАВЛЕНИЯ РЕЖИМА 1 (Две колонки) -->
-            <div class="single-row-controls" style="display: flex; gap: 15px; align-items: flex-end; margin-top: 85px !important; position: relative; z-index: 10;">
-                <!-- Колонка Длительности -->
-                <div class="control-col" style="flex: 1;">
-                    <div class="control-label"></div>
-                    <button id="btn_video_duration" class="capsule-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openUniversalDurationSheet()">⏱️ 5 сек</button>
-                </div>
-                
-                <!-- Кнопка запуска -->
-                <div class="control-col-btn" style="flex: 1.5;">
-                    <div class="control-label"></div>
-                        <button id="neo_video_submit_btn" class="neo-start-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendVideoGenData()">Start 7 🪙</button> 
-                    </div>
-            </div>
-
-        </div> <!-- Закрыли блок настроек video_nosound_settings_block -->
-    </div>
-
-<!-- ========================================== --> 
-<!-- ЭКРАН 2: ОЖИВЛЕНИЕ СО ЗВУКОМ (KLING O3 PRO) --> 
-<!-- ========================================== --> 
-<div id="animate_sound" class="screen"> 
-    <!-- Фирменный контейнер вкладок с кнопкой назад --> 
-    <div class="tabs-container"> 
-        <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openScreen('video_menu')"></button> 
-        <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;"> 
-            Оживление фото со звуком (Kling O3)
-        </div> 
-    </div> 
-
-    <!-- Основной блок настроек --> 
-    <div id="video_sound_settings_block" class="custom-prompt-container"> 
-        <div class="menu-desc" style="text-align: center; margin-bottom: 15px;">Пример готовой генерации</div> 
-
-        <!-- Твой оригинальный компактный горизонтальный ряд для двух карточек --> 
-        <div class="example-preview-container" style="display: flex; flex-direction: row; gap: 15px; justify-content: center; margin: 15px auto; width: 90%; max-width: 340px;"> 
-            <!-- 1. Карточка Фото-оригинала --> 
-            <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;"> 
-                <!-- 🔥 Рамка фото на втором экране тоже загорелась оранжевым неон-стилем --> 
-                <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;"> 
-                    <img src="https://i.postimg.cc/Kv5FrNzq/b-Lx-N-n-XBzkt-Aah-Ej-Tr-YFf.png" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo(this.src)" style="width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer;" alt="Фото для Kling O3"> 
-                </div> 
-                <div style="font-size: 11px; font-weight: 800; color: #ffffff; letter-spacing: 0.5px; text-align: center;">1. Исходное фото</div> 
-            </div> 
-
-            <!-- 2. Карточка Видео-результата --> 
-            <div class="preview-item-wrapper" style="display: flex; flex-direction: column; gap: 6px; align-items: center; flex: 1;"> 
-                <div class="preview-card-box" style="position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; box-shadow: 0 0 15px rgba(255, 115, 0, 0.15); background: #000;"> 
-                    <video id="preview_sound_video" style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay> 
-                        <source src="https://i.imgur.com/Q6GrKyK.mp4" type="video/mp4"> 
-                    </video> 
-                    <div id="video_sound_play_overlay" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo('https://i.imgur.com/Q6GrKyK.mp4')" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; cursor: pointer;"> 
-                    </div> 
-                </div> 
-                <div style="font-size: 11px; font-weight: 800; color: #ffffff; letter-spacing: 0.5px; text-align: center;">2. Результат🔥</div> 
-            </div> 
-        </div> 
-
-        <!-- Твоя оригинальная пошаговая инструкция под авто-формат --> 
-        <div style="font-size: 13px; line-height: 1.5; margin-top: 25px !important; padding: 0 5px; color: rgba(255, 255, 255, 0.6) !important;"> 
-            <b>Шаг 1:</b> Выберите длительность видео на кнопке ниже.<br> 
-            <b>Шаг 2:</b> Нажмите кнопку запуска START.<br> 
-            <b>Шаг 3:</b> Следуйте дальнейшим указаниям бота!<br> 
-        </div> 
-
-        <!-- Твой фирменный оранжевый разделитель --> 
-        <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div> 
-        
-        <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center; margin-bottom: 60px !important;"> 
-            <b>Итоговая цена зависит от выбранной длительности и отображается на кнопке START</b> 
-        </div> 
-
-        <!-- Твой оригинальный пульт управления --> 
-        <div class="single-row-controls" style="display: flex; gap: 15px; align-items: flex-end; margin-top: 85px !important; position: relative; z-index: 10;"> 
-            <div class="control-col" style="flex: 1;"> 
-                <!-- 🔥 Изменили дефолтный текст кнопки длительности на 5 сек -->
-                <button id="btn_sora_duration" class="capsule-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openUniversalDurationSheet()">⏱️ 5 сек</button> 
-            </div> 
-            <div class="control-col-btn" style="flex: 1.5;"> 
-                <!-- 🔥 Изменили ID кнопки отправки и дефолтный текст цены на 5 коинов -->
-                <button id="neo_video_sound_submit_btn" class="neo-start-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendVideoSoundGenData()">Start 5 🪙</button> 
-            </div> 
-        </div> 
-    </div> 
-</div> 
-<!-- ТУТ СТРОГО ЗАКРЫЛСЯ ВТОРОЙ РЕЖИМ -->
-
-<!-- ========================================== -->
-<!-- ЭКРАН 3: ОЖИВЛЕНИЕ ПО ВИДЕО (MOTION CONTROL) -->
-<!-- ========================================== -->
-    <div id="video_motion_control" class="screen">
-
-        <!-- Фирменный контейнер вкладок с кнопкой назад -->
-        <div class="tabs-container">
-            <button class="back-tab-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); handleMotionBackClick()"></button>
-            <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;" id="video_motion_main_title">
-                Создание видео
-            </div>
-        </div>
-            
-        <!-- Контейнер вкладок -->
-        <div id="video_motion_tabs" style="display: flex !important; gap: 10px !important; margin-bottom: 15px !important; padding: 0 10px;">
-            <button class="tab-btn capsule-btn active" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); switchMotionTab('preset', this)" style="flex: 1 !important; margin: 0 !important; font-size: 13px !important; text-transform: uppercase;">Шаблоны</button>
-            <button class="tab-btn capsule-btn" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); switchMotionTab('custom', this)" style="flex: 1 !important; margin: 0 !important; font-size: 13px !important; text-transform: uppercase; background: #111111 !important; color: rgba(255,255,255,0.5) !important; border: 2px solid rgba(255, 102, 0, 0.2) !important; box-shadow: none !important;">Свой</button>
+        <!-- 🔥 ЛЕНТА ВЕРХУШКИ №2: Твои оригинальные огненные вкладки фильтрации категорий -->
+        <div class="text_image_tabs" id="text_image_tabs" style="margin-bottom: 12px; display: flex; gap: 4px; width: 100%; box-sizing: border-box; overflow-x: hidden;">
+            <button class="tab-btn active" onclick="switchTextTab('all', this)" style="flex: 1 1 0%; min-width: 0; width: auto; padding: 6px 0; font-size: 11px; white-space: nowrap; text-align: center;">Все</button>
+            <button class="tab-btn" onclick="switchTextTab('women', this)" style="flex: 1 1 0%; min-width: 0; width: auto; padding: 6px 0; font-size: 11px; white-space: nowrap; text-align: center;">Жен</button>
+            <button class="tab-btn" onclick="switchTextTab('men', this)" style="flex: 1 1 0%; min-width: 0; width: auto; padding: 6px 0; font-size: 11px; white-space: nowrap; text-align: center;">Муж</button>
+            <button class="tab-btn" onclick="switchTextTab('kids', this)" style="flex: 1 1 0%; min-width: 0; width: auto; padding: 6px 0; font-size: 11px; white-space: nowrap; text-align: center;">Дети</button>
+            <button class="tab-btn" onclick="switchTextTab('common', this)" style="flex: 1 1 0%; min-width: 0; width: auto; padding: 6px 0; font-size: 11px; white-space: nowrap; text-align: center;">Груп</button>
+            <button class="tab-btn" onclick="switchTextTab('custom', this)" style="flex: 1 1 0%; min-width: 0; width: auto; padding: 6px 0; font-size: 11px; white-space: nowrap; text-align: center;">Свой</button>
         </div>
 
         <div class="header" style="margin-bottom: 15px; text-align: center;">
-            <p id="video_motion_subtitle" style="font-size: 13px; margin: 4px 0 0 0; color: rgba(255,255,255,0.6);">Выберите готовый шаблон для настройки:</p>
+            <h1 id="text_image_title" style="font-size: 15px; font-weight: 800; margin: 0; color: var(--tg-theme-text-color, #fff);">Шаблоны для генераций Вашего Фото</h1>
+            <p id="text_image_subtitle" style="font-size: 13px; margin: 4px 0 0 0; color: var(--tg-theme-hint-color, #666);">В режиме «Умный фокус» фото получается реалистичным, а в режиме «Цифровая оптика» — в художественном стиле.</p>
         </div>
 
-        <div class="phone-presets-grid" id="motion_gallery_block" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 10px; margin-bottom: 15px;">
-            <!-- Сюда fetch загрузит карточки автоматически -->
+        <!-- 🔥 НАШ ШАГ 1 (ГАЛЕРЕЯ КАРТОЧЕК). ТЕПЕРЬ ОНА ЧИСТАЯ И ИЗОЛИРОВАННАЯ -->
+        <div class="isolated-photo-text-grid" id="text_image_gallery">
+            <!-- Сюда ваш JS скрипт через fetch автоматически вставит карточки из файла cards-template.html -->
         </div>
 
-        <!-- ШАГ 2: БЛОК НАСТРОЕК -->
-        <div id="motion_controls_block" style="display: none; width: 100%;">
-            <!-- ИНСТРУКЦИЯ ДЛЯ ВКЛАДКИ "СВОЙ" -->
-            <div id="motion_custom_instruction" class="custom-prompt-container" style="display: none; margin-bottom: 15px; padding: 10px 8px;">
-                <div style="font-size: 13px; color: rgba(255, 255, 255, 0.6); line-height: 1.5;">
-                    <b style="color: #ffffff;">Шаг 1:</b> Подготовьте фотографию для оживления и пример (видеоролик), с которого ИИ скопирует движения для фото.<br>
+        <!-- ШАГ 2: БЛОК НАСТРОЕК (Полностью независимый пульт управления) -->
+        <div id="text_image_settings_block" style="display: none;">
+            
+            <!-- 1. ИНСТРУКЦИЯ ДЛЯ ВКЛАДКИ "СВОЙ" (Всё, что внутри, будет скрываться и показываться скриптом ОДНОВРЕМЕННО) -->
+            <div id="custom_instruction_text" class="custom-prompt-container" style="display: none; margin-bottom: 15px; min-height: calc(100vh - 240px); box-sizing: border-box; display: flex; flex-direction: column;">
+                <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px; color: var(--tg-theme-text-color, #000); text-align: center;">Как работает режим:</div>
+                <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.4;">
+                    <b style="color: #ffffff;">Шаг 1:</b> Настройте формат и качество кадра внизу.<br>
+                    <b style="color: #ffffff;">Шаг 2:</b> Выбирите количество людей (сколько людей - столько бот потребует загрузить фото).<br>
+                    <b style="color: #ffffff;">Шаг 3:</b> Нажмите кнопку запуска START.<br>
+                    <b style="color: #ffffff;">Шаг 4:</b> Следуйте дальнейшим указаниям бота!
+                </div>
+                <!-- Наша лазерная линия-разделитель (Оранжевый неон) -->
+                <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
+
+                <!-- Строка про итог (Белая и жирная) -->
+                <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center; margin-bottom: 15px;">
+                    <b>Итоговая цена зависит от выбранного качества и количества человек, точная цифра будет отображаться на кнопке START</b>
+                </div>
+
+                <!-- 3. ТВОИ ОГНЕННЫЕ КНОПКИ УПРАВЛЕНИЯ СНИЗУ (Выбор людей теперь внутри инструкции Свой!) -->
+                <div id="faces_count_selector_row" style="margin-top: 10px !important; margin-bottom: 12px; display: none;">
+                    <div style="font-size: 12px; margin-bottom: 6px; color: var(--tg-theme-hint-color, #666); text-align: center;">Количество персонажей на фото:</div>
+                    <div style="display: flex; background: rgba(255,255,255,0.06); padding: 4px; border-radius: 14px; gap: 4px; max-width: 280px; margin: 0 auto;">
+                        <button id="btn_faces_1" class="tab-btn active" style="flex: 1; font-size: 12px; padding: 6px 0;" onclick="selectFacesCount(1, this)"> 1 чел.</button>
+                        <button id="btn_faces_2" class="tab-btn" style="flex: 1; font-size: 12px; padding: 6px 0;" onclick="selectFacesCount(2, this)"> 2 чел.</button>
+                        <button id="btn_faces_3" class="tab-btn" style="flex: 1; font-size: 12px; padding: 6px 0;" onclick="selectFacesCount(3, this)"> 3 чел.</button>
+                    </div>
+                </div>
+            </div> <!-- 🌟 ВОТ СЮДА МЫ ПЕРЕНЕСЛИ ЗАКРЫВАЮЩИЙ ТЕГ ДЛЯ custom_instruction_text -->
+
+            <!-- 2. СЛУЖЕБНЫЙ КОНТЕЙНЕР ДЛЯ ШАБЛОНОВ (Большое превью картинки на весь экран) -->
+            <div id="preset_preview_block" style="display: none;">
+                <div class="text-image-compact-preview">
+                    <img id="text_image_large_preview" src="" alt="Выбранный стиль" style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 12px;">
+                </div>
+            </div>
+
+            <!-- 🔥 ВЕРНУЛИ СТАНДАРТНУЮ ВЫСОТУ: Обычные вкладки больше не будут перекрываться кнопоками! 🔥 -->
+            <div class="mode-spacer" style="height: calc(100vh - 470px); display: none;" id="text_image_spacer"></div>
+            <!-- Добавили transform: translateY(-10px); в конец стиля -->
+            <div id="bottom_action_controls" class="single-row-controls" style="margin-top: 15px !important; margin-bottom: 25px !important; transform: translateY(5px);">
+                <div class="control-col">
+                    <button id="btn_text_quality" class="capsule-btn" onclick="openUniversalQualitySheet(selectedAiModelEngine === 'pulid' ? 'flux_pulid' : 'nano_banana_edit')">⚡ Standard (1k)</button>
+                </div>
+                <div class="control-col">
+                    <button id="btn_text_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()">9:16</button>
+                </div>
+                <div class="control-col control-col-btn">
+                    <button id="neo_text_submit_btn" class="neo-start-btn" onclick="sendPhotoTextData()">Start 1 🪙</button>
+                </div>
+            </div>
+
+        </div> <!-- 👈 ТЕПЕРЬ ПУЛЬТ НАСТРОЕК ЗАКРЫВАЕТСЯ СТРОГО ТУТ, КНОПКИ ВНУТРИ НЕГО! -->
+    </div> <!-- Это финал экрана text_image -->
+
+
+    <!-- ========================================== -->
+    <!-- ПОДРЕЖИМ 2: FACE SWAP                      -->
+    <!-- ========================================== -->
+    <div id="face_swap" class="screen">
+            
+        <!-- ЛЕНТА ВЕРХУШКИ С НАШЕЙ КРУГЛОЙ КНОПКОЙ НАЗАД (Добавили стили и position: relative) -->
+        <div class="tabs-container" id="swap_tabs" style="display: flex; align-items: center; padding: 5px 0; position: relative;">
+            <button class="back-tab-btn" onclick="handleSwapBackClick()"></button>  
+            <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;"></div>          
+            <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%; position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 1; pointer-events: none;">Настройка Face Swap</div>
+        </div>
+        
+        <!-- СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (Изначально полностью скрыт, как в твоих других режимах) -->
+        <div id="face_swap_settings_block" style="display: none;">
+            
+            <!-- 🔥 КОНТЕЙНЕР-ОРИЕНТИР: Задали минимальную высоту, чтобы он работал как картинка в Фото+Текст -->
+            <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 240px); box-sizing: border-box; display: flex; flex-direction: column;">
+                
+                <div style="font-size: 14px; font-weight: bold; margin-bottom: 12px; color: var(--tg-theme-text-color, #000); text-align: center;">📍 Как это работает (Пример):</div>
+                
+                <!-- Сетка шагов (Селфи -> Шаблон -> Итог) + Добавили display: flex -->
+                <div class="swap-steps-grid" style="display: flex !important; gap: 8px !important; width: 100%; box-sizing: border-box;">
+                    
+                    <!-- Шаг 1 -->
+                    <div style="flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center; min-width: 0;">
+                        <div class="swap-template-card" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo('https://i.postimg.cc/1tDhc1zH/selfi.jpg')" style="width: 100%;">
+                            <img src="https://i.postimg.cc/1tDhc1zH/1_selfi.jpg" alt="1. Селфи">
+                        </div>
+                        <!-- Подпись строго под фото, белая -->
+                        <div style="font-size: 11px; font-weight: bold; color: #ffffff; margin-top: 8px; white-space: nowrap;">1. Селфи</div>
+                    </div>
+
+                    <!-- Шаг 2 -->
+                    <div style="flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center; min-width: 0;">
+                        <div class="swap-template-card" style="width: 100%;">
+                            <img src="https://i.postimg.cc/CLSY75kz/1_svap-sablon.jpg" alt="2. Шаблон">
+                        </div>
+                        <!-- Подпись строго под фото, белая -->
+                        <div style="font-size: 11px; font-weight: bold; color: #ffffff; margin-top: 8px; white-space: nowrap;">2. Шаблон</div>
+                    </div>
+
+                    <!-- Шаг 3 (Итог с оранжевой рамкой) -->
+                    <div style="flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center; min-width: 0;">
+                        <div class="swap-template-card" style="width: 100%;">
+                            <img src="https://i.postimg.cc/pLrwcFTt/1_itog.jpg" alt="3. Итог">
+                        </div>
+                        <!-- Подпись строго под фото, белая -->
+                        <div style="font-size: 11px; font-weight: bold; color: #ffffff; margin-top: 8px; white-space: nowrap;">3. Итог 🔥</div>
+                    </div>
+
+                </div>
+
+                <!-- 🔥 УВЕЛИЧИЛИ ОТСТУП СВЕРХУ ДО 40px -->
+                <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
+                    <b style="color: #ffffff;">Шаг 1:</b> Выбирите качество генерации внизу.<br>
                     <b style="color: #ffffff;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
                     <b style="color: #ffffff;">Шаг 3:</b> Следуйте дальнейшим указаниям бота!
                 </div>
+                <!-- Наша лазерная линия-разделитель (Оранжевый неон) -->
+                <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
+
+                <!-- Строка про итог (Белая и жирная) -->
+                <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center;">
+                    <b>Итоговая цена зависит от выбранного качества и будет отображаться на кнопке START</b>
+                </div>
+
             </div>
 
-            <!-- Оранжевый разделитель -->
-            <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
-
-            <div style="font-size: 13px; line-height: 1.5; padding: 0 10px; text-align: center; margin-bottom: 25px; color: rgba(255, 255, 255, 0.8);">
-                <b>
-                    Тариф: <span id="motion_rate_per_sec" style="color: #ff7300;">...</span> 🪙 за 1 секунду. 
-                    Точная стоимость генерации зависит от длительности загруженного вами видео шаблона и отобразится перед запуском в боте. Вам будет представлен выбор начать или отменить генерацию.
-                </b>
-            </div>
-
-            <!-- КОНТЕЙНЕР ДЛЯ ПРЕВЬЮ ШАБЛОНОВ -->
-            <div id="motion_preset_preview_block" style="display: none; justify-content: center; margin-bottom: 25px;">
-                <div class="text-image-compact-preview" style="width: 45%; max-width: 150px; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; border: 1px solid #ff7300; background: #000;">
-                    <video id="motion_large_preview_video" style="width: 100%; height: 100%; object-fit: cover; display: block;" loop muted playsinline autoplay>
-                        <source src="" type="video/mp4">
-                    </video>
+            <!-- 🔥 УВЕЛИЧИЛИ ОТСТУП МЕЖДУ ТЕКСТОМ И КНОПКАМИ ДО 55px -->
+            <div class="single-row-controls" style="margin-top: 15px !important; margin-bottom: 35px; display: flex !important; justify-content: space-between !important; gap: 10px !important; width: 100% !important; box-sizing: border-box !important;">
+                <div class="control-col" style="flex: 1 !important; width: 50% !important; min-width: 0 !important; max-width: 50% !important;">
+                    <button id="btn_swap_quality" class="capsule-btn" onclick="openUniversalQualitySheet()" style="width: 100% !important; box-sizing: border-box !important;">⚡ Standard (1k)</button>
+                </div>
+                
+                <div class="control-col" style="flex: 1 !important; width: 50% !important; min-width: 0 !important; max-width: 50% !important;">
+                    <button id="neo_swap_submit_btn" class="neo-start-btn" onclick="sendCustomFaceSwapData()" style="width: 100% !important; box-sizing: border-box !important; margin: 0 !important;">Start 3 🪙</button>
                 </div>
             </div>
 
-            <!-- 🔥 ИСПРАВЛЕНО: Кнопка жестко привязана к низу без костыльного translateY -->
-            <div class="single-row-controls" style="padding: 0 10px; margin-top: 225px;">
-                <div class="control-col control-col-btn" style="flex: 1.5;">
-                    <button id="neo_motion_submit_btn" class="neo-start-btn" style="width: 100%;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendMotionControlData()">Start</button>
+        </div> <!-- Конец служебного блока настроек -->
+    </div> <!-- Конец экрана face_swap -->
+
+
+    <!-- ========================================== -->
+    <!-- РЕЖИМ 3: ПРИМЕРКА ОДЕЖДЫ (TRY-ON)          -->
+    <!-- ========================================== -->
+    <div id="tryon" class="screen">
+            
+        <!-- ЛЕНТА ВЕРХУШКИ С НАШЕЙ КРУГЛОЙ КНОПКОЙ НАЗАД (Добавили position: relative) -->
+            <div class="tabs-container" id="tryon_tabs" style="display: flex; align-items: center; padding: 5px 0; position: relative;">
+                <button class="back-tab-btn" onclick="handleTryOnBackClick()"></button> 
+                <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;"></div>   
+                <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%; position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 1; pointer-events: none;">Настройка примерки одежды</div>
+            </div>
+            
+            <!-- СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (Управляется твоим роутером openScreen) -->
+            <div id="tryon_settings_block" style="display: none;">
+                
+                <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 240px); box-sizing: border-box; display: flex; flex-direction: column;">
+                    
+                    <div style="font-size: 14px; font-weight: bold; margin-bottom: 12px; color: var(--tg-theme-text-color, #000); text-align: center;">📍 Как это работает (Пример):</div>
+                    
+                    <!-- Сетка шагов (Фото в полный рост -> Вещь -> Итог) -->
+                    <div class="swap-steps-grid" style="display: flex !important;">
+                        
+                        <!-- Шаг 1 -->
+                        <div style="flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center; min-width: 0;">
+                            <div class="swap-template-card" style="width: 100%;">
+                                <img src="https://i.postimg.cc/8c2pqNq0/1_Vase-foto.jpg" alt="1. Ваше фото">
+                            </div>
+                            <!-- Подпись строго под фото, белая -->
+                            <div style="font-size: 11px; font-weight: bold; color: #ffffff; margin-top: 8px; white-space: nowrap;">1. Исходное фото</div>
+                        </div>
+
+                        <!-- Шаг 2 -->
+                        <div style="flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center; min-width: 0;">
+                            <div class="swap-template-card" style="width: 100%;">
+                                <img src="https://i.postimg.cc/bwQrfSYs/1_Shablon-odezdy.png" alt="2. Фото вещи">
+                            </div>
+                            <!-- Подпись строго под фото, белая -->
+                            <div style="font-size: 11px; font-weight: bold; color: #ffffff; margin-top: 8px; white-space: nowrap;">2. Фото вещи</div>
+                        </div>
+
+                        <!-- Шаг 3 (Итог с оранжевой рамкой) -->
+                        <div style="flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center; min-width: 0;">
+                            <div class="swap-template-card" style="width: 100%;">
+                                <img src="https://i.postimg.cc/t7GbBDxL/1_itog-smeny-odezdy.jpg" alt="3. Итог">
+                            </div>
+                            <!-- Подпись строго под фото, белая -->
+                            <div style="font-size: 11px; font-weight: bold; color: #ffffff; margin-top: 8px; white-space: nowrap;">3. Итог 🔥</div>
+                        </div>
+
+                    </div> <!-- Закрылся swap-steps-grid -->
+
+                    <!-- ИНСТРУКЦИЯ (Увеличен отступ до 40px) -->
+                    <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
+                        <b style="color: #ffffff;">Шаг 1:</b> Выбирите качество генерации внизу.<br>
+                        <b style="color: #ffffff;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
+                        <b style="color: #ffffff;">Шаг 3:</b> Следуйте дальнейшим указаниям бота!
+                    </div>
+                    
+                    <!-- Наша лазерная линия-разделитель (Оранжевый неон) -->
+                    <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
+
+                    <!-- Строка про итог (Белая и жирная) -->
+                    <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center;">
+                        <b>Итоговая цена зависит от выбранного качества и будет отображаться на кнопке START</b>
+                    </div>
+
+                </div> <!-- 🌟 Перенесли закрывающий тег для custom-prompt-container сюда -->
+
+                <!-- РЯД КНОПОК УПРАВЛЕНИЯ -->
+                <div class="single-row-controls" style="margin-top: 15px !important; margin-bottom: 35px; display: flex !important; justify-content: space-between !important; gap: 10px !important; width: 100% !important; box-sizing: border-box !important;">
+                    <div class="control-col" style="flex: 1 !important; width: 50% !important; min-width: 0 !important; max-width: 50% !important;">
+                        <button id="btn_tryon_quality" class="capsule-btn" onclick="openUniversalQualitySheet()" style="width: 100% !important; box-sizing: border-box !important;">⚡ Standard (1k)</button>
+                    </div>
+                    
+                    <div class="control-col" style="flex: 1 !important; width: 50% !important; min-width: 0 !important; max-width: 50% !important;">
+                        <button id="neo_tryon_submit_btn" class="neo-start-btn" onclick="sendTryOnData()" style="width: 100% !important; box-sizing: border-box !important; margin: 0 !important;">Start 3 🪙</button>
+                    </div>
                 </div>
+
+            </div> <!-- Закрылся tryon_settings_block -->
+    </div> <!-- Закрылся экран tryon -->
+
+
+    <!-- ========================================== -->
+    <!-- ПОДРЕЖИМ 4: СМЕНА ФОНА                     -->
+    <!-- ========================================== -->
+    <div id="bg_change" class="screen">
+            
+            <!-- 🔥 ЛЕНТА ВЕРХУШКИ С НАШЕЙ КРУГЛОЙ КНОПКОЙ НАЗАД -->
+            <div class="tabs-container" id="bg_change_tabs" style="display: flex; align-items: center; padding: 5px 0; position: relative;">
+                <!-- Фиксированная круглая стрелка назад -->
+                <button class="back-tab-btn" onclick="openScreen('foto')"></button>
+                <div style="font-size: 16px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%;"></div>
+                
+                <!-- Заголовок теперь намертво привязан к шапке и встанет идеально по центру экрана -->
+                <div style="font-size: 16px; font-weight: 800; color: var(--tg-theme-text-color, #fff); text-transform: uppercase; letter-spacing: 1px; text-align: center; width: 100%; position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 1; pointer-events: none;">Настройка смены фона</div>
             </div>
-        </div>
 
-    </div>
-    
+            <!-- СЛУЖЕБНЫЙ БЛОК НАСТРОЕК (Изначально полностью скрыт под логику твоего роутера) -->
+            <div id="bg_change_settings_block" style="display: none;">
+                
+                <div class="custom-prompt-container" style="margin-top: 15px; min-height: calc(100vh - 240px); box-sizing: border-box; display: flex; flex-direction: column;">
+                    
+                    <div style="font-size: 14px; font-weight: bold; margin-bottom: 12px; color: var(--tg-theme-text-color, #000); text-align: center;">📍 Как это работает (Пример):</div>
 
-<!-- ========================================== -->
-<!-- ПОЛНОЭКРАННЫЙ ПЛЕЕР ПРЕВЬЮ (УНИВЕРСАЛЬНЫЙ) -->
-<!-- ========================================== -->
-    <div id="videoPlayerModal" class="video-modal" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); closePreviewVideo()">
-        <div class="video-modal-content" onclick="event.stopPropagation()" style="position: relative;">
-            
-            <button class="video-modal-close" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); closePreviewVideo()">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-            </button>
+                    <!-- 🔥 ДОБАВИЛИ ЦЕНТРИРОВАНИЕ И УВЕЛИЧЕНИЕ ДЛЯ 2-Х КАРТОЧЕК -->
+                    <div class="swap-steps-grid" style="display: flex !important; justify-content: center !important; gap: 12px !important; max-width: 480px; margin: 0 auto; width: 100%; box-sizing: border-box; padding: 0 10px;">
+                        
+                        <!-- Шаг 1 -->
+                        <div style="flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                            <div class="phone-template-card" style="width: 100%;">
+                                <img src="https://i.postimg.cc/t7GbBDxL/1_itog-smeny-odezdy.jpg" alt="1. Исходное foto" style="width: 100%; display: block;">
+                            </div>
+                            <div style="font-size: 11px; font-weight: bold; color: #ffffff; margin-top: 8px; white-space: nowrap;">1. Исходное фото</div>
+                        </div>
+                        
+                        <!-- Шаг 2 (Здесь была красная рамка border - теперь её нет) -->
+                        <div style="flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center;">
+                            <div class="phone-template-card" style="width: 100%;">
+                                <img src="https://i.postimg.cc/x1j67KTC/1_itog-smeny-fona.jpg" alt="2. Результат" style="width: 100%; display: block;">
+                            </div>
+                        <div style="font-size: 11px; font-weight: bold; color: #ffffff; margin-top: 8px; white-space: nowrap;">2. Результат 🔥</div>
+                        </div>
 
-            <!-- Тег для видео -->
-            <video id="previewVideoPlayer" playsinline loop autoplay muted style="width: 100%; height: 100%; object-fit: cover; display: none;"></video>
-            
-            <!-- Тег для картинок -->
-            <img id="previewImagePlayer" style="width: 100%; height: 100%; object-fit: cover; display: none;" alt="Превью фото">
-            
-            <!-- 🔥 ДОБАВЛЕНО: Блок кнопок управления прямо поверх плеера (Звук + Старт) -->
-            <div id="modal_controls_panel" style="display: none; position: absolute; bottom: 16px; left: 16px; right: 16px; flex-direction: column; gap: 10px; z-index: 10;">
-                <!-- Твоя круглая капсула для звука -->
-                <button id="btn_modal_mute" class="capsule-btn" style="width: 100% !important; padding: 10px 4px !important; font-size: 12px !important; background: rgba(17, 17, 17, 0.8) !important; backdrop-filter: blur(4px); border: 2px solid rgba(255, 102, 0, 0.5) !important;" onclick="toggleModalMute()">
-                    🔊 Включить звук
-                </button>
-                <!-- Твоя неоновая кнопка запуска -->
-                <button id="neo_motion_submit_btn" class="neo-start-btn" style="width: 100%; position: relative; z-index: 9999;" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); sendMotionControlData()">Start 10 🪙</button>
-            </div>
-            
-        </div>
-    </div>
+                    </div> <!-- Закрылся swap-steps-grid -->
+
+                    <!-- ИНСТРУКЦИЯ (Увеличен отступ до 40px) -->
+                    <div style="font-size: 13px; color: var(--tg-theme-hint-color, #777); line-height: 1.5; margin-top: 40px !important; padding: 0 5px;">
+                        <b style="color: #ffffff;">Шаг 1:</b> Выбирите качество генерации внизу.<br>
+                        <b style="color: #ffffff;">Шаг 2:</b> Нажмите кнопку запуска START.<br>
+                        <b style="color: #ffffff;">Шаг 3:</b> Следуйте дальнейшим указаниям бота!
+                    </div>
+                    
+                    <!-- Наша лазерная линия-разделитель (Оранжевый неон) -->
+                    <div class="neon-divider" style="margin: 20px auto; width: 90%; background: linear-gradient(90deg, transparent, #ff7300, transparent); box-shadow: 0 0 10px rgba(255, 115, 0, 0.5);"></div>
+
+                    <!-- Строка про итог (Белая и жирная) -->
+                    <div style="font-size: 13px; line-height: 1.5; padding: 0 5px; text-align: center;">
+                        <b>Итоговая цена зависит от выбранного качества и будет отображаться на кнопке START</b>
+                    </div>
+
+                </div> <!-- 🌟 Перенесли закрывающий тег для custom-prompt-container сюда -->
+
+                <div class="single-row-controls" style="margin-top: 15px !important; margin-bottom: 35px; display: flex !important; justify-content: space-between !important; gap: 10px !important; width: 100% !important; box-sizing: border-box !important;">
+                    <!-- Левая колонка (Качество) — жестко задаем 50% ширины -->
+                    <div class="control-col" style="flex: 1 !important; width: 50% !important; min-width: 0 !important; max-width: 50% !important;">
+                        <button id="btn_bg_quality" class="capsule-btn" style="width: 100% !important; box-sizing: border-box !important;">⚡ Standard (1k)</button>
+                    </div>
+                    
+                    <div class="control-col" style="flex: 1 !important; width: 50% !important; min-width: 0 !important; max-width: 50% !important;">
+                        <button id="neo_bg_submit_btn" class="neo-start-btn" onclick="sendBgChangeData()" style="width: 100% !important; box-sizing: border-box !important; margin: 0 !important;">Start 2 🪙</button>
+                    </div>
+                </div>
+                
+            </div> <!-- Закрылся bg_change_settings_block -->
+    </div> <!-- Закрылся экран bg_change -->
 
     <!-- ========================================== -->
     <!-- УНИВЕРСАЛЬНАЯ КАСТОМНАЯ ШТОРКА (HTML ПОДЛОЖКА) -->
@@ -340,36 +437,20 @@
            
         </div>
     </div>
-<!-- ========================================== -->
-<!-- 🔥 ЕДИНАЯ КОМПАКТНАЯ ШТОРКА ДЛИТЕЛЬНОСТИ ДЛЯ 1-ГО И 2-ГО РЕЖИМОВ -->
-<!-- ========================================== -->
 
-    <div id="universal_duration_sheet" class="custom-sheet-overlay" onclick="closeUniversalDurationSheet()">
-        <div class="custom-sheet-panel" onclick="event.stopPropagation()">
-            
-            <!-- Заголовок шторки -->
-            <div class="custom-sheet-title">Продолжительность видео</div>
-            
-            <!-- Динамический список элементов шторки (заполняется через JS) -->
-            <ul class="custom-sheet-list" id="universal_duration_list">
-                <!-- Кнопки секунд будут генерироваться автоматически -->
-            </ul>
-            
-        </div>
-    </div>
 <!-- ========================================== -->
 <!-- НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ (ТАББАР) -->
 <!-- ========================================== -->
 
     <div class="bottom-navigation-bar">
-        <!-- Кнопка ФОТО (Ведет на photo.html) -->
-        <button class="nav-item" onclick="navigateToScreen('foto.html')">
+        <!-- Кнопка ФОТО (Активная) -->
+        <button class="nav-item active">
             <span class="nav-icon">📸</span>
             <span class="nav-text">ИИ-Фото</span>
         </button>
         
-        <!-- Кнопка ВИДЕО (Активная) -->
-        <button class="nav-item active">
+        <!-- Кнопка ВИДЕО (Ведет на video.html) -->
+        <button class="nav-item" onclick="navigateToScreen('video.html')">
             <span class="nav-icon">🎥</span>
             <span class="nav-text">ИИ-Видео</span>
         </button>
@@ -380,826 +461,630 @@
             <span class="nav-text">ИИ-Арт</span>
         </button>
     </div>
+
+
     <script>
-// ====================================================================================
-// 1. СИСТЕМНАЯ ИНИЦИАЛИЗАЦИЯ И ПЕРЕМЕННЫЕ (СТРОГО ТРИ ВИДЕО РЕЖИМА)
-// ====================================================================================
-    const tg = window.Telegram.WebApp;
 
-    // Главная переменная роутера (Стартует с главного меню видеостудии 'video_menu')
-    let currentActiveMode = 'video_menu';
+        // ====================================================================================
+        // 1. СИСТЕМНАЯ ИНИЦИАЛИЗАЦИЯ И ПЕРЕМЕННЫЕ
+        // ====================================================================================
+        const tg = window.Telegram.WebApp;
 
-    // 🎥 НАСТРОЙКИ ДЛЯ 1-ГО РЕЖИМА: «Оживление фото» (Без звука, Kling 2.1)
-    let currentKlingDuration = 5;  
-    let currentAnimateRatio = 'auto';  
-
-    // 🔊 НАСТРОЙКИ ДЛЯ 2-ГО РЕЖИМА: «Оживление со звуком» (Kling O3 Pro)
-    let soundGenRatio = 'auto';
-    let selectedVoiceId = 'voice_male_01';
-
-    // 👤 НАСТРОЙКИ ДЛЯ 3-ГО РЕЖИМА: «Оживление по видео» (Motion Control, Kling v2.6)
-    let motionGenDuration = 5;
-    let motionGenRatio = 'auto';
-   // Глобальные переменные для отслеживания состояния режима 3 (убедись, что они объявлены вверху файла)
-    let isMotionStyleSelected = false;
-    let selectedMotionStyleName = "";
-    let selectedMotionVideoUrl = "";
-    let currentGenerationMode = "preset"; 
-
-    // ====================================================================================
-    // 🔥 АВТОМАТИЧЕСКИЙ ПЕРЕХОД ПО КНОПКЕ ИЗ ИНЛАЙН-МЕНЮ БОТА (DEEP LINKS)
-    // ====================================================================================
-    (function() {
-        // 1. Читаем адресную строку и ищем параметры режима
-        const urlParams = new URLSearchParams(window.location.search);
-        let startMode = urlParams.get('mode');
+        // Инициализация переменных настроек (Стартовый режим переименован в 'foto')
+        let currentActiveMode = 'foto';
+        let selectedTryOnRatio = '9:16';  
+        let selectedTextRatio = '9:16';   
+        let selectedSwapRatio = '9:16';   
+        let selectedBgRatio = '9:16';   
         
-        // 🔍 ФИКС БАГА ТЕЛЕГРАМА: Проверяем, не спрятал ли Telegram параметр внутрь tgWebAppStartParam
-        const tgStartParam = urlParams.get('tgWebAppStartParam');
-        if (!startMode && tgStartParam) {
-            startMode = tgStartParam; // Если Telegram пережал ссылку, забираем режим оттуда
-        }
+        let selectedTextQuality = 'schnell';
+        let selectedSwapQuality = 'schnell';
+        let selectedTryOnQuality = 'schnell';
+        let selectedBgQuality = 'schnell';
+        let selectedStylePrompt = ''; 
 
-        // 2. Если бот прислал команду на 1-й режим (Без звука)
-        if (startMode === 'animate_nosound') {
-            setTimeout(function() {
-                if (typeof openScreen === 'function') {
-                    openScreen('animate_nosound');
-                    console.log("🚀 Автопереход: Успешно открыт экран оживления фото без звука!");
-                }
-            }, 150);
-        }
-        // 3. Если бот прислал команду на 2-й режим (Kling O3 Pro со звуком)
-        else if (startMode === 'animate_sound') {
-            setTimeout(function() {
-                if (typeof openScreen === 'function') {
-                    openScreen('animate_sound'); // ОСТАВЛЯЕМ БЕЗ ИЗМЕНЕНИЙ, это технический ID экрана!
-                    console.log("🚀 Автопереход: Успешно открыт экран оживления со звуком Kling O3 Pro!");
-                }
-            }, 150);
-        }
 
-        // 4. Если бот прислал команду на 3-й режим (Оживление по видео / Motion Control)
-        else if (startMode === 'video_motion_control') {
-            setTimeout(function() {
-                if (typeof openScreen === 'function') {
-                    openScreen('video_motion_control');
-                    console.log("🚀 Автопереход: Успешно открыт экран переноса движений по видео!");
-                }
-            }, 150);
-        }
-    })();
+        // Системные переменные для контроля шагов Фото + Текст
+        let isTextImageStyleSelected = false; 
+        let selectedStyleName = ""; 
 
+        // Переменная для отслеживания режима: готовый шаблон (preset) или свой текст (custom)
+        let currentGenerationMode = 'preset';
+
+        // Системная переменная для отслеживания сценария примерки одежды
+        let currentTryOnMode = 'face_swap_mode'; 
+
+        // 🔥 ИСПРАВЛЕНО: Теперь по умолчанию стартует 'banana' (Умный Фокус), так как кнопка активна при старте!
+        let selectedAiModelEngine = 'banana'; 
+
+        let selectedStyleFacesCount = 1; // По умолчанию всегда 1 человек
+
+
+
+
+        
 // ====================================================================================
-// Функция для управления вашим плеером videoPlayerModal
+// 2. ФУНКЦИЯ КЛИКА ПО КАРТОЧКЕ (Сброс кнопок-капсул в дефолт и показ пульта)
 // ====================================================================================
-// Открытие универсального полноэкранного плеера 
-function openPreviewVideo(mediaUrl) {
-    const modal = document.getElementById('videoPlayerModal');
-    const playerVideo = document.getElementById('previewVideoPlayer');
-    const playerImage = document.getElementById('previewImagePlayer');
+function selectTextImageStyle(styleName, imageUrl, facesCount = 1, promptText = '') {
+    isTextImageStyleSelected = true;
+     // 🔥 ЖЕСТКИЙ ФИКС: Записываем данные в глобальный window
+    window.selectedStyleName = styleName;
+    window.selectedStylePrompt = promptText;
+    window.selectedStyleFacesCount = facesCount;
+
+    document.getElementById('text_image_title').innerText = styleName;
     
-    if (!modal) return;
-    
-    const urlLower = mediaUrl.toLowerCase();
-    
-    // Проверяем тип медиафайла
-    if (urlLower.includes('.mp4') || urlLower.includes('video') || urlLower.includes('mixkit')) {
-        // Включаем видео-режим
-        if (playerImage) {
-            playerImage.style.display = "none";
-            playerImage.src = "";
-        }
-        if (playerVideo) {
-            playerVideo.src = mediaUrl;
-            playerVideo.style.display = "block";
-            playerVideo.muted = false; // Включаем звук в плеере
-            playerVideo.play().catch(e => console.log("Автоплей заблокирован:", e));
-        }
+    // 🔥 ДИНАМИЧЕСКИЙ ТЕКСТ ПОДСКАЗКИ: информируем юзера, сколько селфи попросит бот
+    if (facesCount > 1) {
+        document.getElementById('text_image_subtitle').innerText = `Настройте параметры кадра и запустите генерацию::`;
     } else {
-        // Включаем фото-режим (для .jpg, .png, Unsplash и т.д.)
-        if (playerVideo) {
-            playerVideo.pause();
-            playerVideo.style.display = "none";
-            playerVideo.src = "";
-        }
-        if (playerImage) {
-            playerImage.src = mediaUrl;
-            playerImage.style.display = "block";
-        }
+        document.getElementById('text_image_subtitle').innerText = "Настройте параметры кадра и запустите генерацию:";
     }
+
+    document.getElementById('text_image_gallery').style.display = "none"; 
+    document.getElementById('text_image_settings_block').style.display = "block"; // Открываем пульт управления
     
-    // Включаем саму модалку на экране
-    modal.style.display = "flex";
-    setTimeout(() => {
-        modal.classList.add('active'); 
-    }, 10);
+    if (document.getElementById('text_image_spacer')) document.getElementById('text_image_spacer').style.display = 'none';
+    // Показываем черную рамку с картинкой превью (только для шаблонов!)
+    if (document.getElementById('preset_preview_block')) document.getElementById('preset_preview_block').style.display = 'block';
+    if (document.getElementById('custom_instruction_text')) document.getElementById('custom_instruction_text').style.display = 'none';
+
+    document.getElementById('text_image_large_preview').src = imageUrl;
+
+    selectedTextQuality = 'schnell';
+    selectedTextRatio = '9:16';
+    document.getElementById('btn_text_quality').innerHTML = `⚡ Standard (1k)`;
+    document.getElementById('btn_text_ratio').innerHTML = `9:16`;
+
+    if (typeof updateNeoStartButtonText === 'function') updateNeoStartButtonText();
+    if (tg && tg.MainButton) tg.MainButton.hide();
+    selectFacesCount(facesCount, null);
 }
 
-// Закрытие универсального полноэкранного плеера (ИСПРАВЛЕНО И ИЗОЛИРОВАНО)
-function closePreviewVideo() {
-    const modal = document.getElementById('videoPlayerModal');
-    const playerVideo = document.getElementById('previewVideoPlayer');
-    const playerImage = document.getElementById('previewImagePlayer');
-    
-    // 🔥 ДОБАВЛЕНО: Находим панель кнопок 3-го режима
-    const controlsPanel = document.getElementById('modal_controls_panel');
+// ====================================================================================
+// 2. ФУНКЦИЯ посредник для чтения промтов
+// ====================================================================================
+function handleCardClick(cardElement) {
+    // 🌟 Родная вибрация Telegram
+    if (window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) {
+        Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+    }
 
-    if (modal) {
-        modal.classList.remove('active');
+    try {
+        // 1. Вытаскиваем все данные из атрибутов твоей HTML-карточки
+        const styleName = cardElement.getAttribute('data-style-name') || '';
+        const imageUrl = cardElement.getAttribute('data-image-url') || '';
+        const facesCount = parseInt(cardElement.getAttribute('data-faces-count')) || 1;
         
-        // 🔥 ДОБАВЛЕНО: Мгновенно убираем кнопки, чтобы они не мелькали в 1-м и 2-м режимах
-        if (controlsPanel) controlsPanel.style.display = "none";
-        
-        // Гасим видео, если оно играло
-        if (playerVideo) {
-            playerVideo.pause();
-            playerVideo.src = "";
+        const promptText = cardElement.getAttribute('data-prompt') || '';
+        const promptPulid = cardElement.getAttribute('data-prompt-pulid') || '';
+
+        console.log(`[Переход] Открываем настройки для стиля: ${styleName}`);
+
+        // Записываем данные в глобальный window
+        window.selectedStyleName = styleName;
+        window.selectedStylePrompt = promptText;
+        window.selectedStylePromptPulid = promptPulid; 
+        window.selectedStyleFacesCount = facesCount;
+
+        // 2. Вызываем твое окно настроек
+        selectTextImageStyle(styleName, imageUrl, facesCount, promptText);
+
+        if (typeof updateFotoSubmitButtons === 'function') {
+            updateFotoSubmitButtons();
         }
+
+    } catch (error) {
+        console.error("Ошибка при открытии экрана настроек:", error);
+    }
+}
+// ====================================================================================
+// 2. код подгрузки для 1 режима карточек текст + фото
+// ====================================================================================
+document.addEventListener("DOMContentLoaded", () => {
+    fetch('cards-template.html') // Укажите правильный путь к файлу с карточками
+        .then(response => {
+            if (!response.ok) throw new Error('Ошибка загрузки карточек');
+            return response.text();
+        })
+        .then(html => {
+            document.getElementById('text_image_gallery').innerHTML = html;
+        })
+        .catch(error => console.error('Не удалось загрузить галерею:', error));
+});
+
+// ====================================================================================
+// 2. ФУНКЦИЯ переключения табов (вкладок) для текст + фото
+// ====================================================================================
         
-        // Ждем анимацию исчезновения и полностью скрываем элементы
-        setTimeout(function() {
-            modal.style.display = "none";
-            if (playerVideo) playerVideo.style.display = "none";
-            if (playerImage) {
-                playerImage.style.display = "none";
-                playerImage.src = ""; // Очищаем память от фото
-            }
-        }, 300); 
+function switchTextTab(category, element) {
+    // 🔥 ЛЕГКИЙ ВИБРООТКЛИК ПРИ ПЕРЕКЛЮЧЕНИИ КАТЕГОРИЙ
+    if (window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) {
+        Telegram.WebApp.HapticFeedback.impactOccurred('light');
     }
-}
 
-// ====================================================================================
-// 2. Логика кнопки переключения звука
-// ====================================================================================
-
-function toggleModalMute() {
-    if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('medium');
-    
-    const videoPlayer = document.getElementById('previewVideoPlayer');
-    const muteBtn = document.getElementById('btn_modal_mute');
-    
-    if (videoPlayer && muteBtn) {
-        if (videoPlayer.muted) {
-            videoPlayer.muted = false;
-            muteBtn.innerHTML = "🔇 Выключить звук"; // Исправлено на правильный эмодзи
-        } else {
-            videoPlayer.muted = true;
-            muteBtn.innerHTML = "🔊 Включить звук";
-        }
-    }
-}
-
-// 3. Клик по кнопке "Сгенерировать" внутри плеера
-function submitFromModal() {
-    closePreviewVideo();
-    // Вызывает твою готовую функцию, которая шлет JSON и закрывает WebApp
-    if (typeof sendMotionControlData === 'function') {
-        sendMotionControlData();
-    }
-}
-
-// ====================================================================================
-// УПРАВЛЕНИЕ ВКЛАДКАМИ ("Шаблоны" / "Свой")
-// ====================================================================================
-function switchMotionTab(category, element) {
-    if (!element) return;
-
-    // 1. СБРОС СТИЛЕЙ КНОПОК ВКЛАДОК
-    const tabs = document.querySelectorAll('#video_motion_tabs .tab-btn');
-    tabs.forEach(tab => {
-        tab.classList.remove('active');
-        tab.style.setProperty('background', '#111111', 'important');
-        tab.style.setProperty('color', 'rgba(255, 255, 255, 0.5)', 'important');
-        tab.style.setProperty('border', '2px solid rgba(255, 102, 0, 0.2)', 'important');
-        tab.style.setProperty('box-shadow', 'none', 'important');
-    });
-
-    // 2. АКТИВАЦИЯ НАЖАТОЙ ВКЛАДКИ
+    const tabs = document.querySelectorAll('#text_image_tabs .tab-btn');
+    tabs.forEach(tab => tab.classList.remove('active'));
     element.classList.add('active');
-    element.style.setProperty('background', '#ff6600', 'important');
-    element.style.setProperty('color', '#ffffff', 'important');
-    element.style.setProperty('border', '2px solid #ff1e00', 'important');
-    element.style.setProperty('box-shadow', '0 4px 12px rgba(255, 30, 0, 0.3)', 'important');
 
-    // 3. ПОЛУЧЕНИЕ ЭЛЕМЕНТОВ ИНТЕРФЕЙСА
-    const gallery = document.getElementById('motion_gallery_block');
-    const controlsBlock = document.getElementById('motion_controls_block');
-    const customInstruction = document.getElementById('motion_custom_instruction');
-    const presetPreviewBlock = document.getElementById('motion_preset_preview_block');
-    const spacer = document.getElementById('motion_spacer');
-    
-    const controlsPanel = document.querySelector('#video_motion_control .single-row-controls');
-    const motionSubmitBtn = document.getElementById('neo_motion_submit_btn'); 
+    const gallery = document.getElementById('text_image_gallery');
+    const settingsBlock = document.getElementById('text_image_settings_block');
+    const presetPreviewBlock = document.getElementById('preset_preview_block');
+    const instructionText = document.getElementById('custom_instruction_text');
+    const facesRow = document.getElementById('faces_count_selector_row');
 
-    // 4. ЛОГИКА ПЕРЕКЛЮЧЕНИЯ РЕЖИМОВ
     if (category === 'custom') {
         currentGenerationMode = 'custom'; 
-        isMotionStyleSelected = true;  
-        selectedMotionStyleName = "Свой референс";
-        selectedMotionVideoUrl = "";
+        isTextImageStyleSelected = true;  
+        selectedStyleName = "Свой промпт";
 
-        const subtitle = document.getElementById('video_motion_subtitle');
-        if (subtitle) subtitle.style.display = 'none';
+        document.getElementById('text_image_title').innerText = "Свой сюжет";
+        document.getElementById('text_image_subtitle').innerText = "Настройте параметры вашей персональной генерации:";
 
-        if (gallery) gallery.style.display = 'none';                  
-        if (controlsBlock) controlsBlock.style.display = 'block';         
-        if (customInstruction) customInstruction.style.display = 'block';   
-        if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';  
-        if (spacer) spacer.style.display = 'none';   
+        gallery.style.display = 'none';            
+        settingsBlock.style.display = 'block'; // Включает блок настроек И нижние кнопки вместе с ним!     
+        if (presetPreviewBlock) presetPreviewBlock.style.display = 'none'; 
         
-        // Включаем кнопку и саму панель во вкладке "Свой"
-        if (motionSubmitBtn) motionSubmitBtn.style.display = 'block'; 
-        if (controlsPanel) {
-            controlsPanel.style.display = 'block';
-            // Этим отступом регулируйте положение кнопки во вкладке "Свой"
-            controlsPanel.style.setProperty('margin-top', '300px', 'important'); 
-        }
+        // Исправлено с 'block' на 'flex', чтобы сохранить вашу оригинальную верстку инструкции
+        if (instructionText) instructionText.style.display = 'flex';      
+        
+        if (facesRow) facesRow.style.display = 'block';
+
+        // Восстановление выбранного количества лиц
+        let savedFaces = window.selectedStyleFacesCount || 1;
+        selectFacesCount(savedFaces, document.getElementById(`btn_faces_${savedFaces}`)); 
+
+        if (document.getElementById('text_image_spacer')) document.getElementById('text_image_spacer').style.display = 'block';
     } else {
         currentGenerationMode = 'preset'; 
-        isMotionStyleSelected = false; 
+        isTextImageStyleSelected = false; 
 
-        const subtitle = document.getElementById('video_motion_subtitle');
-        if (subtitle) subtitle.style.display = 'block';
+        document.getElementById('text_image_title').innerText = "Шаблоны для генераций Вашего Фото";
+        document.getElementById('text_image_subtitle').innerText = "В режиме умный фокус изображение реалистичное как на шаблоне, в режиме цыфровая оптика более художественный стиль фото";
 
-        if (gallery) gallery.style.display = 'grid';                  
-        if (controlsBlock) controlsBlock.style.display = 'none';            
-        if (spacer) spacer.style.display = 'none';     
+        gallery.style.display = 'grid';            
+        settingsBlock.style.display = 'none'; // Полностью скрывает блок настроек вместе с кнопками качества и кнопкой Start!     
+        if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';
+        if (instructionText) instructionText.style.display = 'none';
         
-        // Полностью прячем кнопку и панель на вкладке шаблонов, чтобы они не залипали
-        if (motionSubmitBtn) motionSubmitBtn.style.display = 'none'; 
-        if (controlsPanel) {
-            controlsPanel.style.display = 'none';
-        }
-    }
-}
+        if (facesRow) facesRow.style.display = 'none';
 
+        if (document.getElementById('text_image_spacer')) document.getElementById('text_image_spacer').style.display = 'none';
 
-// ====================================================================================
-// функцию в JS
-// ====================================================================================
-function selectMotionDurationValue(seconds) {
-    // 1. Перезаписываем твою глобальную переменную 3-го режима
-    motionGenDuration = seconds; 
-    
-    // 2. Сразу меняем текст на кнопке, чтобы юзер видел выбранное время
-    const btn = document.getElementById('btn_motion_duration');
-    if (btn) btn.innerHTML = `⏱️ ${seconds} сек`;
-    
-    // 3. Автоматически закрываем шторку (скрываем её с экрана)
-    const sheet = document.getElementById('universal_duration_sheet');
-    if (sheet) {
-        sheet.style.display = 'none';
-    }
-
-    // 🔥 ДОБАВЛЕНО: Сразу пересчитываем цену на кнопке START под новые секунды!
-    if (typeof updateMotionSubmitButton === 'function') {
-        updateMotionSubmitButton();
-    }
-}
-
-
-// ====================================================================================
-// 2.5 ФУНКЦИИ ВОЗВРАТА НАЗАД (СТРОГО НАШИ ВИДЕО РЕЖИМЫ)
-// ====================================================================================
-// Назад из Режима 1: Оживление фото (без звука)
-        function handleAnimateNoSoundBackClick() {
-            openScreen('video_menu'); // Возвращает в главное меню видеостудии
-        }
-
-        // Назад из Режима 2: Оживление со звуком
-        function handleAnimateSoundBackClick() {
-            openScreen('video_menu'); // Возвращает в главное меню видеостудии
-        }
-
-        // Назад из Режима 3: Оживление по видео (Motion Control)
-        function handleMotionControlBackClick() {
-            openScreen('video_menu'); // Возвращает в главное меню видеостудии
-        }
-
-// ====================================================================================
-// ОБЪЕДИНЕННАЯ ФУНКЦИЯ КНОПКИ "НАЗАД" 
-// ====================================================================================
-function handleMotionBackClick() {
-    const gallery = document.getElementById('motion_gallery_block');
-    const controlsBlock = document.getElementById('motion_controls_block');
-
-    const activeTabButton = document.querySelector('#video_motion_tabs .tab-btn.active');
-    const isCustomTab = activeTabButton && activeTabButton.innerText.trim().toUpperCase() === 'СВОЙ';
-
-    // Сразу находим кнопку старта, чтобы убрать её при любом выходе в главное меню
-    const motionSubmitBtn = document.getElementById('neo_motion_submit_btn');
-
-    // 1. Если мы на вкладке "Свой" — сбрасываем всё и выходим в главное меню
-    if (isCustomTab) {
-        isMotionStyleSelected = false;
-        selectedMotionStyleName = "";
-        
-        // Прячем блоки вкладки "Свой", чтобы при следующем заходе они не конфликтовали
-        if (controlsBlock) controlsBlock.style.display = "none";
-        const customInstruction = document.getElementById('motion_custom_instruction');
-        if (customInstruction) customInstruction.style.display = "none";
-
-        // ГАРАНТИРОВАННО убираем залипшую кнопку старта при выходе в меню
-        if (motionSubmitBtn) motionSubmitBtn.style.display = "none";
-
-        openScreen('video_menu'); 
-        return; 
-    }
-
-    // 2. Если мы внутри настроек шаблона — возвращаемся обратно к галерее карточек
-    if (currentGenerationMode === 'preset' && gallery && gallery.style.display === 'none') {
-        isMotionStyleSelected = false;
-        selectedMotionStyleName = "";
-
-        if (document.getElementById('video_motion_main_title')) {
-            document.getElementById('video_motion_main_title').innerText = "Создание видео";
-        }
-        if (document.getElementById('video_motion_subtitle')) {
-            document.getElementById('video_motion_subtitle').innerText = "Выберите готовый шаблон для настройки:";
-        }
-        if (document.getElementById('video_motion_tabs')) {
-            document.getElementById('video_motion_tabs').style.display = "flex";
-        }
-
-        if (controlsBlock) controlsBlock.style.display = "none"; 
-        if (document.getElementById('motion_preset_preview_block')) {
-            document.getElementById('motion_preset_preview_block').style.display = "none";
-        }
-        
-        // На всякий случай прячем кнопку старта и здесь, так как мы вернулись к сетке карточек
-        if (motionSubmitBtn) motionSubmitBtn.style.display = "none";
-
-        gallery.style.display = 'grid';
-    } else {
-        // 3. Если мы в самом корне вкладки шаблонов — уходим в меню видеостудии
-        if (motionSubmitBtn) motionSubmitBtn.style.display = "none"; // Прячем кнопку перед выходом
-
-        if (typeof openScreen === 'function') {
-            openScreen('video_menu'); 
-        } else {
-            if (window.Telegram?.WebApp) Telegram.WebApp.close();
-        }
-    }
-}
-
-// ====================================================================================
-// ВОЗВРАЩЕННАЯ ФУНКЦИЯ ОТКРЫТИЯ КАРТОЧЕК НА ВЕСЬ ЭКРАН
-// ====================================================================================
-function selectMotionTemplate(styleName, videoUrl, duration) {
-    if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('medium');
-
-    isMotionStyleSelected = true;
-    selectedMotionStyleName = styleName;
-    selectedMotionVideoUrl = videoUrl;
-    motionGenDuration = duration || 5;
-
-    const modal = document.getElementById('videoPlayerModal');
-    const videoPlayer = document.getElementById('previewVideoPlayer');
-    const imagePlayer = document.getElementById('previewImagePlayer');
-    const controlsPanel = document.getElementById('modal_controls_panel');
-    const muteBtn = document.getElementById('btn_modal_mute');
-
-    if (modal && videoPlayer) {
-        if (imagePlayer) imagePlayer.style.display = 'none';
-        videoPlayer.style.display = 'block';
-        
-        // Безопасные настройки плеера для Telegram WebApp
-        videoPlayer.muted = true; 
-        videoPlayer.setAttribute('playsinline', 'true');
-        videoPlayer.setAttribute('webkit-playsinline', 'true');
-        videoPlayer.setAttribute('preload', 'auto');
-        
-        if (muteBtn) muteBtn.innerHTML = "🔊 Включить звук";
-        
-        modal.style.display = 'flex';
-        setTimeout(() => {
-            modal.classList.add('active'); 
-        }, 10);
-        
-        if (controlsPanel) controlsPanel.style.display = 'flex';
-
-        // Проверяем, что ссылка на видео передана и не пустая
-        if (!videoUrl) {
-            console.error("Ошибка: Передана пустая или неверная ссылка на видео (videoUrl)!");
-        } else {
-            // Удаляем старый обработчик, чтобы избежать зацикливания
-            videoPlayer.oncanplay = null;
-
-            // Запускаем видео строго после того, как браузер подтвердил готовность к воспроизведению
-            videoPlayer.oncanplay = function() {
-                const playPromise = videoPlayer.play();
-                if (playPromise !== undefined) {
-                    playPromise.catch(e => {
-                        console.log("Первая попытка не удалась, сбрасываем звук:", e);
-                        videoPlayer.muted = true;
-                        videoPlayer.play().catch(err => console.log("Блокировка системы (полный отказ):", err));
-                    });
-                }
-            };
-
-            // Передаем URL и принудительно перезагружаем источник
-            videoPlayer.src = videoUrl;
-            videoPlayer.load();
-        }
-    }
-
-    // УМНЫЙ ОБНОВЛЯТОР ЦЕНЫ ДЛЯ КАРТОЧКИ ВНУТРИ МОДАЛКИ
-    if (controlsPanel) {
-        const modalStartBtn = controlsPanel.querySelector('.neo-start-btn');
-        if (modalStartBtn) {
-            // Забираем посекундный тариф из prices.js, либо берем дефолтные 2 коина
-            const ratePerSec = (window.dbKlingPerSec && window.dbKlingPerSec.coins_per_sec) ? window.dbKlingPerSec.coins_per_sec : 2;
-            
-            // Умножаем секунды карточки на живой тариф из MongoDB
-            const totalPrice = ratePerSec * (duration || 5);
-            
-            // Перезаписываем текст кнопки
-            modalStartBtn.innerHTML = `Start ${totalPrice} 🪙`;
-        }
-    }
-} // <- Теперь функция закрыта корректно
-
-
-// ====================================================================================
-// 4. СТАРТ WEBAPP, ИНИЦИАЛИЗАЦИЯ И ПРИВЯЗКА КНОПОК ДЛЯ 3-Х ВИДЕО РЕЖИМОВ
-// ====================================================================================
-        window.addEventListener('DOMContentLoaded', () => {
-            if (tg) {
-                tg.ready();  
-                tg.expand(); 
-            }
-             
-                    // 🔥 ✅ ИСПРАВЛЕНО: Чистый fetch без дублей и лишних функций прямо при старте Web App!
-            fetch('video-cards-template.html') 
-                .then(response => {
-                    if (!response.ok) throw new Error('Ошибка загрузки видео-карточек');
-                    return response.text();
-                })
-                .then(html => {
-                    const el = document.getElementById('motion_gallery_block'); // Твой контейнер для карточек
-                    if (el) {
-                        el.innerHTML = html;
-                        console.log("[Fetch] Видео-карточки успешно добавлены на страницу!");
-                    }
-                })
-                .catch(error => console.error('Не удалось загрузить видео-галерею:', error));
-    
-            
-            // --- 1. ПРИВЯЗКА КЛИКОВ: РЕЖИМ 1 (ОЖИВЛЕНИЕ ФОТО БЕЗ ЗВУКА) ---
-            const videoDurationBtn = document.getElementById('btn_video_duration');
-            const videoRatioBtn = document.getElementById('btn_video_ratio');
-            
-            if (videoDurationBtn) {
-                videoDurationBtn.addEventListener('click', () => {
-                    tg.HapticFeedback.impactOccurred('medium');
-                    openUniversalDurationSheet();
-                });
-            }
-            if (videoRatioBtn) {
-                videoRatioBtn.addEventListener('click', () => {
-                    tg.HapticFeedback.impactOccurred('medium');
-                    openUniversalRatioSheet();
-                });
-            }
-
-            // --- 2. ПРИВЯЗКА КЛИКОВ: РЕЖИМ 2 (ОЖИВЛЕНИЕ СО ЗВУКОМ) ---
-            // 🔥 УДАЛИЛИ ХВОСТ СТЕРТОЙ КНОПКИ ГОЛОСА! Остался только рабочий формат кадра:
-            const videoSoundRatioBtn = document.getElementById('btn_video_sound_ratio');
-
-            if (videoSoundRatioBtn) {
-                videoSoundRatioBtn.addEventListener('click', () => {
-                    tg.HapticFeedback.impactOccurred('medium');
-                    openUniversalRatioSheet();
-                });
-            }
-
-            // --- 3. ПРИВЯЗКА КЛИКОВ: РЕЖИМ 3 (ОЖИВЛЕНИЕ ПО ВИДЕО / MOTION CONTROL) ---
-            const motionDurationBtn = document.getElementById('btn_motion_duration');
-            const motionRatioBtn = document.getElementById('btn_motion_ratio');
-            
-            if (motionDurationBtn) {
-                motionDurationBtn.addEventListener('click', () => {
-                    tg.HapticFeedback.impactOccurred('medium');
-                    openUniversalDurationSheet();
-                });
-            }
-            if (motionRatioBtn) {
-                motionRatioBtn.addEventListener('click', () => {
-                    tg.HapticFeedback.impactOccurred('medium');
-                    openUniversalRatioSheet();
-                });
-            }
-
-// ====================================================================
-// 🔍 УМНЫЙ СТАРТОВЫЙ РОУТЕР ДЛЯ ОПТИМИЗАЦИИ КЭША ТЕЛЕГРАМА
-// ====================================================================
-            const urlParams = new URLSearchParams(window.location.search);
-            const targetScreen = urlParams.get('screen');
-
-            if (targetScreen) {
-                // Если бот явно передал нужный экран (например, ?screen=video_motion_control)
-                openScreen(targetScreen);
+        const cards = document.querySelectorAll('.phone-template-card');
+        cards.forEach(card => {
+            const cardCategory = card.getAttribute('data-category');
+            if (category === 'all' || cardCategory === category) {
+                card.style.display = 'block';
             } else {
-                // Если зашли без параметров — жестко включаем главное меню видеостудии
-                openScreen('video_menu'); 
+                card.style.display = 'none';
             }
         });
-
-// ====================================================================================
-// 5. РОУТЕР ЭКРАНОВ И УМНЫЙ СЧЕТЧИК МОНЕТ НА КНОПКАХ START (СТРОГО ТРИ ВИДЕО РЕЖИМА)
-// ====================================================================================
-function openScreen(screenName) {
-    currentActiveMode = screenName;
-    
-    // НАШИ ЧЕТЫРЕ ЭКРАНА: Главное видео-меню и 3 экрана настройки генерации
-    const screens = ['video_menu', 'animate_nosound', 'animate_sound', 'video_motion_control'];
-    
-    // Перебираем экраны: начисто затираем класс active И НАГЛУХО СКРЫВАЕМ ИХ С ТЕЛЕФОНА И ПК
-    screens.forEach(s => {
-        const el = document.getElementById(s);
-        if (el) {
-            el.classList.remove('active');
-            el.style.display = 'none'; // 🔥 ИСПРАВЛЕНО: Скрываем старые экраны, чтобы они не торчали сверху!
-        }
-    });
-    
-    // Логика сброса параметров при возврате пользователя в Главное Меню Видеостудии
-    if (screenName === 'video_menu') {
-        // Скрываем блоки настроек на экранах, чтобы при следующем заходе они перерисовывались чисто
-        if (document.getElementById('video_nosound_settings_block')) document.getElementById('video_nosound_settings_block').style.display = "none";
-        if (document.getElementById('video_sound_settings_block')) document.getElementById('video_sound_settings_block').style.display = "none";
-        if (document.getElementById('video_motion_settings_block')) document.getElementById('video_motion_settings_block').style.display = "none";
-        
-        // Гарантированно прячем кнопку старта, если пользователь вышел в меню кнопкой назад
-        const motionSubmitBtn = document.getElementById('neo_motion_submit_btn');
-        if (motionSubmitBtn) motionSubmitBtn.style.display = "none";
-    }
-
-    // На всякий случай скрываем дефолтную нижнюю кнопку Телеграма (если она где-то всплывала)
-    if (tg && tg.MainButton) tg.MainButton.hide();
-
-    // Находим тот экран, на который переходит пользователь
-    const activeScreenEl = document.getElementById(screenName);
-    if (activeScreenEl) {
-        // 🔥 ИСПРАВЛЕНО: Включаем физическое отображение активного экрана
-        activeScreenEl.style.display = 'block';
-        
-        // Накатываем на него класс active, запускающий твою красивую CSS-анимацию fadeIn
-        activeScreenEl.classList.add('active');
-        
-        // Вызываем проверку главной кнопки, если она используется у тебя в боте
-        if (typeof updateVideoMainButton === 'function') updateVideoMainButton(); 
-        
-        // МГНОВЕННОЕ ВКЛЮЧЕНИЕ БЛОКА НАСТРОЕК ДЛЯ РЕЖИМА 1 (Оживление фото)
-        if (screenName === 'animate_nosound') {
-            const nosoundSettings = document.getElementById('video_nosound_settings_block');
-            if (nosoundSettings) nosoundSettings.style.display = "block";
-        }
-
-        // МГНОВЕННОЕ ВКЛЮЧЕНИЕ БЛОКА НАСТРОЕК ДЛЯ РЕЖИМА 2 (Оживление со звуком)
-        if (screenName === 'animate_sound') {
-            const soundSettings = document.getElementById('video_sound_settings_block');
-            if (soundSettings) soundSettings.style.display = "block";
-        }
-
-        // МГНОВЕННОЕ ВКЛЮЧЕНИЕ БЛОКА НАСТРОЕК ДЛЯ РЕЖИМА 3 (Оживление по видео)
-        if (screenName === 'video_motion_control') {
-            const motionSettings = document.getElementById('video_motion_settings_block');
-            if (motionSettings) motionSettings.style.display = "block";
-
-            // 🔥 ДОБАВЛЕНО: Принудительный авто-вызов функции switchMotionTab при открытии экрана
-            // Ищем, какая вкладка сейчас подсвечена (Свой или Шаблоны)
-            const activeTabButton = document.querySelector('#video_motion_tabs .tab-btn.active') || document.querySelector('#video_motion_tabs .tab-btn');
-            if (activeTabButton) {
-                const category = activeTabButton.innerText.trim().toUpperCase() === 'СВОЙ' ? 'custom' : 'preset';
-                // Пинаем функцию, чтобы она мгновенно отрисовала все блоки и кнопку старта!
-                if (typeof switchMotionTab === 'function') {
-                    switchMotionTab(category, activeTabButton);
-                }
-            }
-        }
-    }
-    
-    // Мгновенно обновляем текст стоимости монет на встроенных неоновых кнопках START под выбранные секунды
-    if (typeof updateStartButtonsPrice === 'function') updateStartButtonsPrice();
-
-    // ДОБАВЛЕНО: Оживление мини-плееров 1-го и 2-го режимов при входе на экраны
-    if (screenName === 'animate_nosound') {
-        const video1 = document.getElementById('preview_nosound_video');
-        if (video1) {
-            video1.currentTime = 0; // Сбрасываем на начало
-            video1.play().catch(e => console.log("Автозапуск ожидает клика 1:", e));
-        }
-    } else if (screenName === 'animate_sound') {
-        const video2 = document.getElementById('preview_sound_video');
-        if (video2) {
-            video2.currentTime = 0; // Сбрасываем на начало
-            video2.play().catch(e => console.log("Автозапуск ожидает клика 2:", e));
-        }
     }
 }
 
 
 // ====================================================================================
-// 67. Функция управления интерактивным видео-плеером для Режима 1
+// 2. ФУНКЦИЯ выбора количества людей на вкладке "Свой"
 // ====================================================================================
-// для Режима 1
-        function toggleNoSoundVideo() {
-            const video = document.getElementById('preview_nosound_video');
-            const overlay = document.getElementById('video_nosound_play_overlay');
-            const icon = document.getElementById('play_nosound_icon_sym');
-            
-            if (tg?.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('medium');
-            }
 
-            if (video.paused) {
-                video.play();
-                overlay.style.background = "rgba(0,0,0,0)";
-                icon.innerText = "⏸️";
-                // Плавно прячем оверлей, чтобы не мешал просмотру лица
-                setTimeout(() => { 
-                    if (!video.paused) overlay.style.opacity = "0"; 
-                }, 1500);
-            } else {
-                video.pause();
-                overlay.style.opacity = "1";
-                overlay.style.background = "rgba(0,0,0,0.4)";
-                icon.innerText = "▶️";
-            }
-        }
-
-        // Возвращаем видимость интерфейса при тапе или наведении
-        document.getElementById('video_nosound_play_overlay').addEventListener('mouseenter', () => {
-            document.getElementById('video_nosound_play_overlay').style.opacity = "1";
-        });
-
-// для Режима 2 (Со звуком)
-function toggleSoundVideo() {
-    const video = document.getElementById('preview_sound_video');
-    const overlay = document.getElementById('video_sound_play_overlay');
-    const icon = document.getElementById('play_sound_icon_sym');
+function selectFacesCount(count, element) {
+    // 🌟 1. Жестко фиксируем значение строго в глобальное окно window
+    window.selectedStyleFacesCount = parseInt(count) || 1;
     
-    if (tg?.HapticFeedback) {
-        tg.HapticFeedback.impactOccurred('medium');
+    // 2. Ищем кнопки по их ID
+    const btn1 = document.getElementById('btn_faces_1');
+    const btn2 = document.getElementById('btn_faces_2');
+    const btn3 = document.getElementById('btn_faces_3');
+
+    // Снимаем класс подсветки 'active' со всех кнопок этого ряда
+    if (btn1 && btn2 && btn3) {
+        btn1.classList.remove('active');
+        btn2.classList.remove('active');
+        btn3.classList.remove('active');
     }
 
-    if (video.paused) {
-        video.play();
-        overlay.style.background = "rgba(0,0,0,0)";
-        icon.innerText = "⏸️";
-        // Плавно убираем оверлей через 1.5 секунды
-        setTimeout(() => { if (!video.paused) overlay.style.opacity = "0"; }, 1500);
+    // 3. Подсвечиваем нужную кнопку
+    if (element) {
+        // Если кликнул юзер — подсвечиваем элемент, на который нажали
+        element.classList.add('active');
     } else {
-        video.pause();
-        overlay.style.opacity = "1";
-        overlay.style.background = "rgba(0,0,0,0.4)";
-        icon.innerText = "▶️";
+        // Если вызвали программно из карточки — ищем кнопку по ID и подсвечиваем её
+        const targetBtn = document.getElementById(`btn_faces_${count}`);
+        if (targetBtn) {
+            targetBtn.classList.add('active');
+        }
+    }
+    
+    console.log("[JS] Счетчик лиц успешно зафиксирован в window:", window.selectedStyleFacesCount);
+    
+    // 🔥 ИСПРАВЛЕНО: Пересчитываем текст и цену на кнопке СТАРТ строго для ФОТОСТУДИИ!
+    if (typeof updateFotoSubmitButtons === 'function') {
+        updateFotoSubmitButtons();
     }
 }
 
-// Показываем оверлей управления обратно при наведении/клике
-document.getElementById('video_sound_play_overlay').addEventListener('mouseenter', () => {
-    document.getElementById('video_sound_play_overlay').style.opacity = "1";
+// ====================================================================================
+// Микро-функция в JavaScript для переключения тумблера нана банана и флюкс плуид
+// ====================================================================================
+
+function switchGlobalAiModel(modelMode, element) {
+    document.getElementById('btn_global_model_banana').classList.remove('active');
+    document.getElementById('btn_global_model_pulid').classList.remove('active');
+    element.classList.add('active');
+
+    selectedAiModelEngine = modelMode; // Записывает 'banana' или 'pulid'
+    console.log("Глобальный тумблер ИИ переключен на движок:", selectedAiModelEngine);
+    
+    // 🔥 ИСПРАВЛЕНО: Пинаем правильный обновлятор цен фотостудии из prices.js!
+    if (typeof updateFotoSubmitButtons === 'function') {
+        updateFotoSubmitButtons();
+    }
+}
+
+
+// ====================================================================================
+// 2.5 ФУНКЦИИ ВОЗВРАТА НАЗАД 
+// ====================================================================================
+        // для фейс свапа
+        function handleSwapBackClick() {
+            openScreen('foto'); // Возврат в главное меню студии к 4 режимам
+        }
+        // для примерки
+        function handleTryOnBackClick() {
+            openScreen('foto'); // С первого клика возвращает в главное меню хаба
+        }
+        // 🔥 ДОБАВИЛИ: Функция назад для Смены фона
+        function handleBgBackClick() {
+            openScreen('foto'); // Возвращает обратно в главное меню хаба
+        }
+
+// ====================================================================================
+// 3. УМНАЯ ФУНКЦИЯ ВОЗВРАТА НАЗАД К ГАЛЕРЕЕ КАРТОЧЕК
+// ====================================================================================
+        
+        function handleTextBackClick() {
+            const gallery = document.getElementById('text_image_gallery');
+            const settingsBlock = document.getElementById('text_image_settings_block');
+            const instructionText = document.getElementById('custom_instruction_text');
+            const presetPreviewBlock = document.getElementById('preset_preview_block');
+
+            // 1. Проверяем, горит ли сейчас оранжевым вкладка "Свой"
+            const activeTabButton = document.querySelector('#text_image_tabs .tab-btn.active');
+            const isCustomTab = activeTabButton && activeTabButton.innerText === 'Свой';
+
+            // 🔥 Если мы находимся во вкладке "Свой" — СРАЗУ с первого клика улетаем в меню
+            if (isCustomTab) {
+                isTextImageStyleSelected = false;
+                selectedStyleName = "";
+                if (settingsBlock) settingsBlock.style.display = "none";
+                openScreen('foto'); // Твой переход на главную страницу студии
+                return; // Останавливаем выполнение функции, чтобы код ниже не срабатывал
+            }
+
+            // 2. Обычная логика возврата для готовых шаблонов (Муж, Жен, Дети, Все)
+            if (isTextImageStyleSelected) {
+                isTextImageStyleSelected = false;
+                selectedStyleName = "";
+
+                document.getElementById('text_image_title').innerText = "Шаблоны для генераций Вашего Фото";
+                document.getElementById('text_image_subtitle').innerText = "В режиме умный фокус изображение реалистичное как на шаблоне, в режиме цыфровая оптика более художественный стиль фото";
+
+                if (settingsBlock) settingsBlock.style.display = "none"; 
+                if (presetPreviewBlock) presetPreviewBlock.style.display = "none";
+                if (instructionText) instructionText.style.display = "none";
+                
+                if (gallery) gallery.style.display = "grid"; // Возвращаем сетку картинок
+
+                if (tg && tg.MainButton) tg.MainButton.hide();
+            } else {
+                // Если мы и так просто смотрели галерею шаблонов — уходим в меню
+                openScreen('foto');
+            }
+        }
+
+// ====================================================================================
+// 4. Старт WebApp, автоматическое разворачивание шторки и привязка кнопок
+// ====================================================================================
+window.addEventListener('DOMContentLoaded', () => {
+    if (tg) {
+        tg.ready();  
+        tg.expand(); 
+    }
+    
+    // --- 1. ПРИВЯЗКА КЛИКОВ: ФОТО + ТЕКСТ (Класс text_image) ---
+    const qualityBtn = document.getElementById('btn_text_quality');
+    const ratioBtn = document.getElementById('btn_text_ratio');
+    
+    if (qualityBtn) {
+        qualityBtn.addEventListener('click', () => {
+            tg.HapticFeedback.impactOccurred('medium');
+            // 🔥 ИСПРАВЛЕНО: Теперь передаем 'flux_pulid' вместо 'flux_dev', чтобы шторка показывала правильные цены!
+            openUniversalQualitySheet('flux_pulid'); 
+        });
+    }
+    if (ratioBtn) {
+        ratioBtn.addEventListener('click', () => {
+            tg.HapticFeedback.impactOccurred('medium');
+            openUniversalRatioSheet();
+        });
+    }
+
+    // --- 2. ПРИВЯЗКА КЛИКОВ: FACE SWAP ---
+    const swapQualityBtn = document.getElementById('btn_swap_quality');
+    const swapRatioBtn = document.getElementById('btn_swap_ratio');
+    
+    if (swapQualityBtn) {
+        swapQualityBtn.addEventListener('click', () => {
+            tg.HapticFeedback.impactOccurred('medium');
+            openUniversalQualitySheet('hy_wu_faceswap'); 
+        });
+    }
+    if (swapRatioBtn) {
+        swapRatioBtn.addEventListener('click', () => {
+            tg.HapticFeedback.impactOccurred('medium');
+            openUniversalRatioSheet();
+        });
+    }
+
+    // --- 3. ПРИВЯЗКА КЛИКОВ: ПРИМЕРКИ ОДЕЖДЫ ---
+    const tryonQualityBtn = document.getElementById('btn_tryon_quality');
+    const tryonRatioBtn = document.getElementById('btn_tryon_ratio');
+    
+    if (tryonQualityBtn) {
+        tryonQualityBtn.addEventListener('click', () => {
+            tg.HapticFeedback.impactOccurred('medium');
+            openUniversalQualitySheet('hy_wu_clothing'); 
+        });
+    }
+    if (tryonRatioBtn) {
+        tryonRatioBtn.addEventListener('click', () => {
+            tg.HapticFeedback.impactOccurred('medium');
+            openUniversalRatioSheet();
+        });
+    }
+
+    // --- 4. ПРИВЯЗКА КЛИКОВ: СМЕНЫ ФОНА ---
+    const bgQualityBtn = document.getElementById('btn_bg_quality');
+    const bgRatioBtn = document.getElementById('btn_bg_ratio');
+    
+    if (bgQualityBtn) {
+        bgQualityBtn.addEventListener('click', () => {
+            tg.HapticFeedback.impactOccurred('medium');
+            openUniversalQualitySheet('bria_background'); 
+        });
+    }
+    if (bgRatioBtn) {
+        bgRatioBtn.addEventListener('click', () => {
+            tg.HapticFeedback.impactOccurred('medium');
+            openUniversalRatioSheet();
+        });
+    }
+
+    // Умный стартовый роутер (ОСТАВЛЯЕМ БЕЗ ИЗМЕНЕНИЙ)
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetScreen = urlParams.get('screen');
+
+    if (targetScreen) {
+        openScreen(targetScreen);
+    } else {
+        openScreen('foto'); 
+    }
 });
 
 
+// ====================================================================================
+// 5. РОУТЕР ЭКРАНОВ И УМНЫЙ СЧЕТЧИК МОНЕТ НА КНОПКАХ START
+// ====================================================================================
 
-// для Режима 3
-function toggleMotionVideo() {
-    const video = document.getElementById('preview_motion_video');
-    const overlay = document.getElementById('video_motion_play_overlay');
-    const icon = document.getElementById('play_motion_icon_sym');
-    
-    if (tg?.HapticFeedback) {
-        tg.HapticFeedback.impactOccurred('medium');
-    }
+        // Безопасное переключение подэкранов внутри foto.html
+        function openScreen(screenName) {
+            currentActiveMode = screenName;
+            const screens = ['foto', 'face_swap', 'tryon', 'text_image', 'bg_change'];
+            
+            screens.forEach(s => {
+                const el = document.getElementById(s);
+                if (el) el.classList.remove('active');
+            });
+            
+            // Твой оригинальный сброс Фото+Текст и скрытие других режимов
+            if (screenName === 'foto') {
+                isTextImageStyleSelected = false;
+                selectedStyleName = "";
+                document.getElementById('text_image_title').innerText = "Шаблоны для генераций Вашего Фото";
+                document.getElementById('text_image_subtitle').innerText = "В режиме умный фокус изображение реалистичное как на шаблоне, в режиме цыфровая оптика более художественный стиль фото";
+                document.getElementById('text_image_large_preview').src = "";
+                document.getElementById('text_image_settings_block').style.display = "none";
+                document.getElementById('text_image_gallery').style.display = "grid";
+                
+                // Скрываем блок Face Swap при выходе в меню
+                const swapSettings = document.getElementById('face_swap_settings_block');
+                if (swapSettings) swapSettings.style.display = "none";
 
-    if (video.paused) {
-        video.play();
-        overlay.style.background = "rgba(0,0,0,0)";
-        icon.innerText = "⏸️";
-        setTimeout(() => { if (!video.paused) overlay.style.opacity = "0"; }, 1500);
-    } else {
-        video.pause();
-        overlay.style.opacity = "1";
-        overlay.style.background = "rgba(0,0,0,0.4)";
-        icon.innerText = "▶️";
+                // СБРОС ДЛЯ ПРИМЕРКИ: Скрываем единый служебный блок настроек при выходе в главное меню
+                const tryonSettings = document.getElementById('tryon_settings_block');
+                if (tryonSettings) tryonSettings.style.display = "none";
+
+                // Скрываем блок настроек смены фона при возврате в меню хаба
+                const bgSettings = document.getElementById('bg_change_settings_block');
+                if (bgSettings) bgSettings.style.display = "none";
+            }
+
+            if (tg && tg.MainButton) tg.MainButton.hide();
+
+            const activeScreenEl = document.getElementById(screenName);
+            if (activeScreenEl) {
+                activeScreenEl.classList.add('active');
+                if (typeof updateFotoMainButton === 'function') updateFotoMainButton(); 
+                
+                // МГНОВЕННОЕ ВКЛЮЧЕНИЕ: для Face Swap
+                if (screenName === 'face_swap') {
+                    const swapSettings = document.getElementById('face_swap_settings_block');
+                    if (swapSettings) swapSettings.style.display = "block";
+                }
+
+                // МГНОВЕННОЕ ВКЛЮЧЕНИЕ ДЛЯ ПРИМЕРКИ ОДЕЖДЫ
+                if (screenName === 'tryon') {
+                    const tryonSettings = document.getElementById('tryon_settings_block');
+                    if (tryonSettings) tryonSettings.style.display = "block";
+                    
+                    // Жестко фиксируем режим примерки вещей на фигуру для Python-бота
+                    currentTryOnMode = 'clothes_swap_mode'; 
+                }
+
+                // МГНОВЕННОЕ ВКЛЮЧЕНИЕ ДЛЯ СМЕНЫ ФОНА
+                if (screenName === 'bg_change') {
+                    const bgSettings = document.getElementById('bg_change_settings_block');
+                    if (bgSettings) bgSettings.style.display = "block";
+                }
+
+                // 🔥 ДОБАВИЛИ: Сброс тумблера ИИ на "Умный Фокус" при каждом входе в Фото + Текст
+                if (screenName === 'text_image') {
+                    const defaultModelBtn = document.getElementById('btn_global_model_banana');
+                    if (defaultModelBtn) {
+                        switchGlobalAiModel('banana', defaultModelBtn);
+                    }
+                }
+            }
+        }
+
+// ====================================================================================
+// 8. ПЕРЕДАТЧИКИ JSON БОТУ И СИНХРОНИЗАЦИЯ С ПРЕСЕТАМИ ШАБЛОНОВ для клика по карточке
+// ====================================================================================
+function sendToTelegram(payload) {
+    try {
+        // Теперь этот метод нативно сработает на ЛЮБЫХ телефонах!
+        if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.sendData === 'function') {
+            console.log("[WebApp] Отправляем полный JSON напрямую в бот:", payload);
+            
+            // Передаем весь объект, включая длинные промпты и любые названия стилей словами
+            window.Telegram.WebApp.sendData(JSON.stringify(payload));
+            window.Telegram.WebApp.close();
+            return;
+        }
+    } catch (e) {
+        console.error("Ошибка функции sendToTelegram:", e);
     }
 }
 
-// 🔥 ИСПРАВЛЕНО: Добавили защитную проверку элемента, чтобы сайт не падал!
-const motionPlayOverlay = document.getElementById('video_motion_play_overlay');
-if (motionPlayOverlay) {
-    motionPlayOverlay.addEventListener('mouseenter', () => {
-        motionPlayOverlay.style.opacity = "1";
+
+function sendPhotoTextData() { 
+    try {
+        let isCustomText = (typeof currentGenerationMode !== 'undefined' && currentGenerationMode === 'custom');
+        let currentModel = (typeof selectedAiModelEngine !== 'undefined') ? selectedAiModelEngine : 'banana';
+        
+        let facesCountToSend = parseInt(window.selectedStyleFacesCount) || 1;
+        let ratio = (typeof selectedTextRatio !== 'undefined') ? selectedTextRatio : '9:16';
+        let quality = (typeof selectedTextQuality !== 'undefined') ? selectedTextQuality : 'schnell';
+
+        let promptToSend = "";
+        let styleTitleToSend = "custom";
+
+        if (!isCustomText) {
+            styleTitleToSend = window.selectedStyleName || "none";
+            
+            if (currentModel === 'pulid') {
+                promptToSend = window.selectedStylePromptPulid || window.selectedStylePrompt || "";
+            } else {
+                promptToSend = window.selectedStylePrompt || "";
+            }
+        } else {
+            styleTitleToSend = "custom";
+            promptToSend = ""; 
+        }
+
+        let finalTrigger = 'photo_banana_edit';
+        if (currentModel === 'pulid') {
+            finalTrigger = 'photo_flux_pulid';
+        }
+        
+        console.log("[WebApp] Сборка пакета ФОТО. Отправляем чистый JSON:", facesCountToSend, "Триггер:", finalTrigger);
+
+        // 🔥 ТЕПЕРЬ ОДИН ОФИЦИАЛЬНЫЙ НАДЁЖНЫЙ ПУТЬ ДЛЯ ВСЕХ УСТРОЙСТВ (Мак и Смартфоны)
+        if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.sendData === 'function') {
+            window.Telegram.WebApp.sendData(JSON.stringify({ 
+                mode_trigger: finalTrigger,
+                aspect_ratio: ratio, 
+                quality: quality,
+                ai_model_engine: currentModel,         
+                is_custom_text_mode: isCustomText,     
+                faces_count: facesCountToSend, 
+                style_title: styleTitleToSend,
+                prompt_text: promptToSend          
+            })); 
+            
+            // Мгновенно закрываем Mini App на любом устройстве
+            window.Telegram.WebApp.close();
+            return;
+        } 
+
+    } catch (err) {
+        console.error("Критический сбой внутри функции sendPhotoTextData:", err);
+    }
+}
+
+
+// 1. ФУНКЦИЯ ОТПРАВКИ ДАННЫХ ДЛЯ FACE SWAP
+function sendCustomFaceSwapData() { 
+    // Безопасно считываем пропорции и качество кадра с подстраховкой
+    let ratio = (typeof selectedSwapRatio !== 'undefined') ? selectedSwapRatio : '9:16';
+    let quality = (typeof selectedSwapQuality !== 'undefined') ? selectedSwapQuality : 'schnell';
+
+    sendToTelegram({ 
+        mode_trigger: 'face_swap', 
+        is_custom_template: true, 
+        quality: quality 
+    }); 
+}
+
+// 2. ФУНКЦИЯ СБОРА И ОТПРАВКИ ДАННЫХ ДЛЯ ПРИМЕРКИ
+function sendTryOnData() { 
+    let ratio = (typeof selectedTryOnRatio !== 'undefined') ? selectedTryOnRatio : '9:16';
+    let quality = (typeof selectedTryOnQuality !== 'undefined') ? selectedTryOnQuality : 'schnell';
+    let tryonMode = (typeof currentTryOnMode !== 'undefined') ? currentTryOnMode : 'clothes_swap_mode';
+
+    sendToTelegram({ 
+        mode_trigger: 'tryon', 
+        sub_mode: tryonMode, // 🔥 Отправит 'face_swap_mode' или 'clothes_swap_mode'
+        quality: quality 
+    }); 
+}
+
+// 3. ФУНКЦИЯ СБОРА И ОТПРАВКИ ДАННЫХ ДЛЯ СМЕНЫ ФОНА
+function sendBgChangeData() { 
+    let quality = (typeof selectedBgQuality !== 'undefined') ? selectedBgQuality : 'schnell';
+
+    sendToTelegram({ 
+        mode_trigger: 'bg_change',  
+        quality: quality 
+    }); 
+}
+
+// ====================================================================================
+// Функция Клика по готовому пресету на экране Face Swap (ОСТАВЛЯЕМ В HTML)
+// ====================================================================================
+function selectReadyTemplate(templateId, forcedRatio) {
+    if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+
+    // Если у готового шаблона зашит свой формат (например, 3:4), принудительно обновляем текст на капсуле
+    if (forcedRatio) {
+        if (typeof selectedSwapRatio !== 'undefined') selectedSwapRatio = forcedRatio;
+        const el = document.getElementById('btn_swap_ratio');
+        if (el) el.innerHTML = forcedRatio;
+    }
+    
+    // Безопасно считываем текущие настройки с подстраховкой
+    let ratio = (typeof selectedSwapRatio !== 'undefined') ? selectedSwapRatio : '9:16';
+    let quality = (typeof selectedSwapQuality !== 'undefined') ? selectedSwapQuality : 'schnell';
+    
+    sendToTelegram({
+        mode_trigger: 'face_swap',
+        is_custom_template: false,
+        template_id: templateId, 
+        aspect_ratio: ratio, 
+        quality: quality
     });
-}
-
-
-// ====================================================================================
-// 8. СБОР И ОТПРАВКА ДАННЫХ ИЗ WEBAPP В PYTHON БОТ (ЧЕРЕЗ TG.SENDDATA)
-// ====================================================================================
-
-    // 🎥 1. Отправка для Режима 1: Оживление фото (без звука)
-    function sendVideoGenData() {
-        if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
-        
-        const dataToSend = {
-            mode_trigger: "video_menu",          
-            video_type: "default",               // Сработает ветка else (обычный Kling 2.1)
-            video_duration: currentKlingDuration, // Выбранные через шторку 5 или 10 сек
-            chosen_ratio: "auto",                // 🔥 Поменяли на "auto", чтобы бот сам корректировал по картинке
-            cost: currentKlingDuration === 10 ? 4 : 2 
-        };
-        
-        if (tg) {
-            tg.sendData(JSON.stringify(dataToSend));
-            tg.close();
-        }
-    }
-
-// 🔊 2. Отправка для Режима 2: Оживление со звуком (БЕЗ ПОВТОРНЫХ РАСЧЕТОВ)
-function sendVideoSoundGenData() {
-    if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
-
-    // 1. Читаем секунды прямо с кнопки шторки (например, "⏱️ 15 сек" -> 15)
-    let finalDuration = 5; // 🔥 ФИКС: дефолт теперь 5 секунд вместо 4
-    const soraBtnEl = document.getElementById('btn_sora_duration');
-    if (soraBtnEl) {
-        const match = soraBtnEl.innerText.match(/\d+/);
-        if (match) finalDuration = parseInt(match, 10);
-    }
-
-    // 2. 🔥 Читаем готовую цену прямо с кнопки старта (например, "Start 15 🪙" -> 15)
-    let finalCost = 5; // 🔥 ФИКС: дефолт теперь 5 монет вместо 3
-    const startBtn2 = document.getElementById('neo_video_sound_submit_btn');
-    if (startBtn2) {
-        const matchCost = startBtn2.innerText.match(/\d+/);
-        if (matchCost) finalCost = parseInt(matchCost, 10);
-    }
-
-    const isAudioActive = true;
-    const dataToSend = {
-        mode_trigger: "video_menu",
-        video_type: "pro",
-        video_duration: String(finalDuration), // Сюда улетят честные 5, 10 или 15 сек
-        chosen_ratio: soundGenRatio || "auto",
-        selected_voice: isAudioActive ? selectedVoiceId : "none",
-        cost: Number(finalCost) // Реальная цена, считанная прямо с кнопки старта
-    };
-
-    console.log("[WebApp Send pro] Улетает пакет в бота:", dataToSend);
-    if (tg) {
-        tg.sendData(JSON.stringify(dataToSend));
-        tg.close();
-    }
-}
-
-// 👤 3. Отправка для Режима 3: Оживление по видео (Motion Control)
-function sendMotionControlData() {
-    if (!isMotionStyleSelected) {
-        tg.showAlert("Пожалуйста, выберите шаблон или перейдите во вкладку 'Свой'!");
-        return;
-    }
-    
-    if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
-
-    // НАДЕЖНО: Считываем точную стоимость коинов прямо с кнопки старта карточки!
-    let presetCost = 0; // 🔥 ФИКС: дефолт теперь 0, так как для вкладки "Свой" цена изначально нулевая
-    
-    // Считываем цену с кнопки ТОЛЬКО если мы находимся в режиме готового шаблона (preset)
-    if (currentGenerationMode === "preset") {
-        presetCost = 16; // дефолтная подстраховка для шаблона (например, 8 сек * 2 коина)
-        const motionBtnEl = document.getElementById('neo_motion_submit_btn');
-        if (motionBtnEl && motionBtnEl.innerText) {
-            const matchCost = motionBtnEl.innerText.match(/\d+/);
-            if (matchCost) presetCost = parseInt(matchCost, 10);
-        }
-    } else {
-        // 🔥 ЖЕСТКИЙ ФИКС: Если это вкладка "Свой" (custom), цена для бота ВСЕГДА должна быть строго 0!
-        presetCost = 0;
-    }
-
-    // 🔥 ФИКС: Привели ключи в полное соответствие с FSM-памятью твоего Python-бота!
-    const dataToSend = {
-        mode_trigger: "video_menu",
-        video_type: "motion_control",
-        action: "start_file_waiting",
-        motion_gen_mode: currentGenerationMode,      // 'custom' или 'preset'
-        motion_template_name: selectedMotionStyleName,
-        motion_video_url: selectedMotionVideoUrl, 
-        video_duration: motionGenDuration || 5,
-        video_cost: Number(presetCost)                // 🔥 Теперь улетит честный 0 для вкладки "Свой"!
-    };
-
-    console.log("[WebApp Send Motion] Улетает пакет в бота:", dataToSend);
-    
-    if (tg) {
-        tg.sendData(JSON.stringify(dataToSend));
-        tg.close();
-    }
 }
 
 // ====================================================================================
@@ -1229,7 +1114,6 @@ document.addEventListener('DOMContentLoaded', () => {
 // ====================================================================================
 //  ФУНКЦИЯ переключения всех моих ШТМЭЛЬ
 // ====================================================================================
-
 function navigateToScreen(fileName) {
     if (window.Telegram?.WebApp?.HapticFeedback) {
         Telegram.WebApp.HapticFeedback.impactOccurred('medium');
@@ -1238,6 +1122,6 @@ function navigateToScreen(fileName) {
     window.location.href = fileName;
 }
     </script>
-        <script src="prices.js"></script>
+    <script src="prices.js"></script>
 </body>
 </html>

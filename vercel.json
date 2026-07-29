@@ -3,6 +3,7 @@
   "trailingSlash": false,
   "routes": [
     { "src": "/api/v1/tariffs", "dest": "http://144.124.241.83:8080/api/v1/tariffs" },
+    { "src": "/static/(.*)", "dest": "http://144.124.241.83:8080/static/$1" },
     { "src": "/foto", "dest": "/foto.html" },
     { "src": "/video", "dest": "/video.html" },
     { "src": "/image", "dest": "/image.html" },

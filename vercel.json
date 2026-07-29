@@ -2,6 +2,10 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "routes": [
+    { 
+      "src": "/api/(.*)", 
+      "dest": "http://144.124.241.83:8080/$1" 
+    },
     { "src": "/foto", "dest": "/foto.html" },
     { "src": "/video", "dest": "/video.html" },
     { "src": "/image", "dest": "/image.html" },

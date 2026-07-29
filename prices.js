@@ -27,13 +27,12 @@ window.dbBananaEditPrices = { coins_min: 2, coins_mid: 3, coins_max: 4 };
 
 async function syncPricesFromDatabase() {
     try {
-        // 🔥 ИСПРАВЛЕНО: Добавили заголовок ngrok-skip-browser-warning, чтобы Ngrok пропускал запрос!
-        const response = await fetch(API_URL, { 
+        // Чистый запрос без нгрока и с защитой от кэширования
+        const response = await fetch(`${API_URL}?t=${Date.now()}`, { 
             method: "GET",
             cache: "no-store", 
             headers: {
-                "Content-Type": "application/json",
-                "ngrok-skip-browser-warning": "true" 
+                "Content-Type": "application/json"
             }
         }); 
         const data = await response.json();

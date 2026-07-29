@@ -1,5 +1,5 @@
 // URL-адрес вашего сервера, где запущен бот и API
-const API_URL = "/api/v1/tariffs";
+const API_URL = "http://144.124.241.83:8080/api/v1/tariffs";
 
 // 🟢 1. ДЕФОЛТНЫЕ ЗАГЛУШКИ ДЛЯ КАРТИНОК (РИСОВАНИЯ)
 window.dbFluxDevPrices = { coins_min: 1, coins_mid: 2, coins_max: 3 };

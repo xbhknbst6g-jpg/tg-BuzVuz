@@ -519,7 +519,7 @@ function selectTextImageStyle(styleName, imageUrl, facesCount = 1, promptText = 
         document.getElementById('text_image_subtitle').innerText = "Настройте параметры кадра и запустите генерацию:";
     }
 
-    // document.getElementById('text_image_gallery').style.display = "none"; 
+    document.getElementById('text_image_gallery').style.display = "none"; 
     document.getElementById('text_image_settings_block').style.display = "block"; // Открываем пульт управления
     
     if (document.getElementById('text_image_spacer')) document.getElementById('text_image_spacer').style.display = 'none';
@@ -772,7 +772,7 @@ function switchGlobalAiModel(modelMode, element) {
                 if (presetPreviewBlock) presetPreviewBlock.style.display = "none";
                 if (instructionText) instructionText.style.display = "none";
                 
-                // if (gallery) gallery.style.display = "grid"; // Возвращаем сетку картинок
+                if (gallery) gallery.style.display = "grid"; // Возвращаем сетку картинок
 
                 if (tg && tg.MainButton) tg.MainButton.hide();
             } else {

@@ -498,13 +498,12 @@
         let selectedAiModelEngine = 'banana'; 
 
         let selectedStyleFacesCount = 1; // По умолчанию всегда 1 человек
-        let lastGalleryScrollPosition = 0; // Сюда мы будем прятать позицию скролла
+
         
 // ====================================================================================
 // 2. ФУНКЦИЯ КЛИКА ПО КАРТОЧКЕ (Сброс кнопок-капсул в дефолт и показ пульта)
 // ====================================================================================
 function selectTextImageStyle(styleName, imageUrl, facesCount = 1, promptText = '') {
-    lastGalleryScrollPosition = window.scrollY; 
     isTextImageStyleSelected = true;
      // 🔥 ЖЕСТКИЙ ФИКС: Записываем данные в глобальный window
     window.selectedStyleName = styleName;
@@ -773,18 +772,7 @@ function switchGlobalAiModel(modelMode, element) {
                 if (presetPreviewBlock) presetPreviewBlock.style.display = "none";
                 if (instructionText) instructionText.style.display = "none";
                 
-                if (gallery) {
-                    gallery.style.display = "grid"; // Возвращаем сетку картинок
-                    
-                    // 🔥 ШАГ 3: Возвращаем пользователя ровно на то же место
-                    // setTimeout нужен на 50 миллисекунд, чтобы браузер успел включить сетку перед прокруткой
-                    setTimeout(() => {
-                        window.scrollTo({
-                            top: lastGalleryScrollPosition,
-                            behavior: 'auto' // 'auto' — мгновенно, 'smooth' — плавно докрутит
-                        });
-                    }, 50);
-                }
+                if (gallery) gallery.style.display = "grid"; // Возвращаем сетку картинок
 
                 if (tg && tg.MainButton) tg.MainButton.hide();
             } else {

@@ -276,7 +276,9 @@ function openUniversalQualitySheet(serviceName) {
     listEl.innerHTML = `
         <li><button class="custom-sheet-item" onclick="if(window.Telegram?.WebApp?.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectQualityFromSheet('schnell', '⚡ Standard (1k)')"><span>Standard (1k)</span><span class="coin-price">${min} 🪙</span></button></li>
         <li><button class="custom-sheet-item" onclick="if(window.Telegram?.WebApp?.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectQualityFromSheet('dev', '💎 Pro (2k)')"><span>Pro (2k)</span><span class="coin-price">${mid} 🪙</span></button></li>
+        <!-- Кнопка 4К временно отключена:
         <li><button class="custom-sheet-item" onclick="if(window.Telegram?.WebApp?.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectQualityFromSheet('ultra_4k', '🔥 Ultra (4k)')"><span>Ultra (4k)</span><span class="coin-price">${max} 🪙</span></button></li>
+        -->
     `;
 
     document.getElementById('custom_action_sheet').classList.add('active');

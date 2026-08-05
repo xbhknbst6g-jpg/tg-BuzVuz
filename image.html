@@ -244,20 +244,35 @@
 <!-- НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ (ТАББАР) -->
 <!-- ========================================== -->
 
-        <div class="bottom-navigation-bar">
-            <button class="nav-item" onclick="navigateToScreen('foto.html')">
-                <span class="nav-icon">📸</span>
-                <span class="nav-text">ИИ-Фото</span>
-            </button>
-            <button class="nav-item" onclick="navigateToScreen('video.html')">
-                <span class="nav-icon">🎥</span>
-                <span class="nav-text">ИИ-Видео</span>
-            </button>
-            <button class="nav-item active">
-                <span class="nav-icon">🎨</span>
-                <span class="nav-text">ИИ-Арт</span>
-            </button>
+<div class="bottom-navigation-bar">
+    <!-- Кнопка ФОТО -->
+    <button class="nav-item" onclick="navigateToScreen('foto.html')">
+        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+            <circle cx="12" cy="13" r="3"/>
+        </svg>
+        <span class="nav-text">ИИ-Фото</span>
+    </button>
+    
+    <!-- Кнопка ВИДЕО -->
+    <button class="nav-item" onclick="navigateToScreen('video.html')">
+        <svg class="nav-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m22 8-6 4 6 4V8Z"/>
+            <rect width="14" height="12" x="2" y="6" rx="2" ry="2"/>
+        </svg>
+        <span class="nav-text">ИИ-Видео</span>
+    </button>
+    
+    <!-- Кнопка АРТ (Активная с твоей галочкой в круге) -->
+    <button class="nav-item active">
+        <div class="nav-icon-check-wrapper">
+            <svg class="select-check-icon" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org">
+                <path d="M19.2803 6.76264C19.5732 7.05553 19.5732 7.53041 19.2803 7.8233L9.86348 17.2402C9.57058 17.533 9.09571 17.533 8.80282 17.2402L4.71967 13.157C4.42678 12.8641 4.42678 12.3892 4.71967 12.0963C5.01256 11.8035 5.48744 11.8035 5.78033 12.0963L9.33315 15.6492L18.2197 6.76264C18.5126 6.46975 18.9874 6.46975 19.2803 6.76264Z" fill="currentColor"/>
+            </svg>
         </div>
+        <span class="nav-text">ИИ-Арт</span>
+    </button>
+</div>
 
 
 

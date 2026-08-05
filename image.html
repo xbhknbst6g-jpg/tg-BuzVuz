@@ -86,6 +86,7 @@
                             <img src="https://i.postimg.cc/CLSY75kz/1_svap-sablon.jpg" 
                                 onclick="Telegram.WebApp.HapticFeedback.impactOccurred('medium'); openPreviewVideo(this.src)"
                                 style="width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer;" alt="Пример 1">
+                                <span class="card-label">ИИ-ФОТО</span>
                         </div>
                     </div>
 
@@ -121,7 +122,7 @@
                     <div class="control-col" style="flex: 1;"><button id="btn_text_quality" class="capsule-btn" onclick="openUniversalQualitySheet('flux_dev')" style="width: 100%;">⚡ Standard (1k)</button></div>
                     <div class="control-col" style="flex: 1;"><button id="btn_text_ratio" class="capsule-btn" onclick="openUniversalRatioSheet()" style="width: 100%;">9:16</button></div>
                     <div class="control-col control-col-btn" style="flex: 1.2;">
-                        <button id="btn-start-flux-dev" class="neo-start-btn" onclick="sendTextGenData()" style="width: 100%;">Start 1 🪙</button>
+                        <button id="btn-start-Flux-2-flex" class="neo-start-btn" onclick="sendTextGenData()" style="width: 100%;">Start 1 🪙</button>
                     </div>
                 </div>
 
@@ -553,7 +554,7 @@ function sendPhotoTextData() {
         let ratio = (typeof selectedTextRatio !== 'undefined') ? selectedTextRatio : '9:16';
         let quality = (typeof selectedTextQuality !== 'undefined') ? selectedTextQuality : 'schnell';
 
-        console.log("[WebApp] Сборка пакета: Цифровая Оптика (Flux Dev)");
+        console.log("[WebApp] Сборка пакета: Цифровая Оптика (Flux-2-flex)");
 
         sendToTelegram({ 
             mode_trigger: 'pure_text_image', // 🔥 ТРИГГЕР ДЛЯ FLUX В БОТЕ

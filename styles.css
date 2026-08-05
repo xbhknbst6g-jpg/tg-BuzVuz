@@ -769,40 +769,15 @@ body {
     width: 30% !important;
     height: 100% !important;
     cursor: pointer;
-    color: rgba(255, 255, 255, 0.4) !important; /* Цвет текста для неактивных */
+    color: rgba(255, 255, 255, 0.4) !important;
     transition: all 0.2s ease;
     -webkit-tap-highlight-color: transparent;
 }
 
-/* ИСПРАВЛЕНО: Базовые стили для новых SVG-иконок фото и видео */
-.nav-icon-svg {
-    width: 20px;
-    height: 20px;
+.nav-icon {
+    font-size: 20px;
     margin-bottom: 2px;
-    stroke: rgba(255, 255, 255, 0.4); /* Контур неактивных иконок совпадает с текстом */
-    transition: transform 0.2s ease, stroke 0.2s ease;
-}
-
-/* ИСПРАВЛЕНО: Круглая подложка для твоей галочки на активной кнопке */
-.nav-icon-check-wrapper {
-    width: 20px;
-    height: 20px;
-    background: #000000;
-    border: 1px solid #ff6600;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 2px;
-    box-shadow: 0 0 10px rgba(255, 102, 0, 0.6);
     transition: transform 0.2s ease;
-}
-
-/* ИСПРАВЛЕНО: Размер и цвет самой галочки внутри кружка */
-.select-check-icon {
-    width: 13px;
-    height: 13px;
-    color: #ff6600 !important;
 }
 
 .nav-text {
@@ -812,32 +787,18 @@ body {
     letter-spacing: 0.5px;
 }
 
-/* СТИЛИ ДЛЯ АКТИВНОЙ КНОПКИ */
 .nav-item.active {
     color: #ff6600 !important;
     text-shadow: 0 0 10px rgba(255, 102, 0, 0.6);
 }
 
-/* ИСПРАВЛЕНО: Подсвечиваем контур активной SVG-иконки оранжевым */
-.nav-item.active .nav-icon-svg {
-    stroke: #ff6600 !important;
-    transform: scale(1.15);
-    filter: drop-shadow(0 0 5px rgba(255, 102, 0, 0.6));
-}
-
-/* ИСПРАВЛЕНО: Увеличиваем кружок с галочкой на активной кнопке */
-.nav-item.active .nav-icon-check-wrapper {
+.nav-item.active .nav-icon {
     transform: scale(1.15);
 }
 
 .nav-item:active:not(.active) {
     transform: scale(0.95);
     color: rgba(255, 255, 255, 0.8) !important;
-}
-
-/* ИСПРАВЛЕНО: Подсвечиваем контур обычной иконки при зажатии пальцем */
-.nav-item:active:not(.active) .nav-icon-svg {
-    stroke: rgba(255, 255, 255, 0.8) !important;
 }
 
 /* ========================================================================== */

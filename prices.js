@@ -134,14 +134,15 @@ async function syncPricesFromDatabase() {
         if (document.getElementById("btn-start-kling10s")) document.getElementById("btn-start-kling10s").innerHTML = `Start ${kling10sPrice} 🪙`;
         if (document.getElementById("btn-start-sora")) document.getElementById("btn-start-sora").innerHTML = `Start ${soraPrice} 🪙`;
         // Вставляем живые цены из MongoDB в шторку качества
+        // 🔥 ИСПРАВЛЕНО: Заменили несуществующий fluxDevPrices на легитимный window.dbFluxDevPrices
         if (document.getElementById("quality-flux-standard")) {
-            document.getElementById("quality-flux-standard").innerText = fluxDevPrices.coins_min;
+            document.getElementById("quality-flux-standard").innerText = window.dbFluxDevPrices.coins_min;
         }
         if (document.getElementById("quality-flux-pro")) {
-            document.getElementById("quality-flux-pro").innerText = fluxDevPrices.coins_mid;
+            document.getElementById("quality-flux-pro").innerText = window.dbFluxDevPrices.coins_mid;
         }
-                if (document.getElementById("quality-flux-ultra")) {
-            document.getElementById("quality-flux-ultra").innerText = fluxDevPrices.coins_max;
+        if (document.getElementById("quality-flux-ultra")) {
+            document.getElementById("quality-flux-ultra").innerText = window.dbFluxDevPrices.coins_max;
         }
         if (typeof updateNeoStartButtonText === "function") {
             updateNeoStartButtonText();
@@ -176,21 +177,14 @@ function updateNeoStartButtonText() {
     
     // Считываем количество кликнутых людей (1, 2 или 3)
     const currentFaces = parseInt(window.selectedStyleFacesCount) || 1;
-    
-    // Для Nano Banana (btnDirect) определяем ключ цены по количеству человек (min, mid, max)
-    let bananaPriceKey = "coins_min"; 
-    if (currentFaces === 2) bananaPriceKey = "coins_mid";
-    else if (currentFaces === 3) bananaPriceKey = "coins_max";
 
     // 🔥 РАСЧЕТ ДЛЯ ТВОЕЙ КНОПКИ ФОТОСТУДИИ (Цифровая Оптика / Свой сюжет)
     if (btnText) {
         let basePrice = 2; // Стандартная базовая цена за 1 человека
         
         if (selectedAiModelEngine === 'custom') {
-            // Если включен "custom", берем базовую цену Flux PuLID из безопасного объекта
             basePrice = window.dbFluxPulidPrices.coins_min || 2; 
         } else {
-            // Смотрим, какое качество выбрано в шторке текста (selectedTextQuality):
             if (selectedTextQuality === 'dev') {
                 basePrice = window.dbFluxDevPrices.coins_mid || 3; 
             } else if (selectedTextQuality === 'ultra_4k') {
@@ -200,22 +194,22 @@ function updateNeoStartButtonText() {
             }
         }
         
-        // 🔥 ВАЖНО: Умножаем базовую стоимость на количество выбранных персонажей!
         let finalFluxPrice = basePrice * currentFaces;
-        
-        // Меняем текст на твоей реальной кнопке
         btnText.innerHTML = `Start ${finalFluxPrice} 🪙`;
     }
     
-    // ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ УМНОГО ФОКУСА
+    // 🔥 ДИНАМИЧЕСКИЙ ИСПРАВЛЕННЫЙ РАСЧЕТ ДЛЯ УМНОГО ФОКУСА (NANO BANANA)
     if (btnDirect) {
-        let finalBananaPrice = window.dbBananaPaintPrices[bananaPriceKey] || window.dbBananaPaintPrices.coins_min;
+        let baseBananaPrice = window.dbBananaPaintPrices.coins_min || 2; // Базовая дефолтная цена за 1 лицо
         
-        if (directGenQuality === 'dev' && currentFaces === 1) {
-            finalBananaPrice = window.dbBananaPaintPrices.coins_mid;
-        } else if (directGenQuality === 'ultra_4k' && currentFaces === 1) {
-            finalBananaPrice = window.dbBananaPaintPrices.coins_max;
+        // Сначала честно определяем базовую ставку за выбранное качество
+        if (directGenQuality === 'dev') {
+            baseBananaPrice = window.dbBananaPaintPrices.coins_mid || 3;
+        } else if (directGenQuality === 'ultra_4k') {
+            baseBananaPrice = window.dbBananaPaintPrices.coins_max || 4;
         }
+        
+        let finalBananaPrice = baseBananaPrice * currentFaces;
         
         btnDirect.innerHTML = `Start ${finalBananaPrice} 🪙`;
     }
@@ -252,6 +246,7 @@ function openUniversalQualitySheet(serviceName) {
         max = window.allPrices.services[targetService].coins_max;
     } else {
         let backup = window.dbFluxDevPrices;
+        
         if (targetService === 'nano_banana_paint') backup = window.dbBananaPaintPrices;
         if (targetService === 'flux_pulid') backup = window.dbFluxPulidPrices;
         if (targetService === 'nano_banana_edit') backup = window.dbBananaEditPrices;
@@ -259,9 +254,9 @@ function openUniversalQualitySheet(serviceName) {
         if (targetService === 'hy_wu_clothing') backup = window.dbClothingPrices;
         if (targetService === 'bria_background') backup = window.dbBackgroundPrices;
 
-        min = backup.coins_min;
-        mid = backup.coins_mid;
-        max = backup.coins_max;
+        min = backup?.coins_min || 1;
+        mid = backup?.coins_mid || 2;
+        max = backup?.coins_max || 3;
     }
 
     // 🔥 🔥 🔥 НАДЕЖНАЯ ИЗОЛЯЦИЯ: Умножаем цену только для первого режима фотостудии!
@@ -270,21 +265,18 @@ function openUniversalQualitySheet(serviceName) {
         min = min * currentFaces;
         mid = mid * currentFaces;
         max = max * currentFaces;
-        console.log(`[Шторка-Прайс] Включен режим фото. Умножаем цены на людей: ${currentFaces}. Итог: ${min}, ${mid}, ${max}`);
+        console.log(`[Шторка-Прайс] Включен... Итог: ${min}, ${mid}, ${max}`);
     }
 
     listEl.innerHTML = `
         <li><button class="custom-sheet-item" onclick="if(window.Telegram?.WebApp?.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectQualityFromSheet('schnell', '⚡ Standard (1k)')"><span>Standard (1k)</span><span class="coin-price">${min} 🪙</span></button></li>
         <li><button class="custom-sheet-item" onclick="if(window.Telegram?.WebApp?.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectQualityFromSheet('dev', '💎 Pro (2k)')"><span>Pro (2k)</span><span class="coin-price">${mid} 🪙</span></button></li>
-        <!-- Кнопка 4К временно отключена:
-        <li><button class="custom-sheet-item" onclick="if(window.Telegram?.WebApp?.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectQualityFromSheet('ultra_4k', '🔥 Ultra (4k)')"><span>Ultra (4k)</span><span class="coin-price">${max} 🪙</span></button></li>
-        -->
     `;
 
     document.getElementById('custom_action_sheet').classList.add('active');
 }
 
-// 2. ОТКРЫТИЕ ШТОРКИ ФОРМАТА (ОСТАВЛЯЕМ БЕЗ ИЗМЕНЕНИЙ)
+// 2. ОТКРЫТИЕ ШТОРКИ ФОРМАТА (ИСПРАВЛЕНО: СТРАХОВКА ХАПТИКА)
 function openUniversalRatioSheet() {
     const titleEl = document.getElementById('custom_sheet_title');
     const listEl = document.getElementById('custom_sheet_list');
@@ -293,11 +285,11 @@ function openUniversalRatioSheet() {
     titleEl.innerText = "СООТНОШЕНИЕ СТОРОН";
     
     listEl.innerHTML = `
-        <li><button class="custom-sheet-item" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('9:16')"><span style="width: 100%; text-align: center;">9:16</span></button></li>
-        <li><button class="custom-sheet-item" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('3:4')"><span style="width: 100%; text-align: center;">3:4</span></button></li>
-        <li><button class="custom-sheet-item" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('1:1')"><span style="width: 100%; text-align: center;">1:1</span></button></li>
-        <li><button class="custom-sheet-item" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('4:3')"><span style="width: 100%; text-align: center;">4:3</span></button></li>
-        <li><button class="custom-sheet-item" onclick="Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('16:9')"><span style="width: 100%; text-align: center;">16:9</span></button></li>
+        <li><button class="custom-sheet-item" onclick="if(window.Telegram?.WebApp?.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('9:16')"><span style="width: 100%; text-align: center;">9:16</span></button></li>
+        <li><button class="custom-sheet-item" onclick="if(window.Telegram?.WebApp?.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('3:4')"><span style="width: 100%; text-align: center;">3:4</span></button></li>
+        <li><button class="custom-sheet-item" onclick="if(window.Telegram?.WebApp?.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('1:1')"><span style="width: 100%; text-align: center;">1:1</span></button></li>
+        <li><button class="custom-sheet-item" onclick="if(window.Telegram?.WebApp?.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('4:3')"><span style="width: 100%; text-align: center;">4:3</span></button></li>
+        <li><button class="custom-sheet-item" onclick="if(window.Telegram?.WebApp?.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('16:9')"><span style="width: 100%; text-align: center;">16:9</span></button></li>
     `;
 
     document.getElementById('custom_action_sheet').classList.add('active');
@@ -335,11 +327,15 @@ function selectQualityFromSheet(id, text) {
         const isTextImageActive = btnText && btnText.offsetParent !== null;
 
         if (isTextImageActive) {
-            selectedTextQuality = id;
+            window.selectedTextQuality = id;
+            if (typeof selectedTextQuality !== 'undefined') selectedTextQuality = id;
+            
             const el = document.getElementById('btn_text_quality');
             if (el) el.innerHTML = text;
         } else {
-            directGenQuality = id;
+            window.directGenQuality = id;
+            if (typeof directGenQuality !== 'undefined') directGenQuality = id;
+            
             const el = document.getElementById('btn_direct_quality_2') || document.getElementById('btn_direct_quality');
             if (el) el.innerHTML = text;
         }
@@ -353,7 +349,7 @@ function selectQualityFromSheet(id, text) {
     closeCustomSheet();
 }
 
-// 4. УЛЬТРА-УНИВЕРСАЛЬНЫЙ ОБРАБОТЧИК ФОРМАТА ДЛЯ ВСЕХ РЕЖИМОВ
+// 4. УЛЬТРА-УНИВЕРСАЛЬНЫЙ ОБРАБОТЧИК ФОРМАТА ДЛЯ ВСЕХ РЕЖИМОВ (ИСПРАВЛЕНО)
 function selectRatioFromSheet(id) {
     const ratioButtonIds = [
         'btn_text_ratio',      // Фото (Свой/Шаблоны) и ИИ-Арт 1
@@ -374,9 +370,11 @@ function selectRatioFromSheet(id) {
             updated = true;
             
             if (ratioButtonIds[i] === 'btn_text_ratio') {
-                selectedTextRatio = id;
+                window.selectedTextRatio = id;
+                if (typeof selectedTextRatio !== 'undefined') selectedTextRatio = id;
             } else {
-                directGenRatio = id; 
+                window.directGenRatio = id;
+                if (typeof directGenRatio !== 'undefined') directGenRatio = id;
             }
             break; 
         }
@@ -385,10 +383,12 @@ function selectRatioFromSheet(id) {
     if (!updated) {
         const fallbackEl = document.getElementById('btn_direct_ratio_2') || document.getElementById('btn_direct_ratio');
         if (fallbackEl) fallbackEl.innerHTML = id;
-        directGenRatio = id;
+        
+        window.directGenRatio = id;
+        if (typeof directGenRatio !== 'undefined') directGenRatio = id;
     }
 
-    // 🔥 ВЫЗЫВАЕМ ОБЕ ФУНКЦИИ ОБНОВЛЕНИЯ ЦЕН (Для ИИ-Арта и для ИИ-Фото)
+    // ВЫЗЫВАЕМ ОБЕ ФУНКЦИИ ОБНОВЛЕНИЯ ЦЕН (Для ИИ-Арта и для ИИ-Фото)
     try {
         if (typeof updateNeoStartButtonText === "function") updateNeoStartButtonText();
     } catch (e) { console.error(e); }
@@ -400,9 +400,11 @@ function selectRatioFromSheet(id) {
     closeCustomSheet();
 }
 
-// Функции принудительной синхронизации формата для капсул кадра на основном экране
+// Функции принудительной синхронизации формата для капсул кадра на основном экране (ИСПРАВЛЕНО)
 function setTextRatio(ratio) { 
-    selectedTextRatio = ratio; 
+    window.selectedTextRatio = ratio; 
+    if (typeof selectedTextRatio !== 'undefined') selectedTextRatio = ratio;
+    
     const el = document.getElementById('btn_text_ratio');
     if (el) el.innerHTML = ratio;
     
@@ -411,7 +413,9 @@ function setTextRatio(ratio) {
 }
 
 function setDirectRatio(ratio) { 
-    directGenRatio = ratio; 
+    window.directGenRatio = ratio; 
+    if (typeof directGenRatio !== 'undefined') directGenRatio = ratio;
+    
     const el = document.getElementById('btn_direct_ratio_2') || document.getElementById('btn_direct_ratio');
     if (el) el.innerHTML = ratio;
     
@@ -464,7 +468,7 @@ function openUniversalDurationSheet() {
     }
 
     let options = [];
-    const activeMode = window.currentActiveMode || currentActiveMode;
+    const activeMode = window.currentActiveMode || (typeof currentActiveMode !== 'undefined' ? currentActiveMode : null);
 
     if (activeMode === 'animate_nosound') {
         // Режим 1: Оживление фото (Kling)
@@ -498,36 +502,30 @@ function openUniversalDurationSheet() {
     sheetEl.classList.add('active');
 }
 
-// 2. УМНЫЙ ОБРАБОТЧИК КЛИКА ПО СЕКУНДАМ
+// 2. УМНЫЙ ОБРАБОТЧИК КЛИКА ПО СЕКУНДАМ (ИСПРАВЛЕНО: СИНХРОНИЗАЦИЯ ЧЕРЕЗ WINDOW)
 function selectDurationFromSheet(seconds, text) {
-    // Получаем текущие кнопки, чтобы точно знать, какой экран открыт
     const btnKling = document.getElementById('btn_video_duration');
     const btnSora = document.getElementById('btn_sora_duration');
     
-    // Определяем режим: смотрим на переменную или на видимость кнопки Kling O3 Pro
-    let activeMode = window.currentActiveMode || currentActiveMode || 'animate_nosound';
+    let activeMode = window.currentActiveMode || (typeof currentActiveMode !== 'undefined' ? currentActiveMode : 'animate_nosound');
     if (btnSora && btnSora.offsetParent !== null) {
         activeMode = 'animate_sound';
     }
 
     if (activeMode === 'animate_nosound') {
-        // Мягко меняем переменную 1-го режима (в HTML или window)
+        window.currentKlingDuration = seconds;
         if (typeof currentKlingDuration !== 'undefined') currentKlingDuration = seconds;
-        if (typeof window.currentKlingDuration !== 'undefined') window.currentKlingDuration = seconds;
         if (btnKling) btnKling.innerHTML = text; 
     } else if (activeMode === 'animate_sound') {
-        // 🔥 ЖЕЛЕЗОБЕТОННО: Меняем переменную 2-го режима (Kling O3 Pro)
+        window.currentSoraDuration = seconds;
         if (typeof currentSoraDuration !== 'undefined') currentSoraDuration = seconds;
-        if (typeof window.currentSoraDuration !== 'undefined') window.currentSoraDuration = seconds;
         if (btnSora) btnSora.innerHTML = text; 
     }
     
-    // 1. Пересчет для кнопок рисования (если мы на той вкладке)
     if (typeof updateNeoStartButtonText === 'function') {
         updateNeoStartButtonText();
     }
     
-    // 2. Пересчет для главной кнопки видео из MongoDB
     if (typeof updateMotionSubmitButton === 'function') {
         updateMotionSubmitButton();
     }
@@ -535,7 +533,7 @@ function selectDurationFromSheet(seconds, text) {
     closeCustomSheet();
 }
 
-// 3. ПЕРЕНАПРАВЛЕНИЕ СТАРЫХ ВЫЗОВОВ ПОПАПОВ (чтобы кнопки в HTML продолжали работать)
+// 3. ПЕРЕНАПРАВЛЕНИЕ СТАРЫХ ВЫЗОВОВ ПОПАПОВ
 function showNativeDurationPopup() { openUniversalDurationSheet(); }
 function showNativeSoraDurationPopup() { openUniversalDurationSheet(); }
 
@@ -677,12 +675,11 @@ function updateFotoSubmitButtons() {
     const currentFaces = parseInt(window.selectedStyleFacesCount) || 1;
 
     // 🔥 🔥 🔥 НОВОЕ: Динамически пересчитываем и обновляем цены ПРЯМО ВНУТРИ ШТОРКИ КАЧЕСТВА!
-    // Проверяем, какой движок выбран, чтобы взять правильный объект цен для шторки
+    // 🔥 ИСПРАВЛЕНО: Добавлен перехват слага 'custom', чтобы шторка не переключалась на Банану ложно
     const currentEngine = typeof selectedAiModelEngine !== 'undefined' ? selectedAiModelEngine : 'banana';
-    let pricesObj = (currentEngine === 'pulid') ? window.dbFluxPulidPrices : window.dbBananaEditPrices;
+    let pricesObj = (currentEngine === 'pulid' || currentEngine === 'custom') ? window.dbFluxPulidPrices : window.dbBananaEditPrices;
 
     if (pricesObj) {
-        // Ищем элементы цифр в твоей шторке и пишем туда (Базовая цена из базы * Количество людей)
         if (document.getElementById("quality-flux-standard")) {
             document.getElementById("quality-flux-standard").innerText = (pricesObj.coins_min || 2) * currentFaces;
         }
@@ -696,22 +693,21 @@ function updateFotoSubmitButtons() {
 
     // 🔮 РАСЧЕТ ЦЕНЫ ДЛЯ БОЛЬШОЙ КНОПКИ «START»
     if (btnText) {
-        if (currentEngine === 'pulid') {
+        // 🔥 ИСПРАВЛЕНО: Учтена поддержка 'custom' для точной калькуляции коинов кнопки
+        if (currentEngine === 'pulid' || currentEngine === 'custom') {
             // 🍏 ЦИФРОВАЯ ОПТИКА (Flux PuLID)
-            let basePrice = window.dbFluxPulidPrices.coins_min;
-            if (photoTextQuality === 'dev') basePrice = window.dbFluxPulidPrices.coins_mid;
-            else if (photoTextQuality === 'ultra_4k') basePrice = window.dbFluxPulidPrices.coins_max;
-            else basePrice = window.dbFluxPulidPrices.coins_min;
+            let basePrice = window.dbFluxPulidPrices.coins_min || 2;
+            if (photoTextQuality === 'dev') basePrice = window.dbFluxPulidPrices.coins_mid || 3;
+            else if (photoTextQuality === 'ultra_4k') basePrice = window.dbFluxPulidPrices.coins_max || 4;
             
             let finalFluxPrice = basePrice * currentFaces;
             btnText.innerHTML = `Start ${finalFluxPrice} 🪙`;
             
         } else {
             // 🍌 УМНЫЙ ФОКУС (Nano Banana Edit)
-            let baseBananaPrice = window.dbBananaEditPrices.coins_min;
-            if (photoTextQuality === 'dev') baseBananaPrice = window.dbBananaEditPrices.coins_mid;
-            else if (photoTextQuality === 'ultra_4k') baseBananaPrice = window.dbBananaEditPrices.coins_max;
-            else baseBananaPrice = window.dbBananaEditPrices.coins_min;
+            let baseBananaPrice = window.dbBananaEditPrices.coins_min || 2;
+            if (photoTextQuality === 'dev') baseBananaPrice = window.dbBananaEditPrices.coins_mid || 3;
+            else if (photoTextQuality === 'ultra_4k') baseBananaPrice = window.dbBananaEditPrices.coins_max || 4;
             
             let finalBananaPrice = baseBananaPrice * currentFaces;
             btnText.innerHTML = `Start ${finalBananaPrice} 🪙`;
@@ -720,18 +716,18 @@ function updateFotoSubmitButtons() {
     
     // 🔮 РАСЧЕТ ДЛЯ ОСТАЛЬНЫХ ТРЕХ РЕЖИМОВ (FACE SWAP, ОДЕЖДА, ФОН)
     if (btnSwap) {
-        if (swapQuality === 'dev') btnSwap.innerHTML = `Start ${window.dbFaceSwapPrices.coins_mid} 🪙`;
-        else if (swapQuality === 'ultra_4k') btnSwap.innerHTML = `Start ${window.dbFaceSwapPrices.coins_max} 🪙`;
-        else btnSwap.innerHTML = `Start ${window.dbFaceSwapPrices.coins_min} 🪙`;
+        if (swapQuality === 'dev') btnSwap.innerHTML = `Start ${window.dbFaceSwapPrices.coins_mid || 4} 🪙`;
+        else if (swapQuality === 'ultra_4k') btnSwap.innerHTML = `Start ${window.dbFaceSwapPrices.coins_max || 5} 🪙`;
+        else btnSwap.innerHTML = `Start ${window.dbFaceSwapPrices.coins_min || 3} 🪙`;
     }
     if (btnTryon) {
-        if (tryonQuality === 'dev') btnTryon.innerHTML = `Start ${window.dbClothingPrices.coins_mid} 🪙`;
-        else if (tryonQuality === 'ultra_4k') btnTryon.innerHTML = `Start ${window.dbClothingPrices.coins_max} 🪙`;
-        else btnTryon.innerHTML = `Start ${window.dbClothingPrices.coins_min} 🪙`;
+        if (tryonQuality === 'dev') btnTryon.innerHTML = `Start ${window.dbClothingPrices.coins_mid || 4} 🪙`;
+        else if (tryonQuality === 'ultra_4k') btnTryon.innerHTML = `Start ${window.dbClothingPrices.coins_max || 5} 🪙`;
+        else btnTryon.innerHTML = `Start ${window.dbClothingPrices.coins_min || 3} 🪙`;
     }
     if (btnBg) {
-        if (bgQuality === 'dev') btnBg.innerHTML = `Start ${window.dbBackgroundPrices.coins_mid} 🪙`;
-        else if (bgQuality === 'ultra_4k') btnBg.innerHTML = `Start ${window.dbBackgroundPrices.coins_max} 🪙`;
-        else btnBg.innerHTML = `Start ${window.dbBackgroundPrices.coins_min} 🪙`;
+        if (bgQuality === 'dev') btnBg.innerHTML = `Start ${window.dbBackgroundPrices.coins_mid || 3} 🪙`;
+        else if (bgQuality === 'ultra_4k') btnBg.innerHTML = `Start ${window.dbBackgroundPrices.coins_max || 4} 🪙`;
+        else btnBg.innerHTML = `Start ${window.dbBackgroundPrices.coins_min || 2} 🪙`;
     }
 }

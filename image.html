@@ -548,7 +548,7 @@ function sendToTelegram(payload) {
 }
 
 // Кнопка START для 1-го режима: «Цифровая Оптика» (Flux)
-function sendPhotoTextData() { 
+function sendTextGenData() { 
     try {
         let ratio = (typeof selectedTextRatio !== 'undefined') ? selectedTextRatio : '9:16';
         let quality = (typeof selectedTextQuality !== 'undefined') ? selectedTextQuality : 'schnell';

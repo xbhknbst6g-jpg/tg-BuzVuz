@@ -535,7 +535,7 @@ function sendToTelegram(payload) {
         if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.sendData === 'function') {
             console.log("[WebApp] Отправляем полный JSON напрямую в WebAppData:", payload);
             
-            // Передаем весь объект целиком (включая mode_trigger: 'pure_text_image' или 'image_generation_direct')
+            // Передаем весь объект целиком (включая mode_trigger: 'text_image' или 'image_generation_direct')
             window.Telegram.WebApp.sendData(JSON.stringify(payload));
             
             // Закрываем шторку Mini App
@@ -556,7 +556,7 @@ function sendTextGenData() {
         console.log("[WebApp] Сборка пакета: Цифровая Оптика (Flux-2-flex)");
 
         sendToTelegram({ 
-            mode_trigger: 'pure_text_image', // 🔥 ТРИГГЕР ДЛЯ FLUX В БОТЕ
+            mode_trigger: 'text_image', // 🔥 ТРИГГЕР ДЛЯ FLUX В БОТЕ
             aspect_ratio: ratio, 
             quality: quality      
         }); 
@@ -601,7 +601,7 @@ function sendTextGenData() {
 
     // Формируем JSON строго под Python-хендлер
     const payload = {
-        mode_trigger: 'pure_text_image', // 🔥 ИСПРАВЛЕНО: Теперь бэкенд поймет, что это Flux!
+        mode_trigger: 'text_image', // 🔥 ИСПРАВЛЕНО: Теперь бэкенд поймет, что это Flux!
         aspect_ratio: typeof selectedTextRatio !== 'undefined' ? selectedTextRatio : '9:16', 
         quality: typeof selectedTextQuality !== 'undefined' ? selectedTextQuality : 'schnell',
         ai_model_engine: selectedModel, 

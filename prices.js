@@ -127,7 +127,7 @@ async function syncPricesFromDatabase() {
         if (document.getElementById("btn-start-bg")) document.getElementById("btn-start-bg").innerHTML = `Start ${bgPrice} 🪙`;
 
         // Кнопки для остальных режимов (если они выведены на фронтенд)
-        if (document.getElementById("btn-start-flux-dev")) document.getElementById("btn-start-flux-dev").innerHTML = `Start ${fluxDevPrice} 🪙`;
+        if (document.getElementById("btn-start-Flux-2-flex")) document.getElementById("btn-start-Flux-2-flex").innerHTML = `Start ${fluxDevPrice} 🪙`;
         if (document.getElementById("btn-start-banana-edit")) document.getElementById("btn-start-banana-edit").innerHTML = `Start ${bananaEditPrice} 🪙`;
         if (document.getElementById("btn-start-banana-paint")) document.getElementById("btn-start-banana-paint").innerHTML = `Start ${bananaPaintPrice} 🪙`;
         if (document.getElementById("btn-start-kling5s")) document.getElementById("btn-start-kling5s").innerHTML = `Start ${kling5sPrice} 🪙`;
@@ -172,7 +172,7 @@ window.addEventListener("DOMContentLoaded", syncPricesFromDatabase);
 // 7. УМНЫЙ ОБНОВЛЯТОР СТОИМОСТИ НА ВСТРОЕННЫХ КНОПКАХ (ТЕПЕРЬ ТУТ!)
 // ====================================================================================
 function updateNeoStartButtonText() {
-    const btnText = document.getElementById('btn-start-flux-dev');
+    const btnText = document.getElementById('btn-start-Flux-2-flex');
     const btnDirect = document.getElementById('btn-start-banana-paint_2') || document.getElementById('btn-start-banana-paint');
     
     // Считываем количество кликнутых людей (1, 2 или 3)
@@ -323,7 +323,7 @@ function selectQualityFromSheet(id, text) {
         if (el) el.innerHTML = text;
     } else {
         // 🔵 Если мы не в фотостудии — значит, мы на вкладке рисования (Flux Dev и Nano Banana)
-        const btnText = document.getElementById('btn-start-flux-dev');
+        const btnText = document.getElementById('btn-start-Flux-2-flex');
         const isTextImageActive = btnText && btnText.offsetParent !== null;
 
         if (isTextImageActive) {

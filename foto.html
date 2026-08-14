@@ -612,6 +612,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // 2. ФУНКЦИЯ переключения табов (вкладок) для текст + фото
 // ====================================================================================
 function switchTextTab(category, element) {
+    // 🔥 ЛЕГКИЙ ВИБРООТКЛИК ПРИ ПЕРЕКЛЮЧЕНИИ КАТЕГОРИЙ
     if (window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) {
         Telegram.WebApp.HapticFeedback.impactOccurred('light');
     }
@@ -626,6 +627,7 @@ function switchTextTab(category, element) {
     const instructionText = document.getElementById('custom_instruction_text');
     const facesRow = document.getElementById('faces_count_selector_row');
 
+    // 🔥 ПРОВЕРЯЕМ ТЕКУЩИЙ ВЫБРАННЫЙ ИИ-ДВИЖОК ПЕРЕД ОТРЕСОВКОЙ
     const currentEngine = window.selectedAiModelEngine || 'banana';
 
     if (category === 'custom') {
@@ -637,26 +639,24 @@ function switchTextTab(category, element) {
         document.getElementById('text_image_subtitle').innerText = "Настройте параметры вашей персональной генерации:";
 
         gallery.style.display = 'none';            
-        settingsBlock.style.display = 'block'; 
+        settingsBlock.style.display = 'block'; // Включает блок настроек И нижние кнопки вместе с ним!     
         if (presetPreviewBlock) presetPreviewBlock.style.display = 'none'; 
+        
+        // Исправлено с 'block' на 'flex', чтобы сохранить вашу оригинальную верстку инструкции
         if (instructionText) instructionText.style.display = 'flex';      
         
-        // Проверяем движок при открытии вкладки "Свой"
+        // 🔥 ИСПРАВЛЕНИЕ БАГА: Проверяем, на каком движке сидит юзер в момент клика на вкладку "Свой"
         if (currentEngine === 'pulid') {
-            document.getElementById('steps_pulid').style.display = 'block';
-            document.getElementById('steps_banana').style.display = 'none';
-            document.getElementById('price_notice_pulid').style.display = 'block';
-            document.getElementById('price_notice_banana').style.display = 'none';
-            
+            // Если включена Цифровая Оптика — жестко скрываем кнопки выбора людей, они не должны появиться!
             if (facesRow) facesRow.style.setProperty('display', 'none', 'important');
+            
+            // Принудительно ставим 1 человека для бэкенда
             selectFacesCount(1, document.getElementById('btn_faces_1'));
         } else {
-            document.getElementById('steps_banana').style.display = 'block';
-            document.getElementById('steps_pulid').style.display = 'none';
-            document.getElementById('price_notice_banana').style.display = 'block';
-            document.getElementById('price_notice_pulid').style.display = 'none';
-            
+            // Если включен Умный Фокус — показываем ряд выбора количества людей обратно
             if (facesRow) facesRow.style.display = 'block';
+
+            // Восстановление выбранного количества лиц
             let savedFaces = window.selectedStyleFacesCount || 1;
             selectFacesCount(savedFaces, document.getElementById(`btn_faces_${savedFaces}`)); 
         }
@@ -670,9 +670,10 @@ function switchTextTab(category, element) {
         document.getElementById('text_image_subtitle').innerText = "В режиме умный фокус изображение реалистичное как на шаблоне, в режиме цыфровая оптика более художественный стиль фото";
 
         gallery.style.display = 'grid';            
-        settingsBlock.style.display = 'none';     
+        settingsBlock.style.display = 'none'; // Полностью скрывает блок настроек вместе с кнопками качества и кнопкой Start!     
         if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';
         if (instructionText) instructionText.style.display = 'none';
+        
         if (facesRow) facesRow.style.display = 'none';
 
         if (document.getElementById('text_image_spacer')) document.getElementById('text_image_spacer').style.display = 'none';

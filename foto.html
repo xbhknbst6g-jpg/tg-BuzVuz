@@ -769,7 +769,12 @@ function switchGlobalAiModel(modelMode, element) {
     selectedAiModelEngine = modelMode; // Записывает 'banana' или 'pulid'
     console.log("Глобальный тумблер ИИ переключен на движок:", selectedAiModelEngine);
     
-    // Управление вкладкой "Груп" в ленте категорий
+    // Находим наш главный экран
+    const mainScreen = document.getElementById('text_image');
+    
+    // ==========================================
+    // 1. УПРАВЛЕНИЕ ВКЛАДКОЙ "ГРУП" В ЛЕНТЕ КАТЕГОРИЙ
+    // ==========================================
     const groupTabButton = document.querySelector("button[onclick*='common']");
     if (groupTabButton) {
         if (modelMode === 'pulid') {
@@ -783,10 +788,11 @@ function switchGlobalAiModel(modelMode, element) {
         }
     }
 
-    // Динамическая смена текстов и скрытие через Прозрачность (для сохранения высоты)
+    // ==========================================
+    // 2. ДИНАМИЧЕСКИЕ ТЕКСТЫ И АКТИВАЦИЯ CSS-ЗАЩИТЫ
+    // ==========================================
     const step2Text = document.getElementById('custom_step_2');
     const priceNoticeText = document.getElementById('custom_price_notice');
-    const facesSelectorRow = document.getElementById('faces_count_selector_row');
 
     if (modelMode === 'pulid') {
         // Подменяем тексты под Цифровую Оптику
@@ -797,12 +803,8 @@ function switchGlobalAiModel(modelMode, element) {
             priceNoticeText.innerHTML = `<b>Итоговая цена зависит от выбранного качества, точная цифра будет отображаться на кнопке START</b>`;
         }
         
-        // 🔥 ДЕЛАЕМ БЛОК КНОПОК НЕВИДИМЫМ, НО ОСТАВЛЯЕМ ЕГО МЕСТО (высота не схлопнется!)
-        if (facesSelectorRow) {
-            facesSelectorRow.style.setProperty('opacity', '0', 'important');
-            facesSelectorRow.style.setProperty('pointer-events', 'none', 'important');
-            facesSelectorRow.style.setProperty('display', 'block', 'important'); // удерживаем его блок
-        }
+        // 🔥 ВКЛЮЧАЕМ CSS-ЗАЩИТУ: Браузер сам скроет кнопки и зафиксирует высоту кнопок снизу
+        if (mainScreen) mainScreen.classList.add('pulid-engine-active');
         
         selectFacesCount(1, document.getElementById('btn_faces_1'));
     } else {
@@ -814,19 +816,8 @@ function switchGlobalAiModel(modelMode, element) {
             priceNoticeText.innerHTML = `<b>Итоговая цена зависит от выбранного качества и количества человек, точная цифра будет отображаться на кнопке START</b>`;
         }
         
-        // Возвращаем видимость кнопкам
-        if (facesSelectorRow) {
-            facesSelectorRow.style.removeProperty('opacity');
-            facesSelectorRow.style.removeProperty('pointer-events');
-            
-            // Показываем блок стандартно, только если сейчас открыта вкладка "Свой"
-            const customTabButton = document.querySelector("button[onclick*='custom']");
-            if (customTabButton && customTabButton.classList.contains('active')) {
-                facesSelectorRow.style.display = 'block';
-            } else {
-                facesSelectorRow.style.display = 'none';
-            }
-        }
+        // 🔥 ВЫКЛЮЧАЕМ CSS-ЗАЩИТУ
+        if (mainScreen) mainScreen.classList.remove('pulid-engine-active');
     }
     
     if (typeof updateFotoSubmitButtons === 'function') {

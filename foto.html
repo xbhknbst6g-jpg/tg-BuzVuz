@@ -714,6 +714,27 @@ function switchGlobalAiModel(modelMode, element) {
     selectedAiModelEngine = modelMode; // Записывает 'banana' или 'pulid'
     console.log("Глобальный тумблер ИИ переключен на движок:", selectedAiModelEngine);
     
+    // Находим кнопку вкладки "Груп" по её обработчику 'common'
+    const groupTabButton = document.querySelector("button[onclick*='common']");
+    
+    if (groupTabButton) {
+        if (modelMode === 'pulid') {
+            // Прячем вкладку "Груп" для PuLID
+            groupTabButton.style.setProperty('display', 'none', 'important');
+            
+            // Если пользователь стоял на "Груп", сбрасываем его на вкладку "Все"
+            if (groupTabButton.classList.contains('active')) {
+                const allTabButton = document.querySelector("button[onclick*='all']");
+                if (allTabButton) {
+                    allTabButton.click(); 
+                }
+            }
+        } else {
+            // Возвращаем вкладку "Груп" для Banana (восстанавливаем дефолтный flex из CSS)
+            groupTabButton.style.display = '';
+        }
+    }
+    
     // 🔥 ИСПРАВЛЕНО: Пинаем правильный обновлятор цен фотостудии из prices.js!
     if (typeof updateFotoSubmitButtons === 'function') {
         updateFotoSubmitButtons();

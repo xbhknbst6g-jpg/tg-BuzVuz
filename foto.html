@@ -612,7 +612,6 @@ document.addEventListener("DOMContentLoaded", () => {
 // 2. ФУНКЦИЯ переключения табов (вкладок) для текст + фото
 // ====================================================================================
 function switchTextTab(category, element) {
-    // 🔥 ЛЕГКИЙ ВИБРООТКЛИК ПРИ ПЕРЕКЛЮЧЕНИИ КАТЕГОРИЙ
     if (window.Telegram && Telegram.WebApp && Telegram.WebApp.HapticFeedback) {
         Telegram.WebApp.HapticFeedback.impactOccurred('light');
     }
@@ -627,7 +626,6 @@ function switchTextTab(category, element) {
     const instructionText = document.getElementById('custom_instruction_text');
     const facesRow = document.getElementById('faces_count_selector_row');
 
-    // 🔥 ПРОВЕРЯЕМ ТЕКУЩИЙ ВЫБРАННЫЙ ИИ-ДВИЖОК ПЕРЕД ОТРЕСОВКОЙ
     const currentEngine = window.selectedAiModelEngine || 'banana';
 
     if (category === 'custom') {
@@ -639,24 +637,26 @@ function switchTextTab(category, element) {
         document.getElementById('text_image_subtitle').innerText = "Настройте параметры вашей персональной генерации:";
 
         gallery.style.display = 'none';            
-        settingsBlock.style.display = 'block'; // Включает блок настроек И нижние кнопки вместе с ним!     
+        settingsBlock.style.display = 'block';     
         if (presetPreviewBlock) presetPreviewBlock.style.display = 'none'; 
-        
-        // Исправлено с 'block' на 'flex', чтобы сохранить вашу оригинальную верстку инструкции
         if (instructionText) instructionText.style.display = 'flex';      
         
-        // 🔥 ИСПРАВЛЕНИЕ БАГА: Проверяем, на каком движке сидит юзер в момент клика на вкладку "Свой"
+        // Проверяем текущий движок
         if (currentEngine === 'pulid') {
-            // Если включена Цифровая Оптика — жестко скрываем кнопки выбора людей, они не должны появиться!
-            if (facesRow) facesRow.style.setProperty('display', 'none', 'important');
+            document.getElementById('steps_pulid').style.display = 'block';
+            document.getElementById('steps_banana').style.display = 'none';
+            document.getElementById('price_notice_pulid').style.display = 'block';
+            document.getElementById('price_notice_banana').style.display = 'none';
             
-            // Принудительно ставим 1 человека для бэкенда
+            // Вызываем сброс, а CSS-класс .pulid-active заблокирует появление кнопок на экране
             selectFacesCount(1, document.getElementById('btn_faces_1'));
         } else {
-            // Если включен Умный Фокус — показываем ряд выбора количества людей обратно
+            document.getElementById('steps_banana').style.display = 'block';
+            document.getElementById('steps_pulid').style.display = 'none';
+            document.getElementById('price_notice_banana').style.display = 'block';
+            document.getElementById('price_notice_pulid').style.display = 'none';
+            
             if (facesRow) facesRow.style.display = 'block';
-
-            // Восстановление выбранного количества лиц
             let savedFaces = window.selectedStyleFacesCount || 1;
             selectFacesCount(savedFaces, document.getElementById(`btn_faces_${savedFaces}`)); 
         }
@@ -670,10 +670,9 @@ function switchTextTab(category, element) {
         document.getElementById('text_image_subtitle').innerText = "В режиме умный фокус изображение реалистичное как на шаблоне, в режиме цыфровая оптика более художественный стиль фото";
 
         gallery.style.display = 'grid';            
-        settingsBlock.style.display = 'none'; // Полностью скрывает блок настроек вместе с кнопками качества и кнопкой Start!     
+        settingsBlock.style.display = 'none';     
         if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';
         if (instructionText) instructionText.style.display = 'none';
-        
         if (facesRow) facesRow.style.display = 'none';
 
         if (document.getElementById('text_image_spacer')) document.getElementById('text_image_spacer').style.display = 'none';
@@ -740,7 +739,6 @@ function selectFacesCount(count, element) {
 // ====================================================================================
 // Микро-функция в JavaScript для переключения тумблера нана банана и флюкс плуид
 // ====================================================================================
-
 function switchGlobalAiModel(modelMode, element) {
     document.getElementById('btn_global_model_banana').classList.remove('active');
     document.getElementById('btn_global_model_pulid').classList.remove('active');
@@ -749,8 +747,11 @@ function switchGlobalAiModel(modelMode, element) {
     selectedAiModelEngine = modelMode; // Записывает 'banana' или 'pulid'
     console.log("Глобальный тумблер ИИ переключен на движок:", selectedAiModelEngine);
     
+    // Находим главный контейнер экрана
+    const mainScreen = document.getElementById('text_image');
+
     // ==========================================
-    // 1. УПРАВЛЕНИЕ ВКЛАДКОЙ "ГРУП"
+    // 1. УПРАВЛЕНИЕ ВКЛАДКОЙ "ГРУП" В ЛЕНТЕ
     // ==========================================
     const groupTabButton = document.querySelector("button[onclick*='common']");
     if (groupTabButton) {
@@ -766,39 +767,41 @@ function switchGlobalAiModel(modelMode, element) {
     }
 
     // ==========================================
-    // 2. ПЕРЕКЛЮЧЕНИЕ ТЕКСТОВЫХ ШАГОВ И ИНСТРУКЦИЙ
+    // 2. ПЕРЕКЛЮЧЕНИЕ ТЕКСТОВЫХ ШАГОВ И КЛАССОВ ЗАЩИТЫ
     // ==========================================
     const stepsBanana = document.getElementById('steps_banana');
     const stepsPulid = document.getElementById('steps_pulid');
     const priceBanana = document.getElementById('price_notice_banana');
     const pricePulid = document.getElementById('price_notice_pulid');
-    const facesSelectorRow = document.getElementById('faces_count_selector_row');
 
     if (modelMode === 'pulid') {
+        // Включаем CSS-защиту от отображения кнопок персонажей
+        if (mainScreen) mainScreen.classList.add('pulid-active');
+
         if (stepsPulid) stepsPulid.style.display = 'block';
         if (stepsBanana) stepsBanana.style.display = 'none';
         if (pricePulid) pricePulid.style.display = 'block';
         if (priceBanana) priceBanana.style.display = 'none';
-
-        // Прячем селектор людей для PuLID
-        if (facesSelectorRow) facesSelectorRow.style.setProperty('display', 'none', 'important');
         
-        // Сбрасываем счетчик на 1 человека
+        // Сбрасываем внутренний счетчик в системе на 1 человека
         selectFacesCount(1, document.getElementById('btn_faces_1'));
     } else {
+        // Выключаем CSS-защиту
+        if (mainScreen) mainScreen.classList.remove('pulid-active');
+
         if (stepsBanana) stepsBanana.style.display = 'block';
         if (stepsPulid) stepsPulid.style.display = 'none';
         if (priceBanana) priceBanana.style.display = 'block';
         if (pricePulid) pricePulid.style.display = 'none';
 
-        // Возвращаем селектор людей, только если пользователь в данный момент открыл вкладку "Свой"
+        // Если сейчас активна вкладка "Свой", то принудительно показываем кнопки обратно
+        const facesRow = document.getElementById('faces_count_selector_row');
         const customTabButton = document.querySelector("button[onclick*='custom']");
-        if (facesSelectorRow && customTabButton && customTabButton.classList.contains('active')) {
-            facesSelectorRow.style.display = 'block';
+        if (facesRow && customTabButton && customTabButton.classList.contains('active')) {
+            facesRow.style.display = 'block';
         }
     }
     
-    // 🔥 ИСПРАВЛЕНО: Пинаем правильный обновлятор цен фотостудии из prices.js!
     if (typeof updateFotoSubmitButtons === 'function') {
         updateFotoSubmitButtons();
     }

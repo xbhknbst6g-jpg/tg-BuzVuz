@@ -1004,7 +1004,10 @@ body {
     transform: scale(0.95) !important;
 }
 
-/* Если у контейнера есть класс pulid-active, этот блок не покажется ни при каких обстоятельствах */
-.pulid-active #faces_count_selector_row {
-    display: none !important;
+/* 🔒 ЖЕЛЕЗНАЯ CSS ЗАЩИТА */
+/* Если включен режим pulid, кнопки выбора людей ГАРАНТИРОВАННО становятся невидимыми */
+.pulid-engine-active #faces_count_selector_row {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    display: block !important; /* Удерживаем блок, чтобы нижние кнопки не улетали вверх! */
 }

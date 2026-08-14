@@ -174,9 +174,6 @@
                         <button id="btn_faces_3" class="tab-btn" style="flex: 1; font-size: 12px; padding: 6px 0;" onclick="selectFacesCount(3, this)"> 3 чел.</button>
                     </div>
                 </div>
-
-                <!-- 🔥 НОВЫЙ БЛОК-ЗАГЛУШКА: Он удерживает высоту кнопок во втором режиме, чтобы нижняя панель не прыгала! -->
-                <div id="pulid_spacer" style="height: 52px; margin-top: 10px; margin-bottom: 12px; display: none;"></div>
             </div>
 
             <!-- 2. СЛУЖЕБНЫЙ КОНТЕЙНЕР ДЛЯ ШАБЛОНОВ (Большое превью картинки на весь экран) -->
@@ -628,7 +625,6 @@ function switchTextTab(category, element) {
     const presetPreviewBlock = document.getElementById('preset_preview_block');
     const instructionText = document.getElementById('custom_instruction_text');
     const facesRow = document.getElementById('faces_count_selector_row');
-    const pulidSpacer = document.getElementById('pulid_spacer');
 
     const currentEngine = window.selectedAiModelEngine || 'banana';
 
@@ -645,16 +641,14 @@ function switchTextTab(category, element) {
         if (presetPreviewBlock) presetPreviewBlock.style.display = 'none'; 
         if (instructionText) instructionText.style.display = 'flex';      
         
+        // Проверяем текущий движок
         if (currentEngine === 'pulid') {
             document.getElementById('steps_pulid').style.display = 'block';
             document.getElementById('steps_banana').style.display = 'none';
             document.getElementById('price_notice_pulid').style.display = 'block';
             document.getElementById('price_notice_banana').style.display = 'none';
             
-            // Включаем заглушку, прячем кнопки людей
-            if (facesRow) facesRow.style.setProperty('display', 'none', 'important');
-            if (pulidSpacer) pulidSpacer.style.display = 'block';
-            
+            // Вызываем сброс, а CSS-класс .pulid-active заблокирует появление кнопок на экране
             selectFacesCount(1, document.getElementById('btn_faces_1'));
         } else {
             document.getElementById('steps_banana').style.display = 'block';
@@ -662,10 +656,7 @@ function switchTextTab(category, element) {
             document.getElementById('price_notice_banana').style.display = 'block';
             document.getElementById('price_notice_pulid').style.display = 'none';
             
-            // Выключаем заглушку, возвращаем кнопки людей
-            if (pulidSpacer) pulidSpacer.style.display = 'none';
             if (facesRow) facesRow.style.display = 'block';
-            
             let savedFaces = window.selectedStyleFacesCount || 1;
             selectFacesCount(savedFaces, document.getElementById(`btn_faces_${savedFaces}`)); 
         }
@@ -683,7 +674,6 @@ function switchTextTab(category, element) {
         if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';
         if (instructionText) instructionText.style.display = 'none';
         if (facesRow) facesRow.style.display = 'none';
-        if (pulidSpacer) pulidSpacer.style.display = 'none';
 
         if (document.getElementById('text_image_spacer')) document.getElementById('text_image_spacer').style.display = 'none';
 
@@ -754,10 +744,15 @@ function switchGlobalAiModel(modelMode, element) {
     document.getElementById('btn_global_model_pulid').classList.remove('active');
     element.classList.add('active');
 
-    selectedAiModelEngine = modelMode; 
+    selectedAiModelEngine = modelMode; // Записывает 'banana' или 'pulid'
     console.log("Глобальный тумблер ИИ переключен на движок:", selectedAiModelEngine);
     
-    // Управление вкладкой "Груп"
+    // Находим главный контейнер экрана
+    const mainScreen = document.getElementById('text_image');
+
+    // ==========================================
+    // 1. УПРАВЛЕНИЕ ВКЛАДКОЙ "ГРУП" В ЛЕНТЕ
+    // ==========================================
     const groupTabButton = document.querySelector("button[onclick*='common']");
     if (groupTabButton) {
         if (modelMode === 'pulid') {
@@ -771,38 +766,39 @@ function switchGlobalAiModel(modelMode, element) {
         }
     }
 
-    // Управление текстами и заглушкой места
+    // ==========================================
+    // 2. ПЕРЕКЛЮЧЕНИЕ ТЕКСТОВЫХ ШАГОВ И КЛАССОВ ЗАЩИТЫ
+    // ==========================================
     const stepsBanana = document.getElementById('steps_banana');
     const stepsPulid = document.getElementById('steps_pulid');
     const priceBanana = document.getElementById('price_notice_banana');
     const pricePulid = document.getElementById('price_notice_pulid');
-    const facesSelectorRow = document.getElementById('faces_count_selector_row');
-    const pulidSpacer = document.getElementById('pulid_spacer');
 
     if (modelMode === 'pulid') {
+        // Включаем CSS-защиту от отображения кнопок персонажей
+        if (mainScreen) mainScreen.classList.add('pulid-active');
+
         if (stepsPulid) stepsPulid.style.display = 'block';
         if (stepsBanana) stepsBanana.style.display = 'none';
         if (pricePulid) pricePulid.style.display = 'block';
         if (priceBanana) priceBanana.style.display = 'none';
-
-        // Прячем кнопки людей, но включаем пустую заглушку для сохранения высоты верстки
-        if (facesSelectorRow) facesSelectorRow.style.setProperty('display', 'none', 'important');
-        if (pulidSpacer) pulidSpacer.style.display = 'block';
         
+        // Сбрасываем внутренний счетчик в системе на 1 человека
         selectFacesCount(1, document.getElementById('btn_faces_1'));
     } else {
+        // Выключаем CSS-защиту
+        if (mainScreen) mainScreen.classList.remove('pulid-active');
+
         if (stepsBanana) stepsBanana.style.display = 'block';
         if (stepsPulid) stepsPulid.style.display = 'none';
         if (priceBanana) priceBanana.style.display = 'block';
         if (pricePulid) pricePulid.style.display = 'none';
 
-        // Выключаем заглушку
-        if (pulidSpacer) pulidSpacer.style.display = 'none';
-
-        // Показываем кнопки людей обратно, если открыта вкладка "Свой"
+        // Если сейчас активна вкладка "Свой", то принудительно показываем кнопки обратно
+        const facesRow = document.getElementById('faces_count_selector_row');
         const customTabButton = document.querySelector("button[onclick*='custom']");
-        if (facesSelectorRow && customTabButton && customTabButton.classList.contains('active')) {
-            facesSelectorRow.style.display = 'block';
+        if (facesRow && customTabButton && customTabButton.classList.contains('active')) {
+            facesRow.style.display = 'block';
         }
     }
     

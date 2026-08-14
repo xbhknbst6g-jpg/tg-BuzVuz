@@ -1003,3 +1003,8 @@ body {
 .tabs-container button:active:not(.back-tab-btn) {
     transform: scale(0.95) !important;
 }
+
+/* Если у контейнера есть класс pulid-active, этот блок не покажется ни при каких обстоятельствах */
+.pulid-active #faces_count_selector_row {
+    display: none !important;
+}

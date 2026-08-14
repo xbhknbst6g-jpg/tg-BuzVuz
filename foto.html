@@ -641,22 +641,38 @@ function switchTextTab(category, element) {
         if (presetPreviewBlock) presetPreviewBlock.style.display = 'none'; 
         if (instructionText) instructionText.style.display = 'flex';      
         
-        // Проверяем текущий движок
+        const step2Text = document.getElementById('custom_step_2');
+        const priceNoticeText = document.getElementById('custom_price_notice');
+
         if (currentEngine === 'pulid') {
-            document.getElementById('steps_pulid').style.display = 'block';
-            document.getElementById('steps_banana').style.display = 'none';
-            document.getElementById('price_notice_pulid').style.display = 'block';
-            document.getElementById('price_notice_banana').style.display = 'none';
+            if (step2Text) {
+                step2Text.innerHTML = `<b style="color: #ffffff;">Шаг 2:</b> Режим поддерживает только одиночные генерации (бот попросит загрузить 1 фото лица).`;
+            }
+            if (priceNoticeText) {
+                priceNoticeText.innerHTML = `<b>Итоговая цена зависит от выбранного качества, точная цифра будет отображаться на кнопке START</b>`;
+            }
             
-            // Вызываем сброс, а CSS-класс .pulid-active заблокирует появление кнопок на экране
+            // Делаем кнопки невидимыми, сохраняя их физическое присутствие на экране
+            if (facesRow) {
+                facesRow.style.setProperty('opacity', '0', 'important');
+                facesRow.style.setProperty('pointer-events', 'none', 'important');
+                facesRow.style.setProperty('display', 'block', 'important');
+            }
             selectFacesCount(1, document.getElementById('btn_faces_1'));
         } else {
-            document.getElementById('steps_banana').style.display = 'block';
-            document.getElementById('steps_pulid').style.display = 'none';
-            document.getElementById('price_notice_banana').style.display = 'block';
-            document.getElementById('price_notice_pulid').style.display = 'none';
+            if (step2Text) {
+                step2Text.innerHTML = `<b style="color: #ffffff;">Шаг 2:</b> Выберите количество людей (сколько людей - столько бот потребует загрузить фото).`;
+            }
+            if (priceNoticeText) {
+                priceNoticeText.innerHTML = `<b>Итоговая цена зависит от выбранного качества и количества человек, точная цифра будет отображаться на кнопке START</b>`;
+            }
             
-            if (facesRow) facesRow.style.display = 'block';
+            // Возвращаем полную видимость кнопкам
+            if (facesRow) {
+                facesRow.style.removeProperty('opacity');
+                facesRow.style.removeProperty('pointer-events');
+                facesRow.style.display = 'block';
+            }
             let savedFaces = window.selectedStyleFacesCount || 1;
             selectFacesCount(savedFaces, document.getElementById(`btn_faces_${savedFaces}`)); 
         }
@@ -673,7 +689,13 @@ function switchTextTab(category, element) {
         settingsBlock.style.display = 'none';     
         if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';
         if (instructionText) instructionText.style.display = 'none';
-        if (facesRow) facesRow.style.display = 'none';
+        
+        // Полностью гасим блок, так как ушли с кастомной вкладки
+        if (facesRow) {
+            facesRow.style.removeProperty('opacity');
+            facesRow.style.removeProperty('pointer-events');
+            facesRow.style.display = 'none';
+        }
 
         if (document.getElementById('text_image_spacer')) document.getElementById('text_image_spacer').style.display = 'none';
 
@@ -747,12 +769,7 @@ function switchGlobalAiModel(modelMode, element) {
     selectedAiModelEngine = modelMode; // Записывает 'banana' или 'pulid'
     console.log("Глобальный тумблер ИИ переключен на движок:", selectedAiModelEngine);
     
-    // Находим главный контейнер экрана
-    const mainScreen = document.getElementById('text_image');
-
-    // ==========================================
-    // 1. УПРАВЛЕНИЕ ВКЛАДКОЙ "ГРУП" В ЛЕНТЕ
-    // ==========================================
+    // Управление вкладкой "Груп" в ленте категорий
     const groupTabButton = document.querySelector("button[onclick*='common']");
     if (groupTabButton) {
         if (modelMode === 'pulid') {
@@ -766,39 +783,49 @@ function switchGlobalAiModel(modelMode, element) {
         }
     }
 
-    // ==========================================
-    // 2. ПЕРЕКЛЮЧЕНИЕ ТЕКСТОВЫХ ШАГОВ И КЛАССОВ ЗАЩИТЫ
-    // ==========================================
-    const stepsBanana = document.getElementById('steps_banana');
-    const stepsPulid = document.getElementById('steps_pulid');
-    const priceBanana = document.getElementById('price_notice_banana');
-    const pricePulid = document.getElementById('price_notice_pulid');
+    // Динамическая смена текстов и скрытие через Прозрачность (для сохранения высоты)
+    const step2Text = document.getElementById('custom_step_2');
+    const priceNoticeText = document.getElementById('custom_price_notice');
+    const facesSelectorRow = document.getElementById('faces_count_selector_row');
 
     if (modelMode === 'pulid') {
-        // Включаем CSS-защиту от отображения кнопок персонажей
-        if (mainScreen) mainScreen.classList.add('pulid-active');
-
-        if (stepsPulid) stepsPulid.style.display = 'block';
-        if (stepsBanana) stepsBanana.style.display = 'none';
-        if (pricePulid) pricePulid.style.display = 'block';
-        if (priceBanana) priceBanana.style.display = 'none';
+        // Подменяем тексты под Цифровую Оптику
+        if (step2Text) {
+            step2Text.innerHTML = `<b style="color: #ffffff;">Шаг 2:</b> Режим поддерживает только одиночные генерации (бот попросит загрузить 1 фото лица).`;
+        }
+        if (priceNoticeText) {
+            priceNoticeText.innerHTML = `<b>Итоговая цена зависит от выбранного качества, точная цифра будет отображаться на кнопке START</b>`;
+        }
         
-        // Сбрасываем внутренний счетчик в системе на 1 человека
+        // 🔥 ДЕЛАЕМ БЛОК КНОПОК НЕВИДИМЫМ, НО ОСТАВЛЯЕМ ЕГО МЕСТО (высота не схлопнется!)
+        if (facesSelectorRow) {
+            facesSelectorRow.style.setProperty('opacity', '0', 'important');
+            facesSelectorRow.style.setProperty('pointer-events', 'none', 'important');
+            facesSelectorRow.style.setProperty('display', 'block', 'important'); // удерживаем его блок
+        }
+        
         selectFacesCount(1, document.getElementById('btn_faces_1'));
     } else {
-        // Выключаем CSS-защиту
-        if (mainScreen) mainScreen.classList.remove('pulid-active');
-
-        if (stepsBanana) stepsBanana.style.display = 'block';
-        if (stepsPulid) stepsPulid.style.display = 'none';
-        if (priceBanana) priceBanana.style.display = 'block';
-        if (pricePulid) pricePulid.style.display = 'none';
-
-        // Если сейчас активна вкладка "Свой", то принудительно показываем кнопки обратно
-        const facesRow = document.getElementById('faces_count_selector_row');
-        const customTabButton = document.querySelector("button[onclick*='custom']");
-        if (facesRow && customTabButton && customTabButton.classList.contains('active')) {
-            facesRow.style.display = 'block';
+        // Возвращаем стандартные тексты для Умного Фокуса
+        if (step2Text) {
+            step2Text.innerHTML = `<b style="color: #ffffff;">Шаг 2:</b> Выберите количество людей (сколько людей - столько бот потребует загрузить фото).`;
+        }
+        if (priceNoticeText) {
+            priceNoticeText.innerHTML = `<b>Итоговая цена зависит от выбранного качества и количества человек, точная цифра будет отображаться на кнопке START</b>`;
+        }
+        
+        // Возвращаем видимость кнопкам
+        if (facesSelectorRow) {
+            facesSelectorRow.style.removeProperty('opacity');
+            facesSelectorRow.style.removeProperty('pointer-events');
+            
+            // Показываем блок стандартно, только если сейчас открыта вкладка "Свой"
+            const customTabButton = document.querySelector("button[onclick*='custom']");
+            if (customTabButton && customTabButton.classList.contains('active')) {
+                facesSelectorRow.style.display = 'block';
+            } else {
+                facesSelectorRow.style.display = 'none';
+            }
         }
     }
     

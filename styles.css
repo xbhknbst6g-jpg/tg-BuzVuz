@@ -1011,13 +1011,3 @@ body {
     pointer-events: none !important;
     display: block !important; /* Удерживаем блок, чтобы нижние кнопки не улетали вверх! */
 }
-
-/* Чтобы картинки не просто загружались, а проявлялись красиво и плавно  */
-.lazy-image {
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-}
-
-.lazy-image.loaded {
-    opacity: 1;
-}

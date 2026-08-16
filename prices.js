@@ -731,32 +731,3 @@ function updateFotoSubmitButtons() {
         else btnBg.innerHTML = `Start ${window.dbBackgroundPrices.coins_min || 2} 🪙`;
     }
 }
-
-// Чтобы картинки начали загружаться при скролле
-document.addEventListener("DOMContentLoaded", function() {
-    const lazyImages = document.querySelectorAll('.lazy-image');
-
-    if ("Intersection Observer" in window) {
-        const imageObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const image = entry.target;
-                    image.src = image.dataset.src;
-                    image.onload = () => {
-                        image.classList.add('loaded');
-                    };
-                    imageObserver.unobserve(image);
-                }
-            });
-        }, {
-            rootMargin: "300px 0px" // Начнет качать картинку за 300px до появления на экране
-        });
-
-        lazyImages.forEach(image => imageObserver.observe(image));
-    } else {
-        lazyImages.forEach(image => {
-            image.src = image.dataset.src;
-            image.classList.add('loaded');
-        });
-    }
-});

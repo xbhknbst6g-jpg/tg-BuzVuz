@@ -1,1013 +1,762 @@
-/* ========================================== */
-/* 🔥 ЖЕСТКО ФИКСИРУЕМ ТЕМНУЮ ТЕМУ ДЛЯ ВСЕГО  */
-/* ========================================== */
-body { 
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-    background-color: #0d0f1d !important; /* Глубокий благородный темно-синий фон */
-    margin: 0; 
-    padding: 15px; 
-    padding-top: calc(env(safe-area-inset-top) + 15px);
-    padding-bottom: calc(env(safe-area-inset-bottom) + 15px);
-    color: #ffffff !important; /* Текст ВСЕГДА белый */
-    -webkit-user-select: none; 
-    user-select: none;
+// URL-адрес вашего сервера, где запущен бот и API
+const API_URL = "/api/v1/tariffs";
+// 🟢 1. ДЕФОЛТНЫЕ ЗАГЛУШКИ ДЛЯ КАРТИНОК (РИСОВАНИЯ)
+window.dbFluxDevPrices = { coins_min: 1, coins_mid: 2, coins_max: 3 };
+window.dbBananaPaintPrices = { coins_min: 2, coins_mid: 3, coins_max: 4 };
+window.dbFluxPulidPrices = { coins_min: 1, coins_mid: 2, coins_max: 3 }; // 🍏 ТУТ лежат цены для Оптики (Flux PuLID)!
+
+// 🔵 2. ДЕФОЛТНЫЕ ЗАГЛУШКИ ДЛЯ ВИДЕОСТУДИИ
+window.dbKling5s = { coins: 7 };
+window.dbKling10s = { coins: 14 };
+
+// Твои новые застрахованные объекты для Kling O3 Pro вместо Sora
+window.dbKlingO3_5s = { coins: 5 };
+window.dbKlingO3_10s = { coins: 10 };
+window.dbKlingO3_15s = { coins: 15 };
+
+window.dbKlingPerSec = { coins_per_sec: 2 };
+
+// 🟠 3. ДЕФОЛТНЫЕ ЗАГЛУШКИ ДЛЯ ФОТОСТУДИИ
+window.dbFaceSwapPrices = { coins_min: 3, coins_mid: 4, coins_max: 5 };
+window.dbClothingPrices = { coins_min: 3, coins_mid: 4, coins_max: 5 };
+window.dbBackgroundPrices = { coins_min: 2, coins_mid: 3, coins_max: 4 };
+
+// 🍌 ДОБАВЛЕНО: Личная заглушка Умного Фокуса (Nano Banana Edit) для 1-го режима фото!
+window.dbBananaEditPrices = { coins_min: 2, coins_mid: 3, coins_max: 4 };
+
+async function syncPricesFromDatabase() {
+    try {
+        // Чистый запрос без нгрока и с защитой от кэширования
+        const response = await fetch(`${API_URL}?t=${Date.now()}`, { 
+            method: "GET",
+            cache: "no-store", 
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }); 
+        const data = await response.json();
+        
+        // 🔥 НАШИ ДЕТЕКТИВНЫЕ ЛОГИ: Увидим в консоли браузера, что шлёт Макбук
+        console.log("=== ОТВЕТ ОТ БЭКЕНДА ===");
+        console.log("Живой JSON:", data);
+        
+        // 🔥 СОХРАНЯЕМ В ГЛОБАЛЬНУЮ ПАМЯТЬ БРАУЗЕРА (чтобы шторка её видела)
+        window.allPrices = data;
+        
+        if (data && data.services) {
+            // 🔥 1. ЗАПИСЫВАЕМ ЦЕНЫ ДЛЯ КАРТИНОК (РИСОВАНИЕ)
+            window.dbFluxDevPrices.coins_min = data.services.flux_dev.coins_min;
+            window.dbFluxDevPrices.coins_mid = data.services.flux_dev.coins_mid;
+            window.dbFluxDevPrices.coins_max = data.services.flux_dev.coins_max;
+
+            if (data.services.flux_pulid) {
+                window.dbFluxPulidPrices.coins_min = data.services.flux_pulid.coins_min;
+                window.dbFluxPulidPrices.coins_mid = data.services.flux_pulid.coins_mid;
+                window.dbFluxPulidPrices.coins_max = data.services.flux_pulid.coins_max;
+            }
+
+            window.dbBananaPaintPrices.coins_min = data.services.nano_banana_paint.coins_min;
+            window.dbBananaPaintPrices.coins_mid = data.services.nano_banana_paint.coins_mid;
+            window.dbBananaPaintPrices.coins_max = data.services.nano_banana_paint.coins_max;
+
+            // 🔥 2. СОХРАНЯЕМ СВЕЖИЕ ЦЕНЫ ВИДЕО ИЗ MONGO
+            if (data.services.kling_video_5s) window.dbKling5s.coins = data.services.kling_video_5s.coins;
+            if (data.services.kling_video_10s) window.dbKling10s.coins = data.services.kling_video_10s.coins;
+            if (data.services.kling_o3_5s) window.dbKlingO3_5s.coins = data.services.kling_o3_5s.coins;
+            if (data.services.kling_o3_10s) window.dbKlingO3_10s.coins = data.services.kling_o3_10s.coins;
+            if (data.services.kling_o3_15s) window.dbKlingO3_15s.coins = data.services.kling_o3_15s.coins;
+
+            if (data.services.kling_control_per_sec) {
+                window.dbKlingPerSec.coins_per_sec = data.services.kling_control_per_sec.coins_per_sec;
+            }
+
+            // 🔥 3. СОХРАНЯЕМ СВЕЖИЕ ЦЕНЫ ФОТОСТУДИИ ИЗ MONGO
+            if (data.services.hy_wu_faceswap) {
+                window.dbFaceSwapPrices.coins_min = data.services.hy_wu_faceswap.coins_min;
+                window.dbFaceSwapPrices.coins_mid = data.services.hy_wu_faceswap.coins_mid;
+                window.dbFaceSwapPrices.coins_max = data.services.hy_wu_faceswap.coins_max;
+            }
+            if (data.services.hy_wu_clothing) {
+                window.dbClothingPrices.coins_min = data.services.hy_wu_clothing.coins_min;
+                window.dbClothingPrices.coins_mid = data.services.hy_wu_clothing.coins_mid;
+                window.dbClothingPrices.coins_max = data.services.hy_wu_clothing.coins_max;
+            }
+            if (data.services.bria_background) {
+                window.dbBackgroundPrices.coins_min = data.services.bria_background.coins_min;
+                window.dbBackgroundPrices.coins_mid = data.services.bria_background.coins_mid;
+                window.dbBackgroundPrices.coins_max = data.services.bria_background.coins_max;
+            }
+            
+            // 🔥 ДОБАВЛЕНО: Сохраняем три уровня цен для Умного Фокуса ИИ-Фото (nano_banana_edit)
+            if (data.services.nano_banana_edit) {
+                window.dbBananaEditPrices.coins_min = data.services.nano_banana_edit.coins_min;
+                window.dbBananaEditPrices.coins_mid = data.services.nano_banana_edit.coins_mid;
+                window.dbBananaEditPrices.coins_max = data.services.nano_banana_edit.coins_max;
+            }
+
+        } else {
+            console.warn("⚠️ База вернула пустые данные, используем заглушки");
+            return;
+        }
+
+        
+        // =========================================================================
+        // 1. ДОСТАЕМ АКТУАЛЬНЫЕ ЦЕНЫ РЕЖИМОВ (Блок services из MongoDB Compass)
+        // =========================================================================
+        const fluxPrice = data.services.flux_pulid.coins_min;       
+        const faceswapPrice = data.services.hy_wu_faceswap.coins_min; 
+        const tryonPrice = data.services.hy_wu_clothing.coins_min;    
+        const bgPrice = data.services.bria_background.coins_min;      
+        
+        // Дополнительные ИИ-режимы из твоего файла базы (на случай, если они есть на сайте)
+        const fluxDevPrice = data.services.flux_dev.coins_min;
+        const bananaEditPrice = data.services.nano_banana_edit.coins_min;
+        const bananaPaintPrice = data.services.nano_banana_paint.coins_min;
+        const kling5sPrice = data.services.kling_video_5s.coins;
+        const kling10sPrice = data.services.kling_video_10s.coins;
+        const soraPrice = data.services.kling_o3_10s?.coins || 10;
+
+        // =========================================================================
+        // 2. СИЛОЙ ВСТАВЛЯЕМ ЦЕНЫ НА КНОПКИ РЕЖИМОВ САЙТА
+        // =========================================================================
+        
+        // Твои базовые 4 кнопки
+        if (document.getElementById("btn-start-flux")) document.getElementById("btn-start-flux").innerHTML = `Start ${fluxPrice} 🪙`;
+        if (document.getElementById("btn-start-swap")) document.getElementById("btn-start-swap").innerHTML = `Start ${faceswapPrice} 🪙`;
+        if (document.getElementById("btn-start-tryon")) document.getElementById("btn-start-tryon").innerHTML = `Start ${tryonPrice} 🪙`;
+        if (document.getElementById("btn-start-bg")) document.getElementById("btn-start-bg").innerHTML = `Start ${bgPrice} 🪙`;
+
+        // Кнопки для остальных режимов (если они выведены на фронтенд)
+        if (document.getElementById("btn-start-Flux-2-flex")) document.getElementById("btn-start-Flux-2-flex").innerHTML = `Start ${fluxDevPrice} 🪙`;
+        if (document.getElementById("btn-start-banana-edit")) document.getElementById("btn-start-banana-edit").innerHTML = `Start ${bananaEditPrice} 🪙`;
+        if (document.getElementById("btn-start-banana-paint")) document.getElementById("btn-start-banana-paint").innerHTML = `Start ${bananaPaintPrice} 🪙`;
+        if (document.getElementById("btn-start-kling5s")) document.getElementById("btn-start-kling5s").innerHTML = `Start ${kling5sPrice} 🪙`;
+        if (document.getElementById("btn-start-kling10s")) document.getElementById("btn-start-kling10s").innerHTML = `Start ${kling10sPrice} 🪙`;
+        if (document.getElementById("btn-start-sora")) document.getElementById("btn-start-sora").innerHTML = `Start ${soraPrice} 🪙`;
+        // Вставляем живые цены из MongoDB в шторку качества
+        // 🔥 ИСПРАВЛЕНО: Заменили несуществующий fluxDevPrices на легитимный window.dbFluxDevPrices
+        if (document.getElementById("quality-flux-standard")) {
+            document.getElementById("quality-flux-standard").innerText = window.dbFluxDevPrices.coins_min;
+        }
+        if (document.getElementById("quality-flux-pro")) {
+            document.getElementById("quality-flux-pro").innerText = window.dbFluxDevPrices.coins_mid;
+        }
+        if (document.getElementById("quality-flux-ultra")) {
+            document.getElementById("quality-flux-ultra").innerText = window.dbFluxDevPrices.coins_max;
+        }
+        if (typeof updateNeoStartButtonText === "function") {
+            updateNeoStartButtonText();
+        }
+
+        // 🔥 Пинаем главную кнопку видео при загрузке страницы!
+        if (typeof updateMotionSubmitButton === "function") {
+            updateMotionSubmitButton();
+        }
+
+        // 🔥 ДОБАВЛЕНО: Пинаем кнопки фотостудии при загрузке страницы!
+        if (typeof updateFotoSubmitButtons === "function") {
+            updateFotoSubmitButtons();
+        }
+
+        console.log("✅ Все кнопки активных режимов на сайте успешно получили новые цены из MongoDB!");
+    } catch (error) {
+        console.error("❌ Не удалось загрузить динамические цены с сервера бота:", error);
+    }
 }
 
 
-/* ========================================================================== */
-/* АНИМАЦИИ (ПУЛЬСАЦИЯ И ПЕРЕЛИВАНИЕ)         */
-/* ========================================================================== */
-@keyframes neonPulse {
-    0% { opacity: 0.93; filter: drop-shadow(0 0 2px rgba(255,255,255,0.1)); }
-    50% { opacity: 1; filter: drop-shadow(0 0 5px rgba(255,255,255,0.3)); }
-    100% { opacity: 0.93; filter: drop-shadow(0 0 2px rgba(255,255,255,0.1)); }
-}
+// Запуск синхронизации автоматически
+window.addEventListener("DOMContentLoaded", syncPricesFromDatabase);
 
-@keyframes textShimmer {
-    0% { background-position: 0% center; }
-    100% { background-position: 200% center; }
-}
-
-/* ========================================== */
-/* ШАПКА И НЕОНОВЫЕ ЭЛЕМЕНТЫ ГЛАВНОГО МЕНЮ    */
-/* ========================================== */
-.ai-studio-title {
-    font-size: 32px;
-    font-weight: 900;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin: 20px 0 5px 0;
-    font-family: 'Orbitron', 'Montserrat', sans-serif;
-    background: linear-gradient(90deg, #0066ff, #b624ff, #ff245d, #ff7300, #0066ff);
-    background-size: 200% auto;
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 8px rgba(182, 36, 255, 0.4));
-    animation: textShimmer 4s linear infinite;
-}
-
-.neon-divider {
-    height: 2px;
-    width: 80%;
-    margin: 15px auto 25px auto;
-    background: linear-gradient(90deg, transparent, #0066ff, #b624ff, #ff7300, transparent);
-    background-size: 200% auto;
-    box-shadow: 0 0 10px rgba(182, 36, 255, 0.7);
-    animation: textShimmer 3s linear infinite;
-}
-
-/* ========================================== */
-/* СЕТКА И КАРТОЧКИ ГЛАВНОГО МЕНЮ              */
-/* ========================================== */
-.main-menu-grid { 
-    display: grid; 
-    grid-template-columns: 1fr; 
-    gap: 15px; 
-    margin-bottom: 20px; 
-}
-
-.menu-card { 
-    position: relative !important;
-    background: rgba(10, 15, 30, 0.7); 
-    padding: 20px; 
-    border-radius: 12px; 
-    cursor: pointer; 
-    display: flex !important; 
-    flex-direction: row !important; 
-    align-items: center !important; 
-    justify-content: flex-start !important;
-    gap: 15px; 
-    box-sizing: border-box !important; 
-    width: 100% !important;
-    border: none !important; 
-    outline: none !important;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.2s ease, box-shadow 0.2s ease; 
-    -webkit-tap-highlight-color: transparent;
-    animation: neonPulse 4s infinite ease-in-out;
-}
-.menu-card:active { 
-    transform: scale(0.97) translateY(1px); 
-    background: rgba(5, 8, 20, 0.85);
-}
-
-/* НЕОНОВЫЕ УГОЛКИ */
-.menu-card::before, .menu-card::after {
-    content: "" !important;
-    position: absolute !important;
-    width: 14px !important;  
-    height: 14px !important; 
-    box-sizing: border-box !important;
-    pointer-events: none !important;
-}
-.menu-card::before {
-    top: 0 !important; left: 0 !important;
-    border-top: 3px solid var(--neon-color) !important;
-    border-left: 3px solid var(--neon-color) !important;
-}
-.menu-card::after {
-    bottom: 0 !important; right: 0 !important;
-    border-bottom: 3px solid var(--neon-color) !important;
-    border-right: 3px solid var(--neon-color) !important;
-}
-
-/* КОНТЕНТ КАРТОЧЕК МЕНЮ */
-.menu-icon { 
-    width: 40px; height: 40px;
-    display: flex; align-items: center; justify-content: center;
-    color: var(--neon-color); 
-    filter: drop-shadow(0 0 8px var(--neon-glow));
-    transition: transform 0.2s ease;
-    flex-shrink: 0;
-}
-.menu-icon svg { width: 100% !important; height: 100% !important; display: block; }
-.menu-card:active .menu-icon { transform: scale(1.1); }
-
-.menu-info { display: flex !important; flex-direction: column !important; text-align: left !important; }
-.menu-title { 
-    font-weight: 800 !important; 
-    font-size: 15px !important; 
-    color: var(--neon-color) !important; 
-    text-transform: uppercase !important; 
-    letter-spacing: 1.5px !important; 
-    margin-bottom: 5px !important; 
-    text-align: left !important; 
-    text-shadow: 0 0 10px var(--neon-glow) !important;
-}
-.menu-desc { font-size: 12px; color: rgba(255, 255, 255, 0.65) !important; line-height: 1.4; letter-spacing: 0.3px; }
-
-/* ========================================================================== */
-/* КОНТЕЙНЕР ШАПКИ ЭКРАНОВ (СТРЕЛКА НАЗАД + ЗАГОВОЛОК) */
-/* ========================================================================== */
-.tabs-container {
-    display: flex !important; 
-    align-items: center !important; 
-    /* 🔥 ИСПРАВЛЕНО: space-between заставит стрелку встать влево, а текст — по центру на всех экранах! */
-    justify-content: space-between !important; 
-    padding: 4px 3px 14px 3px !important; 
-    margin-top: 5px !important;
-    position: relative !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
-    box-sizing: border-box !important;
-}
-
-/* ========================================================================== */
-/* 📱 ГОРИЗОНТАЛЬНАЯ СКРОЛЛ-ЛЕНТА ДЛЯ КНОПОК ПЕРЕКЛЮЧЕНИЯ РЕЖИМОВ */
-/* ========================================================================== */
-.tabs-scroll-line {
-    display: flex !important;
-    align-items: center !important; 
-    gap: 5px !important; 
-    overflow-x: auto !important; 
-    padding: 4px 3px 14px 3px !important; 
-    margin-top: 5px !important;
-    scrollbar-width: none !important; 
-    -webkit-overflow-scrolling: touch !important; 
-}
-
-.tabs-scroll-line::-webkit-scrollbar {
-    display: none !important; 
-}
-
-
-/* ========================================================================== */
-/* РЕЖИМ 1: СЕТКА НА 2 КОЛОНКИ (Обычные режимы, Фото+Текст) */
-/* ========================================================================== */
-.phone-templates-grid {
-  display: grid !important;
-  grid-template-columns: repeat(2, 1fr) !important;
-  gap: 12px !important;
-  padding: 16px !important;
-  box-sizing: border-box !important;
-  width: 100% !important;
-}
-
-.phone-template-card {
-    position: relative !important;
-    width: 100% !important;
-    aspect-ratio: 9 / 16 !important; 
-    border-radius: 12px !important; 
-    overflow: hidden !important; 
-    background-color: #111424 !important;
-    animation: neonPulse 4s infinite ease-in-out;
-    cursor: pointer;
-    border: 2px solid #FF5500 !important; /* Старый яркий оранжевый */
-    -webkit-tap-highlight-color: transparent;
-    transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.phone-template-card:active { 
-    transform: scale(0.96) !important; 
-}
-
-.phone-template-card img,
-.phone-template-card video {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-    display: block !important;
-}
-
-.phone-template-card::after {
-    content: "" !important;
-    position: absolute !important;
-    bottom: 0 !important; left: 0 !important; right: 0 !important;
-    height: 45px !important; 
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent) !important; 
-    pointer-events: none !important; 
-    z-index: 1 !important;
-}
-
-/* ========================================================================== */
-/* ИЗОЛИРОВАННАЯ СЕТКА ДЛЯ ПЕРВОГО ЭКРАНА (ФОТО + ТЕКСТ) */
-/* ========================================================================== */
-/* Родоначальник сетки — делает 2 колонки */
-.isolated-photo-text-grid {
-    display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 12px !important;
-    padding: 16px !important;
-    box-sizing: border-box !important;
-    width: 100% !important;
-}
-
-/* ⚠️ СЕКРЕТ ТУТ: Если JS скрывает галерею (меняет стиль), 
-   мы принудительно убираем свойства Grid-сетки, чтобы она не мешала блоку настроек! */
-.isolated-photo-text-grid[style*="display: none"] {
-    display: none !important;
-}
-
-/* Принудительно держим 9:16 только для карточек внутри этой сетки */
-.isolated-photo-text-grid > .phone-template-card {
-    position: relative !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    aspect-ratio: 9 / 16 !important; 
-    border-radius: 12px !important; 
-    overflow: hidden !important; 
-}
-
-.swap-steps-grid {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important; 
-    gap: 8px !important; 
-    padding: 0 16px !important;
-    margin-bottom: 25px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-}
-
-.swap-template-card {
-    position: relative !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    aspect-ratio: 9 / 16 !important; 
-    border-radius: 12px !important; 
-    overflow: hidden !important; 
-    background-color: #111424 !important;
-    animation: neonPulse 4s infinite ease-in-out;
-    cursor: pointer;
-    border: 2px solid #FF6A00 !important; /* Мягкий благородный оранжевый */
-    -webkit-tap-highlight-color: transparent;
-    transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-    box-sizing: border-box !important;
-}
-
-.swap-template-card:active { 
-    transform: scale(0.96) !important; 
-}
-
-.swap-template-card img,
-.swap-template-card video {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-    display: block !important;
-}
-
-.swap-template-card::after {
-    content: "" !important;
-    position: absolute !important;
-    bottom: 0 !important; left: 0 !important; right: 0 !important;
-    height: 45px !important; 
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent) !important; 
-    pointer-events: none !important; 
-    z-index: 1 !important;
-}
-
-/* ========================================================================== */
-/* ОБЩИЕ СТИЛИ ДЛЯ ТЕКСТА (Для обеих сеток) */
-/* ========================================================================== */
-.card-overlay {
-    position: absolute !important;
-    bottom: 0 !important; left: 0 !important; right: 0 !important;
-    color: #ffffff !important;
-    padding: 10px !important;
-    font-size: 13px !important;
-    text-align: center !important;
-    font-weight: bold !important;
-    z-index: 2 !important; /* Текст ложится поверх тени */
-}
-
-/* Уменьшаем текст только внутри тройной сетки, чтобы не вылезал */
-.swap-steps-grid .card-overlay {
-    font-size: 10px !important;
-    padding: 6px 4px !important;
-}
-
-/* ========================================================================== */
-/* 📋 БЛОК ИНСТРУКЦИИ И ШРИФТЫ */
-/* ========================================================================== */
-.custom-prompt-container {
-    width: 100% !important;
-    box-sizing: border-box !important;
-}
-
-.custom-prompt-container div[style*="font-size: 13px"] {
-    color: rgba(255, 255, 255, 0.6) !important;
-    font-weight: 400 !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-}
-
-.custom-prompt-container div[style*="font-size: 13px"] b {
-    color: #ffffff !important;
-    font-weight: 800 !important;
-}
-
-/* ========================================== */
-/* 🔥 НАСТРОЙКА КНОПОК: ГОРИЗОНТАЛЬНАЯ ПАНЕЛЬ */
-/* ========================================== */
-.single-row-controls {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    gap: 10px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    margin-top: 55px !important; 
-    margin-bottom: 15px !important;
-    padding: 0 5px !important;
-}
-
-.control-col {
-    display: flex !important;
-    flex-direction: column !important;
-    flex: 1 !important;
-    min-width: 0 !important;
-}
-
-.control-col-btn {
-    display: flex !important;
-    flex-direction: column !important;
-    flex: 1.2 !important;
-    min-width: 0 !important;
-}
-
-/* Заголовки над кнопками-капсулами */
-.control-label {
-    font-size: 11px !important;
-    font-weight: bold !important;
-    color: rgba(255, 255, 255, 0.4) !important; 
-    margin-bottom: 6px !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.5px !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    text-align: center !important;
-}
-
-/* ========================================================================== */
-/* 💊 КРУГЛЫЕ КНОПКИ-КАПСУЛЫ (ОРАНЖЕВАЯ КИБЕРПАНК-ЗАЛИВКА ДЛЯ ПАРАМЕТРОВ)       */
-/* ========================================================================== */
-.capsule-btn {
-    -webkit-appearance: none !important; 
-    appearance: none !important; 
-    outline: none !important;
-    width: 100% !important;
-    padding: 11px 4px !important;
-    font-size: 13px !important; 
-    font-weight: 800 !important; 
-    text-align: center !important;
-    display: flex !important; 
-    align-items: center !important; 
-    justify-content: center !important; 
-    gap: 4px !important;    
-    background-color: #ff6600 !important; 
-    border: 2px solid #ff1e00 !important;     
-    color: #ffffff !important;            
-    box-shadow: 0 4px 12px rgba(255, 30, 0, 0.25) !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) !important;
-    border-radius: 30px !important; 
-    cursor: pointer;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    transition: all 0.15s ease !important; 
-    -webkit-tap-highlight-color: transparent !important;
-    box-sizing: border-box !important;
-}
-
-/* Аккуратный отклик при нажатии на параметр */
-.capsule-btn:active {
-    transform: scale(0.96) !important;
-    background-color: #e65c00 !important; 
-    border-color: #e61b00 !important;
-    box-shadow: 0 2px 8px rgba(255, 30, 0, 0.4) !important;
-}
-/* НАСТРОЙКА ДЛЯ ТЕКУЩЕГО ЭКРАНА (УМНЫЙ ФОКУС) */
-/* Сбрасываем все прошлые костыли со сдвигами */
-.single-row-controls.screen-focus {
-    margin-top: 0 !important;
-    position: static !important;
-    top: 0 !important;
-}
-
-/* Аккуратно делаем кнопки чуть ниже по высоте (минус 1.5–2 мм) */
-.single-row-controls.screen-focus .capsule-btn,
-.single-row-controls.screen-focus .neo-start-btn {
-    /* Было 11px, ставим 7px — это уменьшит общую высоту кнопки ровно на 8 пикселей */
-    padding: 7px 4px !important; 
-}
-/* ========================================================================== */
-/* СДВИГ НИЖНИХ КНОПОК ЧЕРЕЗ БЛОК ВЫБОРА КОЛИЧЕСТВА ЧЕЛОВЕК                   */
-/* ========================================================================== */
-
-/* 1. Возвращаем инструкции нормальную высоту, чтобы она не сжимала контент */
-#text_image #custom_instruction_text {
-    min-height: unset !important;
-    height: auto !important;
-}
-
-/* 2. Обнуляем распорку, чтобы она не мешала нашей новой логике */
-#text_image #text_image_spacer {
-    height: 0px !important;
-    display: none !important;
-}
-
-/* 3. ОПУСКАЕМ БЛОК ВЫБОР ЧЕЛОВЕК: он механически толкнет нижние кнопки вниз */
-#text_image #faces_count_selector_row {
-    /* Сейчас стоит 40px (это примерно 1 см). РЕГУЛИРУЙТЕ ДВИЖЕНИЕ ТУТ! */
-    margin-bottom: 120px !important; 
-}
-
-/* 4. Нижний ряд кнопок просто оставляем в покое, убирая дикие сдвиги */
-#text_image #preset_preview_block[style*="display: none"] ~ #bottom_action_controls {
-    transform: translateY(5px) !important; /* Оставляем как в режиме Meadow */
-}
-
-
-/* ========================================================================== */
-/* КНОПКА START БЕЗ СДВИГОВ И ПЕРЕКОСОВ */
-/* ========================================================================== */
-.neo-start-btn {
-    -webkit-appearance: none !important; appearance: none !important; outline: none !important;
-    box-shadow: 0 4px 12px rgba(255, 30, 0, 0.3) !important; 
-    width: 100% !important;
-    padding: 11px 4px !important; /* Синхронизировали внутренний отступ с капсулами */
-    font-size: 13px !important; 
-    font-weight: 800 !important; 
-    text-align: center !important;
-    display: flex !important; 
-    align-items: center !important; 
-    justify-content: center !important; 
-    gap: 4px !important;
-    border: 2px solid #ff1e00 !important;     
-    background-color: #ff6600 !important; 
-    color: #ffffff !important;            
-    border-radius: 30px !important; 
-    cursor: pointer;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    transition: all 0.15s ease !important; 
-    -webkit-tap-highlight-color: transparent !important;
-    box-sizing: border-box !important;
-}
-
-.neo-start-btn:active {
-    transform: scale(0.95) !important;
-    background-color: #e65c00 !important; 
-    border-color: #e61b00 !important;
-}
-
-/* ========================================== */
-/* ⬅️ ОРАНЖЕВАЯ КРУГЛУЯ СТРЕЛКА НАЗАД          */
-/* ========================================== */
-.back-tab-btn {
-    -webkit-appearance: none !important; 
-    appearance: none !important; 
-    outline: none !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    position: relative !important; 
+// ====================================================================================
+// 7. УМНЫЙ ОБНОВЛЯТОР СТОИМОСТИ НА ВСТРОЕННЫХ КНОПКАХ (ТЕПЕРЬ ТУТ!)
+// ====================================================================================
+function updateNeoStartButtonText() {
+    const btnText = document.getElementById('btn-start-Flux-2-flex');
+    const btnDirect = document.getElementById('btn-start-banana-paint_2') || document.getElementById('btn-start-banana-paint');
     
-    border: 2px solid #ff1e00 !important;
-    background-color: #ff6600 !important;
-    box-shadow: 0 4px 12px rgba(255, 30, 0, 0.2) !important;
+    // Считываем количество кликнутых людей (1, 2 или 3)
+    const currentFaces = parseInt(window.selectedStyleFacesCount) || 1;
+
+    // 🔥 РАСЧЕТ ДЛЯ ТВОЕЙ КНОПКИ ФОТОСТУДИИ (Цифровая Оптика / Свой сюжет)
+    if (btnText) {
+        let basePrice = 2; // Стандартная базовая цена за 1 человека
+        
+        if (selectedAiModelEngine === 'custom') {
+            basePrice = window.dbFluxPulidPrices.coins_min || 2; 
+        } else {
+            if (selectedTextQuality === 'dev') {
+                basePrice = window.dbFluxDevPrices.coins_mid || 3; 
+            } else if (selectedTextQuality === 'ultra_4k') {
+                basePrice = window.dbFluxDevPrices.coins_max || 4; 
+            } else {
+                basePrice = window.dbFluxDevPrices.coins_min || 2; 
+            }
+        }
+        
+        let finalFluxPrice = basePrice * currentFaces;
+        btnText.innerHTML = `Start ${finalFluxPrice} 🪙`;
+    }
     
-    border-radius: 50% !important; 
-    width: 32px !important;
-    height: 32px !important;
-    min-width: 32px !important; 
-    max-width: 32px !important;
-    padding: 0 !important;
-    margin-right: 2px !important; 
-    cursor: pointer !important;
-    transition: all 0.15s ease !important;
-    -webkit-tap-highlight-color: transparent !important;
-    box-sizing: border-box !important;
+    // 🔥 ДИНАМИЧЕСКИЙ ИСПРАВЛЕННЫЙ РАСЧЕТ ДЛЯ УМНОГО ФОКУСА (NANO BANANA)
+    if (btnDirect) {
+        let baseBananaPrice = window.dbBananaPaintPrices.coins_min || 2; // Базовая дефолтная цена за 1 лицо
+        
+        // Сначала честно определяем базовую ставку за выбранное качество
+        if (directGenQuality === 'dev') {
+            baseBananaPrice = window.dbBananaPaintPrices.coins_mid || 3;
+        } else if (directGenQuality === 'ultra_4k') {
+            baseBananaPrice = window.dbBananaPaintPrices.coins_max || 4;
+        }
+        
+        let finalBananaPrice = baseBananaPrice * currentFaces;
+        
+        btnDirect.innerHTML = `Start ${finalBananaPrice} 🪙`;
+    }
 }
 
-/* Сама белая стрелочка внутри оранжевого круга */
-.back-tab-btn::before {
-    content: "" !important;
-    position: absolute !important;
-    width: 7px !important; 
-    height: 7px !important; 
-    border-left: 2.5px solid #ffffff !important;  
-    border-bottom: 2.5px solid #ffffff !important; 
-    transform: translate(1.5px, 0) rotate(45deg) !important; 
-}
+// ====================================================================================
+// 8. УПРАВЛЕНИЕ УНИВЕРСАЛЬНЫМИ ШТОРКАМИ И ОБРАБОТЧИКАМИ (СИНХРОНИЗИРОВАНО В PRICES.JS)
+// ====================================================================================
 
-.back-tab-btn:active {
-    transform: scale(0.92) !important;
-    background-color: #e65c00 !important;
-    border-color: #e61b00 !important;
-}
+// 1. ОТКРЫТИЕ ШТОРКИ КАЧЕСТВА
+function openUniversalQualitySheet(serviceName) {
+    const titleEl = document.getElementById('custom_sheet_title');
+    const listEl = document.getElementById('custom_sheet_list');
+    if (!titleEl || !listEl) return;
 
-/* ========================================== */
-/* ПОЛНОЭКРАННЫЙ СТИЛЬНЫЙ МОБИЛЬНЫЙ ПЛЕЕР ПРЕВЬЮ */
-/* ========================================== */
-.video-modal {
-    display: none; 
-    position: fixed; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%;
-    background: rgba(0, 0, 0, 0.85); 
-    backdrop-filter: blur(10px); /* Матовое размытие интерфейса сзади */
-    -webkit-backdrop-filter: blur(10px);
-    z-index: 2000; 
-    align-items: center; 
-    justify-content: center;
-    animation: fadeIn 0.25s ease-out; /* Плавное появление плеера */
-}
-
-/* 🔥 ДОБАВЛЕНО: Гарантирует, что при добавлении класса active модалка ВСЕГДА будет flex, а не block */
-.video-modal.active {
-    display: flex !important;
-}
-
-.video-modal-content { 
-    position: relative; 
-    width: 90%; 
-    max-width: 400px; 
-    aspect-ratio: 9 / 16; 
-    background: #111116; 
-    border-radius: 16px; 
-    overflow: hidden; 
-    border: 1px solid rgba(255, 115, 0, 0.3); /* Фирменная неоновая обводка */
-    box-shadow: 0 0 30px rgba(255, 115, 0, 0.15); /* Мягкое оранжевое свечение */
+    titleEl.innerText = "КАЧЕСТВО ГЕНЕРАЦИИ";
     
-    /* 🔥 ДОБАВЛЕНО: Автоматические отступы намертво зажмут рамку по центру экрана на ПК */
-    margin: auto !important;
-}
+    let min = 1, mid = 2, max = 3;
+    let targetService = serviceName || 'flux_dev';
 
-    .video-modal-content video { 
-        width: 100%; 
-        height: 100%; 
-        object-fit: cover; 
+    // 🔥 УМНЫЙ ПЕРЕХВАТ ДЛЯ ПЕРВОГО ЭКРАНА (ФОТО + ТЕКСТ):
+    if (targetService === 'flux_pulid' || targetService === 'flux_dev') {
+        const currentEngine = typeof selectedAiModelEngine !== 'undefined' ? selectedAiModelEngine : 'banana';
+        
+        if (currentEngine === 'banana') {
+            targetService = 'nano_banana_edit';
+        }
     }
 
-    /* Пропишите это свойство в вашем CSS блоке */
-    .video-modal-content img { 
-        width: 100%; 
-        height: 100%; 
-        object-fit: cover; 
+    // УНИВЕРСАЛЬНЫЙ КОД С ЗАЩИТОЙ ОТ СБОЕВ БАЗЫ
+    if (window.allPrices && window.allPrices.services && window.allPrices.services[targetService]) {
+        min = window.allPrices.services[targetService].coins_min;
+        mid = window.allPrices.services[targetService].coins_mid;
+        max = window.allPrices.services[targetService].coins_max;
+    } else {
+        let backup = window.dbFluxDevPrices;
+        
+        if (targetService === 'nano_banana_paint') backup = window.dbBananaPaintPrices;
+        if (targetService === 'flux_pulid') backup = window.dbFluxPulidPrices;
+        if (targetService === 'nano_banana_edit') backup = window.dbBananaEditPrices;
+        if (targetService === 'hy_wu_faceswap') backup = window.dbFaceSwapPrices;
+        if (targetService === 'hy_wu_clothing') backup = window.dbClothingPrices;
+        if (targetService === 'bria_background') backup = window.dbBackgroundPrices;
+
+        min = backup?.coins_min || 1;
+        mid = backup?.coins_mid || 2;
+        max = backup?.coins_max || 3;
     }
 
-
-    .video-modal-close {
-        position: absolute; 
-        top: 15px; 
-        right: 15px; 
-        width: 35px; 
-        height: 35px;
-        background: rgba(0, 0, 0, 0.6); 
-        color: #fff; 
-        border-radius: 50%;
-        display: flex; 
-        align-items: center; 
-        justify-content: center; 
-        cursor: pointer; 
-        z-index: 2100; 
-        backdrop-filter: blur(5px); 
-        -webkit-backdrop-filter: blur(5px);
-        border: 1px solid rgba(255, 255, 255, 0.15); 
-        transition: all 0.2s ease;
+    // 🔥 🔥 🔥 НАДЕЖНАЯ ИЗОЛЯЦИЯ: Умножаем цену только для первого режима фотостудии!
+    if (targetService === 'flux_pulid' || targetService === 'nano_banana_edit') {
+        const currentFaces = parseInt(window.selectedStyleFacesCount) || 1;
+        min = min * currentFaces;
+        mid = mid * currentFaces;
+        max = max * currentFaces;
+        console.log(`[Шторка-Прайс] Включен... Итог: ${min}, ${mid}, ${max}`);
     }
 
-    /* Эффект при нажатии на крестик закрытия */
-    .video-modal-close:active {
-        transform: scale(0.9);
-        background: rgba(255, 115, 0, 0.2);
-        border-color: #ff7300;
-        color: #ff7300;
+    listEl.innerHTML = `
+        <li><button class="custom-sheet-item" onclick="if(window.Telegram?.WebApp?.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectQualityFromSheet('schnell', '⚡ Standard (1k)')"><span>Standard (1k)</span><span class="coin-price">${min} 🪙</span></button></li>
+        <li><button class="custom-sheet-item" onclick="if(window.Telegram?.WebApp?.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectQualityFromSheet('dev', '💎 Pro (2k)')"><span>Pro (2k)</span><span class="coin-price">${mid} 🪙</span></button></li>
+    `;
+
+    document.getElementById('custom_action_sheet').classList.add('active');
+}
+
+// 2. ОТКРЫТИЕ ШТОРКИ ФОРМАТА (ИСПРАВЛЕНО: СТРАХОВКА ХАПТИКА)
+function openUniversalRatioSheet() {
+    const titleEl = document.getElementById('custom_sheet_title');
+    const listEl = document.getElementById('custom_sheet_list');
+    if (!titleEl || !listEl) return;
+
+    titleEl.innerText = "СООТНОШЕНИЕ СТОРОН";
+    
+    listEl.innerHTML = `
+        <li><button class="custom-sheet-item" onclick="if(window.Telegram?.WebApp?.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('9:16')"><span style="width: 100%; text-align: center;">9:16</span></button></li>
+        <li><button class="custom-sheet-item" onclick="if(window.Telegram?.WebApp?.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('3:4')"><span style="width: 100%; text-align: center;">3:4</span></button></li>
+        <li><button class="custom-sheet-item" onclick="if(window.Telegram?.WebApp?.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('1:1')"><span style="width: 100%; text-align: center;">1:1</span></button></li>
+        <li><button class="custom-sheet-item" onclick="if(window.Telegram?.WebApp?.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('4:3')"><span style="width: 100%; text-align: center;">4:3</span></button></li>
+        <li><button class="custom-sheet-item" onclick="if(window.Telegram?.WebApp?.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light'); selectRatioFromSheet('16:9')"><span style="width: 100%; text-align: center;">16:9</span></button></li>
+    `;
+
+    document.getElementById('custom_action_sheet').classList.add('active');
+}
+
+// ====================================================================================
+// УНИВЕРСАЛЬНЫЙ ОБРАБОТЧИК КЛИКА ПО КАЧЕСТВУ В ШТОРКЕ (ОБСЛУЖИВАЕТ ВСЕ 3 САЙТА)
+// ====================================================================================
+function selectQualityFromSheet(id, text) {
+    // 🟢 Проверяем активный подрежим фотостудии (из photo.html)
+    const activeMode = window.currentActiveMode || (typeof currentActiveMode !== 'undefined' ? currentActiveMode : null);
+
+    if (activeMode === 'text_image') {
+        if (typeof selectedTextQuality !== 'undefined') selectedTextQuality = id;
+        const el = document.getElementById('btn_text_quality');
+        if (el) el.innerHTML = text;
+    } else if (activeMode === 'face_swap') {
+        if (typeof selectedSwapQuality !== 'undefined') selectedSwapQuality = id;
+        const el = document.getElementById('btn_swap_quality');
+        if (el) el.innerHTML = text;
+    } else if (activeMode === 'tryon') {
+        if (typeof selectedTryOnQuality !== 'undefined') selectedTryOnQuality = id;
+        // 🔥 Железно обновляем обе капсулы примерки одежды на экране фотостудии!
+        const q1 = document.getElementById('btn_tryon_quality_face');
+        const q2 = document.getElementById('btn_tryon_quality');
+        if (q1) q1.innerHTML = text;
+        if (q2) q2.innerHTML = text;
+    } else if (activeMode === 'bg_change') {
+        if (typeof selectedBgQuality !== 'undefined') selectedBgQuality = id;
+        const el = document.getElementById('btn_bg_quality');
+        if (el) el.innerHTML = text;
+    } else {
+        // 🔵 Если мы не в фотостудии — значит, мы на вкладке рисования (Flux Dev и Nano Banana)
+        const btnText = document.getElementById('btn-start-Flux-2-flex');
+        const isTextImageActive = btnText && btnText.offsetParent !== null;
+
+        if (isTextImageActive) {
+            window.selectedTextQuality = id;
+            if (typeof selectedTextQuality !== 'undefined') selectedTextQuality = id;
+            
+            const el = document.getElementById('btn_text_quality');
+            if (el) el.innerHTML = text;
+        } else {
+            window.directGenQuality = id;
+            if (typeof directGenQuality !== 'undefined') directGenQuality = id;
+            
+            const el = document.getElementById('btn_direct_quality_2') || document.getElementById('btn_direct_quality');
+            if (el) el.innerHTML = text;
+        }
+    }
+    
+    // 🔥 МГНОВЕННО ПИНАЕМ ВСЕ ОБНОВЛЯТОРЫ ЦЕН НА ВСЕХ САЙТАХ ПРОЕКТА!
+    if (typeof updateNeoStartButtonText === "function") updateNeoStartButtonText(); // ИИ-Арт
+    if (typeof updateMotionSubmitButton === "function") updateMotionSubmitButton(); // ИИ-Видео
+    if (typeof updateFotoSubmitButtons === "function") updateFotoSubmitButtons();   // ИИ-Фото
+    
+    closeCustomSheet();
+}
+
+// 4. УЛЬТРА-УНИВЕРСАЛЬНЫЙ ОБРАБОТЧИК ФОРМАТА ДЛЯ ВСЕХ РЕЖИМОВ (ИСПРАВЛЕНО)
+function selectRatioFromSheet(id) {
+    const ratioButtonIds = [
+        'btn_text_ratio',      // Фото (Свой/Шаблоны) и ИИ-Арт 1
+        'btn_direct_ratio',    // ИИ-Арт 2
+        'btn_direct_ratio_2',  
+        'btn_swap_ratio',      // Face Swap
+        'btn_tryon_ratio',     // Примерка одежды
+        'btn_bg_ratio'         // Смена фона
+    ];
+
+    let updated = false;
+
+    for (let i = 0; i < ratioButtonIds.length; i++) {
+        const el = document.getElementById(ratioButtonIds[i]);
+        
+        if (el && el.offsetParent !== null) {
+            el.innerHTML = id; 
+            updated = true;
+            
+            if (ratioButtonIds[i] === 'btn_text_ratio') {
+                window.selectedTextRatio = id;
+                if (typeof selectedTextRatio !== 'undefined') selectedTextRatio = id;
+            } else {
+                window.directGenRatio = id;
+                if (typeof directGenRatio !== 'undefined') directGenRatio = id;
+            }
+            break; 
+        }
     }
 
-/* ========================================================================== */
-/* 🎨 КАНАЛЫ ЦВЕТОВ (Используем CSS переменные) */
-/* ========================================================================== */
-/* 1. Оранжевая тема */
-.menu-card.orange {
-    --neon-color: #ff7300;
-    --neon-glow: rgba(255, 115, 0, 0.5);
-    border: 1px solid rgba(255, 115, 0, 0.25);
-    box-shadow: 0 0 15px rgba(255, 115, 0, 0.15), inset 0 0 15px rgba(255, 115, 0, 0.1);
-}
-.menu-card.orange:active {
-    box-shadow: 0 0 25px rgba(255, 115, 0, 0.4), inset 0 0 20px rgba(255, 115, 0, 0.25);
-}
+    if (!updated) {
+        const fallbackEl = document.getElementById('btn_direct_ratio_2') || document.getElementById('btn_direct_ratio');
+        if (fallbackEl) fallbackEl.innerHTML = id;
+        
+        window.directGenRatio = id;
+        if (typeof directGenRatio !== 'undefined') directGenRatio = id;
+    }
 
-/* 2. Фиолетовая тема */
-.menu-card.purple {
-    --neon-color: #b624ff;
-    --neon-glow: rgba(182, 36, 255, 0.5);
-    border: 1px solid rgba(182, 36, 255, 0.25);
-    box-shadow: 0 0 15px rgba(182, 36, 255, 0.15), inset 0 0 15px rgba(182, 36, 255, 0.1);
-}
-.menu-card.purple:active {
-    box-shadow: 0 0 25px rgba(182, 36, 255, 0.4), inset 0 0 20px rgba(182, 36, 255, 0.25);
-}
+    // ВЫЗЫВАЕМ ОБЕ ФУНКЦИИ ОБНОВЛЕНИЯ ЦЕН (Для ИИ-Арта и для ИИ-Фото)
+    try {
+        if (typeof updateNeoStartButtonText === "function") updateNeoStartButtonText();
+    } catch (e) { console.error(e); }
 
-/* 3. Синяя тема */
-.menu-card.blue {
-    --neon-color: #0066ff;
-    --neon-glow: rgba(0, 102, 255, 0.5);
-    border: 1px solid rgba(0, 102, 255, 0.25);
-    box-shadow: 0 0 15px rgba(0, 102, 255, 0.15), inset 0 0 15px rgba(0, 102, 255, 0.1);
-}
-.menu-card.blue:active {
-    box-shadow: 0 0 25px rgba(0, 102, 255, 0.4), inset 0 0 20px rgba(0, 102, 255, 0.25);
-}
-
-/* 4. Бирюзовая (Циан) тема */
-.menu-card.cyan {
-    --neon-color: #00f2fe;
-    --neon-glow: rgba(0, 242, 254, 0.5);
-    border: 1px solid rgba(0, 242, 254, 0.25);
-    box-shadow: 0 0 15px rgba(0, 242, 254, 0.15), inset 0 0 15px rgba(0, 242, 254, 0.1);
-}
-.menu-card.cyan:active {
-    box-shadow: 0 0 25px rgba(0, 242, 254, 0.4), inset 0 0 20px rgba(0, 242, 254, 0.25);
-}
-
-/* ========================================================================== */
-/* ПЕРЕКЛЮЧАТЕЛИ ВКЛАДОК ВИДЕОСТУДИИ ("ШАБЛОНЫ" / "СВОЙ")                     */
-/* ========================================================================== */
-/* Базовый стиль для неактивной кнопки вкладки */
-.motion-subtabs-row .tab-btn,
-#video_motion_tabs .tab-btn {
-    flex: 1 !important; 
-    margin: 0 !important; 
-    font-size: 13px !important; 
-    font-weight: 800 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.5px !important;
-    border-radius: 30px !important;
-    padding: 10px 0 !important;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
+    try {
+        if (typeof updateFotoSubmitButtons === "function") updateFotoSubmitButtons();
+    } catch (e) { console.error(e); }
     
-    background: #111111 !important;
-    color: rgba(255, 255, 255, 0.5) !important;
-    border: 2px solid rgba(255, 102, 0, 0.2) !important;
-    box-shadow: none !important;
-    transition: all 0.2s ease-in-out !important;
+    closeCustomSheet();
 }
 
-/* Стиль для активной (нажатой) вкладки */
-.motion-subtabs-row .tab-btn.active,
-#video_motion_tabs .tab-btn.active {
-    background: #ff6600 !important;
-    color: #ffffff !important;
-    border: 2px solid #ff1e00 !important;
-    box-shadow: 0 4px 12px rgba(255, 30, 0, 0.3) !important;
-}
-          
-/* ========================================================================== */
-/* Компактный контейнер для увеличенного фото (Шаг 2) */
-/* 📸 УВЕЛИЧЕННОЕ КОМПАКТНОЕ ПРЕВЬЮ ПО ЦЕНТРУ С ПРИЖАТИЕМ КНОПОК ВНИЗ */
-/* ========================================================================== */
-.text-image-compact-preview {
-    /* 🔥 ИСПРАВЛЕНО: Задаем ширину и заставляем рамку держать форму 9:16 */
-    width: 100% !important;
-    max-width: 250px !important;       /* Ограничиваем ширину, чтобы рамка вытянулась и стала узкой */
-    aspect-ratio: 9 / 16 !important;   /* Намертво держит пропорции смартфона */
+// Функции принудительной синхронизации формата для капсул кадра на основном экране (ИСПРАВЛЕНО)
+function setTextRatio(ratio) { 
+    window.selectedTextRatio = ratio; 
+    if (typeof selectedTextRatio !== 'undefined') selectedTextRatio = ratio;
     
-    /* 🔥 УБРАЛИ height и max-height, которые раздували рамку по горизонтали */
-    margin: 0 auto 15px auto !important; /* Центрирует по горизонтали и толкает контент снизу */
+    const el = document.getElementById('btn_text_ratio');
+    if (el) el.innerHTML = ratio;
     
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    overflow: hidden !important;
-    border-radius: 16px !important;
-    background: #000000 !important; 
-    box-sizing: border-box !important;
-
-    /* ТВОЙ ФИРМЕННЫЙ ОРАНЖЕВЫЙ НЕОНОВЫЙ КАНТ С СВЕЧЕНИЕМ */
-    border: 1px solid #ff7300 !important;
-    box-shadow: 0 0 15px rgba(255, 115, 0, 0.35) !important;
+    // 🔥 ДОБАВЛЕНО: Пересчитываем цену на кнопке "Start" при смене формата
+    if (typeof updateNeoStartButtonText === "function") updateNeoStartButtonText();
 }
 
-/* Сама картинка внутри контейнера */
-.text-image-compact-preview img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important; /* Фото заполняет рамку без черных дыр по бокам */
-    display: block !important;
-}
-
-/* ========================================================================== */
-/* НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ (ТАББАР) */
-/* ========================================================================== */
-.bottom-navigation-bar {
-    position: fixed !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    height: 65px;
-    background: rgba(10, 15, 30, 0.85) !important;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    display: flex !important;
-    justify-content: space-around !important;
-    align-items: center !important;
-    border-top: 1px solid rgba(255, 102, 0, 0.2) !important;
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
-    z-index: 9999 !important;
-    padding-bottom: env(safe-area-inset-bottom);
-    box-sizing: border-box;
-}
-
-.nav-item {
-    background: none !important;
-    border: none !important;
-    outline: none !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 30% !important;
-    height: 100% !important;
-    cursor: pointer;
-    color: rgba(255, 255, 255, 0.4) !important;
-    transition: all 0.2s ease;
-    -webkit-tap-highlight-color: transparent;
-}
-
-.nav-icon {
-    font-size: 20px;
-    margin-bottom: 2px;
-    transition: transform 0.2s ease;
-}
-
-.nav-text {
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.nav-item.active {
-    color: #ff6600 !important;
-    text-shadow: 0 0 10px rgba(255, 102, 0, 0.6);
-}
-
-.nav-item.active .nav-icon {
-    transform: scale(1.15);
-}
-
-.nav-item:active:not(.active) {
-    transform: scale(0.95);
-    color: rgba(255, 255, 255, 0.8) !important;
-}
-
-/* ========================================================================== */
-/* УПРАВЛЕНИЕ ЭКРАНАМИ И ОТСТУПЫ ПОД ТАББАР */
-/* ========================================================================== */
-.screen { 
-    display: none; 
+function setDirectRatio(ratio) { 
+    window.directGenRatio = ratio; 
+    if (typeof directGenRatio !== 'undefined') directGenRatio = ratio;
     
-    /* Наш безопасный отступ под нижнюю панель, чтобы кнопки старт не перекрывались */
-    padding-bottom: 80px !important; 
-    box-sizing: border-box !important;
-}
-
-.screen.active { 
-    display: block !important; 
-    animation: fadeIn 0.2s ease-in-out; 
-}
-
-/* ========================================================================== */
-/* ЕДИНЫЕ КАСТОМНЫЕ ШТОРКИ (КАЧЕСТВО, РАЗМЕРЫ, ДЛИТЕЛЬНОСТЬ) */
-/* ========================================================================== */
-.custom-sheet-overlay {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.6) !important; /* Глубокое красивое затемнение */
-    backdrop-filter: blur(8px) !important; /* Мягкое размытие заднего плана */
-    -webkit-backdrop-filter: blur(8px) !important;
-    z-index: 99999 !important;
-    display: none;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-}
-
-.custom-sheet-overlay.active {
-    display: flex !important; /* Используем флекс для надежного контроля */
-    align-items: flex-end !important;
-    justify-content: center !important;
-    opacity: 1 !important;
-}
-
-.custom-sheet-panel {
-    position: relative !important;
-    bottom: 16px !important; /* Приподнимаем для стиля */
-    width: calc(100% - 32px) !important;
-    max-width: 400px !important; /* Идеально для ПК и мобилок */
-    background: #0f1015 !important; /* Тёмный глубокий фон */
-    border-radius: 24px !important; 
-    padding: 16px !important;
-    color: #fff !important;
-    box-sizing: border-box !important;
+    const el = document.getElementById('btn_direct_ratio_2') || document.getElementById('btn_direct_ratio');
+    if (el) el.innerHTML = ratio;
     
-    /* 🔥 НАШ НЕОНОВЫЙ КАНТ: Тонкая обводка шторки, как у плеера */
-    border: 1px solid rgba(255, 115, 0, 0.3) !important;
-    box-shadow: 0 -4px 30px rgba(255, 115, 0, 0.15) !important;
+    // 🔥 ДОБАВЛЕНО: Пересчитываем цену на кнопке "Start" при смене формата
+    if (typeof updateNeoStartButtonText === "function") updateNeoStartButtonText();
+}
+
+// Функция закрытия шторки (остается без изменений)
+function closeCustomSheet() {
+    const sheet = document.getElementById('custom_action_sheet');
+    if (sheet) sheet.classList.remove('active');
+}
+
+
+
+/////////// БЛОК ВИДИО ///////////
+
+
+
+// ====================================================================================
+// 9. ПОЛНОЕ УПРАВЛЕНИЕ ВСЕМИ ШТОРКАМИ ВИДЕОСТУДИИ (ТЕПЕРЬ 100% ДИНАМИКА ИЗ MONGO!)
+// ====================================================================================
+
+function openUniversalDurationSheet() {
+    const titleEl = document.getElementById('custom_sheet_title');
+    const listEl = document.getElementById('custom_sheet_list');
+    const sheetEl = document.getElementById('custom_action_sheet');
+    if (!titleEl || !listEl || !sheetEl) return;
+
+    titleEl.innerText = "ДЛИТЕЛЬНОСТЬ ВИДЕО";
+    listEl.innerHTML = ''; // Очищаем список старых кнопок
+
+    // 🍏 БЕЗОПАСНО: Берём цены из наших застрахованных объектов (там всегда либо база, либо дефолты)
+    let price5s = window.dbKling5s.coins;
+    let price10s = window.dbKling10s.coins;
+
+    // Твои новые локальные переменные Kling O3 Pro
+    let klingO3_5 = window.dbKlingO3_5s.coins;
+    let klingO3_10 = window.dbKlingO3_10s.coins;
+    let klingO3_15 = window.dbKlingO3_15s.coins;
+
+    // 🔥 ПОДТЯГИВАЕМ СВЕЖИЙ JSON, ЕСЛИ ОН УЖЕ ДОЛЕТЕЛ ИЗ БАЗЫ
+    if (window.allPrices && window.allPrices.services) {
+        if (window.allPrices.services.kling_video_5s) price5s = window.allPrices.services.kling_video_5s.coins;
+        if (window.allPrices.services.kling_video_10s) price10s = window.allPrices.services.kling_video_10s.coins;
+        
+        if (window.allPrices.services.kling_o3_5s) klingO3_5 = window.allPrices.services.kling_o3_5s.coins;
+        if (window.allPrices.services.kling_o3_10s) klingO3_10 = window.allPrices.services.kling_o3_10s.coins;
+        if (window.allPrices.services.kling_o3_15s) klingO3_15 = window.allPrices.services.kling_o3_15s.coins;
+    }
+
+    let options = [];
+    const activeMode = window.currentActiveMode || (typeof currentActiveMode !== 'undefined' ? currentActiveMode : null);
+
+    if (activeMode === 'animate_nosound') {
+        // Режим 1: Оживление фото (Kling)
+        options = [
+            { sec: 5, text: '⏱️ 5 сек', label: '5 секунд', price: `${price5s} 🪙` },
+            { sec: 10, text: '⏱️ 10 сек', label: '10 секунд', price: `${price10s} 🪙` }
+        ];
+    } else if (activeMode === 'animate_sound') { // Режим 2: Оживление со звуком (Kling O3 Pro)
+        options = [
+            { sec: 5, text: '⏱️ 5 сек', label: '5 секунд', price: `${klingO3_5} 🪙` },
+            { sec: 10, text: '⏱️ 10 сек', label: '10 секунд', price: `${klingO3_10} 🪙` },
+            { sec: 15, text: '⏱️ 15 сек', label: '15 секунд', price: `${klingO3_15} 🪙` }
+        ];
+    }
+
+    // Собираем кнопки шторки
+    options.forEach(opt => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.className = 'custom-sheet-item';
+        btn.innerHTML = `<span>${opt.label}</span><span class="coin-price">${opt.price}</span>`;
+        
+        btn.addEventListener('click', function() {
+            selectDurationFromSheet(opt.sec, opt.text);
+        });
+
+        li.appendChild(btn);
+        listEl.appendChild(li);
+    });
+
+    sheetEl.classList.add('active');
+}
+
+// 2. УМНЫЙ ОБРАБОТЧИК КЛИКА ПО СЕКУНДАМ (ИСПРАВЛЕНО: СИНХРОНИЗАЦИЯ ЧЕРЕЗ WINDOW)
+function selectDurationFromSheet(seconds, text) {
+    const btnKling = document.getElementById('btn_video_duration');
+    const btnSora = document.getElementById('btn_sora_duration');
     
-    /* Анимация плавного выезда снизу */
-    transform: translateY(100%);
-    transition: transform 0.25s cubic-bezier(0.1, 0.7, 0.1, 1);
-}
+    let activeMode = window.currentActiveMode || (typeof currentActiveMode !== 'undefined' ? currentActiveMode : 'animate_nosound');
+    if (btnSora && btnSora.offsetParent !== null) {
+        activeMode = 'animate_sound';
+    }
 
-.custom-sheet-overlay.active .custom-sheet-panel {
-    transform: translateY(0) !important; 
-}
-
-.custom-sheet-title {
-    font-size: 11px !important;
-    font-weight: 800 !important;
-    color: #8e8e93 !important;
-    text-align: center !important;
-    margin-bottom: 12px !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.8px !important;
-}
-
-.custom-sheet-list {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 0 !important;
-    background: #171821 !important; /* Контейнер подпунктов чуть светлее */
-    border-radius: 16px !important;
-    overflow: hidden !important;
-    padding: 0 !important; 
-    margin: 0 !important; 
-    list-style: none !important;
-}
-
-.custom-sheet-item {
-    width: 100% !important;
-    padding: 14px 16px !important; /* Чуть увеличили кликабельную зону */
-    font-size: 15px !important;
-    font-weight: 600 !important;
-    background: none !important;
-    border: none !important;
-    color: #fff !important;
-    text-align: center !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important; 
-    gap: 12px !important;
-    box-sizing: border-box !important;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    transition: background 0.15s ease;
-}
-
-.custom-sheet-item:not(:last-child) {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
-}
-
-.custom-sheet-item:active {
-    background: rgba(255, 115, 0, 0.15) !important; /* Оранжевый отклик при тапе */
-}
-
-/* Выделяем оранжевым цветом цену в монетах внутри шторки */
-.custom-sheet-item .coin-price {
-    color: #ff6600 !important; 
-    font-size: 13px !important;
-    font-weight: 800 !important;
-}
-/* Скрываем стандартный веб-скроллбар для горизонтальной ленты */
-.swap-steps-grid::-webkit-scrollbar { 
-    display: none !important; 
-}
-
-/* Жестко заставляем клик проходить сквозь спаны внутрь самой кнопки шторки */
-.custom-sheet-item span {
-    pointer-events: none !important;
-}
-
-/* ========================================================================== */
-/* 🔥 ВЕРХНИЕ БОЛЬШИЕ КНОПКИ РЕЖИМОВ (УМНЫЙ ФОКУС / ЦИФРОВАЯ ОПТИКА)          */
-/* ========================================================================== */
-/* Базовое неактивное состояние кнопки */
-.tab-btn {
-    -webkit-appearance: none !important; appearance: none !important; outline: none !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+    if (activeMode === 'animate_nosound') {
+        window.currentKlingDuration = seconds;
+        if (typeof currentKlingDuration !== 'undefined') currentKlingDuration = seconds;
+        if (btnKling) btnKling.innerHTML = text; 
+    } else if (activeMode === 'animate_sound') {
+        window.currentSoraDuration = seconds;
+        if (typeof currentSoraDuration !== 'undefined') currentSoraDuration = seconds;
+        if (btnSora) btnSora.innerHTML = text; 
+    }
     
-    /* Делаем их тёмными с тонким оранжевым кантом, чтобы не перегружать экран */
-    background: #111116 !important;
-    color: rgba(255, 255, 255, 0.6) !important;
-    border: 2px solid rgba(255, 102, 0, 0.3) !important;
+    if (typeof updateNeoStartButtonText === 'function') {
+        updateNeoStartButtonText();
+    }
     
-    border-radius: 30px !important; /* Форма круглой капсулы */
-    padding: 10px 20px !important;
-    font-size: 13px !important;
-    font-weight: 800 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.5px !important;
-    cursor: pointer !important;
-    transition: all 0.15s ease !important;
-    -webkit-tap-highlight-color: transparent !important;
-    box-sizing: border-box !important;
-}
-
-/* 🔥 Активное (нажатое) состояние — сочное оранжевое с алым кантом как START */
-.tab-btn.active {
-    background-color: #ff6600 !important;
-    border: 2px solid #ff1e00 !important;
-    color: #ffffff !important;
-    box-shadow: 0 4px 15px rgba(255, 30, 0, 0.35) !important;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
-}
-
-.tab-btn:active {
-    transform: scale(0.96) !important;
-}
-
-/* ========================================================================== */
-/* 🔥 ГОРИЗОНТАЛЬНЫЕ КНОПКИ-ФИЛЬТРЫ (ВСЕ, МУЖ, ЖЕН, ДЕТИ...)                  */
-/* ========================================================================== */
-/* Базовое состояние мелких вкладок фильтра */
-.tabs-scroll-line button,
-.tabs-container button:not(.back-tab-btn) {
-    -webkit-appearance: none !important; appearance: none !important; outline: none !important;
-    padding: 6px 14px !important;
-    font-size: 12px !important;
-    font-weight: 700 !important;
-    border-radius: 20px !important; /* Капсульное скругление */
-    white-space: nowrap !important; /* Чтобы текст не переносился на вторую строку */
-    cursor: pointer !important;
-    transition: all 0.15s ease !important;
-    -webkit-tap-highlight-color: transparent !important;
+    if (typeof updateMotionSubmitButton === 'function') {
+        updateMotionSubmitButton();
+    }
     
-    /* Тёмный благородный фон по умолчанию */
-    background: #161822 !important;
-    color: rgba(255, 255, 255, 0.5) !important;
-    border: 1.5px solid rgba(255, 102, 0, 0.25) !important;
+    closeCustomSheet();
 }
 
-/* 🔥 Нажатый активный фильтр — загорается огненным оранжевым */
-.tabs-scroll-line button.active,
-.tabs-container button.active:not(.back-tab-btn) {
-    background-color: #ff6600 !important;
-    border-color: #ff1e00 !important;
-    color: #ffffff !important;
-    box-shadow: 0 3px 10px rgba(255, 102, 0, 0.3) !important;
+// 3. ПЕРЕНАПРАВЛЕНИЕ СТАРЫХ ВЫЗОВОВ ПОПАПОВ
+function showNativeDurationPopup() { openUniversalDurationSheet(); }
+function showNativeSoraDurationPopup() { openUniversalDurationSheet(); }
+
+// ====================================================================================
+// 10. УМНЫЙ ОБНОВЛЯТОР ЦЕН НА ВСЕХ ВСТРОЕННЫХ КНОПКАХ ВИДЕО (START)
+// ====================================================================================
+function updateMotionSubmitButton() {
+    const startBtn1 = document.getElementById('neo_video_submit_btn');       // Режим 1 (Без звука)
+    const startBtn2 = document.getElementById('neo_video_sound_submit_btn'); // Режим 2 (Со звуком)
+    const startBtn3 = document.getElementById('neo_motion_submit_btn');      // Режим 3 (По видео)
+    
+    if (!startBtn1 && !startBtn2 && !startBtn3) return;
+
+    // 🟢 1. ДИНАМИЧЕСКИЕ ЦЕНЫ ДЛЯ KLING (БЕРЕМ ИЗ НАШИХ ГЛОБАЛЬНЫХ ОБЪЕКТОВ WINDOW)
+    const price5s = window.dbKling5s.coins;
+    const price10s = window.dbKling10s.coins;
+
+    // 🔵 2. ДИНАМИЧЕСКИЕ ЦЕНЫ ДЛЯ KLING O3 PRO (ИЗ СТРУКТУРЫ WINDOW!)
+    const klingO3_5 = window.dbKlingO3_5s.coins;
+    const klingO3_10 = window.dbKlingO3_10s.coins;
+    const klingO3_15 = window.dbKlingO3_15s.coins;
+
+    // 3. Железная защита от ошибок "not defined" на разных вкладках сайта!
+    const klingSeconds = (typeof currentKlingDuration !== 'undefined') ? currentKlingDuration : ((typeof window.currentKlingDuration !== 'undefined') ? window.currentKlingDuration : 5);
+    
+    // 🔥 НАДЕЖНЫЙ ВАРИАНТ ДЛЯ KLING O3 PRO: Читаем секунды прямо из текста кнопки на экране!
+    let klingProSeconds = 5; // по умолчанию теперь базовые 5 секунд
+    const soraBtnEl = document.getElementById('btn_sora_duration'); // ID не трогаем, чтобы не поломать DOM
+    if (soraBtnEl) {
+        // Берем текст кнопки (например, "⏱️ 15 сек"), вытаскиваем цифру и превращаем в число 15
+        const match = soraBtnEl.innerText.match(/\d+/);
+        if (match) klingProSeconds = parseInt(match, 10);
+    }
+
+    // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ РЕЖИМА 1: «Оживление фото» (Kling)
+    if (startBtn1) {
+        startBtn1.innerHTML = `Start ${klingSeconds === 10 ? price10s : price5s} 🪙`;
+    }
+    
+    // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ РЕЖИМА 2: «Оживление со звуком» (Kling O3 Pro)
+    if (startBtn2) {
+        let currentKlingProPrice = klingO3_5; // по дефолту за 5 секунд
+        if (klingProSeconds === 10) currentKlingProPrice = klingO3_10;
+        if (klingProSeconds === 15) currentKlingProPrice = klingO3_15;
+        
+        startBtn2.innerHTML = `Start ${currentKlingProPrice} 🪙`;
+    }
+    
+    // 🔥 ДИНАМИЧЕСКИЙ РАСЧЕТ ДЛЯ РЕЖИМА 3: «Оживление по видео» (Motion Control)
+    if (startBtn3) {
+        // Защита: берем цену из базы, если она готова, или ставим 2 по умолчанию
+        const ratePerSec = (window.dbKlingPerSec && window.dbKlingPerSec.coins_per_sec) ? window.dbKlingPerSec.coins_per_sec : 2; 
+        
+        // На кнопке теперь ВСЕГДА будет просто надпись Start без лишних цифр страховок
+        startBtn3.innerHTML = `Start`;
+
+        // Тариф за секунду всё равно передаем в текст описания, чтобы точки заменялись на цифру
+        const rateTextEl = document.getElementById('motion_rate_per_sec');
+        if (rateTextEl) {
+            rateTextEl.innerText = ratePerSec;
+        }
+    } 
 }
 
-.tabs-scroll-line button:active,
-.tabs-container button:active:not(.back-tab-btn) {
-    transform: scale(0.95) !important;
+// ====================================================================================
+// 11. АВТОМАТИЧЕСКАЯ ПРИВЯЗКА КЛИКОВ ДЛЯ КНОПОК ВИДЕО (ПЕРЕНЕСЕНО СЮДА)
+// ====================================================================================
+// Ждем, пока браузер полностью отрисует все элементы страницы
+window.addEventListener('DOMContentLoaded', () => {
+    // Автоматически вешаем открытие шторки на кнопки времени видеостудии
+    const btnKlingDuration = document.getElementById('btn_video_duration');
+    const btnSoraDuration = document.getElementById('btn_sora_duration');
+    const btnMotionDuration = document.getElementById('btn_motion_duration'); // на всякий случай для 3 режима
+
+    if (btnKlingDuration) {
+        btnKlingDuration.addEventListener('click', () => {
+            if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light');
+            openUniversalDurationSheet();
+        });
+    }
+    
+    if (btnSoraDuration) {
+        btnSoraDuration.addEventListener('click', () => {
+            if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light');
+            openUniversalDurationSheet();
+        });
+    }
+
+    if (btnMotionDuration) {
+        btnMotionDuration.addEventListener('click', () => {
+            if (window.Telegram?.WebApp?.HapticFeedback) Telegram.WebApp.HapticFeedback.impactOccurred('light');
+            openUniversalDurationSheet();
+        });
+    }
+});
+/////////////////////////// ФОТО /////////////////////////////
+// ====================================================================================
+// 12. УМНЫЙ ОБНОВЛЯТОР ЦЕН НА ВСЕХ ВСТРОЕННЫХ КНОПКАХ ФОТО (START)
+// ====================================================================================
+function updateFotoSubmitButtons() {
+    const btnText = document.getElementById('neo_text_submit_btn');   // Режим 1: Фото + Текст
+    const btnSwap = document.getElementById('neo_swap_submit_btn');   // Режим 2: Face Swap
+    const btnTryon = document.getElementById('neo_tryon_submit_btn'); // Режим 3: Примерка одежды
+    const btnBg = document.getElementById('neo_bg_submit_btn');       // Режим 4: Смена фона
+    
+    if (!btnText && !btnSwap && !btnTryon && !btnBg) return;
+
+    // 🟠 1. Считываем текст с капсулы качества для первого подэкрана (Фото + Текст)
+    let photoTextQuality = 'standard';
+    const textProtoBtn = document.getElementById('btn_text_quality');
+    if (textProtoBtn) {
+        const txt = textProtoBtn.innerText.toLowerCase();
+        if (txt.includes('pro') || txt.includes('mid') || txt.includes('dev')) photoTextQuality = 'dev';
+        if (txt.includes('ultra') || txt.includes('max') || txt.includes('4k')) photoTextQuality = 'ultra_4k';
+    }
+
+    // 🟠 2. Считываем текст с капсул остальных трех режимов
+    let swapQuality = 'standard', tryonQuality = 'standard', bgQuality = 'standard';
+    const swapBtn = document.getElementById('btn_swap_quality');
+    if (swapBtn) {
+        const txt = swapBtn.innerText.toLowerCase();
+        if (txt.includes('pro') || txt.includes('mid') || txt.includes('dev')) swapQuality = 'dev';
+        if (txt.includes('ultra') || txt.includes('max') || txt.includes('4k')) swapQuality = 'ultra_4k';
+    }
+    const tryonBtn = document.getElementById('btn_tryon_quality');
+    if (tryonBtn) {
+        const txt = tryonBtn.innerText.toLowerCase();
+        if (txt.includes('pro') || txt.includes('mid') || txt.includes('dev')) tryonQuality = 'dev';
+        if (txt.includes('ultra') || txt.includes('max') || txt.includes('4k')) tryonQuality = 'ultra_4k';
+    }
+    const bgBtn = document.getElementById('btn_bg_quality');
+    if (bgBtn) {
+        const txt = bgBtn.innerText.toLowerCase();
+        if (txt.includes('pro') || txt.includes('mid') || txt.includes('dev')) bgQuality = 'dev';
+        if (txt.includes('ultra') || txt.includes('max') || txt.includes('4k')) bgQuality = 'ultra_4k';
+    }
+
+    // 🔥 СЧИТЫВАЕМ КОЛИЧЕСТВО ВЫБРАННЫХ ЛЮДЕЙ ДЛЯ РЕЖИМА 1 (1, 2 или 3)
+    const currentFaces = parseInt(window.selectedStyleFacesCount) || 1;
+
+    // 🔥 🔥 🔥 НОВОЕ: Динамически пересчитываем и обновляем цены ПРЯМО ВНУТРИ ШТОРКИ КАЧЕСТВА!
+    // 🔥 ИСПРАВЛЕНО: Добавлен перехват слага 'custom', чтобы шторка не переключалась на Банану ложно
+    const currentEngine = typeof selectedAiModelEngine !== 'undefined' ? selectedAiModelEngine : 'banana';
+    let pricesObj = (currentEngine === 'pulid' || currentEngine === 'custom') ? window.dbFluxPulidPrices : window.dbBananaEditPrices;
+
+    if (pricesObj) {
+        if (document.getElementById("quality-flux-standard")) {
+            document.getElementById("quality-flux-standard").innerText = (pricesObj.coins_min || 2) * currentFaces;
+        }
+        if (document.getElementById("quality-flux-pro")) {
+            document.getElementById("quality-flux-pro").innerText = (pricesObj.coins_mid || 3) * currentFaces;
+        }
+        if (document.getElementById("quality-flux-ultra")) {
+            document.getElementById("quality-flux-ultra").innerText = (pricesObj.coins_max || 4) * currentFaces;
+        }
+    }
+
+    // 🔮 РАСЧЕТ ЦЕНЫ ДЛЯ БОЛЬШОЙ КНОПКИ «START»
+    if (btnText) {
+        // 🔥 ИСПРАВЛЕНО: Учтена поддержка 'custom' для точной калькуляции коинов кнопки
+        if (currentEngine === 'pulid' || currentEngine === 'custom') {
+            // 🍏 ЦИФРОВАЯ ОПТИКА (Flux PuLID)
+            let basePrice = window.dbFluxPulidPrices.coins_min || 2;
+            if (photoTextQuality === 'dev') basePrice = window.dbFluxPulidPrices.coins_mid || 3;
+            else if (photoTextQuality === 'ultra_4k') basePrice = window.dbFluxPulidPrices.coins_max || 4;
+            
+            let finalFluxPrice = basePrice * currentFaces;
+            btnText.innerHTML = `Start ${finalFluxPrice} 🪙`;
+            
+        } else {
+            // 🍌 УМНЫЙ ФОКУС (Nano Banana Edit)
+            let baseBananaPrice = window.dbBananaEditPrices.coins_min || 2;
+            if (photoTextQuality === 'dev') baseBananaPrice = window.dbBananaEditPrices.coins_mid || 3;
+            else if (photoTextQuality === 'ultra_4k') baseBananaPrice = window.dbBananaEditPrices.coins_max || 4;
+            
+            let finalBananaPrice = baseBananaPrice * currentFaces;
+            btnText.innerHTML = `Start ${finalBananaPrice} 🪙`;
+        }
+    }
+    
+    // 🔮 РАСЧЕТ ДЛЯ ОСТАЛЬНЫХ ТРЕХ РЕЖИМОВ (FACE SWAP, ОДЕЖДА, ФОН)
+    if (btnSwap) {
+        if (swapQuality === 'dev') btnSwap.innerHTML = `Start ${window.dbFaceSwapPrices.coins_mid || 4} 🪙`;
+        else if (swapQuality === 'ultra_4k') btnSwap.innerHTML = `Start ${window.dbFaceSwapPrices.coins_max || 5} 🪙`;
+        else btnSwap.innerHTML = `Start ${window.dbFaceSwapPrices.coins_min || 3} 🪙`;
+    }
+    if (btnTryon) {
+        if (tryonQuality === 'dev') btnTryon.innerHTML = `Start ${window.dbClothingPrices.coins_mid || 4} 🪙`;
+        else if (tryonQuality === 'ultra_4k') btnTryon.innerHTML = `Start ${window.dbClothingPrices.coins_max || 5} 🪙`;
+        else btnTryon.innerHTML = `Start ${window.dbClothingPrices.coins_min || 3} 🪙`;
+    }
+    if (btnBg) {
+        if (bgQuality === 'dev') btnBg.innerHTML = `Start ${window.dbBackgroundPrices.coins_mid || 3} 🪙`;
+        else if (bgQuality === 'ultra_4k') btnBg.innerHTML = `Start ${window.dbBackgroundPrices.coins_max || 4} 🪙`;
+        else btnBg.innerHTML = `Start ${window.dbBackgroundPrices.coins_min || 2} 🪙`;
+    }
 }
 
-/* 🔒 ЖЕЛЕЗНАЯ CSS ЗАЩИТА */
-/* Если включен режим pulid, кнопки выбора людей ГАРАНТИРОВАННО становятся невидимыми */
-.pulid-engine-active #faces_count_selector_row {
-    opacity: 0 !important;
-    pointer-events: none !important;
-    display: block !important; /* Удерживаем блок, чтобы нижние кнопки не улетали вверх! */
-}
+// Чтобы картинки начали загружаться при скролле
+document.addEventListener("DOMContentLoaded", function() {
+    const lazyImages = document.querySelectorAll('.lazy-image');
+
+    if ("Intersection Observer" in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const image = entry.target;
+                    image.src = image.dataset.src;
+                    image.onload = () => {
+                        image.classList.add('loaded');
+                    };
+                    imageObserver.unobserve(image);
+                }
+            });
+        }, {
+            rootMargin: "300px 0px" // Начнет качать картинку за 300px до появления на экране
+        });
+
+        lazyImages.forEach(image => imageObserver.observe(image));
+    } else {
+        lazyImages.forEach(image => {
+            image.src = image.dataset.src;
+            image.classList.add('loaded');
+        });
+    }
+});

@@ -364,6 +364,7 @@
             
         </div>
     </div>
+    
 <!-- ========================================== -->
 <!-- НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ (ТАББАР) -->
 <!-- ========================================== -->
@@ -412,6 +413,8 @@
     let selectedMotionStyleName = "";
     let selectedMotionVideoUrl = "";
     let currentGenerationMode = "preset"; 
+    let videoObserver = null;
+
 
     // ====================================================================================
     // 🔥 АВТОМАТИЧЕСКИЙ ПЕРЕХОД ПО КНОПКЕ ИЗ ИНЛАЙН-МЕНЮ БОТА (DEEP LINKS)
@@ -897,6 +900,41 @@ function selectMotionTemplate(styleName, videoUrl, duration) {
                     openUniversalRatioSheet();
                 });
             }
+
+// Автоматическое воспроизведение видео при скролле (Reels/TikTok стиль)
+function initLazyVideos() {
+    const lazyVideos = document.querySelectorAll('.lazy-video');
+    if (videoObserver) videoObserver.disconnect();
+
+    if ("Intersection Observer" in window) {
+        videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const video = entry.target;
+                if (entry.isIntersecting) {
+                    video.play().catch(err => console.log("Автоплей заблокирован:", err));
+                } else {
+                    video.pause();
+                }
+            });
+        }, { threshold: 0.1 }); // Запуск, когда видно 10% карточки
+
+        lazyVideos.forEach(video => videoObserver.observe(video));
+    } else {
+        lazyVideos.forEach(video => { video.autoplay = true; video.play(); });
+    }
+}
+
+// Запускаем слежку за блоком галереи, как только документ загрузился
+document.addEventListener("DOMContentLoaded", function() {
+    const galleryBlock = document.getElementById('motion_gallery_block');
+    if (galleryBlock) {
+        const mutationObserver = new MutationObserver(() => {
+            initLazyVideos(); // Перезапуск при обновлении карточек (переключение табов)
+        });
+        mutationObserver.observe(galleryBlock, { childList: true });
+    }
+    initLazyVideos();
+});
 
 // ====================================================================
 // 🔍 УМНЫЙ СТАРТОВЫЙ РОУТЕР ДЛЯ ОПТИМИЗАЦИИ КЭША ТЕЛЕГРАМА

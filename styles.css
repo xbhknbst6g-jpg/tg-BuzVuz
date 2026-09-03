@@ -234,11 +234,6 @@ body {
     width: 100% !important;
 }
 
-/* ⚠️ СЕКРЕТ ТУТ: Если JS скрывает галерею (меняет стиль), 
-   мы принудительно убираем свойства Grid-сетки, чтобы она не мешала блоку настроек! */
-.isolated-photo-text-grid[style*="display: none"] {
-    display: none !important;
-}
 
 /* Принудительно держим 9:16 только для карточек внутри этой сетки */
 .isolated-photo-text-grid > .phone-template-card {

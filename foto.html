@@ -692,10 +692,16 @@ function switchTextTab(category, element) {
         settingsBlock.style.display = 'none';     
         if (presetPreviewBlock) presetPreviewBlock.style.display = 'none';
         if (instructionText) instructionText.style.display = 'none';
+        
+        // Полностью гасим блок, так как ушли с кастомной вкладки
+        if (facesRow) {
+            facesRow.style.removeProperty('opacity');
+            facesRow.style.removeProperty('pointer-events');
+            facesRow.style.display = 'none';
+        }
 
         if (document.getElementById('text_image_spacer')) document.getElementById('text_image_spacer').style.display = 'none';
 
-        // 1. Сначала фильтруем карточки, чтобы браузер построил правильную сетку
         const cards = document.querySelectorAll('.phone-template-card');
         cards.forEach(card => {
             const cardCategory = card.getAttribute('data-category');
@@ -705,13 +711,6 @@ function switchTextTab(category, element) {
                 card.style.display = 'none';
             }
         });
-
-        // 2. И только в самом конце, когда сетка готова, гасим блок выбора людей от кастомного режима
-        if (facesRow) {
-            facesRow.style.removeProperty('opacity');
-            facesRow.style.removeProperty('pointer-events');
-            facesRow.style.display = 'none';
-        }
     }
 }
 

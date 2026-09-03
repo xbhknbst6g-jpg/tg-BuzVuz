@@ -124,7 +124,7 @@
         </div>
 
         <!-- 🔥 НАШ ШАГ 1 (ГАЛЕРЕЯ КАРТОЧЕК). ТЕПЕРЬ ОНА ЧИСТАЯ И ИЗОЛИРОВАННАЯ -->
-        <div class="isolated-photo-text-grid phone-templates-grid" id="text_image_gallery">
+        <div class="isolated-photo-text-grid" id="text_image_gallery">
             <!-- Сюда ваш JS скрипт через fetch автоматически вставит карточки из файла cards-template.html -->
         </div>
 
@@ -711,10 +711,6 @@ function switchTextTab(category, element) {
                 card.style.display = 'none';
             }
         });
-        
-        // 🔥 ДОБАВЛЯЕМ СЮДА: Скроллим страницу в самый верх, чтобы карточки не улетали вниз
-        if (gallery) gallery.scrollTop = 0;
-        window.scrollTo({ top: 0, behavior: 'instant' });
     }
 }
 

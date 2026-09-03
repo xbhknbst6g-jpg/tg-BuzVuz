@@ -703,8 +703,11 @@ function switchTextTab(category, element) {
         if (document.getElementById('text_image_spacer')) document.getElementById('text_image_spacer').style.display = 'none';
 
         const cards = document.querySelectorAll('.phone-template-card');
+        console.log("Найдено карточек для фильтрации:", cards.length); // <-- ДОБАВИТЬ
+
         cards.forEach(card => {
             const cardCategory = card.getAttribute('data-category');
+            console.log("Категория карточки:", cardCategory, "Ищем:", category); 
             if (category === 'all' || cardCategory === category) {
                 card.style.display = 'block';
             } else {
